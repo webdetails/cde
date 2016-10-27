@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -23,6 +23,8 @@ import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.api.engine.ISolutionFileMetaProvider;
 import org.pentaho.platform.engine.core.solution.FileInfo;
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
+
+import pt.webdetails.cpf.utils.XmlParserFactoryProducer;
 
 import java.io.InputStream;
 
@@ -49,7 +51,7 @@ public class DashboardDesignerFileInfoGenerator implements ISolutionFileMetaProv
     String solution = solutionFile.getSolution();
     String path = solutionFile.getFullPath();
     String fileName = solutionFile.getFileName();
-    SAXReader reader = new SAXReader();
+    SAXReader reader = XmlParserFactoryProducer.getSAXReader( null );
 
     try {
 

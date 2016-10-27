@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -46,6 +46,7 @@ import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
+import pt.webdetails.cpf.utils.XmlParserFactoryProducer;
 
 public class Utils {
   private static final Log logger = LogFactory.getLog( Utils.class );
@@ -160,15 +161,12 @@ public class Utils {
    */
   public static Document getDocFromFile( final IBasicFile file, final EntityResolver resolver )
     throws DocumentException, IOException {
-    SAXReader reader = new SAXReader();
-    if ( resolver != null ) { //TODO: this is always being called with null
-      reader.setEntityResolver( resolver );
-    }
+    SAXReader reader = XmlParserFactoryProducer.getSAXReader( resolver );
     return reader.read( file.getContents() );
   }
 
   public static Document getDocument( InputStream input ) throws DocumentException {
-    SAXReader reader = new SAXReader();
+    SAXReader reader = XmlParserFactoryProducer.getSAXReader( null );
     return reader.read( input );
   }
 
