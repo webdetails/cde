@@ -282,8 +282,8 @@ var CDFDD = Base.extend({
     var myself = this;
     if(myself.styles.length > 0) {
       var wcdf = myself.getDashboardWcdf();
-      // Default to Clean or the first available style if Clean isn't available
-      var cleanStyle = myself.styles.indexOf('Clean');
+      // Default to CleanRequire or the first available style if CleanRequire isn't available
+      var cleanStyle = myself.styles.indexOf('CleanRequire');
       if(!wcdf.style) {
         wcdf.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
       }
@@ -934,9 +934,9 @@ var CDFDD = Base.extend({
         myself = this;
 
     settingsData.styles = [];
-    this.styles = SettingsHelper.getStyles(wcdf, this);
+    var wcdfStyles = SettingsHelper.getStyles(wcdf, this);
     var selectedStyle = SettingsHelper.getSelectedStyle(wcdf);
-    _.each(this.styles, function(obj) {
+    _.each(wcdfStyles, function(obj) {
       settingsData.styles.push({
         style: obj,
         selected: selectedStyle == obj
