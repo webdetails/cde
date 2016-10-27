@@ -934,9 +934,9 @@ var CDFDD = Base.extend({
         myself = this;
 
     settingsData.styles = [];
-    this.styles = SettingsHelper.getStyles(wcdf, this);
+    var wcdfStyles = SettingsHelper.getStyles(wcdf, this);
     var selectedStyle = SettingsHelper.getSelectedStyle(wcdf);
-    _.each(this.styles, function(obj) {
+    _.each(wcdfStyles, function(obj) {
       settingsData.styles.push({
         style: obj,
         selected: selectedStyle == obj
