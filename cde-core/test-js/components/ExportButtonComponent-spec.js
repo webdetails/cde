@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -32,6 +32,7 @@ define([
       executeAtStart: true,
       htmlObject: "sampleObjectExportButton",
       priority: 5,
+      exportPage: true,
       label: "TestExport",
       componentName: "",
       parameters: [],
@@ -100,6 +101,7 @@ define([
 
     var $htmlObject2 = $('<div>').attr('id',tableWithFilter.htmlObject);
     var expected = "right";
+    var expectedExportPageSettings = true;
     
     /**
      * ## The Export Button Component # discern between a input and the filter input
@@ -112,7 +114,9 @@ define([
       spyOn($, 'ajax').and.callFake(function(params) {
       params.success('{"metadata":["Sales"],"values":[["Euro+ Shopping Channel","914.11"],["Mini Gifts Ltd.","6558.02"]]}');
     });
-	  
+
+	  expect(exportButtonComponent.getFilterSettings(tableWithFilter).exportPage).toEqual(expectedExportPageSettings);
+
       tableWithFilter.once("cdf:postExecution",function() {
         $("[type=search]").val('right');
         expect(exportButtonComponent.getFilterSettings(tableWithFilter).dtFilter).toEqual(expected);

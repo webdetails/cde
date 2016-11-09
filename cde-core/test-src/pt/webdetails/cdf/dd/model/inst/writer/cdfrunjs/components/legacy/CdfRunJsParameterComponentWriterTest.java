@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -28,6 +28,7 @@ public class CdfRunJsParameterComponentWriterTest {
   private static final String ROOT = "test-resources";
   private static final String TEST_FOLDER = "test";
   private static final String DASHBOARD = "testDashboard.wcdf";
+  private static final String NEWLINE = System.getProperty( "line.separator" );
 
   private static IThingWriter writer;
   private static PentahoCdfRunJsDashboardWriteContext context;
@@ -52,8 +53,8 @@ public class CdfRunJsParameterComponentWriterTest {
     try {
       writer.write( dashboardResult, context, parameterComponent );
 
-      Assert.assertEquals( "Dashboards.addParameter(\"param1\", \"1\");\n"
-          + "Dashboards.setParameterViewMode(\"param1\", \"unused\");\n", dashboardResult.toString() );
+      Assert.assertEquals( "Dashboards.addParameter(\"param1\", \"1\");" + NEWLINE
+          + "Dashboards.setParameterViewMode(\"param1\", \"unused\");" + NEWLINE, dashboardResult.toString() );
     } catch ( ThingWriteException e ) {
     }
   }
