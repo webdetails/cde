@@ -729,17 +729,31 @@ var TableManager = Base.extend({
     // 3 - add to `row` new ones from `stub`
     var pRow = {};
     var rowProps = row.properties || (row.properties = []);
+    var heightIdx = -1;
+    var layoutHeightIdx = -1;
 
     // Index names of properties already in `row`
     $.each(rowProps, function(i, p) {
+      if(p.name === "height") {
+        heightIdx = i;
+      }
       pRow[p.name] = p;
     });
 
     $.each(stub.properties, function(i, s) {
       if(!pRow[s.name]) {
+        if(s.name === "layoutHeight") {
+          layoutHeightIdx = rowProps.length;
+        }
         rowProps.push(s);
       }
     });
+
+    // height and layoutHeight are exclusive, need to remove height
+    if (heightIdx > -1 && layoutHeightIdx > -1) {
+      rowProps[layoutHeightIdx].value = rowProps[heightIdx].value; // recycling height's value
+      rowProps.splice(heightIdx,1); // removing height from the properties
+    }
 
     // Sort properties again, by #order
     // With the exceptions:

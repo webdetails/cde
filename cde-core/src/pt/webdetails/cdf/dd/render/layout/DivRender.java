@@ -37,9 +37,15 @@ public class DivRender extends Render {
     getPropertyBag().addClass( getPropertyString( "roundCorners" ) );
     getPropertyBag().addClass( getPropertyString( "cssClass" ) );
     getPropertyBag().addStyle( "background-color", getPropertyString( "backgroundColor" ) );
-    String height = getPropertyString( "height" );
+    // the client side editor makes sure only one exists, either height or layoutHeight
+    String height = getPropertyString( "height" ); // kept for backwards compatibility
     if ( StringUtils.isNotEmpty( height ) ) {
       getPropertyBag().addStyle( "height", height + "px" );
+    } else {
+      height = getPropertyString( "layoutHeight" ); // new property for layout elements height
+      if ( StringUtils.isNotEmpty( height ) ) {
+        getPropertyBag().addStyle( "height", height + "px" );
+      }
     }
     getPropertyBag().addStyle( "text-align", getPropertyString( "textAlign" ) );
 
