@@ -314,7 +314,7 @@ var LayoutBootstrapPanelModel = BaseModel.extend({}, {
     };
 
     _stub.properties.push(PropertiesManager.getProperty("name"));
-    _stub.properties.push(PropertiesManager.getProperty("height"));
+    _stub.properties.push(PropertiesManager.getProperty("layoutHeight"));
     _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
     _stub.properties.push(PropertiesManager.getProperty("bootstrapPanelStyle"));
@@ -427,7 +427,7 @@ var LayoutRowModel = BaseModel.extend({}, {
     };
 
     _stub.properties.push(PropertiesManager.getProperty("name"));
-    _stub.properties.push(PropertiesManager.getProperty("height"));
+    _stub.properties.push(PropertiesManager.getProperty("layoutHeight"));
     _stub.properties.push(PropertiesManager.getProperty("backgroundColor"));
     _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
@@ -461,7 +461,7 @@ var LayoutColumnModel = BaseModel.extend({}, {
     _stub.properties.push(PropertiesManager.getProperty("columnBigBorder"));
     _stub.properties.push(PropertiesManager.getProperty("backgroundColor"));
     _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
-    _stub.properties.push(PropertiesManager.getProperty("height"));
+    _stub.properties.push(PropertiesManager.getProperty("layoutHeight"));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
     _stub.properties.push(PropertiesManager.getProperty("textAlign"));
 
@@ -491,7 +491,7 @@ var LayoutBootstrapColumnModel = BaseModel.extend({}, {
     _stub.properties.push(PropertiesManager.getProperty("bootstrapCssClass"));
     _stub.properties.push(PropertiesManager.getProperty("backgroundColor"));
     _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
-    _stub.properties.push(PropertiesManager.getProperty("height"));
+    _stub.properties.push(PropertiesManager.getProperty("layoutHeight"));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
     _stub.properties.push(PropertiesManager.getProperty("textAlign"));
 
@@ -513,7 +513,7 @@ var LayoutSpaceModel = BaseModel.extend({}, {
       properties: []
     };
 
-    _stub.properties.push(PropertiesManager.getProperty("height"));
+    _stub.properties.push(PropertiesManager.getProperty("layoutHeight"));
     _stub.properties.push(PropertiesManager.getProperty("backgroundColor"));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
 
