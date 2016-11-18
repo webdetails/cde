@@ -62,6 +62,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   private static CdfRunJsDashboardWriteOptions options;
   private static ResourceMap resources;
 
+  private static final String NEWLINE = System.getProperty( "line.separator" );
+
   @Before
   public void setUp() throws Exception {
     dash = Mockito.mock( Dashboard.class );
@@ -564,9 +566,9 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrcPath2" ) );
     assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrc3" ) );
 
-    assertEquals( "requireCfg['paths']['cde/resources/jsFileRsrc4'] = 'http://dummy/jsFileRsrcPath4';\n"
-      + "requireCfg['paths']['cde/resources/1234'] = 'http://dummy/jsFileRsrcPath5';\n"
-      + "requireCfg['paths']['cde/resources/cssFileRsrc3'] = 'http://dummy/cssFileRsrcPath3';\n"
+    assertEquals( "requireCfg['paths']['cde/resources/jsFileRsrc4'] = 'http://dummy/jsFileRsrcPath4';"  + NEWLINE
+      + "requireCfg['paths']['cde/resources/1234'] = 'http://dummy/jsFileRsrcPath5';" + NEWLINE
+      + "requireCfg['paths']['cde/resources/cssFileRsrc3'] = 'http://dummy/cssFileRsrcPath3';" + NEWLINE
       + "require.config(requireCfg);", out.toString().trim() );
 
     Map<String, String> expectedResourceModules = new LinkedHashMap<String, String>();
