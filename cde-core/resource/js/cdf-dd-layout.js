@@ -235,7 +235,13 @@ var LayoutPanel = Panel.extend({
 
   MAIN_PANEL: "layout_panel",
   TREE: "cdfdd-layout-tree",
-  PROPERTIES: "cdfdd-layout-properties"
+  PROPERTIES: "cdfdd-layout-properties",
+  _resetDefaultValue: function(obj) {
+    if(obj.value != null) {
+      obj.value = "";
+    }
+    return obj;
+  }
 });
 
 /*
@@ -314,7 +320,7 @@ var LayoutBootstrapPanelModel = BaseModel.extend({}, {
     };
 
     _stub.properties.push(PropertiesManager.getProperty("name"));
-    _stub.properties.push(PropertiesManager.getProperty("height"));
+    _stub.properties.push(LayoutPanel._resetDefaultValue(PropertiesManager.getProperty("height")));
     _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
     _stub.properties.push(PropertiesManager.getProperty("bootstrapPanelStyle"));
@@ -427,7 +433,7 @@ var LayoutRowModel = BaseModel.extend({}, {
     };
 
     _stub.properties.push(PropertiesManager.getProperty("name"));
-    _stub.properties.push(PropertiesManager.getProperty("height"));
+    _stub.properties.push(LayoutPanel._resetDefaultValue(PropertiesManager.getProperty("height")));
     _stub.properties.push(PropertiesManager.getProperty("backgroundColor"));
     _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
@@ -461,7 +467,7 @@ var LayoutColumnModel = BaseModel.extend({}, {
     _stub.properties.push(PropertiesManager.getProperty("columnBigBorder"));
     _stub.properties.push(PropertiesManager.getProperty("backgroundColor"));
     _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
-    _stub.properties.push(PropertiesManager.getProperty("height"));
+    _stub.properties.push(LayoutPanel._resetDefaultValue(PropertiesManager.getProperty("height")));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
     _stub.properties.push(PropertiesManager.getProperty("textAlign"));
 
@@ -491,7 +497,7 @@ var LayoutBootstrapColumnModel = BaseModel.extend({}, {
     _stub.properties.push(PropertiesManager.getProperty("bootstrapCssClass"));
     _stub.properties.push(PropertiesManager.getProperty("backgroundColor"));
     _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
-    _stub.properties.push(PropertiesManager.getProperty("height"));
+    _stub.properties.push(LayoutPanel._resetDefaultValue(PropertiesManager.getProperty("height")));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
     _stub.properties.push(PropertiesManager.getProperty("textAlign"));
 
@@ -513,7 +519,7 @@ var LayoutSpaceModel = BaseModel.extend({}, {
       properties: []
     };
 
-    _stub.properties.push(PropertiesManager.getProperty("height"));
+    _stub.properties.push(LayoutPanel._resetDefaultValue(PropertiesManager.getProperty("height")));
     _stub.properties.push(PropertiesManager.getProperty("backgroundColor"));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
 
