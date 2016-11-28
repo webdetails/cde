@@ -38,4 +38,9 @@
   </file-picker>
 
   <new-toolbar-button>1,New CDE Dashboard,CDE Dashboard,api/repos/wcdf/new</new-toolbar-button>
+
+  <!--
+    To allow Cross-Origin Resource Sharing please uncomment the following line
+   -->
+  <!--allow-cross-domain-resources>true</allow-cross-domain-resources-->
 </settings>
