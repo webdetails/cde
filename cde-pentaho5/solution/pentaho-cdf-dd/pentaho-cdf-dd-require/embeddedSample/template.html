@@ -9,6 +9,11 @@
     <p> Loads CDE require configs from a server and creates a new dashboard with a Select Component, including a loaded CDE Dashboard. </p>
     <p> This will make it possible for any server and/or 3rd party applications to embed CDE Dashboards, from a Pentaho Server.</p>
 
+    <b>Note:</b>
+    <p> To properly allow the embedded scenario, which probably requires Cross-Origin Resource Sharing </p>
+    <p> there is one extra setting that needs to be turned on in the settings.xml of CDE:</p>
+    <pre>&lt;allow-cross-domain-resources&gt;true&lt;/allow-cross-domain-resources&gt;</pre>
+
     <h3>Configurations</h3>
 
     <dl class="documentation">
