@@ -17,6 +17,7 @@
       <Property>componentName</Property>
       <Property name="parameters">xActionArrayParameter</Property>
       <Property>outputType</Property>
+      <Property>exportPage</Property>
       <!--Property>csvFieldSeparator</Property-->
       <!--Property>filename</Property-->
       <Property>preExecution</Property>
@@ -87,6 +88,20 @@
             <OutputType>String</OutputType>
             <Order>51</Order>
             <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>exportPage</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>true</DefaultValue>
+            <Description>Export Page</Description>
+            <Tooltip>Export single page, only relevant for server side paginated components</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>51</Order>
+            <Advanced>false</Advanced>
             <Version>1.0</Version>
           </Header>
         </DesignerProperty>
