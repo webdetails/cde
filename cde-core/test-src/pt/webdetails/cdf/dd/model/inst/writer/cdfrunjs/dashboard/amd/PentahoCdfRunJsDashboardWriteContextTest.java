@@ -145,9 +145,6 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     Assert.assertEquals( "${res:script.js} replacement failed", jsResourceExpected, jsResourceReplaced );
   }
 
-  /**
-   * see http://jira.pentaho.com/browse/CDE-841
-   */
   @Test
   public void testImgPaths() {
     //setup context
@@ -177,8 +174,8 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
       indent, bypassCacheRead, getDashboard( dashboardPath, false ), options );
 
     timestamp = String.valueOf( context.getWriteDate().getTime() );
-    String absolutePath = scheme + "://" + hostPort +
-      RepositoryHelper.joinPaths( cdePluginUrl, getResources, ROOT, TEST_FOLDER, image );
+    String absolutePath = scheme + "://" + hostPort
+      + RepositoryHelper.joinPaths( cdePluginUrl, getResources, ROOT, TEST_FOLDER, image );
     String jsResourceAbsoluteExpected = absolutePath + "?v=" + timestamp;
     jsResourceReplaced = context.replaceTokens( img );
     Assert.assertEquals( failureMessage, jsResourceAbsoluteExpected, jsResourceReplaced );

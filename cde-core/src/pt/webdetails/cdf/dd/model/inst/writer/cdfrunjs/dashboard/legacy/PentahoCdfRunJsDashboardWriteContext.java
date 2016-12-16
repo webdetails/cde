@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,8 +13,6 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy;
 
-import org.apache.commons.lang.StringUtils;
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
@@ -59,13 +57,5 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
       .replaceAll( ABS_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/"
         + getPluginId( path ) + "$1" + "?v=" + timestamp )
       .replaceAll( REL_SYS_RES_TAG, root + RESOURCE_API_GET + path + "$1" + "?v=" + timestamp );
-  }
-
-  protected String getRoot() {
-    return this._options.isAbsolute()
-      ? ( !StringUtils.isEmpty( this._options.getAbsRoot() )
-        ? ( this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
-        : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
-      : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
   }
 }

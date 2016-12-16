@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -19,6 +19,7 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 
 public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWriteContext {
+  private static final String RESOURCE_API_GET = "api/resources";
 
   public PentahoCdfRunJsDashboardWriteContext( IThingWriterFactory factory,
                                                String indent, boolean bypassCacheRead, Dashboard dash,
@@ -33,14 +34,16 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
 
   @Override
   public String replaceTokens( String content ) {
+    final long timestamp = this._writeDate.getTime();
     final String path = this._dash.getSourcePath().replaceAll( "(.+/).*", "$1" );
+    final String root = getRoot();
 
     return content
       // replace the dashboard path token
       .replaceAll( DASHBOARD_PATH_TAG, path.replaceAll( "(^/.*/$)", "$1" ) )
       // build the image links
-      .replaceAll( ABS_IMG_TAG, "$1" )
-      .replaceAll( REL_IMG_TAG, path + "$1" )
+      .replaceAll( ABS_IMG_TAG, root + RESOURCE_API_GET + "$1" + "?v=" + timestamp )
+      .replaceAll( REL_IMG_TAG, root + RESOURCE_API_GET + path + "$1" + "?v=" + timestamp )
       // build the directory links
       .replaceAll( ABS_DIR_RES_TAG, "$2" )
       .replaceAll( REL_DIR_RES_TAG, path + "$2" )
