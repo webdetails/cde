@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,6 +13,7 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
+import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
@@ -23,6 +24,15 @@ public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRu
     String indent, boolean bypassCacheRead, Dashboard dash,
     CdfRunJsDashboardWriteOptions options ) {
     super( factory, indent, bypassCacheRead, dash, options );
+  }
+
+  @Override
+  protected String getRoot() {
+    return this._options.isAbsolute() ?
+      ( !StringUtils.isEmpty( this._options.getAbsRoot() ) ?
+        ( this._options.getSchemedRoot() + "/pentaho/plugin/pentaho-cdf-dd/" )
+        : "/pentaho/plugin/pentaho-cdf-dd/")
+      : "/pentaho/plugin/pentaho-cdf-dd/";
   }
 
   @Override

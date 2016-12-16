@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -143,10 +143,56 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
 
     jsResourceReplaced = context.replaceTokens( jsResource );
     Assert.assertEquals( "${res:script.js} replacement failed", jsResourceExpected, jsResourceReplaced );
-
-
   }
 
+  /**
+   * see http://jira.pentaho.com/browse/CDE-841
+   */
+  @Test
+  public void testImgPaths() {
+    //setup context
+    String dashboardPath = RepositoryHelper.joinPaths( ROOT, TEST_FOLDER, DASHBOARD ).substring( 1 );
+    options = new CdfRunJsDashboardWriteOptions( false, false, "", "" );
+    context = new PentahoCdfRunJsDashboardWriteContextForTesting( factory,
+      indent, bypassCacheRead, getDashboard( dashboardPath, false ), options );
+
+    String image = "image.jpg";
+    String img = "${img:" + image + "}";
+    String cdePluginUrl = "pentaho/plugin/pentaho-cdf-dd";
+    String getResources = "api/resources";
+
+    String failureMessage = "${img:" + image + "} replacement failed";
+
+    String timestamp = String.valueOf( context.getWriteDate().getTime() );
+    String jsResourceExpected = RepositoryHelper.joinPaths(
+      cdePluginUrl, getResources, ROOT, TEST_FOLDER, image + "?v=" + timestamp );
+
+    String jsResourceReplaced = context.replaceTokens( img );
+    Assert.assertEquals( failureMessage, jsResourceExpected, jsResourceReplaced );
+
+    String hostPort = "localhost:8080";
+    String scheme = "http";
+    options = new CdfRunJsDashboardWriteOptions( true, false, hostPort, scheme );
+    context = new PentahoCdfRunJsDashboardWriteContextForTesting( factory,
+      indent, bypassCacheRead, getDashboard( dashboardPath, false ), options );
+
+    timestamp = String.valueOf( context.getWriteDate().getTime() );
+    String absolutePath = scheme + "://" + hostPort +
+      RepositoryHelper.joinPaths( cdePluginUrl, getResources, ROOT, TEST_FOLDER, image );
+    String jsResourceAbsoluteExpected = absolutePath + "?v=" + timestamp;
+    jsResourceReplaced = context.replaceTokens( img );
+    Assert.assertEquals( failureMessage, jsResourceAbsoluteExpected, jsResourceReplaced );
+
+    options = new CdfRunJsDashboardWriteOptions( false, false, hostPort, scheme );
+    context = new PentahoCdfRunJsDashboardWriteContextForTesting( factory,
+      indent, bypassCacheRead, getDashboard( dashboardPath, false ), options );
+
+    timestamp = String.valueOf( context.getWriteDate().getTime() );
+    jsResourceExpected = RepositoryHelper.joinPaths(
+      cdePluginUrl, getResources, ROOT, TEST_FOLDER, image + "?v=" + timestamp );
+    jsResourceReplaced = context.replaceTokens( img );
+    Assert.assertEquals( failureMessage, jsResourceExpected, jsResourceReplaced );
+  }
 
   private static Dashboard getDashboard( String path, boolean isSystem ) {
     Document wcdfDoc = null;
