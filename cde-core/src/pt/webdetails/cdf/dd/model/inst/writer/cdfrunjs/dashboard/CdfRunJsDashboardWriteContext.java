@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -50,6 +50,9 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
   protected static final String LONG_P_TAG = "\\$\\{parameter:(.+?)\\}";
 
   // ------------
+
+  // Endpoints
+  protected static final String RESOURCE_API_GET = "api/resources";
 
   protected boolean _isFirstInList = true;
   protected final Date _writeDate;
@@ -190,5 +193,11 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
     } else {
       return "";
     }
+  }
+
+  protected String getRoot() {
+    return ( this._options.isAbsolute() && !StringUtils.isEmpty( this._options.getAbsRoot() ) )
+      ? ( this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
+      : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
   }
 }
