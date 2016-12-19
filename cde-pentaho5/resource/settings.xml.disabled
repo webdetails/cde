@@ -37,9 +37,13 @@
     </hidden-folders>
   </file-picker>
 
+  <!--new-toolbar-button>1,New CDE Dashboard,CDE Dashboard,api/repos/wcdf/new</new-toolbar-button-->
 
-<!--
-  <new-toolbar-button>1,New CDE Dashboard,CDE Dashboard,api/repos/wcdf/new</new-toolbar-button>
--->  
+  <!--
+      allow-cross-domain-resources: Flag indicating cross-origin resource sharing
+
+      accepted values are: true | false
+   -->
+  <allow-cross-domain-resources>false</allow-cross-domain-resources>
 
 </settings>
