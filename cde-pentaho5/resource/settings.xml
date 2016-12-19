@@ -40,7 +40,9 @@
   <new-toolbar-button>1,New CDE Dashboard,CDE Dashboard,api/repos/wcdf/new</new-toolbar-button>
 
   <!--
-    To allow Cross-Origin Resource Sharing please uncomment the following line
+      allow-cross-domain-resources: Flag indicating cross-origin resource sharing
+
+      accepted values are: true | false
    -->
-  <!--allow-cross-domain-resources>true</allow-cross-domain-resources-->
+  <allow-cross-domain-resources>false</allow-cross-domain-resources>
 </settings>
