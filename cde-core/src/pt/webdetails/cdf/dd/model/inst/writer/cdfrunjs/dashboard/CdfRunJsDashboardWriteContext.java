@@ -51,6 +51,9 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
 
   // ------------
 
+  // Endpoints
+  protected static final String RESOURCE_API_GET = "api/resources";
+
   protected boolean _isFirstInList = true;
   protected final Date _writeDate;
   protected final String _indent;
@@ -193,10 +196,8 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
   }
 
   protected String getRoot() {
-    return this._options.isAbsolute()
-      ? ( !StringUtils.isEmpty( this._options.getAbsRoot() )
+    return ( this._options.isAbsolute() && !StringUtils.isEmpty( this._options.getAbsRoot() ) )
       ? ( this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
-      : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
       : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
   }
 }

@@ -19,8 +19,6 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 
 public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWriteContext {
-  private static final String RESOURCE_API_GET = "api/resources";
-  private static final String SYS_RESOURCE_API_GET = "/pentaho/api/repos";
 
   public PentahoCdfRunJsDashboardWriteContext( IThingWriterFactory factory,
                                                String indent, boolean bypassCacheRead, Dashboard dash,
