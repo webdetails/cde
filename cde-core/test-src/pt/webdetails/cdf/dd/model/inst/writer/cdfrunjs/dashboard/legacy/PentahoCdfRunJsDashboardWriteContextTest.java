@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -103,24 +103,28 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
   @Test
   public void testReplaceTokensForSystemDashboard() {
     //setup context
-    String dashboardPath =
-      RepositoryHelper.joinPaths( ROOT, SYSTEM, TEST_PLUGIN, TEST_FOLDER, DASHBOARD ).substring( 1 );
+    final String dashboardPath =
+        RepositoryHelper.joinPaths( ROOT, SYSTEM, TEST_PLUGIN, TEST_FOLDER, DASHBOARD ).substring( 1 );
     context = new PentahoCdfRunJsDashboardWriteContextForTesting( factory,
-      indent, bypassCacheRead, getDashboard( dashboardPath, true ), options );
+        indent, bypassCacheRead, getDashboard( dashboardPath, true ), options );
 
-    String systemRelativeResource = "${system:script.js}";
-    String systemAbsoluteResource = "${system:/test/script.js}";
+    final String filePath = "pentaho-cdf-dd/css/master.css";
 
-    String systemResourceExpected = CDE_PLUGIN_URL +
-      RepositoryHelper.joinPaths( GET_RESOURCES, SYSTEM, TEST_PLUGIN, TEST_FOLDER, "script.js" ).substring( 1 );
+    String systemRelativeResource = "${system:" + filePath + "}";
+    String systemAbsoluteResource = "${system:/" + filePath + "}";
 
-    String systemAbsoluteResourceReplaced = removeParams( context.replaceTokens( systemAbsoluteResource ) );
-    String systemRelativeResourceReplaced = removeParams( context.replaceTokens( systemRelativeResource ) );
+    final String systemResourceExpected =
+        "/pentaho/plugin/pentaho-cdf-dd/api/resources/system/" + filePath;
 
-    Assert
-      .assertEquals( "${system:script.js} replacement failed", systemResourceExpected, systemAbsoluteResourceReplaced );
-    Assert.assertEquals( "${system:/test/script.js} replacement failed", systemResourceExpected,
-      systemRelativeResourceReplaced );
+    Assert.assertEquals(
+        "absolute ${system:} replacement failed",
+        systemResourceExpected,
+        context.replaceTokens( systemAbsoluteResource ) );
+    Assert.assertEquals(
+        "relative ${system:} replacement failed",
+        systemResourceExpected,
+        context.replaceTokens( systemRelativeResource )
+    );
   }
 
   @Test
