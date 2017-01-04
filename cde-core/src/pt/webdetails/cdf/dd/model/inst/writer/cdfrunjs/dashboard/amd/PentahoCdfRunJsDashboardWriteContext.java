@@ -51,8 +51,8 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
       .replaceAll( REL_RES_TAG, path + "$2" )
       //build the system resource links
       .replaceAll( ABS_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir()
-          + getPluginId( path ) + "$1" )
+        + getPluginId( path ) + "$1" )
       .replaceAll( REL_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/"
-          + getPluginId( path ) + "$1" );
+        + getPluginId( path ) + "$1" );
   }
 }

@@ -28,10 +28,8 @@ public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRu
 
   @Override
   protected String getRoot() {
-    return this._options.isAbsolute() ?
-      ( !StringUtils.isEmpty( this._options.getAbsRoot() ) ?
-        ( this._options.getSchemedRoot() + "/pentaho/plugin/pentaho-cdf-dd/" )
-        : "/pentaho/plugin/pentaho-cdf-dd/")
+    return ( this._options.isAbsolute() && !StringUtils.isEmpty( this._options.getAbsRoot() ) )
+      ? ( this._options.getSchemedRoot() + "/pentaho/plugin/pentaho-cdf-dd/" )
       : "/pentaho/plugin/pentaho-cdf-dd/";
   }
 
@@ -41,7 +39,7 @@ public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRu
   }
 
   @Override
-  protected String getPluginId(String path) {
+  protected String getPluginId( String path ) {
     return "";
   }
 }

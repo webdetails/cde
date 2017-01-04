@@ -70,15 +70,15 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String solutionAbsoluteResource = "${solution:script.js}";
     String solutionRelativeResource = "${solution:/test-resources/script.js}";
 
-    String jsResourceExpected = CDE_PLUGIN_URL +
-      RepositoryHelper.joinPaths( GET_RESOURCES, ROOT, TEST_FOLDER, "script.js" ).substring( 1 );
+    String jsResourceExpected = CDE_PLUGIN_URL
+      + RepositoryHelper.joinPaths( GET_RESOURCES, ROOT, TEST_FOLDER, "script.js" ).substring( 1 );
     String cssResourceExpected =
       CDE_PLUGIN_URL + RepositoryHelper.joinPaths( GET_RESOURCES, ROOT, TEST_FOLDER, "style.css" ).substring(
         1 );
     String absoluteExpected =
       CDE_PLUGIN_URL + RepositoryHelper.joinPaths( GET_RESOURCES, ROOT, "style.css" ).substring( 1 );
-    String solutionAbsoluteResourceExpected = CDE_PLUGIN_URL +
-      RepositoryHelper.joinPaths( GET_RESOURCES, ROOT, TEST_FOLDER, "script.js" ).substring(
+    String solutionAbsoluteResourceExpected = CDE_PLUGIN_URL
+      + RepositoryHelper.joinPaths( GET_RESOURCES, ROOT, TEST_FOLDER, "script.js" ).substring(
         1 );
     String solutionRelativeResourceExpected =
       CDE_PLUGIN_URL + RepositoryHelper.joinPaths( GET_RESOURCES, ROOT, "script.js" ).substring(
@@ -139,10 +139,10 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
 
     String jsResource = "${res:script.js}";
 
-    String jsResourceExpected = CDE_PLUGIN_URL +
-      RepositoryHelper.joinPaths( GET_RESOURCES, ROOT, TEST_FOLDER, "script.js" ).substring( 1 );
-    String jsResourceAbsoluteExpected = "http://localhost:8080/pentaho/plugin/pentaho-cdf-dd" +
-      RepositoryHelper.joinPaths( GET_RESOURCES, ROOT, TEST_FOLDER, "script.js" );
+    String jsResourceExpected = CDE_PLUGIN_URL
+      + RepositoryHelper.joinPaths( GET_RESOURCES, ROOT, TEST_FOLDER, "script.js" ).substring( 1 );
+    String jsResourceAbsoluteExpected = "http://localhost:8080/pentaho/plugin/pentaho-cdf-dd"
+      + RepositoryHelper.joinPaths( GET_RESOURCES, ROOT, TEST_FOLDER, "script.js" );
 
     jsResourceReplaced = removeParams( context.replaceTokens( jsResource ) );
     Assert.assertEquals( "${res:script.js} replacement failed", jsResourceExpected, jsResourceReplaced );
