@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -52,8 +52,9 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
       .replaceAll( ABS_RES_TAG, root + RESOURCE_API_GET + "$2" + "?v=" + timestamp )
       .replaceAll( REL_RES_TAG, root + RESOURCE_API_GET + path + "$2" + "?v=" + timestamp )
       // build the system resource links, with a timestamp for caching purposes
-      .replaceAll( ABS_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/"
-        + getPluginId( path ) + "$1" + "?v=" + timestamp )
-      .replaceAll( REL_SYS_RES_TAG, root + RESOURCE_API_GET + path + "$1" + "?v=" + timestamp );
+      .replaceAll( ABS_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir()
+        + getPluginId( path ) + "$1" )
+      .replaceAll( REL_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/"
+        + getPluginId( path ) + "$1" );
   }
 }

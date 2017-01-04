@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -28,10 +28,8 @@ public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRu
 
   @Override
   protected String getRoot() {
-    return this._options.isAbsolute() ?
-      ( !StringUtils.isEmpty( this._options.getAbsRoot() ) ?
-        ( this._options.getSchemedRoot() + "/pentaho/plugin/pentaho-cdf-dd/" )
-        : "/pentaho/plugin/pentaho-cdf-dd/")
+    return ( this._options.isAbsolute() && !StringUtils.isEmpty( this._options.getAbsRoot() ) )
+      ? ( this._options.getSchemedRoot() + "/pentaho/plugin/pentaho-cdf-dd/" )
       : "/pentaho/plugin/pentaho-cdf-dd/";
   }
 
@@ -41,7 +39,7 @@ public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRu
   }
 
   @Override
-  protected String getPluginId(String path) {
-    return "test-plugin";
+  protected String getPluginId( String path ) {
+    return "";
   }
 }
