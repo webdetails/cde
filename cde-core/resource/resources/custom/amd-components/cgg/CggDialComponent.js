@@ -15,6 +15,7 @@ define(['./CggComponent'], function(CggComponent) {
 
   return CggComponent.extend({
     script: "system/pentaho-cdf-dd/resources/custom/amd-components/cgg/charts/dial.js",
+    priority: 6,
     
     getScriptUrl: function() {
       return this.script;

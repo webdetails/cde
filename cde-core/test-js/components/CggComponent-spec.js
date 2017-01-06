@@ -66,8 +66,23 @@ define([
         $htmlObject.remove();
         done();
       });
-      
+
       dashboard.update(cggComponent);
+    });
+
+    /**
+     * ## The Cgg Component # check if preExec is called
+     */
+    it("check if preExec is called", function() {
+      spyOn(cggComponent, 'update').and.callThrough();
+      spyOn(cggComponent, 'preExec');
+      spyOn(cggComponent, "triggerAjax");
+      spyOn(cggComponent, "synchronous");
+      cggComponent.update();
+
+      expect(cggComponent.preExec).toHaveBeenCalled();
+      expect(cggComponent.triggerAjax).not.toHaveBeenCalled();
+      expect(cggComponent.synchronous).not.toHaveBeenCalled();
     });
   });
 });
