@@ -49,6 +49,8 @@ define([
      * ## The Cgg Dial Component # allows a dashboard to execute update
      */
     it("allows a dashboard to execute update", function(done) {
+      expect(cggDialComponent.priority).toBe(6);
+
       $('body').append($htmlObject);
 
       spyOn(cggDialComponent, 'update').and.callThrough();

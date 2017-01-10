@@ -39,6 +39,9 @@ define([
     update: function() {
       this.detectSvg();
       this.clear();
+      if(!this.preExec()) {
+        return;
+      }
 	  
       var url    = CggComponentExt.getCggDrawUrl(),
           data   = this.processParams(),

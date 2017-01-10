@@ -20,6 +20,10 @@ var CggComponent = UnmanagedComponent.extend({
   update: function() {
     this.detectSvg();
     this.clear();
+    // get actual parameters
+    if(!this.preExec()) {
+      return;
+    }
     var url    = wd.helpers.cggHelper.getCggDrawUrl(),
         data   = this.processParams(),
         script = this.getScriptUrl(),
@@ -117,6 +121,7 @@ var CggComponent = UnmanagedComponent.extend({
 
 var CggDialComponent = CggComponent.extend({
   script: "system/pentaho-cdf-dd/resources/custom/components/cgg/charts/dial.js",
+  priority: 6,
   
   getScriptUrl: function() {
     return this.script;
