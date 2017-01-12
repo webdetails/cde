@@ -6,7 +6,7 @@
     <Description>Template Component</Description>
     <Category>STANDARDCOMPONENTS</Category>
     <CatDescription>Standard Components</CatDescription>
-	<Order>360</Order>
+  <Order>360</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

@@ -5,16 +5,16 @@
         <Name>Olap Parameter</Name>
         <IName>OlapParameter</IName>
         <Description>OLAP parameter</Description>
-		<Category>PARAMETERS</Category>
-		<CatDescription>Parameters</CatDescription>
-		<Order>120</Order>
+        <Category>PARAMETERS</Category>
+        <CatDescription>Parameters</CatDescription>
+        <Order>120</Order>
         <Visible>false</Visible>
     </Header>
     <Contents>
-		<Model>
-			<Property>propertyValue</Property>
-			<Property>bookmarkable</Property>
-			<Property>parameterViewRole</Property>
-		</Model>
-	</Contents>
+        <Model>
+            <Property>propertyValue</Property>
+            <Property>bookmarkable</Property>
+            <Property>parameterViewRole</Property>
+        </Model>
+    </Contents>
 </DesignerComponent>

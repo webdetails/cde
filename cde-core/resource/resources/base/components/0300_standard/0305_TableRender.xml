@@ -5,7 +5,7 @@
     <Description>table Component</Description>
     <Category>STANDARDCOMPONENTS</Category>
     <CatDescription>Standard Components</CatDescription>
-	<Order>305</Order>
+  <Order>305</Order>
     <Type>PalleteEntry</Type>
   </Header>
   <Contents>

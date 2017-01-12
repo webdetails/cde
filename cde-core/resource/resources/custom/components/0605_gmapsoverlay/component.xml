@@ -6,7 +6,7 @@
     <Description>Google Maps Overlay Component (By Kleyson Rios)</Description>
     <Category>COMMUNITYCOMPONENTS</Category>
     <CatDescription>Community Contributions</CatDescription>
-	<Order>605</Order>
+    <Order>605</Order>
     <Type>PalleteEntry</Type>
     <Version>2.0</Version>
   </Header>

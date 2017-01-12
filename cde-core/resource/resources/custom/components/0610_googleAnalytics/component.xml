@@ -6,7 +6,7 @@
     <Description>Google Analytics (By Sinn Tecnologia -  rodrigo@sinn.com.br)</Description>
     <Category>COMMUNITYCOMPONENTS</Category>
     <CatDescription>Community Contributions</CatDescription>
-	<Order>610</Order>
+    <Order>610</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

@@ -5,7 +5,7 @@
     <Description>Date range input Component</Description>
     <Category>SELECTORS</Category>
     <CatDescription>Selects</CatDescription>
-	<Order>210</Order>
+  <Order>210</Order>
     <Type>PalleteEntry</Type>
   </Header>
   <Contents>

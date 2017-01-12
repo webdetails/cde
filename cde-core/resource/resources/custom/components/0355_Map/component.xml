@@ -5,8 +5,8 @@
     <IName>NewMapComponent</IName>
     <Description>Map Component</Description>
     <Category>STANDARDCOMPONENTS</Category>
-	<CatDescription>Standard Components</CatDescription>
-	<Order>355</Order>
+    <CatDescription>Standard Components</CatDescription>
+    <Order>355</Order>
     <Type>PalleteEntry</Type>
     <Version>2.0</Version>
   </Header>

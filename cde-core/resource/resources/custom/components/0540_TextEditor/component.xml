@@ -6,7 +6,7 @@
     <Description>Text Editor</Description>
     <Category>OTHERCOMPONENTS</Category>
     <CatDescription>Others</CatDescription>
-	<Order>540</Order>
+    <Order>540</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

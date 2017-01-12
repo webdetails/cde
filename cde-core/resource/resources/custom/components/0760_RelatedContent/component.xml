@@ -5,8 +5,8 @@
     <IName>relatedContent</IName>
     <Description>Related Content Component</Description>
     <Category>LEGACY</Category>
-	<CatDescription>Legacy</CatDescription>
-	<Order>760</Order>
+    <CatDescription>Legacy</CatDescription>
+    <Order>760</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

@@ -5,7 +5,7 @@
     <Description>Analyzer Component</Description>
     <Category>OTHERCOMPONENTS</Category>
     <CatDescription>Others</CatDescription>
-	<Order>505</Order>
+    <Order>505</Order>
     <Type>PalleteEntry</Type>
   </Header>
   <Contents>

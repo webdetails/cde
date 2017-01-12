@@ -6,8 +6,8 @@
       <IName>versionCheck</IName>
       <Description>Version Checker</Description>
       <Category>LEGACY</Category>
-	  <CatDescription>Legacy</CatDescription>
-	  <Order>775</Order>
+    <CatDescription>Legacy</CatDescription>
+    <Order>775</Order>
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
@@ -50,8 +50,8 @@
       <IName>currentVersion</IName>
       <Description>Get Current Plugin Version</Description>
       <Category>LEGACY</Category>
-	  <CatDescription>Legacy</CatDescription>
-	  <Order>715</Order>
+    <CatDescription>Legacy</CatDescription>
+    <Order>715</Order>
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>

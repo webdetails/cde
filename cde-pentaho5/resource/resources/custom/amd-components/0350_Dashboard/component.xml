@@ -5,8 +5,8 @@
     <IName>DashboardComponent</IName>
     <Description>Dashboard Component</Description>
     <Category>STANDARDCOMPONENTS</Category>
-	<CatDescription>Standard Components</CatDescription>
-	<Order>350</Order>
+    <CatDescription>Standard Components</CatDescription>
+    <Order>350</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

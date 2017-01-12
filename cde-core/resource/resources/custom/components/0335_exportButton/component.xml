@@ -6,7 +6,7 @@
     <Description>Export Button Component</Description>
     <Category>STANDARDCOMPONENTS</Category>
     <CatDescription>Standard Components</CatDescription>
-	 <Order>335</Order>
+    <Order>335</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

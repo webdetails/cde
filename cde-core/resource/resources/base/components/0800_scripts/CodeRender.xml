@@ -7,7 +7,7 @@
         <Description>JavaScript function</Description>
         <Category>SCRIPT</Category>
         <CatDescription>Scripts</CatDescription>
-		<Order>805</Order>
+        <Order>805</Order>
         <Type>PalleteEntry</Type>
     </Header>
     <Contents>

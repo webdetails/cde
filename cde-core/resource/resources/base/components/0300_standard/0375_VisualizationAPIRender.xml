@@ -4,8 +4,8 @@
     <IName>visualizationAPI</IName>
     <Description>Visualization API Component</Description>
     <Category>STANDARDCOMPONENTS</Category>
-	<CatDescription>Standard Components</CatDescription>
-	<Order>375</Order>
+  <CatDescription>Standard Components</CatDescription>
+  <Order>375</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

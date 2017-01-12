@@ -6,7 +6,7 @@
     <Description>Filter Component</Description>
     <Category>SELECTORS</Category>
     <CatDescription>Selects</CatDescription>
-	<Order>205</Order>
+  <Order>205</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

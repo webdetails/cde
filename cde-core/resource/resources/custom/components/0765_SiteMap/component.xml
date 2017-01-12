@@ -5,8 +5,8 @@
     <IName>siteMap</IName>
     <Description>Site Map links</Description>
     <Category>LEGACY</Category>
-	<CatDescription>Legacy</CatDescription>
-	<Order>765</Order>
+    <CatDescription>Legacy</CatDescription>
+    <Order>765</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

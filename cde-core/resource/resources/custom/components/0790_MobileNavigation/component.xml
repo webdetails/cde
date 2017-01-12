@@ -5,8 +5,8 @@
     <IName>mobileNav</IName>
     <Description>Mobile Navigation Component</Description>
     <Category>LEGACY</Category>
-	<CatDescription>Legacy</CatDescription>
-	<Order>790</Order>
+    <CatDescription>Legacy</CatDescription>
+    <Order>790</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

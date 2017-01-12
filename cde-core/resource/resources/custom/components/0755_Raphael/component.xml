@@ -5,8 +5,8 @@
     <IName>raphaelComponent</IName>
     <Description>Raphael Component</Description>
     <Category>LEGACY</Category>
-	<CatDescription>Legacy</CatDescription>
-	<Order>755</Order>
+    <CatDescription>Legacy</CatDescription>
+    <Order>755</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

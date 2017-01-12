@@ -6,7 +6,7 @@
     <Description>New Selector Component</Description>
     <Category>OTHERCOMPONENTS</Category>
     <CatDescription>Others</CatDescription>
-	<Order>545</Order>
+    <Order>545</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

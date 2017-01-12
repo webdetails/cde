@@ -5,8 +5,8 @@
     <IName>AjaxRequestComponent</IName>
     <Description>AjaxRequestComponent</Description>
     <Category>LEGACY</Category>
-	<CatDescription>Legacy</CatDescription>
-	<Order>705</Order>
+    <CatDescription>Legacy</CatDescription>
+    <Order>705</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

@@ -4,8 +4,8 @@
         <IName>buttonComponent</IName>
         <Description>Button Component</Description>
         <Category>STANDARDCOMPONENTS</Category>
-		<CatDescription>Standard Components</CatDescription>
-		<Order>315</Order>
+        <CatDescription>Standard Components</CatDescription>
+        <Order>315</Order>
         <Type>PalleteEntry</Type>
         <Version>1.0</Version>
     </Header>
@@ -32,30 +32,30 @@
             <CustomProperties>
                 <DesignerProperty>
                     <Header>
-	                <Name>successCallback</Name>
-	                <Parent>BaseProperty</Parent>
-	                <DefaultValue></DefaultValue>
-	                <Description>Success Callback</Description>
-	                <Tooltip>Javascript expression to be evaluated if the call to the endpoint is successful.</Tooltip>
-	                <InputType>JavaScript</InputType>
-	                <OutputType>Function</OutputType>
+                    <Name>successCallback</Name>
+                    <Parent>BaseProperty</Parent>
+                    <DefaultValue></DefaultValue>
+                    <Description>Success Callback</Description>
+                    <Tooltip>Javascript expression to be evaluated if the call to the endpoint is successful.</Tooltip>
+                    <InputType>JavaScript</InputType>
+                    <OutputType>Function</OutputType>
                         <Advanced>true</Advanced>
-	                <Order>40</Order>
-	                <Version>1.0</Version>
+                    <Order>40</Order>
+                    <Version>1.0</Version>
                     </Header>
                 </DesignerProperty>
                 <DesignerProperty>
                     <Header>
-	                <Name>failureCallback</Name>
-	                <Parent>BaseProperty</Parent>
-	                <DefaultValue></DefaultValue>
-	                <Description>Failure Callback</Description>
-	                <Tooltip>Javascript expression to be evaluated  if the call to the endpoint fails or returns an error.</Tooltip>
-	                <InputType>JavaScript</InputType>
-	                <OutputType>Function</OutputType>
+                    <Name>failureCallback</Name>
+                    <Parent>BaseProperty</Parent>
+                    <DefaultValue></DefaultValue>
+                    <Description>Failure Callback</Description>
+                    <Tooltip>Javascript expression to be evaluated  if the call to the endpoint fails or returns an error.</Tooltip>
+                    <InputType>JavaScript</InputType>
+                    <OutputType>Function</OutputType>
                         <Advanced>true</Advanced>
-	                <Order>40</Order>
-	                <Version>1.0</Version>
+                    <Order>40</Order>
+                    <Version>1.0</Version>
                     </Header>
                 </DesignerProperty>
                 <DesignerProperty>
@@ -73,16 +73,16 @@
                 </DesignerProperty>
                 <DesignerProperty>
                     <Header>
-	                <Name>actionParameters</Name>
-	                <Parent>BaseProperty</Parent>
-	                <DefaultValue>"[]"</DefaultValue>
-	                <Description>Action Parameters</Description>
-	                <Tooltip>Parameters to pass to the datasource</Tooltip>
-	                <InputType>ValuesArray</InputType>
-	                <OutputType>Array</OutputType>
+                    <Name>actionParameters</Name>
+                    <Parent>BaseProperty</Parent>
+                    <DefaultValue>"[]"</DefaultValue>
+                    <Description>Action Parameters</Description>
+                    <Tooltip>Parameters to pass to the datasource</Tooltip>
+                    <InputType>ValuesArray</InputType>
+                    <OutputType>Array</OutputType>
                         <Advanced>true</Advanced>
-	                <Order>40</Order>
-	                <Version>1.0</Version>
+                    <Order>40</Order>
+                    <Version>1.0</Version>
                     </Header>
                 </DesignerProperty>
             </CustomProperties>
