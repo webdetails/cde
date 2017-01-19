@@ -4,19 +4,19 @@
 	  font-family: 'Gudea';
 	  font-style: italic;
 	  font-weight: 400;
-	  src: local('Gudea Italic'), local('Gudea-Italic'), url(http://themes.googleusercontent.com/static/fonts/gudea/v1/tZZo84E1pZ1XbFCB5vu4pwLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+	  src: local('Gudea Italic'), local('Gudea-Italic'), url(//themes.googleusercontent.com/static/fonts/gudea/v1/tZZo84E1pZ1XbFCB5vu4pwLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
 }
 @font-face {
 	  font-family: 'Gudea';
 	  font-style: normal;
 	  font-weight: 700;
-	  src: local('Gudea Bold'), local('Gudea-Bold'), url(http://themes.googleusercontent.com/static/fonts/gudea/v1/6M2RKly85u67vSsXH0-zqnYhjbSpvc47ee6xR_80Hnw.woff) format('woff');
+	  src: local('Gudea Bold'), local('Gudea-Bold'), url(//themes.googleusercontent.com/static/fonts/gudea/v1/6M2RKly85u67vSsXH0-zqnYhjbSpvc47ee6xR_80Hnw.woff) format('woff');
 }
 @font-face {
   font-family: 'Gudea';
   font-style: normal;
   font-weight: 400;
-  src: local('Gudea'), url(http://themes.googleusercontent.com/static/fonts/gudea/v1/kfCeUiT0HGXHQC8YVeaKy6CWcynf_cDxXwCLxiixG1c.woff) format('woff');
+  src: local('Gudea'), url(//themes.googleusercontent.com/static/fonts/gudea/v1/kfCeUiT0HGXHQC8YVeaKy6CWcynf_cDxXwCLxiixG1c.woff) format('woff');
 }
 
 div#fancybox-outer {
