@@ -43,7 +43,7 @@
       <dependency org="commons-lang"       name="commons-lang"       rev="2.6"                         transitive="false"/>
       <dependency org="dom4j"              name="dom4j"              rev="1.6.1"                       transitive="false"/>
       <dependency org="javax.servlet"      name="servlet-api"        rev="2.4"                         transitive="false"/>
-      <dependency org="org.json"           name="json"               rev="${dependency.json.revision}" transitive="false"/>
+      <dependency org="org.pentaho"        name="json"               rev="${dependency.json.revision}" transitive="false"/>
       
       <!-- TODO: either pass to cpf or use another log lib -->
       <dependency org="org.slf4j" name="slf4j-api" rev="1.7.5" />
