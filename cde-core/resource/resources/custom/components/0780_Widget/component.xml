@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DesignerComponent>
+  <Header>
+    <Name>Widget</Name>
+    <IName>widget</IName>
+    <Description>Dashboard Widget</Description>
+    <Category>LEGACY</Category>
+    <CatDescription>Legacy</CatDescription>
+    <Order>780</Order>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Metadata>
+    <meta name='widget'>true</meta>
+  </Metadata>
+  <Contents>
+    <Model>
+      <Property>htmlObject</Property>
+      <Property>path</Property>
+      <Property name="parameters">xActionArrayParameter</Property>
+    </Model>
+    <Implementation supportsLegacy="true" supportsAMD="false"/>
+  </Contents>
+</DesignerComponent>
