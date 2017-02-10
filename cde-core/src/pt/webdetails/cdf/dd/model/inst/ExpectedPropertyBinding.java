@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.inst;
 
@@ -13,79 +22,69 @@ import pt.webdetails.cdf.dd.model.meta.PropertyTypeUsage;
 /**
  * A property binding that is identified in a component type,
  * as a component type usage.
- * 
- * @author dcleao
  */
-public final class ExpectedPropertyBinding extends PropertyBinding
-{
+public final class ExpectedPropertyBinding extends PropertyBinding {
   private final PropertyTypeUsage _propUsage;
-  
-  private ExpectedPropertyBinding(Builder builder, Component owner, MetaModel metaModel)
-          throws ValidationException
-  {
-    super(builder, owner, metaModel);
-    
+
+  private ExpectedPropertyBinding( Builder builder, Component owner, MetaModel metaModel )
+      throws ValidationException {
+    super( builder, owner, metaModel );
+
     PropertyTypeUsage propUsage = builder._propUsage;
-    if(propUsage == null)
-    {
-      throw new ValidationException(new RequiredAttributeError("PropertyUsage"));
+    if ( propUsage == null ) {
+      throw new ValidationException( new RequiredAttributeError( "PropertyUsage" ) );
     }
 
     this._propUsage = propUsage;
   }
 
   @Override
-  public final PropertyTypeUsage getPropertyUsage()
-  {
+  public final PropertyTypeUsage getPropertyUsage() {
     return this._propUsage;
   }
 
   @Override
-  public final String getAlias()
-  {
+  public final String getAlias() {
     return this._propUsage.getAlias();
   }
-  
+
   @Override
-  public PropertyType getProperty()
-  {
+  public PropertyType getProperty() {
     return this._propUsage.getProperty();
   }
-  
+
   @Override
-  public String getInputType()
-  {
+  public String getInputType() {
     return this.getProperty().getInputType();
   }
 
-  public final static class Builder extends PropertyBinding.Builder
-  {
+  public static final class Builder extends PropertyBinding.Builder {
     private PropertyTypeUsage _propUsage;
-    
+
     @Override
-    public String getAlias()
-    {
+    public String getAlias() {
       return this._propUsage != null ? this.getAlias() : null;
     }
-    
-    public PropertyTypeUsage getPropertyUsage()
-    {
+
+    public PropertyTypeUsage getPropertyUsage() {
       return this._propUsage;
     }
 
-    public Builder setPropertyUsage(PropertyTypeUsage propUsage)
-    {
+    public Builder setPropertyUsage( PropertyTypeUsage propUsage ) {
       this._propUsage = propUsage;
       return this;
     }
 
     @Override
-    public ExpectedPropertyBinding build(Component owner, MetaModel metaModel) throws ValidationException
-    {
-      if(owner == null) { throw new IllegalArgumentException("owner"); }
-      if(metaModel == null) { throw new IllegalArgumentException("metaModel"); }
-      
-      return new ExpectedPropertyBinding(this, owner, metaModel);
+    public ExpectedPropertyBinding build( Component owner, MetaModel metaModel ) throws ValidationException {
+      if ( owner == null ) {
+        throw new IllegalArgumentException( "owner" );
+      }
+      if ( metaModel == null ) {
+        throw new IllegalArgumentException( "metaModel" );
+      }
+
+      return new ExpectedPropertyBinding( this, owner, metaModel );
     }
   }
 }

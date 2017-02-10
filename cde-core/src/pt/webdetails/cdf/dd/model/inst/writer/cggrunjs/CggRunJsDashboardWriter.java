@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -25,7 +25,6 @@ import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cpf.repository.api.IRWAccess;
-import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 public class CggRunJsDashboardWriter implements IThingWriter {
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
@@ -39,12 +38,12 @@ public class CggRunJsDashboardWriter implements IThingWriter {
     IThingWriterFactory factory = context.getFactory();
     Iterable<Component> comps = dash.getRegulars();
     for ( Component comp : comps ) {
-      if ( StringUtils.isNotEmpty( comp.getName() ) &&
-        ( comp instanceof GenericComponent ) &&
-        !( comp instanceof WidgetComponent ) ) {
+      if ( StringUtils.isNotEmpty( comp.getName() )
+          && ( comp instanceof GenericComponent )
+          && !( comp instanceof WidgetComponent ) ) {
         GenericComponent genComp = (GenericComponent) comp;
-        if ( genComp.getMeta().tryGetAttributeValue( "cdwSupport", "false" ).equalsIgnoreCase( "true" ) &&
-          genComp.tryGetAttributeValue( "cdwRender", "false" ).equalsIgnoreCase( "true" ) ) {
+        if ( genComp.getMeta().tryGetAttributeValue( "cdwSupport", "false" ).equalsIgnoreCase( "true" )
+            && genComp.tryGetAttributeValue( "cdwRender", "false" ).equalsIgnoreCase( "true" ) ) {
           IThingWriter writer;
           try {
             writer = factory.getWriter( genComp );

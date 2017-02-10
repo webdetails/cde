@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -22,14 +22,11 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
-
 /**
  * this is a simple util class that reduces the length of a call, nothing more ex: from
  * CdeEngine.getInstance().getEnvironment().getContentAccessFactory().getUserContentAccess(null).getFileInputStream
  * (arg0)
  * to CdeEnvironment.getUserContentAccess().getFileInputStream(arg0)
- *
- * @author pedroteixeira
  */
 public abstract class CdeEnvironment {
 

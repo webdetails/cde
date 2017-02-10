@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -38,7 +38,7 @@ public class DashboardWcdfDescriptorTest extends TestCase {
       setWidgetParameters( params );
     }
 
-    private void addParameter(String key, Object value) {
+    private void addParameter( String key, Object value ) {
       this.parameters.put( key, value );
     }
 
@@ -53,21 +53,21 @@ public class DashboardWcdfDescriptorTest extends TestCase {
     wcdf = new DashboardWcdfDescriptorForTest();
     wcdf.update( wcdf.getParameters() );
 
-    Assert.assertTrue( "Should continue empty",wcdf.getWidgetParameters().length == 0 );
+    Assert.assertTrue( "Should continue empty", wcdf.getWidgetParameters().length == 0 );
   }
 
   @Test
   public void testUpdateWidgetParamsInsert() {
     wcdf = new DashboardWcdfDescriptorForTest();
-    wcdf.addParameter( "widgetParameters", new String[]{"param1"} );
+    wcdf.addParameter( "widgetParameters", new String[] { "param1" } );
     wcdf.update( wcdf.getParameters() );
 
-    Assert.assertTrue( "Should have widget parameter 'param1'", wcdf.getWidgetParameters()[0].equals( "param1" ) );
+    Assert.assertTrue( "Should have widget parameter 'param1'", wcdf.getWidgetParameters()[ 0 ].equals( "param1" ) );
   }
 
   @Test
   public void testUpdateWidgetParamsRemove() {
-    wcdf = new DashboardWcdfDescriptorForTest( new String[]{"param1"} );
+    wcdf = new DashboardWcdfDescriptorForTest( new String[] { "param1" } );
 
     wcdf.update( wcdf.getParameters() );
     Assert.assertTrue( "'param1' should have been removed", wcdf.getWidgetParameters().length == 0 );

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -37,7 +37,7 @@ public class DashboardEditorTest extends TestCase {
 
     Assert.assertEquals(
       "<script type=\"text/javascript\" src=\"@CDE_RENDERER_API@/getComponentDefinitions?supports=legacy\"></script>",
-      DashboardEditor.processDashboardSupportTag( editorPage, false ));
+      DashboardEditor.processDashboardSupportTag( editorPage, false ) );
 
     Assert.assertEquals(
       "<script type=\"text/javascript\" src=\"@CDE_RENDERER_API@/getComponentDefinitions?supports=amd\"></script>",

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -19,7 +19,7 @@ public interface ICdeApiPathProvider {
    * @return abs path to renderer api, no trailing slash
    */
   public String getRendererBasePath();
-  
+
   /**
    * @return abs path to static content access
    */

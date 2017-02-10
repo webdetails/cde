@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -70,7 +70,7 @@ public class CdfRunJsThingWriterFactory implements IThingWriterFactory {
       if ( GenericComponent.class.isAssignableFrom( compClass ) ) {
         if ( WidgetComponent.class.isAssignableFrom( compClass ) ) {
           logger.error( "Widget component is no longer supported" );
-          throw new UnsupportedThingException( kind , t.getId() );
+          throw new UnsupportedThingException( kind, t.getId() );
         }
 
         return new CdfRunJsGenericComponentWriter();
