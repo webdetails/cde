@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <DesignerComponent>
   <Header>
-    <Name>Raphael Component</Name>
-    <IName>raphaelComponent</IName>
-    <Description>Raphael Component</Description>
-    <Category>LEGACY</Category>
-    <CatDescription>Legacy</CatDescription>
-    <Order>655</Order>
+    <Name>Freeform Component</Name>
+    <IName>freeform</IName>
+    <Description>Freeform Component</Description>
+    <Category>STANDARDCOMPONENTS</Category>
+    <CatDescription>Standard</CatDescription>
+    <Order>365</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>
@@ -18,6 +17,7 @@
       <Property name="width" type="number">width</Property>
       <Property name="height" type="number">height</Property>
       <Property name="parameters">xActionArrayParameter</Property>
+      <Property>manageCallee</Property>
       <Property type="boolean">executeAtStart</Property>
       <Property type="function">preChange</Property>
       <Property type="function">postChange</Property>
@@ -29,13 +29,7 @@
       <Property type="number">tooltip</Property>
       <Property type="number">listeners</Property>
     </Model>
-    <Implementation supportsLegacy="true" supportsAMD="true">
-      <Code src="raphael-implementation.js" />
-      <Dependencies>
-        <Dependency src="semicolon.js" version="1.0">Semicolon</Dependency>
-        <Dependency src="eve.js" version="0.2.4">Eve</Dependency>
-        <Dependency src="raphael.js" version="2.1.2">Raphael</Dependency>
-      </Dependencies>
+    <Implementation>
       <CustomProperties>
         <DesignerProperty>
           <Header>

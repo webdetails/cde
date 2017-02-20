@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<DesignerComponent>
+  <Header>
+    <Override>CodeComponentType</Override>
+    <Name>Function</Name>
+    <IName>Function</IName>
+    <Description>JavaScript function</Description>
+    <Category>SCRIPT</Category>
+    <CatDescription>Scripts</CatDescription>
+    <Order>705</Order>
+    <Type>PalleteEntry</Type>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>javaScript</Property>
+    </Model>
+  </Contents>
+</DesignerComponent>

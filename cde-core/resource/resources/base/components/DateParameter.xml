@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<DesignerComponent>
+  <Header>
+    <Override>ParameterComponentType</Override>
+    <Name>Date Parameter</Name>
+    <IName>DateParameter</IName>
+    <Description>Date Parameter</Description>
+    <Category>PARAMETERS</Category>
+    <CatDescription>Parameters</CatDescription>
+    <Order>115</Order>
+    <Type>PalleteEntry</Type>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>propertyDateValue</Property>
+      <Property>bookmarkable</Property>
+      <Property>public</Property>
+    </Model>
+  </Contents>
+</DesignerComponent>

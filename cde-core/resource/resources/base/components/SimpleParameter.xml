@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<DesignerComponent>
+  <Header>
+    <Override>ParameterComponentType</Override>
+    <Name>Simple Parameter</Name>
+    <IName>Parameter</IName>
+    <Description>Simple parameter</Description>
+    <Category>PARAMETERS</Category>
+    <CatDescription>Parameters</CatDescription>
+    <Order>105</Order>
+    <Type>PalleteEntry</Type>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>propertyValue</Property>
+      <Property>bookmarkable</Property>
+      <Property>parameterViewRole</Property>
+      <Property>public</Property>
+    </Model>
+  </Contents>
+</DesignerComponent>

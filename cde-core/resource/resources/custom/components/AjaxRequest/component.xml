@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <DesignerComponent>
   <Header>
-    <Name>AjaxRequestComponent</Name>
+    <Name>Ajax Request Component</Name>
     <IName>AjaxRequestComponent</IName>
     <Description>AjaxRequestComponent</Description>
-    <Category>CUSTOMCOMPONENTS</Category>
-    <CatDescription>Custom</CatDescription>
+    <Category>LEGACY</Category>
+    <CatDescription>Legacy</CatDescription>
+    <Order>605</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

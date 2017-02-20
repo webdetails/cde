@@ -7,6 +7,7 @@
       <Description>Container for CGG Grahpics</Description>
       <Category>CHARTS</Category>
       <CatDescription>Charts</CatDescription>
+      <Order>465</Order>
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
@@ -52,6 +53,7 @@
       <Description>CGG Dial Chart</Description>
       <Category>CHARTS</Category>
       <CatDescription>Charts</CatDescription>
+      <Order>470</Order>
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
