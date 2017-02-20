@@ -1,36 +1,40 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.core.validation;
 
 /**
- * @author dcleao
- *
  * TODO: implement serialization?
  */
-public class ValidationException extends Exception
-{
- 
-	private static final long serialVersionUID = -7782142065075580240L;
-	
-private final ValidationError _error;
+public class ValidationException extends Exception {
+  private static final long serialVersionUID = -7782142065075580240L;
 
-  public ValidationException(ValidationError error)
-  {
-    super(getMessage(error));
+  private final ValidationError _error;
+
+  public ValidationException( ValidationError error ) {
+    super( getMessage( error ) );
 
     this._error = error;
   }
 
-  public ValidationError getError()
-  {
+  public ValidationError getError() {
     return this._error;
   }
 
-  private static String getMessage(ValidationError error)
-  {
-    if(error == null) { throw new IllegalArgumentException("error"); }
+  private static String getMessage( ValidationError error ) {
+    if ( error == null ) {
+      throw new IllegalArgumentException( "error" );
+    }
     return error.toString();
   }
 }

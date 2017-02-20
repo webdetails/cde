@@ -34,8 +34,6 @@ import pt.webdetails.cpf.packager.origin.OtherPluginStaticSystemOrigin;
 /**
  * Loads XML model files, component types and property types, from the file system, of a Pentaho CDE plugin
  * instalation.
- *
- * @author dcleao
  */
 public final class DataSourcesModelReader {
   protected static final Log logger = LogFactory.getLog( DataSourcesModelReader.class );

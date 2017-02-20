@@ -47,6 +47,7 @@ public abstract class ComponentType extends MetaObject {
   private final Map<String, Resource> _resourcesByKey;
 
   private PathOrigin origin;
+  private final int order;
 
   private final boolean supportsLegacy;
   private final boolean supportsAMD;
@@ -191,6 +192,7 @@ public abstract class ComponentType extends MetaObject {
       this._resourcesByKey = null;
     }
     this.origin = builder.origin;
+    this.order = builder.order;
 
     this.supportsLegacy = builder.supportsLegacy;
     this.supportsAMD = builder.supportsAMD;
@@ -207,6 +209,10 @@ public abstract class ComponentType extends MetaObject {
 
   public PathOrigin getOrigin() {
     return this.origin;
+  }
+
+  public int getOrder() {
+    return this.order;
   }
 
   // --------
@@ -345,6 +351,7 @@ public abstract class ComponentType extends MetaObject {
     private String _implementationPath;
     private List<Resource.Builder> _resources;
     private PathOrigin origin;
+    private int order;
 
     // By default, all components (e.g. DataSourceComponent) should support legacy and AMD dashboards.
     // CustomComponents might only support one kind of dashboard.
@@ -358,6 +365,11 @@ public abstract class ComponentType extends MetaObject {
 
     public Builder setOrigin( PathOrigin pathOrigin ) {
       this.origin = pathOrigin;
+      return this;
+    }
+
+    public Builder setOrder( int order ) {
+      this.order = order;
       return this;
     }
 

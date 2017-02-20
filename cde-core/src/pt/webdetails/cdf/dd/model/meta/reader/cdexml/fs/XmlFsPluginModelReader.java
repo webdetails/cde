@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -48,9 +48,7 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
  * Loads XML model files, component types and property types, from the file system, of a Pentaho CDE plugin
- * instalation.
- *
- * @author dcleao
+ * installation.
  */
 public final class XmlFsPluginModelReader {
 
@@ -82,8 +80,7 @@ public final class XmlFsPluginModelReader {
 
   private IContentAccessFactory contentAccessFactory;
 
-  public XmlFsPluginModelReader( boolean continueOnError ) //the real ctor, only usage calls with false
-  {
+  public XmlFsPluginModelReader( boolean continueOnError ) { //the real ctor, only usage calls with false
     this.continueOnError = continueOnError;
   }
 
@@ -115,9 +112,9 @@ public final class XmlFsPluginModelReader {
   }
 
   private void readBaseComponents( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
-      throws ThingReadException {
+    throws ThingReadException {
     List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader( BASE_COMPS_DIR ).listFiles( null,
-        new GenericBasicFileFilter( null, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
+      new GenericBasicFileFilter( null, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
     PathOrigin origin = new StaticSystemOrigin( BASE_COMPS_DIR );
 
     if ( filesList != null ) {
@@ -130,12 +127,12 @@ public final class XmlFsPluginModelReader {
   }
 
   private void readBaseProperties( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
-      throws ThingReadException {
+    throws ThingReadException {
 
     logger.info( String.format( "Loading BASE properties from: %s", BASE_PROPS_DIR ) );
 
     List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader( BASE_PROPS_DIR ).listFiles( null,
-        new GenericBasicFileFilter( null, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
+      new GenericBasicFileFilter( null, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
 
     if ( filesList != null ) {
       IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
@@ -147,12 +144,12 @@ public final class XmlFsPluginModelReader {
   }
 
   private void readCustomProperties( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
-      throws ThingReadException {
+    throws ThingReadException {
 
     logger.info( String.format( "Loading CUSTOM properties from: %s", CUSTOM_PROPS_DIR ) );
 
     List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader( CUSTOM_PROPS_DIR ).listFiles( null,
-        new GenericBasicFileFilter( CUSTOM_PROPS_FILENAME, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
+      new GenericBasicFileFilter( CUSTOM_PROPS_FILENAME, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
 
     if ( filesList != null ) {
       IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
@@ -164,7 +161,7 @@ public final class XmlFsPluginModelReader {
   }
 
   private void readPropertiesFile( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory, IBasicFile file )
-      throws ThingReadException {
+    throws ThingReadException {
     Document doc;
     try {
       doc = Utils.getDocFromFile( file, null );
@@ -188,10 +185,10 @@ public final class XmlFsPluginModelReader {
   }
 
   private void readProperty(
-      MetaModel.Builder modelBuilder,
-      XmlFsPluginThingReaderFactory factory,
-      Element propertyElem,
-      IBasicFile file ) {
+    MetaModel.Builder modelBuilder,
+    XmlFsPluginThingReaderFactory factory,
+    Element propertyElem,
+    IBasicFile file ) {
     try {
       PropertyType.Builder prop = factory.getPropertyTypeReader().read( propertyElem, file.getPath() );
       modelBuilder.addProperty( prop );
@@ -206,14 +203,14 @@ public final class XmlFsPluginModelReader {
   }
 
   private void readCustomComponents( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
-      throws ThingReadException {
+    throws ThingReadException {
     for ( PathOrigin origin : CdeEnvironment.getPluginResourceLocationManager().getCustomComponentsLocations() ) {
       readCustomComponentsLocation( model, factory, origin );
     }
   }
 
   private void readCustomComponentsLocation( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory,
-      PathOrigin origin ) throws ThingReadException {
+                                             PathOrigin origin ) throws ThingReadException {
     logger.info( "reading custom components from " + origin );
 
     GenericBasicFileFilter filter = new GenericBasicFileFilter( COMPONENT_FILENAME, DEFINITION_FILE_EXT );
@@ -222,7 +219,7 @@ public final class XmlFsPluginModelReader {
 
     if ( filesList != null ) {
       logger.debug( String.format( "%d sub-folders found", filesList.size() ) );
-      IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] { } );
+      IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
       Arrays.sort( filesArray, getFileComparator() );
       for ( IBasicFile file : filesArray ) {
         this.readComponentsFile( model, factory, file, DEF_CUSTOM_TYPE, origin );
@@ -231,7 +228,7 @@ public final class XmlFsPluginModelReader {
   }
 
   private void readWidgetStubComponents( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
-      throws ThingReadException {
+    throws ThingReadException {
     Document doc = null;
     IBasicFile cdeXml = CdeEngine.getInstance().getEnvironment().getCdeXml();
     try {
@@ -284,8 +281,8 @@ public final class XmlFsPluginModelReader {
               files.add( file.getName() );
               fixWidgetMeta( file );
               this.readComponentsFile( model, factory, file, DEF_WIDGET_STUB_TYPE,
-                  new RepositoryPathOrigin(
-                      FilenameUtils.getPath( file.getPath() ) ) );
+                new RepositoryPathOrigin(
+                  FilenameUtils.getPath( file.getPath() ) ) );
             } else {
               logger.debug( "Duplicate widget, ignoring " + file.getPath() );
             }
@@ -298,12 +295,12 @@ public final class XmlFsPluginModelReader {
     logger.info( String.format( "Loading WIDGET components from: %s", WIDGETS_DIR ) );
 
     List<IBasicFile> filesList = CdeEnvironment.getPluginRepositoryReader( WIDGETS_DIR ).listFiles( null,
-        new GenericBasicFileFilter( COMPONENT_FILENAME, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL, false, true );
+      new GenericBasicFileFilter( COMPONENT_FILENAME, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL, false, true );
     PathOrigin widgetsOrigin = new PluginRepositoryOrigin( CdeEngine.getEnv().getPluginRepositoryDir(), WIDGETS_DIR );
 
     if ( filesList != null ) {
       logger.debug( String.format( "%s widget components found", filesList.size() ) );
-      IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] { } );
+      IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
       Arrays.sort( filesArray, getFileComparator() );
       for ( IBasicFile file : filesArray ) {
         this.readComponentsFile( model, factory, file, DEF_WIDGET_STUB_TYPE, widgetsOrigin );
@@ -318,10 +315,10 @@ public final class XmlFsPluginModelReader {
     try {
       if ( CdeEnvironment.getUserContentAccess().fileExists( componentXml.getPath() ) ) {
         doc =
-            Utils.getDocFromFile( CdeEnvironment.getUserContentAccess().fetchFile( componentXml.getPath() ), null );
+          Utils.getDocFromFile( CdeEnvironment.getUserContentAccess().fetchFile( componentXml.getPath() ), null );
       } else if ( CdeEnvironment.getPluginSystemReader().fileExists( componentXml.getPath() ) ) {
         doc = Utils
-            .getDocFromFile( CdeEnvironment.getPluginSystemReader().fetchFile( componentXml.getPath() ), null );
+          .getDocFromFile( CdeEnvironment.getPluginSystemReader().fetchFile( componentXml.getPath() ), null );
       }
     } catch ( Exception e ) {
       logger.error( "Unable to check meta for " + componentXml.getPath() + ", moving on" );
@@ -350,10 +347,10 @@ public final class XmlFsPluginModelReader {
         try {
           if ( CdeEnvironment.getUserContentAccess().fileExists( componentXml.getPath() ) ) {
             CdeEnvironment.getUserContentAccess()
-                .saveFile( componentXml.getPath(), new ByteArrayInputStream( doc.asXML().getBytes() ) );
+              .saveFile( componentXml.getPath(), new ByteArrayInputStream( doc.asXML().getBytes() ) );
           } else if ( CdeEnvironment.getPluginSystemWriter().fileExists( componentXml.getPath() ) ) {
             CdeEnvironment.getPluginSystemWriter()
-                .saveFile( componentXml.getPath(), new ByteArrayInputStream( doc.asXML().getBytes() ) );
+              .saveFile( componentXml.getPath(), new ByteArrayInputStream( doc.asXML().getBytes() ) );
           }
         } catch ( Exception e ) {
           logger.error( "Unable to fix meta for " + componentXml.getName() + ", moving on" );
@@ -374,8 +371,8 @@ public final class XmlFsPluginModelReader {
 
 
   private void readComponentsFile( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory, IBasicFile file,
-      String defaultClassName, PathOrigin origin )
-      throws ThingReadException {
+                                   String defaultClassName, PathOrigin origin )
+    throws ThingReadException {
     Document doc;
     try {
       doc = Utils.getDocFromFile( file, null );
@@ -403,10 +400,9 @@ public final class XmlFsPluginModelReader {
     }
   }
 
-
   private void readComponent( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory, Element componentElem,
-      String sourcePath, String defaultClassName, PathOrigin origin )
-      throws ThingReadException {
+                              String sourcePath, String defaultClassName, PathOrigin origin )
+    throws ThingReadException {
     String className = Utils.getNodeText( "Header/Override", componentElem );
 
     if ( StringUtils.isEmpty( className ) ) {

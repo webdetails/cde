@@ -1,20 +1,26 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.core.writer;
 
-/**
- * @author dcleao
- */
-public class DefaultThingWriteContext implements IThingWriteContext
-{
+public class DefaultThingWriteContext implements IThingWriteContext {
   private final IThingWriterFactory _factory;
   private final boolean _breakOnError;
 
-  public DefaultThingWriteContext(IThingWriterFactory factory, boolean breakOnError)
-  {
-    if(factory == null) { throw new IllegalArgumentException("factory"); }
+  public DefaultThingWriteContext( IThingWriterFactory factory, boolean breakOnError ) {
+    if ( factory == null ) {
+      throw new IllegalArgumentException( "factory" );
+    }
 
     this._factory = factory;
     this._breakOnError = breakOnError;
@@ -24,8 +30,7 @@ public class DefaultThingWriteContext implements IThingWriteContext
     return this._factory;
   }
 
-  public boolean getBreakOnError()
-  {
+  public boolean getBreakOnError() {
     return this._breakOnError;
   }
 }

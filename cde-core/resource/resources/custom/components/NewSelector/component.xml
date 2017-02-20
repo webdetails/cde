@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <DesignerComponent>
   <Header>
-    <Name>New Selector</Name>
+    <Name>New Selector Component</Name>
     <IName>newSelector</IName>
     <Description>New Selector Component</Description>
     <Category>OTHERCOMPONENTS</Category>
     <CatDescription>Others</CatDescription>
+    <Order>545</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import junit.framework.Assert;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
@@ -58,7 +59,7 @@ public class SynchronizerApiTest {
   @Before
   public void setUp() throws Exception {
     synchronizerApi = spy( new SynchronizerApiForTesting() );
-    servletRequest = new MockHttpServletRequest( "/pentaho-cdf/api/views", (Map)new HashMap<String, String[]>() );
+    servletRequest = new MockHttpServletRequest( "/pentaho-cdf/api/views", (Map) new HashMap<String, String[]>() );
     servletResponse = new MockHttpServletResponse( new ObjectOutputStream( new ByteArrayOutputStream() ) );
     servletResponse.setContentType( null );
     servletResponse.setCharacterEncoding( null );
@@ -86,8 +87,8 @@ public class SynchronizerApiTest {
     HttpServletResponse mockResponse = Mockito.mock( HttpServletResponse.class );
 
     String result = new SynchronizerApiForTesting()
-        .syncronize( file, path, title, author, description, style, widgetName, widget, rendererType, widgetParams,
-        cdfStructure, operation, require , mockRequest, mockResponse );
+      .syncronize( file, path, title, author, description, style, widgetName, widget, rendererType, widgetParams,
+        cdfStructure, operation, require, mockRequest, mockResponse );
 
     JSONObject jsonObj = new JSONObject( result );
 

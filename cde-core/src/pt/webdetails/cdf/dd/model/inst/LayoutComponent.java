@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.inst;
 
@@ -15,63 +24,54 @@ import pt.webdetails.cdf.dd.model.meta.MetaModel;
  * Temporary implementation that stores all the layout rows
  * of a cdfde file...
  * Until RenderLayout can be transformed to this model, if anytime.
- * @author dcleao
  */
-public class LayoutComponent extends VisualComponent<LayoutComponentType>
-{
+public class LayoutComponent extends VisualComponent<LayoutComponentType> {
   private final JXPathContext _layoutXP;
-  
-  private LayoutComponent(Builder builder, MetaModel metaModel) throws ValidationException
-  {
-    super(builder, metaModel);
-    
-    if(builder._layoutXP == null) 
-    {
-      throw new ValidationException(new RequiredAttributeError("LayoutXPContext"));
+
+  private LayoutComponent( Builder builder, MetaModel metaModel ) throws ValidationException {
+    super( builder, metaModel );
+
+    if ( builder._layoutXP == null ) {
+      throw new ValidationException( new RequiredAttributeError( "LayoutXPContext" ) );
     }
-    
+
     this._layoutXP = builder._layoutXP;
   }
 
   @Override
-  public LayoutComponentType getMeta()
-  {
+  public LayoutComponentType getMeta() {
     return super.getMeta();
   }
-  
-  public JXPathContext getLayoutXPContext()
-  {
+
+  public JXPathContext getLayoutXPContext() {
     return this._layoutXP;
   }
-  
+
   /**
    * Class to create and modify LayoutComponent instances.
    */
-  public static final class Builder extends VisualComponent.Builder
-  {
+  public static final class Builder extends VisualComponent.Builder {
     private JXPathContext _layoutXP;
-    
-    public Builder()
-    {
+
+    public Builder() {
     }
-    
-    public JXPathContext getLayoutXPContext()
-    {
+
+    public JXPathContext getLayoutXPContext() {
       return this._layoutXP;
     }
-    
-    public Builder setLayoutXPContext(JXPathContext layoutXP)
-    {
+
+    public Builder setLayoutXPContext( JXPathContext layoutXP ) {
       this._layoutXP = layoutXP;
       return this;
     }
 
     @Override
-    public LayoutComponent build(MetaModel metaModel) throws ValidationException
-    {
-      if(metaModel == null) { throw new IllegalArgumentException("metaModel"); }
-      
-      return new LayoutComponent(this, metaModel);
+    public LayoutComponent build( MetaModel metaModel ) throws ValidationException {
+      if ( metaModel == null ) {
+        throw new IllegalArgumentException( "metaModel" );
+      }
+
+      return new LayoutComponent( this, metaModel );
     }
   }
 }

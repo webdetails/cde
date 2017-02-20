@@ -1,33 +1,38 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.meta.validation;
 
-/**
- * @author dcleao
- */
-public final class ComponentTypeUndefinedPropertyError extends ComponentTypeError
-{
+public final class ComponentTypeUndefinedPropertyError extends ComponentTypeError {
   private final String _propertyName;
 
-  public ComponentTypeUndefinedPropertyError(String componentTypeLabel, String propertyName)
-  {
-    super(componentTypeLabel);
+  public ComponentTypeUndefinedPropertyError( String componentTypeLabel, String propertyName ) {
+    super( componentTypeLabel );
 
-    if(propertyName == null) { throw new IllegalArgumentException("propertyName"); }
-    
+    if ( propertyName == null ) {
+      throw new IllegalArgumentException( "propertyName" );
+    }
+
     this._propertyName = propertyName;
   }
 
-  public String getPropertyName()
-  {
+  public String getPropertyName() {
     return this._propertyName;
   }
 
   @Override
-  public String toString()
-  {
-    return "ComponentType '" + this._componentTypeLabel + "' refers an undefined property: '" + this._propertyName + "'.";
+  public String toString() {
+    return "ComponentType '" + this._componentTypeLabel + "' refers an undefined property: '" + this._propertyName
+      + "'.";
   }
 }

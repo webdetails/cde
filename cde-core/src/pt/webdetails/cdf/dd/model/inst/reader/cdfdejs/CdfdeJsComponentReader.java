@@ -28,8 +28,6 @@ import pt.webdetails.cdf.dd.model.inst.UnresolvedPropertyBinding;
 
 /**
  * Reads the CDFDE JavaScript format of a component.
- *
- * @author dcleao
  */
 public abstract class CdfdeJsComponentReader<TM extends Component.Builder> implements IThingReader {
   public abstract TM read( IThingReadContext context, java.lang.Object source, String sourcePath )

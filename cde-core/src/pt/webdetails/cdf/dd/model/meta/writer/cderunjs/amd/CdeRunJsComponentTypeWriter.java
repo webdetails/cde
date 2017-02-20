@@ -75,6 +75,7 @@ public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements ITh
       addJsProperty( out, "description", jsTooltip, INDENT1, false );
       addJsProperty( out, "category", JsonUtils.toJsString( comp.getCategory() ), INDENT1, false );
       addJsProperty( out, "categoryDesc", JsonUtils.toJsString( comp.getCategoryLabel() ), INDENT1, false );
+      addJsProperty( out, "order", String.valueOf( comp.getOrder() ), INDENT1, false );
       addCommaAndLineSep( out );
       out.append( INDENT1 )
         .append( "getStub: function() {" )

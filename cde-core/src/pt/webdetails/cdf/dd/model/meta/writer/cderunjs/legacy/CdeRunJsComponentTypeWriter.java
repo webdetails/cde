@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -31,9 +31,6 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
 
-/**
- * @author dcleao
- */
 public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements IThingWriter {
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
     ComponentType comp = (ComponentType) t;
@@ -75,6 +72,7 @@ public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements ITh
       addJsProperty( out, "description", jsTooltip, INDENT1, false );
       addJsProperty( out, "category", JsonUtils.toJsString( comp.getCategory() ), INDENT1, false );
       addJsProperty( out, "categoryDesc", JsonUtils.toJsString( comp.getCategoryLabel() ), INDENT1, false );
+      addJsProperty( out, "order", String.valueOf( comp.getOrder() ), INDENT1, false );
       addCommaAndLineSep( out );
       out
         .append( INDENT1 )

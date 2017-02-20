@@ -1,30 +1,32 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.meta;
 
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 
-/**
- * @author dcleao
- */
-public final class LayoutComponentType extends VisualComponentType
-{
-  protected LayoutComponentType(Builder builder, IPropertyTypeSource propSource) throws ValidationException
-  {
-    super(builder, propSource);
+public final class LayoutComponentType extends VisualComponentType {
+  protected LayoutComponentType( Builder builder, IPropertyTypeSource propSource ) throws ValidationException {
+    super( builder, propSource );
   }
 
   /**
    * Class to create and modify LayoutComponentType instances.
    */
-  public static final class Builder extends VisualComponentType.Builder
-  {
+  public static final class Builder extends VisualComponentType.Builder {
     @Override
-    public final LayoutComponentType build(IPropertyTypeSource propSource) throws ValidationException
-    {
-      return new LayoutComponentType(this, propSource);
+    public final LayoutComponentType build( IPropertyTypeSource propSource ) throws ValidationException {
+      return new LayoutComponentType( this, propSource );
     }
   }
 }

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <DesignerComponent>
   <Header>
-    <Name>Google Analytics</Name>
+    <Name>Google Analytics Component</Name>
     <IName>googleAnalyticsComponent</IName>
     <Description>Google Analytics (By Sinn Tecnologia -  rodrigo@sinn.com.br)</Description>
     <Category>COMMUNITYCOMPONENTS</Category>
     <CatDescription>Community Contributions</CatDescription>
+    <Order>810</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

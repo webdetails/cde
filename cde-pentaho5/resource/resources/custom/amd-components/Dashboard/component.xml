@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <DesignerComponent>
   <Header>
-    <Name>DashboardComponent</Name>
+    <Name>Dashboard Component</Name>
     <IName>DashboardComponent</IName>
     <Description>Dashboard Component</Description>
-    <Category>CUSTOMCOMPONENTS</Category>
-    <CatDescription>Custom</CatDescription>
+    <Category>STANDARDCOMPONENTS</Category>
+    <CatDescription>Standard</CatDescription>
+    <Order>350</Order>
     <Type>PalleteEntry</Type>
     <Version>1.0</Version>
   </Header>

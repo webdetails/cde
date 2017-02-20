@@ -2,11 +2,12 @@
 <DesignerComponents>
   <DesignerComponent>
     <Header>
-      <Name>Popup</Name>
+      <Name>Popup Component</Name>
       <IName>popup</IName>
       <Description>Popup Component</Description>
-      <Category>OTHERCOMPONENTS</Category>
-      <CatDescription>Others</CatDescription>
+      <Category>STANDARDCOMPONENTS</Category>
+      <CatDescription>Standard</CatDescription>
+      <Order>325</Order>
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
@@ -130,8 +131,9 @@
       <Name>Export Popup Component</Name>
       <IName>ExportPopupComponent</IName>
       <Description>Export Popup Component</Description>
-      <Category>OTHERCOMPONENTS</Category>
-      <CatDescription>Others</CatDescription>
+      <Category>STANDARDCOMPONENTS</Category>
+      <CatDescription>Standard</CatDescription>
+      <Order>330</Order>
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>

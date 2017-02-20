@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -338,7 +338,7 @@ public class DashboardStructure implements IDashboardStructure {
     // The CDE Editor will show new/updated widgets.
     // No need to refresh data source definitions.
     try {
-      DashboardManager.getInstance().refreshAll(/*refreshDatasources*/false );
+      DashboardManager.getInstance().refreshAll( /*refreshDatasources*/false );
     } catch ( Exception ex ) {
       logger.error( "Error while refreshing the meta data cache", ex );
     }

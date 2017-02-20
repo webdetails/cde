@@ -2,11 +2,12 @@
 <DesignerComponents>
   <DesignerComponent>
     <Header>
-      <Name>VersionCheck</Name>
+      <Name>Version Check Component</Name>
       <IName>versionCheck</IName>
       <Description>Version Checker</Description>
-      <Category>CUSTOMCOMPONENTS</Category>
-      <CatDescription>Custom</CatDescription>
+      <Category>LEGACY</Category>
+      <CatDescription>Legacy</CatDescription>
+      <Order>675</Order>
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
@@ -45,11 +46,12 @@
   
   <DesignerComponent>
     <Header>
-      <Name>CurrentVersion</Name>
+      <Name>Current Version Component</Name>
       <IName>currentVersion</IName>
       <Description>Get Current Plugin Version</Description>
-      <Category>CUSTOMCOMPONENTS</Category>
-      <CatDescription>Custom</CatDescription>
+      <Category>LEGACY</Category>
+      <CatDescription>Legacy</CatDescription>
+      <Order>615</Order>
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>

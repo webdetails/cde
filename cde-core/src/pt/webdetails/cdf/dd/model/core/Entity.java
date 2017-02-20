@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.core;
 
@@ -19,123 +28,97 @@ import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
  * A thing with identity,
  * and structure, 
  * as provided by attributes.
- * 
- * @author dcleao
  */
-public abstract class Entity extends Thing
-{
-  private static final Log _logger = LogFactory.getLog(Entity.class);
-  
+public abstract class Entity extends Thing {
+  private static final Log _logger = LogFactory.getLog( Entity.class );
+
   private final Map<String, Attribute> _attributesByName;
-  
-  public Entity(Builder builder) throws ValidationException
-  {
-    if(builder.getAttributeCount() > 0)
-    {
+
+  public Entity( Builder builder ) throws ValidationException {
+    if ( builder.getAttributeCount() > 0 ) {
       this._attributesByName = new LinkedHashMap<String, Attribute>();
 
-      for(Attribute.Builder metaBuilder : builder._attributes)
-      {
+      for ( Attribute.Builder metaBuilder : builder._attributes ) {
         Attribute attribute;
-        try 
-        {
+        try {
           attribute = metaBuilder.build();
-        }
-        catch(ValidationException ex)
-        {
+        } catch ( ValidationException ex ) {
           // Ignore attribute, log warning and continue
-          _logger.warn(ex);
-          continue;
-        }
-        
-        if(this._attributesByName.containsKey(attribute.getName()))
-        {
-          // Ignore attribute, log warning and continue
-          _logger.warn(new DuplicateAttributeError(attribute.getName()));
+          _logger.warn( ex );
           continue;
         }
 
-        this._attributesByName.put(attribute.getName(), attribute);
+        if ( this._attributesByName.containsKey( attribute.getName() ) ) {
+          // Ignore attribute, log warning and continue
+          _logger.warn( new DuplicateAttributeError( attribute.getName() ) );
+          continue;
+        }
+
+        this._attributesByName.put( attribute.getName(), attribute );
       }
     } else {
       this._attributesByName = null;
     }
   }
 
-  public final Attribute getAttribute(String name)
-  {
-    Attribute attribute = this.tryGetAttribute(name);
-    if(attribute == null)
-    {
-      throw new IllegalArgumentException("There is no attribute named '" + name + "'.");
+  public final Attribute getAttribute( String name ) {
+    Attribute attribute = this.tryGetAttribute( name );
+    if ( attribute == null ) {
+      throw new IllegalArgumentException( "There is no attribute named '" + name + "'." );
     }
 
     return attribute;
   }
 
-  public final Attribute tryGetAttribute(String name)
-  {
-    if(name == null) { throw new IllegalArgumentException("name"); }
+  public final Attribute tryGetAttribute( String name ) {
+    if ( name == null ) {
+      throw new IllegalArgumentException( "name" );
+    }
 
-    return this._attributesByName != null ?
-            this._attributesByName.get(name) :
-            null;
+    return this._attributesByName != null ? this._attributesByName.get( name ) : null;
   }
 
-  public String tryGetAttributeValue(String name, String defaultValue)
-  {
-    Attribute attr = this.tryGetAttribute(name);
-    return attr == null ? 
-           defaultValue : 
-           StringUtils.defaultIfEmpty(attr.getValue(), defaultValue);
-  }
-  
-  public final Iterable<Attribute> getAttributes()
-  {
-    return this._attributesByName != null ?
-           this._attributesByName.values() :
-           Collections.<Attribute> emptyList();
+  public String tryGetAttributeValue( String name, String defaultValue ) {
+    Attribute attr = this.tryGetAttribute( name );
+    return attr == null ? defaultValue : StringUtils.defaultIfEmpty( attr.getValue(), defaultValue );
   }
 
-  public final int getAttributeCount()
-  {
+  public final Iterable<Attribute> getAttributes() {
+    return this._attributesByName != null ? this._attributesByName.values() : Collections.<Attribute>emptyList();
+  }
+
+  public final int getAttributeCount() {
     return this._attributesByName != null ? this._attributesByName.size() : 0;
   }
 
-  public static abstract class Builder extends Thing.Builder
-  {
+  public abstract static class Builder extends Thing.Builder {
     private List<Attribute.Builder> _attributes;
 
-    public Builder addAttribute(Attribute.Builder attribute)
-    {
-      if(attribute == null) { throw new IllegalArgumentException("attribute"); }
+    public Builder addAttribute( Attribute.Builder attribute ) {
+      if ( attribute == null ) {
+        throw new IllegalArgumentException( "attribute" );
+      }
 
-      if(this._attributes == null)
-      {
+      if ( this._attributes == null ) {
         this._attributes = new ArrayList<Attribute.Builder>();
       }
 
-      this._attributes.add(attribute);
+      this._attributes.add( attribute );
 
       return this;
     }
 
-    public Builder addAttribute(String name, String value)
-    {
-      return this.addAttribute(new Attribute.Builder()
-                  .setName(name)
-                  .setValue(value));
+    public Builder addAttribute( String name, String value ) {
+      return this.addAttribute( new Attribute.Builder()
+                  .setName( name )
+                  .setValue( value ) );
     }
 
-    public Iterable<Attribute.Builder> getAttributes()
-    {
-      return this._attributes != null ?
-             this._attributes :
-             Collections.<Attribute.Builder> emptyList();
+    public Iterable<Attribute.Builder> getAttributes() {
+      return this._attributes != null ? this._attributes : Collections.<Attribute.Builder>emptyList();
     }
 
-    public int getAttributeCount()
-    {
+    public int getAttributeCount() {
       return this._attributes != null ? this._attributes.size() : 0;
     }
   }

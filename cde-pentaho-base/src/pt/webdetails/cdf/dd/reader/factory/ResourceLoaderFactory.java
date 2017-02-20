@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -16,7 +16,6 @@ package pt.webdetails.cdf.dd.reader.factory;
 import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
-import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 
 public class ResourceLoaderFactory {
@@ -33,10 +32,10 @@ public class ResourceLoaderFactory {
   }
 
   protected boolean isSystem( String path ) {
-    if( path.isEmpty() ) {
+    if ( path.isEmpty() ) {
       return false;
     }
-    
+
     ICdeEnvironment env = getCdeEnvironment();
     IContentAccessFactory factory = getContentAccessFactory( env );
 
@@ -72,7 +71,7 @@ public class ResourceLoaderFactory {
     return CdeEngine.getInstance().getEnvironment();
   }
 
-  protected IContentAccessFactory getContentAccessFactory( ICdeEnvironment environment ){
+  protected IContentAccessFactory getContentAccessFactory( ICdeEnvironment environment ) {
     return environment.getContentAccessFactory();
   }
 

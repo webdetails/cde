@@ -162,6 +162,22 @@ public abstract class XmlComponentTypeReader {
       .setSourcePath( sourcePath )
       .setVersion( Utils.getNodeText( "Header/Version", elem ) );
 
+    String order = Utils.getNodeText( "Header/Order", elem );
+    if ( StringUtils.isNotEmpty( order ) ) {
+      try {
+        int orderInt = Integer.parseInt( order );
+        if ( orderInt < 0 ) {
+          orderInt = 0;
+        }
+
+        builder.setOrder( orderInt );
+      } catch ( NumberFormatException ex ) {
+        logger.warn(
+          "ComponentType '" + componentName + "' in file '" + sourcePath + "' has an invalid 'Order' value: '" + order + "'.",
+          ex );
+      }
+    }
+
     String visibleText = Utils.getNodeText( "Header/Visible", elem );
     if ( StringUtils.isNotEmpty( visibleText ) ) {
       builder.setVisible( "true".equalsIgnoreCase( visibleText ) );
