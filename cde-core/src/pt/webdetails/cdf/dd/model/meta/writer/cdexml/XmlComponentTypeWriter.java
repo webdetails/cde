@@ -222,6 +222,7 @@ public class XmlComponentTypeWriter implements IThingWriter
     headerElem.addElement("Category").setText(comp.getCategory());
     headerElem.addElement("CatDescription").setText(comp.getCategoryLabel());
     headerElem.addElement("Type").setText(comp.tryGetAttributeValue("cdePalleteType", "PalleteEntry"));
+    headerElem.addElement("Order").setText(String.valueOf(comp.getOrder()));
     headerElem.addElement("Version").setText(comp.getVersion());
     headerElem.addElement("Visible").setText(comp.getVisible() ? "true" : "false");
   }

@@ -161,7 +161,12 @@ var ComponentsPanel = Panel.extend({
   },
 
   addPalleteEntries: function() {
-    $.each(CDFDDComponentsArray, function(i, component) {
+    // sort components by order (category order implicit)
+    var sortedCDFDDComponentsArray = _(CDFDDComponentsArray).chain().sortBy(function(component) {  
+      return component.order;
+    }).value();
+
+    $.each(sortedCDFDDComponentsArray, function(i, component) {
       Panel.getPanel(ComponentsPanel.MAIN_PANEL).getComponentsPallete().addEntry(component);
     });
   },
