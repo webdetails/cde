@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,12 +13,12 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.mockito.Mockito.*;
-
 import junit.framework.Assert;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -56,6 +56,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static org.mockito.Mockito.*;
+
 public class RenderApiTest {
 
   private static RenderApi renderApi;
@@ -75,6 +78,8 @@ public class RenderApiTest {
   private static CdeEnvironmentForTests cdeEnvironmentForTests;
   private static IUserContentAccess mockedUserContentAccess;
   private static HttpServletRequest mockedHttpServletRequest;
+  private static XSSHelper originalHelper;
+  private static XSSHelper mockHelper;
 
   @BeforeClass
   public static void setUp() throws Exception {
@@ -185,6 +190,28 @@ public class RenderApiTest {
 
     mockedHttpServletRequest = mock( HttpServletRequest.class );
     when( mockedHttpServletRequest.getParameterMap() ).thenReturn( new HashMap() );
+    originalHelper = XSSHelper.getInstance();
+  }
+
+  @AfterClass
+  public static void tearDown() {
+    XSSHelper.setInstance( originalHelper );
+  }
+
+  @Before
+  public void beforeEach() {
+    mockHelper = mock( XSSHelper.class );
+    when( mockHelper.escape( any() ) ).thenAnswer( new Answer<Object>() {
+      @Override public Object answer( InvocationOnMock invocation ) throws Throwable {
+        return invocation.getArguments()[ 0 ];
+      }
+    } );
+    XSSHelper.setInstance( mockHelper );
+  }
+
+  @After
+  public void afterEach() {
+    reset( mockHelper );
   }
 
   @Test
@@ -217,6 +244,7 @@ public class RenderApiTest {
     Assert.assertTrue( case4.contains( "/js/CDF.js" ) && case4.contains( "/css/CDF-CSS.css" ) );
     Assert.assertTrue( case5.contains( "https://testRoot/js/CDF.js" )
       && case5.contains( "https://testRoot/css/CDF-CSS.css" ) );
+    verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
@@ -248,6 +276,7 @@ public class RenderApiTest {
     Assert.assertTrue( legacyCase2.contains( cdfContextConfiguration ) );
 
     resetContextConfigurations();
+    verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
@@ -279,6 +308,7 @@ public class RenderApiTest {
     Assert.assertEquals( case4, case6 );
 
     resetContextConfigurations();
+    verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
@@ -299,6 +329,7 @@ public class RenderApiTest {
 
     Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
     Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
@@ -319,6 +350,7 @@ public class RenderApiTest {
 
     Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
     Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
@@ -336,6 +368,7 @@ public class RenderApiTest {
     Assert.assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
 
     cdeEnvironmentForTests.setMockedContentAccess( mockedUserContentAccess );
+    verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
@@ -343,6 +376,7 @@ public class RenderApiTest {
     cdeEnvironmentForTests.setCanCreateContent( false );
     String expected = "This functionality is limited to users with permission 'Create Content'";
     Assert.assertEquals( expected, renderApi.newDashboard( "", false, false, null, null ) );
+    verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   private String doGetHeadersCase( String root,
