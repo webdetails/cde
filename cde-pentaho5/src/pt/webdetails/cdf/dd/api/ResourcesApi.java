@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -76,6 +76,9 @@ public class ResourcesApi {
   @Produces( TEXT_PLAIN )
   public void getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                            @Context HttpServletResponse response ) throws IOException {
+
+    resource = XSSHelper.getInstance().escape( resource );
+
     try {
       String extension = resource.replaceAll( ".*\\.(.*)", "$1" );
       if ( allowedExtensions.indexOf( extension ) < 0 ) {
@@ -123,6 +126,10 @@ public class ResourcesApi {
                               @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                               @Context HttpServletResponse response )
     throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
+    resource = XSSHelper.getInstance().escape( resource );
+
     getResource( resource, response );
   }
 
@@ -133,6 +140,10 @@ public class ResourcesApi {
                              @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                              @Context HttpServletResponse response )
     throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
+    resource = XSSHelper.getInstance().escape( resource );
+
     getResource( resource, response );
   }
 
@@ -143,6 +154,10 @@ public class ResourcesApi {
                                   @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                                   @Context HttpServletResponse response )
     throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
+    resource = XSSHelper.getInstance().escape( resource );
+
     response.setHeader( "content-disposition", "inline" );
 
     getResource( resource, response );
@@ -155,6 +170,10 @@ public class ResourcesApi {
                         @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                         @Context HttpServletResponse response )
     throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
+    resource = XSSHelper.getInstance().escape( resource );
+
     getResource( resource, response );
   }
 
@@ -165,6 +184,10 @@ public class ResourcesApi {
                    @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                    @Context HttpServletResponse response )
     throws Exception {
+
+    path = XSSHelper.getInstance().escape( path );
+    resource = XSSHelper.getInstance().escape( resource );
+
     getResource( resource, response );
   }
 
@@ -178,6 +201,12 @@ public class ResourcesApi {
                                @QueryParam( "access" ) String access,
                                @QueryParam( "showHiddenFiles" ) @DefaultValue( "false" ) boolean showHiddenFiles )
     throws IOException {
+
+    folder = XSSHelper.getInstance().escape( folder );
+    outputType = XSSHelper.getInstance().escape( outputType );
+    dashboardPath = XSSHelper.getInstance().escape( dashboardPath );
+    fileExtensions = XSSHelper.getInstance().escape( fileExtensions );
+    access = XSSHelper.getInstance().escape( access );
 
     if ( !StringUtils.isEmpty( outputType ) && outputType.equals( "json" ) ) {
       try {
@@ -261,6 +290,8 @@ public class ResourcesApi {
   public Response getSystemResource( @PathParam( "path" ) String path, @Context HttpServletResponse response )
     throws IOException {
 
+    path = XSSHelper.getInstance().escape( path );
+
     String extension = path.replaceAll( ".*\\.(.*)", "$1" );
     if ( allowedExtensions.indexOf( extension ) < 0 ) {
       // We can't provide this type of file
@@ -295,6 +326,9 @@ public class ResourcesApi {
   @Produces( { WILDCARD } )
   public void resource( @PathParam( "resource" ) String resource, @Context HttpServletResponse response )
     throws Exception {
+
+    resource = XSSHelper.getInstance().escape( resource );
+
     getResource( resource, response );
   }
 

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,27 +13,34 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.mockito.Mockito.spy;
+import junit.framework.Assert;
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import pt.webdetails.cpf.messaging.MockHttpServletRequest;
+import pt.webdetails.cpf.messaging.MockHttpServletResponse;
+import pt.webdetails.cpf.utils.CharsetHelper;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import junit.framework.Assert;
-import org.apache.commons.lang.StringUtils;
-import org.json.JSONObject;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-import pt.webdetails.cpf.messaging.MockHttpServletRequest;
-import pt.webdetails.cpf.messaging.MockHttpServletResponse;
-import pt.webdetails.cpf.utils.CharsetHelper;
+
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 public class SynchronizerApiTest {
 
@@ -54,16 +61,35 @@ public class SynchronizerApiTest {
   private static final List<String> widgetParams = new ArrayList<String>();
   private static final String cdfStructure = "MOCK_CDF_STRUCTURE";
   private String operation = "savesettings";
+  private static XSSHelper originalHelper;
+  private static XSSHelper mockHelper;
+
+  @BeforeClass
+  public static void setUp() {
+    originalHelper = XSSHelper.getInstance();
+  }
+
+  @AfterClass
+  public static void afterAll() {
+    XSSHelper.setInstance( originalHelper );
+  }
 
   @Before
-  public void setUp() throws Exception {
+  public void beforeEach() throws Exception {
     synchronizerApi = spy( new SynchronizerApiForTesting() );
-    servletRequest = new MockHttpServletRequest( "/pentaho-cdf/api/views", (Map)new HashMap<String, String[]>() );
+    servletRequest = new MockHttpServletRequest( "/pentaho-cdf/api/views", (Map) new HashMap<String, String[]>() );
     servletResponse = new MockHttpServletResponse( new ObjectOutputStream( new ByteArrayOutputStream() ) );
     servletResponse.setContentType( null );
     servletResponse.setCharacterEncoding( null );
     path = StringUtils.EMPTY;
     file = StringUtils.EMPTY;
+    mockHelper = mock( XSSHelper.class );
+    when( mockHelper.escape( any() ) ).thenAnswer( new Answer<Object>() {
+      @Override public Object answer( InvocationOnMock invocation ) throws Throwable {
+        return invocation.getArguments()[ 0 ];
+      }
+    } );
+    XSSHelper.setInstance( mockHelper );
   }
 
   @After
@@ -73,6 +99,7 @@ public class SynchronizerApiTest {
     servletResponse = null;
     file = null;
     path = null;
+    reset( mockHelper );
   }
 
   @Test
@@ -86,8 +113,8 @@ public class SynchronizerApiTest {
     HttpServletResponse mockResponse = Mockito.mock( HttpServletResponse.class );
 
     String result = new SynchronizerApiForTesting()
-        .syncronize( file, path, title, author, description, style, widgetName, widget, rendererType, widgetParams,
-        cdfStructure, operation, require , mockRequest, mockResponse );
+      .syncronize( file, path, title, author, description, style, widgetName, widget, rendererType, widgetParams,
+        cdfStructure, operation, require, mockRequest, mockResponse );
 
     JSONObject jsonObj = new JSONObject( result );
 
@@ -95,6 +122,7 @@ public class SynchronizerApiTest {
     Assert.assertTrue( jsonObj.getString( "result" ) != null );
     Assert.assertTrue( "false".equals( jsonObj.getString( "status" ) ) );
     Assert.assertTrue( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST".equals( jsonObj.getString( "result" ) ) );
+    verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
@@ -107,6 +135,7 @@ public class SynchronizerApiTest {
 
     Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
     Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
@@ -119,6 +148,7 @@ public class SynchronizerApiTest {
 
     Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
     Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
@@ -143,5 +173,6 @@ public class SynchronizerApiTest {
 
     Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
     Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 }
