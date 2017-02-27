@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,10 +13,8 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static javax.ws.rs.core.MediaType.WILDCARD;
-import static pt.webdetails.cpf.utils.MimeTypes.CSS;
-import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
+import javax.ws.rs.core.MediaType;
+import pt.webdetails.cpf.utils.MimeTypes;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,9 +71,12 @@ public class ResourcesApi {
 
   @GET
   @Path( "/get" )
-  @Produces( TEXT_PLAIN )
+  @Produces( MediaType.TEXT_PLAIN )
   public void getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                            @Context HttpServletResponse response ) throws IOException {
+
+    resource = XSSHelper.getInstance().escape( resource );
+
     try {
       String extension = resource.replaceAll( ".*\\.(.*)", "$1" );
       if ( allowedExtensions.indexOf( extension ) < 0 ) {
@@ -118,31 +119,43 @@ public class ResourcesApi {
 
   @GET
   @Path( "/getCss" )
-  @Produces( CSS )
+  @Produces( MimeTypes.CSS )
   public void getCssResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                               @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                               @Context HttpServletResponse response )
     throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
+    resource = XSSHelper.getInstance().escape( resource );
+
     getResource( resource, response );
   }
 
   @GET
   @Path( "/getJs" )
-  @Produces( JAVASCRIPT )
+  @Produces( MimeTypes.JAVASCRIPT )
   public void getJsResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                              @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                              @Context HttpServletResponse response )
     throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
+    resource = XSSHelper.getInstance().escape( resource );
+
     getResource( resource, response );
   }
 
   @GET
   @Path( "/getUntyped" )
-  @Produces( TEXT_PLAIN )
+  @Produces( MediaType.TEXT_PLAIN )
   public void getUntypedResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                                   @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                                   @Context HttpServletResponse response )
     throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
+    resource = XSSHelper.getInstance().escape( resource );
+
     response.setHeader( "content-disposition", "inline" );
 
     getResource( resource, response );
@@ -150,27 +163,35 @@ public class ResourcesApi {
 
   @GET
   @Path( "/getImg" )
-  @Produces( TEXT_PLAIN )
+  @Produces( MediaType.TEXT_PLAIN )
   public void getImage( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                         @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                         @Context HttpServletResponse response )
     throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
+    resource = XSSHelper.getInstance().escape( resource );
+
     getResource( resource, response );
   }
 
   @GET
   @Path( "/res" )
-  @Produces( TEXT_PLAIN )
+  @Produces( MediaType.TEXT_PLAIN )
   public void res( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                    @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                    @Context HttpServletResponse response )
     throws Exception {
+
+    path = XSSHelper.getInstance().escape( path );
+    resource = XSSHelper.getInstance().escape( resource );
+
     getResource( resource, response );
   }
 
   @POST
   @Path( "/explore" )
-  @Produces( TEXT_PLAIN )
+  @Produces( MediaType.TEXT_PLAIN )
   public String exploreFolder( @FormParam( "dir" ) @DefaultValue( "/" ) String folder,
                                @FormParam( "outputType" ) String outputType,
                                @QueryParam( "dashboardPath" ) @DefaultValue( "" ) String dashboardPath,
@@ -178,6 +199,12 @@ public class ResourcesApi {
                                @QueryParam( "access" ) String access,
                                @QueryParam( "showHiddenFiles" ) @DefaultValue( "false" ) boolean showHiddenFiles )
     throws IOException {
+
+    folder = XSSHelper.getInstance().escape( folder );
+    outputType = XSSHelper.getInstance().escape( outputType );
+    dashboardPath = XSSHelper.getInstance().escape( dashboardPath );
+    fileExtensions = XSSHelper.getInstance().escape( fileExtensions );
+    access = XSSHelper.getInstance().escape( access );
 
     if ( !StringUtils.isEmpty( outputType ) && outputType.equals( "json" ) ) {
       try {
@@ -257,9 +284,11 @@ public class ResourcesApi {
 
   @GET
   @Path( "/system/{path: [^?]+ }" )
-  @Produces( { WILDCARD } )
+  @Produces( { MediaType.WILDCARD } )
   public Response getSystemResource( @PathParam( "path" ) String path, @Context HttpServletResponse response )
     throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
 
     String extension = path.replaceAll( ".*\\.(.*)", "$1" );
     if ( allowedExtensions.indexOf( extension ) < 0 ) {
@@ -292,9 +321,12 @@ public class ResourcesApi {
 
   @GET
   @Path( "/{resource: [^?]+ }" )
-  @Produces( { WILDCARD } )
+  @Produces( { MediaType.WILDCARD } )
   public void resource( @PathParam( "resource" ) String resource, @Context HttpServletResponse response )
     throws Exception {
+
+    resource = XSSHelper.getInstance().escape( resource );
+
     getResource( resource, response );
   }
 

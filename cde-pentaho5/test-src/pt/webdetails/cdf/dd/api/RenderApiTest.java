@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,12 +13,12 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.mockito.Mockito.*;
-
 import junit.framework.Assert;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -56,6 +56,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.core.MediaType;
+import org.mockito.Mockito;
+
 public class RenderApiTest {
 
   private static RenderApi renderApi;
@@ -75,6 +78,8 @@ public class RenderApiTest {
   private static CdeEnvironmentForTests cdeEnvironmentForTests;
   private static IUserContentAccess mockedUserContentAccess;
   private static HttpServletRequest mockedHttpServletRequest;
+  private static XSSHelper originalHelper;
+  private static XSSHelper mockHelper;
 
   @BeforeClass
   public static void setUp() throws Exception {
@@ -84,9 +89,9 @@ public class RenderApiTest {
     baseProperties.add( getBasicFileFromFile( propertyName ) );
 
     //mock IUserContentAccess
-    mockedUserContentAccess = mock( IUserContentAccess.class );
-    when( mockedUserContentAccess.fileExists( anyString() ) ).thenReturn( true );
-    when( mockedUserContentAccess.fetchFile( anyString() ) )
+    mockedUserContentAccess = Mockito.mock( IUserContentAccess.class );
+    Mockito.when( mockedUserContentAccess.fileExists( Mockito.anyString() ) ).thenReturn( true );
+    Mockito.when( mockedUserContentAccess.fetchFile( Mockito.anyString() ) )
       .thenAnswer( new Answer<IBasicFile>() {
         @Override
         public IBasicFile answer( InvocationOnMock invocationOnMock ) throws Throwable {
@@ -94,9 +99,9 @@ public class RenderApiTest {
           return getBasicFileFromFile( file );
         }
       } );
-    when( mockedUserContentAccess.hasAccess( anyString(), any( FileAccess.class ) ) )
+    Mockito.when( mockedUserContentAccess.hasAccess( Mockito.anyString(), Mockito.any( FileAccess.class ) ) )
       .thenReturn( true );
-    when( mockedUserContentAccess.getFileInputStream( anyString() ) )
+    Mockito.when( mockedUserContentAccess.getFileInputStream( Mockito.anyString() ) )
       .thenAnswer( new Answer<InputStream>() {
         @Override
         public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {
@@ -105,10 +110,10 @@ public class RenderApiTest {
       } );
 
     //mock IReadAccess
-    IReadAccess mockedReadAccess = mock( IReadAccess.class );
-    when( mockedReadAccess.listFiles( anyString(), any( IBasicFileFilter.class ), anyInt() ) )
+    IReadAccess mockedReadAccess = Mockito.mock( IReadAccess.class );
+    Mockito.when( mockedReadAccess.listFiles( Mockito.anyString(), Mockito.any( IBasicFileFilter.class ), Mockito.anyInt() ) )
       .thenReturn( baseProperties );
-    when( mockedReadAccess.getFileInputStream( anyString() ) ).thenAnswer( new Answer<InputStream>() {
+    Mockito.when( mockedReadAccess.getFileInputStream( Mockito.anyString() ) ).thenAnswer( new Answer<InputStream>() {
       @Override
       public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {
         return getInputStreamFromFileName( (String) invocationOnMock.getArguments()[ 0 ] );
@@ -116,12 +121,12 @@ public class RenderApiTest {
     } );
 
     //mock IRWAccess
-    IRWAccess mockedRWAccess = mock( IRWAccess.class );
+    IRWAccess mockedRWAccess = Mockito.mock( IRWAccess.class );
 
     //mock IPluginResourceLocationManager
     IPluginResourceLocationManager mockedPluginResourceLocationManager =
-      mock( IPluginResourceLocationManager.class );
-    when( mockedPluginResourceLocationManager.getStyleResourceLocation( anyString() ) )
+      Mockito.mock( IPluginResourceLocationManager.class );
+    Mockito.when( mockedPluginResourceLocationManager.getStyleResourceLocation( Mockito.anyString() ) )
       .thenReturn( STYLE_CLEAN );
 
     JSONObject dataSourceDefinition = new JSONObject( "{ \"scriptable_scripting\": {"
@@ -148,27 +153,27 @@ public class RenderApiTest {
       + "\"cacheDuration\": {\"type\": \"NUMERIC\", \"placement\": \"ATTRIB\"},"
       + "\"cacheKeys\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"}}}}}" );
     //mock IDataSourceProvider
-    IDataSourceProvider ds = mock( IDataSourceProvider.class );
-    when( ds.getId() ).thenReturn( "cda" );
+    IDataSourceProvider ds = Mockito.mock( IDataSourceProvider.class );
+    Mockito.when( ds.getId() ).thenReturn( "cda" );
     List<IDataSourceProvider> dataSourceProviders = new ArrayList<IDataSourceProvider>();
     dataSourceProviders.add( ds );
 
     //mock IDataSourceManager
-    IDataSourceManager mockedDataSourceManager = mock( IDataSourceManager.class );
-    when( mockedDataSourceManager.getProviders() ).thenReturn( dataSourceProviders );
-    when( mockedDataSourceManager.getProviderJsDefinition( anyString() ) ).thenReturn( dataSourceDefinition );
+    IDataSourceManager mockedDataSourceManager = Mockito.mock( IDataSourceManager.class );
+    Mockito.when( mockedDataSourceManager.getProviders() ).thenReturn( dataSourceProviders );
+    Mockito.when( mockedDataSourceManager.getProviderJsDefinition( Mockito.anyString() ) ).thenReturn( dataSourceDefinition );
 
     //mock IUrlProvider
-    IUrlProvider mockedUrlProvider = mock( IUrlProvider.class );
-    when( mockedUrlProvider.getWebappContextRoot() ).thenReturn( DEFAULT_ROOT );
+    IUrlProvider mockedUrlProvider = Mockito.mock( IUrlProvider.class );
+    Mockito.when( mockedUrlProvider.getWebappContextRoot() ).thenReturn( DEFAULT_ROOT );
 
     //mock IUserSession
-    IUserSession mockedUserSession = mock( IUserSession.class );
-    when( mockedUserSession.isAdministrator() ).thenReturn( false );
+    IUserSession mockedUserSession = Mockito.mock( IUserSession.class );
+    Mockito.when( mockedUserSession.isAdministrator() ).thenReturn( false );
 
     // mock ICdeApiPathProvider
-    ICdeApiPathProvider mockedCdeApiPathProvider = mock( ICdeApiPathProvider.class );
-    when( mockedCdeApiPathProvider.getPluginStaticBaseUrl() ).thenReturn( "/" );
+    ICdeApiPathProvider mockedCdeApiPathProvider = Mockito.mock( ICdeApiPathProvider.class );
+    Mockito.when( mockedCdeApiPathProvider.getPluginStaticBaseUrl() ).thenReturn( "/" );
 
     cdeEnvironmentForTests = new CdeEnvironmentForTests();
     cdeEnvironmentForTests.setMockedContentAccess( mockedUserContentAccess );
@@ -183,8 +188,30 @@ public class RenderApiTest {
     renderApi = new RenderApiForTesting( cdeEnvironmentForTests );
     new CdeEngineForTests( cdeEnvironmentForTests );
 
-    mockedHttpServletRequest = mock( HttpServletRequest.class );
-    when( mockedHttpServletRequest.getParameterMap() ).thenReturn( new HashMap() );
+    mockedHttpServletRequest = Mockito.mock( HttpServletRequest.class );
+    Mockito.when( mockedHttpServletRequest.getParameterMap() ).thenReturn( new HashMap() );
+    originalHelper = XSSHelper.getInstance();
+  }
+
+  @AfterClass
+  public static void tearDown() {
+    XSSHelper.setInstance( originalHelper );
+  }
+
+  @Before
+  public void beforeEach() {
+    mockHelper = Mockito.mock( XSSHelper.class );
+    Mockito.when( mockHelper.escape( Mockito.anyString() ) ).thenAnswer( new Answer<Object>() {
+      @Override public Object answer( InvocationOnMock invocation ) throws Throwable {
+        return invocation.getArguments()[ 0 ];
+      }
+    } );
+    XSSHelper.setInstance( mockHelper );
+  }
+
+  @After
+  public void afterEach() {
+    Mockito.reset( mockHelper );
   }
 
   @Test
@@ -217,6 +244,7 @@ public class RenderApiTest {
     Assert.assertTrue( case4.contains( "/js/CDF.js" ) && case4.contains( "/css/CDF-CSS.css" ) );
     Assert.assertTrue( case5.contains( "https://testRoot/js/CDF.js" )
       && case5.contains( "https://testRoot/css/CDF-CSS.css" ) );
+    Mockito.verify( mockHelper, Mockito.atLeastOnce() ).escape( Mockito.anyString() );
   }
 
   @Test
@@ -248,6 +276,7 @@ public class RenderApiTest {
     Assert.assertTrue( legacyCase2.contains( cdfContextConfiguration ) );
 
     resetContextConfigurations();
+    Mockito.verify( mockHelper, Mockito.atLeastOnce() ).escape( Mockito.anyString() );
   }
 
   @Test
@@ -279,6 +308,7 @@ public class RenderApiTest {
     Assert.assertEquals( case4, case6 );
 
     resetContextConfigurations();
+    Mockito.verify( mockHelper, Mockito.atLeastOnce() ).escape( Mockito.anyString() );
   }
 
   @Test
@@ -297,8 +327,9 @@ public class RenderApiTest {
     Assert.assertEquals( "Dummy Dashboard has a SimpleParameter - dummyComponent",
       expected, parameters.replace( " ", "" ).replace( "\n", "" ) );
 
-    Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
+    Assert.assertTrue( servletResponse.getContentType().equals( MediaType.APPLICATION_JSON ) );
     Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    Mockito.verify( mockHelper, Mockito.atLeastOnce() ).escape( Mockito.anyString() );
   }
 
   @Test
@@ -317,8 +348,9 @@ public class RenderApiTest {
     Assert.assertEquals( "Dummy Dashboard has a data source - dummyDatasource",
       expected, parameters.replace( " ", "" ).replace( "\n", "" ) );
 
-    Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
+    Assert.assertTrue( servletResponse.getContentType().equals( MediaType.APPLICATION_JSON ) );
     Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    Mockito.verify( mockHelper, Mockito.atLeastOnce() ).escape( Mockito.anyString() );
   }
 
   @Test
@@ -327,15 +359,16 @@ public class RenderApiTest {
     String expected = "This functionality is limited to users with permission 'Create Content'";
     Assert.assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
 
-    IUserContentAccess testPermContentAccess = mock( IUserContentAccess.class );
-    when( testPermContentAccess.fileExists( anyString() ) ).thenReturn( true );
-    when( testPermContentAccess.hasAccess( anyString(), any( FileAccess.class ) ) ).thenReturn( false );
+    IUserContentAccess testPermContentAccess = Mockito.mock( IUserContentAccess.class );
+    Mockito.when( testPermContentAccess.fileExists( Mockito.anyString() ) ).thenReturn( true );
+    Mockito.when( testPermContentAccess.hasAccess( Mockito.anyString(), Mockito.any( FileAccess.class ) ) ).thenReturn( false );
     cdeEnvironmentForTests.setMockedContentAccess( testPermContentAccess );
     cdeEnvironmentForTests.setCanCreateContent( true );
     expected = "Access Denied or file not found - /path/to/dashboard.wcdf";
     Assert.assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
 
     cdeEnvironmentForTests.setMockedContentAccess( mockedUserContentAccess );
+    Mockito.verify( mockHelper, Mockito.atLeastOnce() ).escape( Mockito.anyString() );
   }
 
   @Test
@@ -343,6 +376,7 @@ public class RenderApiTest {
     cdeEnvironmentForTests.setCanCreateContent( false );
     String expected = "This functionality is limited to users with permission 'Create Content'";
     Assert.assertEquals( expected, renderApi.newDashboard( "", false, false, null, null ) );
+    Mockito.verify( mockHelper, Mockito.atLeastOnce() ).escape( Mockito.anyString() );
   }
 
   private String doGetHeadersCase( String root,

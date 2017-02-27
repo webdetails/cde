@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,8 +13,7 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA;
+import javax.ws.rs.core.MediaType;
 
 import com.sun.jersey.multipart.FormDataParam;
 import java.io.IOException;
@@ -69,7 +68,7 @@ public class SyncronizerApi { //TODO: synchronizer?
 
   @POST
   @Path( "/syncronizeDashboard" )
-  @Produces( APPLICATION_JSON )
+  @Produces( MediaType.APPLICATION_JSON )
   public String syncronize( @FormParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
                             @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @FormParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
@@ -86,7 +85,23 @@ public class SyncronizerApi { //TODO: synchronizer?
                             @Context HttpServletRequest servletRequest,
                             @Context HttpServletResponse servletResponse ) throws Exception {
 
-    servletResponse.setContentType( APPLICATION_JSON );
+    file = XSSHelper.getInstance().escape( file );
+    path = XSSHelper.getInstance().escape( path );
+    author = XSSHelper.getInstance().escape( author );
+    description = XSSHelper.getInstance().escape( description );
+    style = XSSHelper.getInstance().escape( style );
+    widgetName = XSSHelper.getInstance().escape( widgetName );
+    rendererType = XSSHelper.getInstance().escape( rendererType );
+    cdfStructure = XSSHelper.getInstance().escape( cdfStructure );
+    operation = XSSHelper.getInstance().escape( operation );
+    if ( null != widgetParams ) {
+      for ( int i = 0; i < widgetParams.size(); i++ ) {
+        widgetParams.add( i, XSSHelper.getInstance().escape( widgetParams.get( i ) ) );
+      }
+    }
+
+
+    servletResponse.setContentType( MediaType.APPLICATION_JSON );
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
 
     boolean isPreview = false;
@@ -183,7 +198,7 @@ public class SyncronizerApi { //TODO: synchronizer?
 
   @POST
   @Path( "/syncronizeTemplates" )
-  @Produces( APPLICATION_JSON )
+  @Produces( MediaType.APPLICATION_JSON )
   public void syncTemplates(
       @FormParam( MethodParams.OPERATION ) String operation,
       @FormParam( MethodParams.FILE ) String file,
@@ -191,7 +206,12 @@ public class SyncronizerApi { //TODO: synchronizer?
       @FormParam( MethodParams.RENDERER_TYPE ) String rendererType,
       @Context HttpServletResponse servletResponse ) throws IOException, DashboardStructureException, JSONException {
 
-    servletResponse.setContentType( APPLICATION_JSON );
+    file = XSSHelper.getInstance().escape( file );
+    rendererType = XSSHelper.getInstance().escape( rendererType );
+    cdfStructure = XSSHelper.getInstance().escape( cdfStructure );
+    operation = XSSHelper.getInstance().escape( operation );
+
+    servletResponse.setContentType( MediaType.APPLICATION_JSON );
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
 
     Object result = null;
@@ -206,11 +226,11 @@ public class SyncronizerApi { //TODO: synchronizer?
 
   @GET
   @Path( "/syncronizeStyles" )
-  @Produces( APPLICATION_JSON )
+  @Produces( MediaType.APPLICATION_JSON )
   public void syncStyles( @Context HttpServletResponse servletResponse )
       throws IOException, DashboardDesignerException, JSONException {
 
-    servletResponse.setContentType( APPLICATION_JSON );
+    servletResponse.setContentType( MediaType.APPLICATION_JSON );
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
 
     listStyles( servletResponse );
@@ -234,8 +254,8 @@ public class SyncronizerApi { //TODO: synchronizer?
 
   @POST
   @Path( "/saveDashboard" )
-  @Consumes( MULTIPART_FORM_DATA )
-  @Produces( APPLICATION_JSON )
+  @Consumes( MediaType.MULTIPART_FORM_DATA )
+  @Produces( MediaType.APPLICATION_JSON )
   public String saveDashboard( @FormDataParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
                                @FormDataParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
                                @FormDataParam( MethodParams.DESCRIPTION ) @DefaultValue( "" ) String description,
@@ -243,7 +263,13 @@ public class SyncronizerApi { //TODO: synchronizer?
                                @FormDataParam( MethodParams.OPERATION ) String operation,
                                @Context HttpServletResponse response ) throws Exception {
 
-    response.setContentType( APPLICATION_JSON );
+    file = XSSHelper.getInstance().escape( file );
+    title = XSSHelper.getInstance().escape( title );
+    description = XSSHelper.getInstance().escape( description );
+    cdfStructure = XSSHelper.getInstance().escape( cdfStructure );
+    operation = XSSHelper.getInstance().escape( operation );
+
+    response.setContentType( MediaType.APPLICATION_JSON );
     response.setCharacterEncoding( CharsetHelper.getEncoding() );
 
     boolean isPreview = false;

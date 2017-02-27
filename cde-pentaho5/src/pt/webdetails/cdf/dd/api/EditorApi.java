@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,12 +13,8 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_HTML;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
+import javax.ws.rs.core.MediaType;
+import pt.webdetails.cpf.utils.MimeTypes;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -57,11 +53,13 @@ public class EditorApi {
 
   @GET
   @Path( "/file/get" )
-  @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
-  @Produces( TEXT_PLAIN )
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+  @Produces( MediaType.TEXT_PLAIN )
   public String getFile( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                          @Context HttpServletResponse response )
     throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
 
     IResourceLoader loader = getResourceLoader( path );
     IReadAccess reader = loader.getReader();
@@ -78,8 +76,8 @@ public class EditorApi {
 
   @POST
   @Path( "/file/delete" )
-  @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
-  @Produces( JAVASCRIPT )
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+  @Produces( MimeTypes.JAVASCRIPT )
   public void deleteFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                           @Context HttpServletResponse response ) throws IOException, JSONException {
 
@@ -98,11 +96,13 @@ public class EditorApi {
 
   @POST
   @Path( "/file/write" )
-  @Consumes( { APPLICATION_XML, APPLICATION_JSON, APPLICATION_FORM_URLENCODED } )
-  @Produces( TEXT_PLAIN )
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED } )
+  @Produces( MediaType.TEXT_PLAIN )
   public String writeFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                            @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
                            @Context HttpServletResponse response ) throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
 
     IResourceLoader loader = getResourceLoader( path );
     IACAccess access = loader.getAccessControl();
@@ -127,11 +127,13 @@ public class EditorApi {
 
   @PUT
   @Path( "/file/write" )
-  @Consumes( { APPLICATION_XML, APPLICATION_JSON, APPLICATION_FORM_URLENCODED } )
-  @Produces( TEXT_PLAIN )
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED } )
+  @Produces( MediaType.TEXT_PLAIN )
   public String createFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
                             @Context HttpServletResponse response ) throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
 
     IResourceLoader loader = getResourceLoader( path );
     IACAccess access = loader.getAccessControl();
@@ -156,8 +158,8 @@ public class EditorApi {
 
   @GET
   @Path( "/file/canEdit" )
-  @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
-  @Produces( TEXT_PLAIN )
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+  @Produces( MediaType.TEXT_PLAIN )
   public String canEdit( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
     IResourceLoader loader = getResourceLoader( path );
     IACAccess contentAccess = loader.getAccessControl();
@@ -166,9 +168,11 @@ public class EditorApi {
 
   @POST
   @Path( "/createFolder" )
-  @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
   public String createFolder( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                               @Context HttpServletResponse response ) throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
 
     IResourceLoader loader = getResourceLoader( path );
     IReadAccess reader = loader.getReader();
@@ -201,8 +205,8 @@ public class EditorApi {
 
   @GET
   @Path( "/getExternalEditor" )
-  @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
-  @Produces( TEXT_HTML )
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+  @Produces( MediaType.TEXT_HTML )
   public String externalEditor() throws IOException {
     IReadAccess access = CdeEnvironment.getPluginSystemReader();
     if ( access.fileExists( EXTERNAL_EDITOR_PAGE ) ) {
@@ -217,8 +221,8 @@ public class EditorApi {
 
   @GET
   @Path( "/getComponentEditor" )
-  @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
-  @Produces( TEXT_HTML )
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+  @Produces( MediaType.TEXT_HTML )
   public String componentEditor() throws IOException {
     IReadAccess access = CdeEnvironment.getPluginSystemReader();
     if ( access.fileExists( COMPONENT_EDITOR_PAGE ) ) {
