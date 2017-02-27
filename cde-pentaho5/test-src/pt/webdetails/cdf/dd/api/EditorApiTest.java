@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -14,20 +14,51 @@
 package pt.webdetails.cdf.dd.api;
 
 import junit.framework.Assert;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.io.IOException;
+
+import org.mockito.Mockito;
 
 public class EditorApiTest {
 
   private static EditorApiForTesting editorApi;
   private final String FAKE_PATH = "/fake/path/";
   private final String FAKE_FILE = "fakeFile.css";
+  private static XSSHelper originalHelper;
+  private static XSSHelper mockHelper;
 
   @BeforeClass
-  public static void setUp() throws Exception {
+  public static void setUp() {
+    originalHelper = XSSHelper.getInstance();
+  }
+
+  @Before
+  public void beforeEach() throws Exception {
     editorApi = new EditorApiForTesting();
+    mockHelper = Mockito.mock( XSSHelper.class );
+    Mockito.when( mockHelper.escape( Mockito.anyString() ) ).thenAnswer( new Answer<Object>() {
+      @Override public Object answer( InvocationOnMock invocation ) throws Throwable {
+        return invocation.getArguments()[ 0 ];
+      }
+    } );
+    XSSHelper.setInstance( mockHelper );
+  }
+
+  @AfterClass
+  public static void tearDown() {
+    XSSHelper.setInstance( originalHelper );
+  }
+
+  @After
+  public void afterEach() {
+    Mockito.reset( mockHelper );
   }
 
   @Test
@@ -59,6 +90,7 @@ public class EditorApiTest {
     Assert.assertEquals( MESSAGE_ERROR, hasAccessSaveFalse );
     Assert.assertEquals( MESSAGE_NO_PERMISSIONS, noAccessSaveTrue );
     Assert.assertEquals( MESSAGE_NO_PERMISSIONS, noAccessSaveFalse );
+    Mockito.verify( mockHelper, Mockito.atLeastOnce() ).escape( Mockito.anyString() );
   }
 
 }
