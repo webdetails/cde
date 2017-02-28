@@ -28,11 +28,11 @@
         <dependency org="pentaho" name="cpf-core" rev="${dependency.pentaho-cpf-plugin.revision}" transitive="false" changing="true" />
         <dependency org="pentaho" name="cpf-pentaho" rev="${dependency.pentaho-cpf-plugin.revision}" transitive="false" changing="true" />
 
-        <!-- for karma testing 
+        <!-- for karma testing -->
         <dependency org="pentaho" name="pentaho-cdf-js" rev="${dependency.pentaho-cdf-plugin.revision}" transitive="false" changing="true" conf="js->default">
             <artifact name="pentaho-cdf-js" ext="zip"/>
         </dependency>
--->
+
 
         <dependency org="pentaho" name="cpf-core"     rev="${dependency.pentaho-cpf-plugin.revision}" transitive="false" changing="true" conf='runtime->default'/>
         <dependency org="pentaho" name="cpf-pentaho" rev="${dependency.pentaho-cpf-plugin.revision}" transitive="false" changing="true" conf='runtime->default'/>
