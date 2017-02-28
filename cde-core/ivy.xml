@@ -17,11 +17,11 @@
     </publications>
 
     <dependencies defaultconf="default->default" >
-      <!-- for karma testing 
+      <!-- for karma testing -->
       <dependency org="pentaho" name="pentaho-cdf-js" rev="${dependency.pentaho-cdf-plugin.revision}" transitive="false" changing="true" conf="js->default">
             <artifact name="pentaho-cdf-js" ext="zip"/>
         </dependency>
--->
+
 
       <!--  third party dependencies -->
       <dependency org="commons-logging"              name="commons-logging"      rev="1.1"           transitive="false"/>
