@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -85,6 +85,22 @@ public class SyncronizerApi { //TODO: synchronizer?
                             @FormParam( MethodParams.REQUIRE ) boolean require,
                             @Context HttpServletRequest servletRequest,
                             @Context HttpServletResponse servletResponse ) throws Exception {
+
+    file = XSSHelper.getInstance().escape( file );
+    path = XSSHelper.getInstance().escape( path );
+    author = XSSHelper.getInstance().escape( author );
+    description = XSSHelper.getInstance().escape( description );
+    style = XSSHelper.getInstance().escape( style );
+    widgetName = XSSHelper.getInstance().escape( widgetName );
+    rendererType = XSSHelper.getInstance().escape( rendererType );
+    cdfStructure = XSSHelper.getInstance().escape( cdfStructure );
+    operation = XSSHelper.getInstance().escape( operation );
+    if ( null != widgetParams ) {
+      for ( int i = 0; i < widgetParams.size(); i++ ) {
+        widgetParams.add( i, XSSHelper.getInstance().escape( widgetParams.get( i ) ) );
+      }
+    }
+
 
     servletResponse.setContentType( APPLICATION_JSON );
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
@@ -191,6 +207,11 @@ public class SyncronizerApi { //TODO: synchronizer?
       @FormParam( MethodParams.RENDERER_TYPE ) String rendererType,
       @Context HttpServletResponse servletResponse ) throws IOException, DashboardStructureException, JSONException {
 
+    file = XSSHelper.getInstance().escape( file );
+    rendererType = XSSHelper.getInstance().escape( rendererType );
+    cdfStructure = XSSHelper.getInstance().escape( cdfStructure );
+    operation = XSSHelper.getInstance().escape( operation );
+
     servletResponse.setContentType( APPLICATION_JSON );
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
 
@@ -242,6 +263,12 @@ public class SyncronizerApi { //TODO: synchronizer?
                                @FormDataParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
                                @FormDataParam( MethodParams.OPERATION ) String operation,
                                @Context HttpServletResponse response ) throws Exception {
+
+    file = XSSHelper.getInstance().escape( file );
+    title = XSSHelper.getInstance().escape( title );
+    description = XSSHelper.getInstance().escape( description );
+    cdfStructure = XSSHelper.getInstance().escape( cdfStructure );
+    operation = XSSHelper.getInstance().escape( operation );
 
     response.setContentType( APPLICATION_JSON );
     response.setCharacterEncoding( CharsetHelper.getEncoding() );

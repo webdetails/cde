@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -102,6 +102,12 @@ public class RenderApi {
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws IOException, ThingWriteException {
 
+    solution = XSSHelper.getInstance().escape( solution );
+    path = XSSHelper.getInstance().escape( path );
+    file = XSSHelper.getInstance().escape( file );
+    root = XSSHelper.getInstance().escape( root );
+    scheme = XSSHelper.getInstance().escape( scheme );
+
     String schemeToUse = "";
     if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
@@ -127,6 +133,12 @@ public class RenderApi {
                             @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws IOException, ThingWriteException {
+
+    solution = XSSHelper.getInstance().escape( solution );
+    path = XSSHelper.getInstance().escape( path );
+    file = XSSHelper.getInstance().escape( file );
+    root = XSSHelper.getInstance().escape( root );
+    scheme = XSSHelper.getInstance().escape( scheme );
 
     String schemeToUse = "";
     if ( !inferScheme ) {
@@ -154,6 +166,15 @@ public class RenderApi {
                         @QueryParam( MethodParams.VIEW ) @DefaultValue( "" ) String view,
                         @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                         @Context HttpServletRequest request ) throws IOException {
+
+    solution = XSSHelper.getInstance().escape( solution );
+    path = XSSHelper.getInstance().escape( path );
+    file = XSSHelper.getInstance().escape( file );
+    root = XSSHelper.getInstance().escape( root );
+    scheme = XSSHelper.getInstance().escape( scheme );
+    view = XSSHelper.getInstance().escape( view );
+    style = XSSHelper.getInstance().escape( style );
+
     String schemeToUse = "";
     if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
@@ -235,6 +256,15 @@ public class RenderApi {
                               @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                               @QueryParam( MethodParams.ALIAS ) @DefaultValue( "" ) String alias,
                               @Context HttpServletRequest request ) throws IOException {
+
+
+    path = XSSHelper.getInstance().escape( path );
+    root = XSSHelper.getInstance().escape( root );
+    scheme = XSSHelper.getInstance().escape( scheme );
+    view = XSSHelper.getInstance().escape( view );
+    style = XSSHelper.getInstance().escape( style );
+    alias = XSSHelper.getInstance().escape( alias );
+
     final String schemeToUse;
     if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
@@ -306,6 +336,9 @@ public class RenderApi {
     @Context HttpServletRequest servletRequest,
     @Context HttpServletResponse servletResponse ) throws IOException {
 
+
+    path = XSSHelper.getInstance().escape( path );
+
     servletResponse.setContentType( APPLICATION_JSON );
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
     setCorsHeaders( servletRequest, servletResponse );
@@ -337,6 +370,8 @@ public class RenderApi {
     @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
     @Context HttpServletRequest servletRequest,
     @Context HttpServletResponse servletResponse ) throws IOException, JSONException {
+
+    path = XSSHelper.getInstance().escape( path );
 
     servletResponse.setContentType( APPLICATION_JSON );
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
@@ -373,6 +408,10 @@ public class RenderApi {
     @Context HttpServletRequest request,
     @Context HttpServletResponse response ) throws Exception {
 
+    solution = XSSHelper.getInstance().escape( solution );
+    path = XSSHelper.getInstance().escape( path );
+    file = XSSHelper.getInstance().escape( file );
+
     String wcdfPath = getWcdfRelativePath( solution, path, file );
 
     if ( !CdeEnvironment.canCreateContent() ) {
@@ -401,6 +440,8 @@ public class RenderApi {
                               @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
                               @Context HttpServletRequest request,
                               @Context HttpServletResponse response ) throws Exception {
+
+    path = XSSHelper.getInstance().escape( path );
 
     if ( !CdeEnvironment.canCreateContent() ) {
       return "This functionality is limited to users with permission 'Create Content'";
