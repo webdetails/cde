@@ -22,7 +22,7 @@
      {
       "name": "name",
       "type": "Id",
-      "value": "IndexChart"
+      "value": "BarChart"
      },
      {
       "name": "listeners",
@@ -32,7 +32,7 @@
      {
       "name": "vizId",
       "type": "Datasource",
-      "value": "pentaho/visual/ccc/bar"
+      "value": "pentaho/visual/models/bar"
      },
      {
       "name": "vizOptions",
