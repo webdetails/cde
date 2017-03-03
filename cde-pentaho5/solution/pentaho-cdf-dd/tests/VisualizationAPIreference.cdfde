@@ -1,703 +1,194 @@
 {
- "layout": {
-  "title": "CDF - Sample structure",
-  "rows": [
-   {
-    "id": "8073c592-d3d9-5258-5f45-69e03e2e9b44",
-    "type": "LayoutResourceCode",
-    "typeDesc": "Resource",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "requireDefineOverride",
-      "type": "Id"
-     },
-     {
-      "name": "resourceType",
-      "value": "Javascript",
-      "type": "Label"
-     },
-     {
-      "name": "resourceCode",
-      "value": "delete define;\ndelete require; ",
-      "type": "Resource"
-     }
-    ]
-   },
-   {
-    "id": "cb31c630-ac40-192f-6a10-4130a5ae070e",
-    "type": "LayoutResourceFile",
-    "typeDesc": "Resource",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "webcontext",
-      "type": "Id"
-     },
-     {
-      "name": "resourceFile",
-      "value": "webcontext.js?context=mantle&amp;requireJsOnly=true",
-      "type": "ResourceFile"
-     },
-     {
-      "name": "resourceType",
-      "value": "Javascript",
-      "type": "Label"
-     }
-    ]
-   },
-   {
-    "id": "6b92846b-526c-cb97-0949-4551f920ae12",
-    "type": "LayoutResourceFile",
-    "typeDesc": "Resource",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "template",
-      "type": "Id"
-     },
-     {
-      "name": "resourceFile",
-      "value": "${res:../template.css}",
-      "type": "ResourceFile"
-     },
-     {
-      "name": "resourceType",
-      "value": "Css",
-      "type": "Label"
-     }
-    ]
-   },
-   {
-    "id": "03a83220-159d-d841-c40d-0a04044f3e51",
-    "type": "LayoutResourceFile",
-    "typeDesc": "Resource",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "css",
-      "type": "Id"
-     },
-     {
-      "name": "resourceFile",
-      "value": "${res:../cdeReference.css}",
-      "type": "ResourceFile"
-     },
-     {
-      "name": "resourceType",
-      "value": "Css",
-      "type": "Label"
-     }
-    ]
-   },
-   {
-    "id": "7746f3c7-ccfb-9cba-b7cd-f5dae17d6a63",
-    "type": "LayoutRow",
-    "typeDesc": "Row",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "Spacer",
-      "type": "Id"
-     },
-     {
-      "name": "height",
-      "value": "20",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "23974863-0f28-ff9c-62f8-30c632ba973d",
-    "type": "LayoutRow",
-    "typeDesc": "Row",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "Title",
-      "type": "Id"
-     },
-     {
-      "name": "height",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
-     },
-     {
-      "name": "cssClass",
-      "value": "WDheader",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "9e153dff-b071-01a0-54dd-3666a857debe",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "23974863-0f28-ff9c-62f8-30c632ba973d",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "Visualization API reference ",
-      "type": "Html"
-     },
-     {
-      "name": "fontSize",
-      "value": "18",
-      "type": "Integer"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "2d99f333-9735-6b03-85d5-93d4a0142d07",
-    "type": "LayoutRow",
-    "typeDesc": "Row",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "DescriptionBody",
-      "type": "Id"
-     },
-     {
-      "name": "height",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "46e27ef7-a339-d5fb-0d0f-728bdaec0476",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "2d99f333-9735-6b03-85d5-93d4a0142d07",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "<p>You can now use visualizations registered in Pentaho Visualization API as regular CDF components.</p>\n\n<p>This samples shows a dashboard using a visualization (Index Chart) developed and registered to be used\n    in Analyzer.\n</p>\n\n<p>In order for the sample to run, you must ensure that you have installed the 12 days of Visualizations plugin,\navailable <a href='http://www.pentaho.com/12days-of-Big-Data-Visualizations.html'>here</a>.</p>\n\n<p>Download the appropriate zip and unzip it into the system folder, restarting the server afterwards.</p>\n\n<p><b>This Sample only runs in Pentaho 5.1 or later.</b></p> ",
-      "type": "Html"
-     },
-     {
-      "name": "fontSize",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "3373d2ed-9187-cecd-8cae-44ebdcf70ce5",
-    "type": "LayoutRow",
-    "typeDesc": "Row",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "Dashboard",
-      "type": "Id"
-     },
-     {
-      "name": "height",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
-     },
-     {
-      "name": "cssClass",
-      "value": "WDh1",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "410cd2fc-be4b-8d1b-c83a-016744d39a9c",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "3373d2ed-9187-cecd-8cae-44ebdcf70ce5",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "Index Chart ",
-      "type": "Html"
-     },
-     {
-      "name": "fontSize",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "c2b51a60-0d9d-491d-e46f-2a2bf806920e",
-    "type": "LayoutRow",
-    "typeDesc": "Row",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "ChartBody",
-      "type": "Id"
-     },
-     {
-      "name": "height",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
-     },
-     {
-      "name": "cssClass",
-      "value": "WDdataCellBody",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "100379ee-749c-6807-e780-83f2aa5d6a79",
-    "type": "LayoutColumn",
-    "typeDesc": "Column",
-    "parent": "c2b51a60-0d9d-491d-e46f-2a2bf806920e",
-    "properties": [
-     {
-      "name": "name",
-      "value": "ChartObj",
-      "type": "Id"
-     },
-     {
-      "name": "columnSpan",
-      "value": "22",
-      "type": "Integer"
-     },
-     {
-      "name": "columnPrepend",
-      "value": "1",
-      "type": "Integer"
-     },
-     {
-      "name": "columnAppend",
-      "value": "1",
-      "type": "Integer"
-     },
-     {
-      "name": "columnPrependTop",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnAppendBottom",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnBorder",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnBigBorder",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "height",
-      "value": "450",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "34cf299d-cf4a-5d64-32d7-3481049f366b",
-    "type": "LayoutRow",
-    "typeDesc": "Row",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "NotesTitle",
-      "type": "Id"
-     },
-     {
-      "name": "height",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
-     },
-     {
-      "name": "cssClass",
-      "value": "WDh1",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "ff5ad77a-41bb-0efd-bd30-85f8e1e870cf",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "34cf299d-cf4a-5d64-32d7-3481049f366b",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "Implementation Notes ",
-      "type": "Html"
-     },
-     {
-      "name": "fontSize",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "eca59522-e93b-5c58-fbcd-0e81ab91f46f",
-    "type": "LayoutRow",
-    "typeDesc": "Row",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "NotesBody",
-      "type": "Id"
-     },
-     {
-      "name": "height",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "aac677e0-0720-fab4-4a66-fe849af027a7",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "eca59522-e93b-5c58-fbcd-0e81ab91f46f",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "\n12 days of Visualization uses require.js to expose the visualizations<p>\nSince CDF/CDE does not use require.js at the moment, we've had to include some extra resources in the dashboard<p>\n\n<ul>\n    <li>Resource <i>requireDefineOverride</i> deletes a custom CDF implementation for the require/define methods, and</li>\n    <li>Resource <i>webcontext</i> brings in the Pentaho webcontext.js exposing the require.js configurations</li>\n</ul> ",
-      "type": "Html"
-     },
-     {
-      "name": "fontSize",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   }
-  ]
- },
  "components": {
   "rows": [
    {
     "id": "OTHERCOMPONENTS",
     "name": "Others",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "type": "Label",
+      "value": "Others"
+     }
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
+   },
+   {
+    "id": "f406b52e-1fd6-6f76-160b-1f8e94dc8337",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "BarChart"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "[]"
+     },
+     {
+      "name": "vizId",
+      "type": "Datasource",
+      "value": "pentaho/visual/models/bar"
+     },
+     {
+      "name": "vizOptions",
+      "type": "ValuesArray",
+      "value": "[[\"columns\",\"columnsParam\"],[\"measures\",\"measureParam\"]]"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "vizQueryScript"
+     },
+     {
+      "name": "height",
+      "value": "400",
+      "type": "Integer"
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "refreshPeriod",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "width",
+      "value": "600",
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${p:ChartObj}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": "function () {\n    this.dashboard.setParameter(\"columnsParam\", {attributes: [\"Product\"]});\n    this.dashboard.setParameter(\"measureParam\", {attributes: [\"Sales\"]});\n} "
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": "function () {\n    $(\"#svgDiv\").css('position', 'relative');\n    $(\"#visualPanelElement-0\").css('background-color', 'transparent') ; \n} "
+     },
+     {
+      "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     }
+    ],
+    "type": "ComponentsvisualizationAPI",
+    "typeDesc": "Visualization API Component"
+   },
+   {
+    "id": "PARAMETERS",
+    "name": "Parameters",
     "type": "Label",
     "typeDesc": "<i>Group</i>",
     "parent": "UnIqEiD",
     "properties": [
      {
       "name": "Group",
-      "value": "Others",
+      "value": "Parameters",
       "type": "Label"
      }
     ]
    },
    {
-    "id": "f406b52e-1fd6-6f76-160b-1f8e94dc8337",
-    "type": "ComponentsvisualizationAPI",
-    "typeDesc": "Visualization API Component",
-    "parent": "OTHERCOMPONENTS",
+    "id": "e7cd43db-a4c1-a2cd-37ec-7bb6fe42c476",
+    "type": "ComponentsParameter",
+    "typeDesc": "Simple parameter",
+    "parent": "PARAMETERS",
     "properties": [
      {
       "name": "name",
-      "value": "IndexChart",
+      "value": "columnsParam",
       "type": "Id"
      },
      {
-      "name": "listeners",
-      "value": "[]",
-      "type": "Listeners"
+      "name": "propertyValue",
+      "value": "\"Markets\"",
+      "type": "String"
      },
      {
-      "name": "vizId",
-      "value": "x-twelveDaysViz/index",
-      "type": "Datasource"
+      "name": "parameterViewRole",
+      "value": "unused",
+      "type": "parameterViewRoleCustom"
      },
      {
-      "name": "vizOptions",
-      "value": "[]",
-      "type": "ValuesArray"
-     },
-     {
-      "name": "dataSource",
-      "value": "vizQueryScript",
-      "type": "Datasource"
-     },
-     {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
-     },
-     {
-      "name": "refreshPeriod",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "htmlObject",
-      "value": "${p:ChartObj}",
-      "type": "HtmlObject"
-     },
-     {
-      "name": "executeAtStart",
-      "value": "true",
+      "name": "bookmarkable",
+      "value": "false",
       "type": "Boolean"
      },
      {
-      "name": "preExecution",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "postFetch",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "postExecution",
-      "value": "function () {\n    $(\"#svgDiv\").css('position', 'relative');\n    $(\"#visualPanelElement-0\").css('background-color', 'transparent') ; \n} ",
-      "type": "JavaScript"
-     },
-     {
-      "name": "preChange",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "postChange",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
+      "name": "public",
+      "value": "false",
+      "type": "Boolean"
      }
-    ]
+    ],
+    "rowName": "Simple Parameter"
+   },
+   {
+    "id": "150c4164-ddc4-fdc9-4a35-d36b04ca5d95",
+    "type": "ComponentsParameter",
+    "typeDesc": "Simple parameter",
+    "parent": "PARAMETERS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "measureParam",
+      "type": "Id"
+     },
+     {
+      "name": "propertyValue",
+      "value": "\"Sales\"",
+      "type": "String"
+     },
+     {
+      "name": "parameterViewRole",
+      "value": "unused",
+      "type": "parameterViewRoleCustom"
+     },
+     {
+      "name": "bookmarkable",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "public",
+      "value": "false",
+      "type": "Boolean"
+     }
+    ],
+    "rowName": "Simple Parameter"
    }
   ]
  },
@@ -706,21 +197,19 @@
    {
     "id": "SCRIPTING",
     "name": "SCRIPTING Queries",
-    "type": "Label",
-    "typeDesc": "<i>Group</i>",
     "parent": "UnIqEiD",
     "properties": [
      {
       "name": "Group",
-      "value": "SCRIPTING Queries",
-      "type": "Label"
+      "type": "Label",
+      "value": "SCRIPTING Queries"
      }
-    ]
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
    },
    {
     "id": "a4bca940-80a0-7286-2b65-08a976ff06f6",
-    "type": "Componentsscriptable_scripting",
-    "typeDesc": "scriptable over scripting",
     "meta": "CDA",
     "meta_conntype": "scripting.scripting",
     "meta_datype": "scriptable",
@@ -728,157 +217,628 @@
     "properties": [
      {
       "name": "name",
-      "value": "vizQueryScript",
-      "type": "Id"
-     },
-     {
-      "name": "language",
-      "value": "beanshell",
-      "type": "String"
+      "type": "Id",
+      "value": "vizQueryScript"
      },
      {
       "name": "initscript",
-      "value": "",
-      "type": "String"
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "language",
+      "type": "String",
+      "value": "beanshell"
      },
      {
       "name": "access",
-      "value": "public",
-      "type": "Access"
+      "type": "Access",
+      "value": "public"
      },
      {
       "name": "query",
-      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Markets\",\n\"Product\",\n\"Sales\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,String.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Classic Cars\")\n,new Float(\"411956.300\")\n});\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Motorcycles\")\n,new Float(\"189818.230\")\n});\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Planes\")\n,new Float(\"121426.199\")\n});\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Ships\")\n,new Float(\"38393.48\")\n});\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Trains\")\n,new Float(\"9907.07\")\n});\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Trucks and Buses\")\n,new Float(\"145665.690\")\n});\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Vintage Cars\")\n,new Float(\"364538.920\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Classic Cars\")\n,new Float(\"2091600.639\")\n});\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Motorcycles\")\n,new Float(\"507138.280\")\n});\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Planes\")\n,new Float(\"491654.819\")\n});\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Ships\")\n,new Float(\"427264.679\")\n});\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Trains\")\n,new Float(\"138506.18\")\n});\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Trucks and Buses\")\n,new Float(\"500978.819\")\n});\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Vintage Cars\")\n,new Float(\"851080.899\")\n});\n\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Classic Cars\")\n,new Float(\"181601.490\")\n});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Motorcycles\")\n,new Float(\"52619.49\")\n});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Planes\")\n,new Float(\"109733.139\")\n});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Ships\")\n,new Float(\"33015.54\")\n});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Trains\")\n,new Float(\"16802.379\")\n});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Trucks and Buses\")\n,new Float(\"57847.659\")\n});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Vintage Cars\")\n,new Float(\"52337.88\")\n});\n\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Classic Cars\")\n,new Float(\"1406261.439\")\n});\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Motorcycles\")\n,new Float(\"524549.190\")\n});\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Planes\")\n,new Float(\"353942.96\")\n});\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Ships\")\n,new Float(\"249997.150\")\n});\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Trains\")\n,new Float(\"69253.560\")\n});\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Trucks and Buses\")\n,new Float(\"449788.399\")\n});\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Vintage Cars\")\n,new Float(\"798268.690\")\n});\n\n\n\nreturn model;\n",
-      "type": "SqlQuery"
+      "type": "SqlQuery",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Markets\",\n\"Product\",\n\"Sales\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,String.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Classic Cars\")\n,new Float(\"411956.300\")\n});\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Motorcycles\")\n,new Float(\"189818.230\")\n});\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Planes\")\n,new Float(\"121426.199\")\n});\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Ships\")\n,new Float(\"38393.48\")\n});\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Trains\")\n,new Float(\"9907.07\")\n});\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Trucks and Buses\")\n,new Float(\"145665.690\")\n});\nmodel.addRow(new Object[]{ new String(\"APAC\"), new String(\"Vintage Cars\")\n,new Float(\"364538.920\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Classic Cars\")\n,new Float(\"2091600.639\")\n});\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Motorcycles\")\n,new Float(\"507138.280\")\n});\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Planes\")\n,new Float(\"491654.819\")\n});\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Ships\")\n,new Float(\"427264.679\")\n});\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Trains\")\n,new Float(\"138506.18\")\n});\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Trucks and Buses\")\n,new Float(\"500978.819\")\n});\nmodel.addRow(new Object[]{ new String(\"EMEA\"), new String(\"Vintage Cars\")\n,new Float(\"851080.899\")\n});\n\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Classic Cars\")\n,new Float(\"181601.490\")\n});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Motorcycles\")\n,new Float(\"52619.49\")\n});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Planes\")\n,new Float(\"109733.139\")\n});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Ships\")\n,new Float(\"33015.54\")\n});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Trains\")\n,new Float(\"16802.379\")\n});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Trucks and Buses\")\n,new Float(\"57847.659\")\n});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new String(\"Vintage Cars\")\n,new Float(\"52337.88\")\n});\n\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Classic Cars\")\n,new Float(\"1406261.439\")\n});\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Motorcycles\")\n,new Float(\"524549.190\")\n});\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Planes\")\n,new Float(\"353942.96\")\n});\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Ships\")\n,new Float(\"249997.150\")\n});\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Trains\")\n,new Float(\"69253.560\")\n});\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Trucks and Buses\")\n,new Float(\"449788.399\")\n});\nmodel.addRow(new Object[]{ new String(\"NA\"), new String(\"Vintage Cars\")\n,new Float(\"798268.690\")\n});\n\n\n\nreturn model;\n"
      },
      {
       "name": "parameters",
-      "value": "[]",
-      "type": "CdaParameters"
-     },
-     {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
-     },
-     {
-      "name": "cdacolumns",
-      "value": "[]",
-      "type": "CdaColumnsArray"
+      "type": "CdaParameters",
+      "value": "[]"
      },
      {
       "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
+      "type": "CdaCalculatedColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "cdacolumns",
+      "type": "CdaColumnsArray",
+      "value": "[]"
      },
      {
       "name": "output",
+      "type": "IndexArray",
+      "value": "[]"
+     },
+     {
+      "name": "outputMode",
+      "type": "OutputMode",
+      "value": "include"
+     },
+     {
+      "name": "cacheKeys",
       "value": "[]",
-      "type": "IndexArray"
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
-      "value": 3600,
-      "type": "Integer"
+      "type": "Integer",
+      "value": 3600
      },
      {
       "name": "cache",
-      "value": "true",
-      "type": "Boolean"
+      "type": "Boolean",
+      "value": "true"
      }
-    ]
+    ],
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting"
    },
    {
     "id": "MDX",
     "name": "MDX Queries",
-    "type": "Label",
-    "typeDesc": "<i>Group</i>",
     "parent": "UnIqEiD",
     "properties": [
      {
       "name": "Group",
-      "value": "MDX Queries",
-      "type": "Label"
+      "type": "Label",
+      "value": "MDX Queries"
      }
-    ]
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
    },
    {
     "id": "9b7a4b50-242f-ff79-c3bd-c6586b1e139c",
-    "type": "Componentsmdx_mondrianJndi",
-    "typeDesc": "mdx over mondrianJndi",
+    "meta": "CDA",
+    "meta_conntype": "mondrian.jndi",
+    "meta_datype": "mdx",
     "parent": "MDX",
     "properties": [
      {
       "name": "name",
-      "value": "vizQuery",
-      "type": "Id"
+      "type": "Id",
+      "value": "vizQuery"
      },
      {
       "name": "access",
-      "value": "public",
-      "type": "Access"
+      "type": "Access",
+      "value": "public"
      },
      {
       "name": "jndi",
-      "value": "SampleData",
-      "type": "Jndi"
+      "type": "Jndi",
+      "value": "SampleData"
      },
      {
       "name": "catalog",
-      "value": "mondrian:/SteelWheels",
-      "type": "MondrianCatalog"
+      "type": "MondrianCatalog",
+      "value": "mondrian:/SteelWheels"
      },
      {
       "name": "query",
-      "value": "WITH\nSET [*NATIVE_CJ_SET] AS 'NONEMPTYCROSSJOIN([*BASE_MEMBERS__Markets_],[*BASE_MEMBERS__Product_])'\nSET [*BASE_MEMBERS__Measures_] AS '{[Measures].[*FORMATTED_MEASURE_0]}'\nSET [*BASE_MEMBERS__Markets_] AS '[Markets].[Territory].MEMBERS'\nSET [*CJ_ROW_AXIS] AS 'GENERATE([*NATIVE_CJ_SET], {([Markets].CURRENTMEMBER,[Product].CURRENTMEMBER)})'\nSET [*BASE_MEMBERS__Product_] AS '[Product].[Line].MEMBERS'\nSET [*SORTED_ROW_AXIS] AS 'ORDER([*CJ_ROW_AXIS],[Markets].CURRENTMEMBER.ORDERKEY,BASC,[Product].CURRENTMEMBER.ORDERKEY,BASC)'\nMEMBER [Measures].[*FORMATTED_MEASURE_0] AS '[Measures].[Sales]', FORMAT_STRING = '#,###', SOLVE_ORDER=500\nSELECT\n[*BASE_MEMBERS__Measures_] ON COLUMNS\n,NON EMPTY\n[*SORTED_ROW_AXIS] ON ROWS\nFROM [SteelWheelsSales]",
-      "type": "SqlQuery"
+      "type": "SqlQuery",
+      "value": "WITH\nSET [*NATIVE_CJ_SET] AS 'NONEMPTYCROSSJOIN([*BASE_MEMBERS__Markets_],[*BASE_MEMBERS__Product_])'\nSET [*BASE_MEMBERS__Measures_] AS '{[Measures].[*FORMATTED_MEASURE_0]}'\nSET [*BASE_MEMBERS__Markets_] AS '[Markets].[Territory].MEMBERS'\nSET [*CJ_ROW_AXIS] AS 'GENERATE([*NATIVE_CJ_SET], {([Markets].CURRENTMEMBER,[Product].CURRENTMEMBER)})'\nSET [*BASE_MEMBERS__Product_] AS '[Product].[Line].MEMBERS'\nSET [*SORTED_ROW_AXIS] AS 'ORDER([*CJ_ROW_AXIS],[Markets].CURRENTMEMBER.ORDERKEY,BASC,[Product].CURRENTMEMBER.ORDERKEY,BASC)'\nMEMBER [Measures].[*FORMATTED_MEASURE_0] AS '[Measures].[Sales]', FORMAT_STRING = '#,###', SOLVE_ORDER=500\nSELECT\n[*BASE_MEMBERS__Measures_] ON COLUMNS\n,NON EMPTY\n[*SORTED_ROW_AXIS] ON ROWS\nFROM [SteelWheelsSales]"
      },
      {
       "name": "parameters",
-      "value": "[]",
-      "type": "CdaParameters"
-     },
-     {
-      "name": "output",
-      "value": "[]",
-      "type": "IndexArray"
-     },
-     {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
-     },
-     {
-      "name": "cdacolumns",
-      "value": "[]",
-      "type": "CdaColumnsArray"
-     },
-     {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
+      "type": "CdaParameters",
+      "value": "[]"
      },
      {
       "name": "bandedMode",
-      "value": "compact",
-      "type": "BandedMode"
+      "type": "BandedMode",
+      "value": "compact"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "type": "CdaCalculatedColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "cdacolumns",
+      "type": "CdaColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "output",
+      "type": "IndexArray",
+      "value": "[]"
+     },
+     {
+      "name": "outputMode",
+      "type": "OutputMode",
+      "value": "include"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
-      "value": "3600",
-      "type": "Integer"
+      "type": "Integer",
+      "value": "3600"
      },
      {
       "name": "cache",
-      "value": "true",
-      "type": "Boolean"
+      "type": "Boolean",
+      "value": "true"
      }
     ],
-    "meta": "CDA",
-    "meta_conntype": "mondrian.jndi",
-    "meta_datype": "mdx"
+    "type": "Componentsmdx_mondrianJndi",
+    "typeDesc": "mdx over mondrianJndi"
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/VisualizationAPIreference.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/VisualizationAPIreference.cdfde",
+ "layout": {
+  "rows": [
+   {
+    "id": "8073c592-d3d9-5258-5f45-69e03e2e9b44",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "requireDefineOverride"
+     },
+     {
+      "name": "resourceCode",
+      "type": "Resource",
+      "value": "delete define;\ndelete require; "
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Javascript"
+     }
+    ],
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "cb31c630-ac40-192f-6a10-4130a5ae070e",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "webcontext"
+     },
+     {
+      "name": "resourceFile",
+      "type": "ResourceFile",
+      "value": "webcontext.js?context=mantle&amp;requireJsOnly=true"
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Javascript"
+     }
+    ],
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "6b92846b-526c-cb97-0949-4551f920ae12",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template"
+     },
+     {
+      "name": "resourceFile",
+      "type": "ResourceFile",
+      "value": "${res:../template.css}"
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Css"
+     }
+    ],
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "03a83220-159d-d841-c40d-0a04044f3e51",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "css"
+     },
+     {
+      "name": "resourceFile",
+      "type": "ResourceFile",
+      "value": "${res:../cdeReference.css}"
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Css"
+     }
+    ],
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "7746f3c7-ccfb-9cba-b7cd-f5dae17d6a63",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "Spacer"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": "20"
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "23974863-0f28-ff9c-62f8-30c632ba973d",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "Title"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "WDheader"
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "9e153dff-b071-01a0-54dd-3666a857debe",
+    "parent": "23974863-0f28-ff9c-62f8-30c632ba973d",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "Visualization API reference "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": "18"
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "2d99f333-9735-6b03-85d5-93d4a0142d07",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "DescriptionBody"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "46e27ef7-a339-d5fb-0d0f-728bdaec0476",
+    "parent": "2d99f333-9735-6b03-85d5-93d4a0142d07",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<p>You can now use visualizations registered in Pentaho Visualization API as regular CDF components.</p>\n\n<p>This samples shows a dashboard using a CCC visualization (Bar Chart) registered as a Viz Api.\n</p>\n\n<p>The VizOptions allow you to map the columns in your data to the Visual Roles of the visualization.\n    This is done using the vizOptions property. Each visualization exposes its visual roles and other options\n    as part of its model.\n</p> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "3373d2ed-9187-cecd-8cae-44ebdcf70ce5",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "Dashboard"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "WDh1"
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "410cd2fc-be4b-8d1b-c83a-016744d39a9c",
+    "parent": "3373d2ed-9187-cecd-8cae-44ebdcf70ce5",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "VizAPI Bar Chart "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "c2b51a60-0d9d-491d-e46f-2a2bf806920e",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "ChartBody"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "WDdataCellBody"
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "100379ee-749c-6807-e780-83f2aa5d6a79",
+    "parent": "c2b51a60-0d9d-491d-e46f-2a2bf806920e",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "ChartObj"
+     },
+     {
+      "name": "columnSpan",
+      "type": "Integer",
+      "value": "22"
+     },
+     {
+      "name": "columnPrepend",
+      "type": "Integer",
+      "value": "1"
+     },
+     {
+      "name": "columnAppend",
+      "type": "Integer",
+      "value": "1"
+     },
+     {
+      "name": "columnPrependTop",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnAppendBottom",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnBorder",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnBigBorder",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": "450"
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutColumn",
+    "typeDesc": "Column"
+   }
+  ],
+  "title": "CDF - Sample structure"
+ }
 }

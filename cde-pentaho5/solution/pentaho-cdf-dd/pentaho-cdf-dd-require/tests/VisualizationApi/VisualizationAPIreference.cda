@@ -2,7 +2,7 @@
 <CDADescriptor>
    <DataSources>
       <Connection id="vizQueryScript" type="scripting.scripting">
-         <Initscript></Initscript>
+         <Initscript/>
          <Language>beanshell</Language>
       </Connection>
       <Connection id="vizQuery" type="mondrian.jndi">
@@ -10,12 +10,13 @@
          <Jndi>SampleData</Jndi>
       </Connection>
    </DataSources>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="vizQueryScript"
-               id="vizQueryScript"
+   <DataAccess access="public" connection="vizQueryScript" id="vizQueryScript"
                type="scriptable">
+      <Name>vizQueryScript</Name>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
 
 String[] columnNames = new String[]{
 "Markets",
@@ -123,15 +124,15 @@ model.addRow(new Object[]{ new String("NA"), new String("Vintage Cars")
 
 
 
-return model;</Query>
+return model;]]></Query>
    </DataAccess>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="vizQuery"
-               id="vizQuery"
-               type="mdx">
+   <DataAccess access="public" connection="vizQuery" id="vizQuery" type="mdx">
+      <Name>vizQuery</Name>
       <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>WITH
+      <Query><![CDATA[WITH
 SET [*NATIVE_CJ_SET] AS 'NONEMPTYCROSSJOIN([*BASE_MEMBERS__Markets_],[*BASE_MEMBERS__Product_])'
 SET [*BASE_MEMBERS__Measures_] AS '{[Measures].[*FORMATTED_MEASURE_0]}'
 SET [*BASE_MEMBERS__Markets_] AS '[Markets].[Territory].MEMBERS'
@@ -143,6 +144,6 @@ SELECT
 [*BASE_MEMBERS__Measures_] ON COLUMNS
 ,NON EMPTY
 [*SORTED_ROW_AXIS] ON ROWS
-FROM [SteelWheelsSales]</Query>
+FROM [SteelWheelsSales]]]></Query>
    </DataAccess>
 </CDADescriptor>
