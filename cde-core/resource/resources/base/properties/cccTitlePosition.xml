@@ -2,7 +2,7 @@
   <Header>
     <Name>cccTitlePosition</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>top</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>titlePosition</Description>
     <Tooltip>The docking position of the panel.</Tooltip>
     <InputType type="valuelist"/>

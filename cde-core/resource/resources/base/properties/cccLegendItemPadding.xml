@@ -2,7 +2,7 @@
   <Header>
     <Name>cccLegendItemPadding</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>2.5</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>legendItemPadding</Description>
     <Tooltip>Half the space between legend items, in pixel units.</Tooltip>
     <InputType>String</InputType>

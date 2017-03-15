@@ -2,7 +2,7 @@
   <Header>
     <Name>cccLegendMarkerSize</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>15</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>legendMarkerSize</Description>
     <Tooltip>The width and height of the marker panel, in pixel units.</Tooltip>
     <InputType>Float</InputType>

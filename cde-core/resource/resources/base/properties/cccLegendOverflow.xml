@@ -2,7 +2,7 @@
   <Header>
     <Name>cccLegendOverflow</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>clip</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>legendOverflow</Description>
     <Tooltip>The behavior of the legend panel when an overflow is detected.</Tooltip>
     <InputType type="valuelist"/>

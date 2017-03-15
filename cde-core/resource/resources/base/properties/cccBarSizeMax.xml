@@ -2,7 +2,7 @@
   <Header>
     <Name>cccBarSizeMax</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>2000</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>barSizeMax</Description>
     <Tooltip>The maximum width of a bar, in pixel units.</Tooltip>
     <InputType>Float</InputType>
