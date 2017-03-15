@@ -2,7 +2,7 @@
   <Header>
     <Name>cccDotsVisible</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>false</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>dotsVisible</Description>
     <Tooltip>Indicates if the visual elements show dots/markers in each point's position.</Tooltip>
     <InputType>Boolean</InputType>

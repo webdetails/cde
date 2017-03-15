@@ -2,7 +2,7 @@
   <Header>
     <Name>cccLegendFont</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>10px sans-serif</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>legendFont</Description>
     <Tooltip>The font of the panel.</Tooltip>
     <InputType>String</InputType>

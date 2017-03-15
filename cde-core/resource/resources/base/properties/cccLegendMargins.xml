@@ -2,7 +2,7 @@
   <Header>
     <Name>cccLegendMargins</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>0</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>legendMargins</Description>
     <Tooltip>The margins of the panel.</Tooltip>
     <InputType>String</InputType>

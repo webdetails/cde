@@ -2,7 +2,7 @@
   <Header>
     <Name>cccContentPaddings</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>0</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>contentPaddings</Description>
     <Tooltip>The paddings of the root content panel, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
