@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,10 +13,8 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static javax.ws.rs.core.MediaType.TEXT_HTML;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
+import javax.ws.rs.core.MediaType;
+import pt.webdetails.cpf.utils.MimeTypes;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -75,7 +73,7 @@ public class RenderApi {
 
   @GET
   @Path( "/getComponentDefinitions" )
-  @Produces( JAVASCRIPT )
+  @Produces( MimeTypes.JAVASCRIPT )
   public String getComponentDefinitions(
     @QueryParam( MethodParams.SUPPORTS ) @DefaultValue( DashboardSupportedTypes.LEGACY ) String supports,
     @Context HttpServletResponse response ) throws IOException {
@@ -89,7 +87,7 @@ public class RenderApi {
 
   @GET
   @Path( "/getContent" )
-  @Produces( JAVASCRIPT )
+  @Produces( MimeTypes.JAVASCRIPT )
   public String getContent( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
                             @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
@@ -101,6 +99,12 @@ public class RenderApi {
                             @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws IOException, ThingWriteException {
+
+    solution = XSSHelper.getInstance().escape( solution );
+    path = XSSHelper.getInstance().escape( path );
+    file = XSSHelper.getInstance().escape( file );
+    root = XSSHelper.getInstance().escape( root );
+    scheme = XSSHelper.getInstance().escape( scheme );
 
     String schemeToUse = "";
     if ( !inferScheme ) {
@@ -115,7 +119,7 @@ public class RenderApi {
 
   @GET
   @Path( "/getHeaders" )
-  @Produces( TEXT_PLAIN )
+  @Produces( MediaType.TEXT_PLAIN )
   public String getHeaders( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
                             @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
@@ -127,6 +131,12 @@ public class RenderApi {
                             @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws IOException, ThingWriteException {
+
+    solution = XSSHelper.getInstance().escape( solution );
+    path = XSSHelper.getInstance().escape( path );
+    file = XSSHelper.getInstance().escape( file );
+    root = XSSHelper.getInstance().escape( root );
+    scheme = XSSHelper.getInstance().escape( scheme );
 
     String schemeToUse = "";
     if ( !inferScheme ) {
@@ -141,7 +151,7 @@ public class RenderApi {
 
   @GET
   @Path( "/render" )
-  @Produces( TEXT_HTML )
+  @Produces( MediaType.TEXT_HTML )
   public String render( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
                         @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                         @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
@@ -154,6 +164,15 @@ public class RenderApi {
                         @QueryParam( MethodParams.VIEW ) @DefaultValue( "" ) String view,
                         @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                         @Context HttpServletRequest request ) throws IOException {
+
+    solution = XSSHelper.getInstance().escape( solution );
+    path = XSSHelper.getInstance().escape( path );
+    file = XSSHelper.getInstance().escape( file );
+    root = XSSHelper.getInstance().escape( root );
+    scheme = XSSHelper.getInstance().escape( scheme );
+    view = XSSHelper.getInstance().escape( view );
+    style = XSSHelper.getInstance().escape( style );
+
     String schemeToUse = "";
     if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
@@ -223,7 +242,7 @@ public class RenderApi {
 
   @GET
   @Path( "/getDashboard" )
-  @Produces( TEXT_HTML )
+  @Produces( MediaType.TEXT_HTML )
   public String getDashboard( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                               @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
                               @QueryParam( MethodParams.ROOT ) @DefaultValue( "" ) String root,
@@ -235,6 +254,15 @@ public class RenderApi {
                               @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                               @QueryParam( MethodParams.ALIAS ) @DefaultValue( "" ) String alias,
                               @Context HttpServletRequest request ) throws IOException {
+
+
+    path = XSSHelper.getInstance().escape( path );
+    root = XSSHelper.getInstance().escape( root );
+    scheme = XSSHelper.getInstance().escape( scheme );
+    view = XSSHelper.getInstance().escape( view );
+    style = XSSHelper.getInstance().escape( style );
+    alias = XSSHelper.getInstance().escape( alias );
+
     final String schemeToUse;
     if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
@@ -298,7 +326,7 @@ public class RenderApi {
 
   @GET
   @Path( "/getDashboardParameters" )
-  @Produces( APPLICATION_JSON )
+  @Produces( MediaType.APPLICATION_JSON )
   public String getDashboardParameters(
     @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
     @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
@@ -306,7 +334,10 @@ public class RenderApi {
     @Context HttpServletRequest servletRequest,
     @Context HttpServletResponse servletResponse ) throws IOException {
 
-    servletResponse.setContentType( APPLICATION_JSON );
+
+    path = XSSHelper.getInstance().escape( path );
+
+    servletResponse.setContentType( MediaType.APPLICATION_JSON );
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
     setCorsHeaders( servletRequest, servletResponse );
 
@@ -331,14 +362,16 @@ public class RenderApi {
 
   @GET
   @Path( "/getDashboardDatasources" )
-  @Produces( APPLICATION_JSON )
+  @Produces( MediaType.APPLICATION_JSON )
   public String getDashboardDatasources(
     @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
     @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
     @Context HttpServletRequest servletRequest,
     @Context HttpServletResponse servletResponse ) throws IOException, JSONException {
 
-    servletResponse.setContentType( APPLICATION_JSON );
+    path = XSSHelper.getInstance().escape( path );
+
+    servletResponse.setContentType( MediaType.APPLICATION_JSON );
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
     setCorsHeaders( servletRequest, servletResponse );
 
@@ -363,7 +396,7 @@ public class RenderApi {
 
   @GET
   @Path( "/edit" )
-  @Produces( TEXT_HTML )
+  @Produces( MediaType.TEXT_HTML )
   public String edit(
     @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
     @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
@@ -372,6 +405,10 @@ public class RenderApi {
     @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
     @Context HttpServletRequest request,
     @Context HttpServletResponse response ) throws Exception {
+
+    solution = XSSHelper.getInstance().escape( solution );
+    path = XSSHelper.getInstance().escape( path );
+    file = XSSHelper.getInstance().escape( file );
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
 
@@ -392,7 +429,7 @@ public class RenderApi {
 
   @GET
   @Path( "/new" )
-  @Produces( TEXT_HTML )
+  @Produces( MediaType.TEXT_HTML )
   public String newDashboard( //TODO: change file to path; does new ever use this arg?
                               //      @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "null" ) String solution,
                               @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
@@ -402,6 +439,8 @@ public class RenderApi {
                               @Context HttpServletRequest request,
                               @Context HttpServletResponse response ) throws Exception {
 
+    path = XSSHelper.getInstance().escape( path );
+
     if ( !CdeEnvironment.canCreateContent() ) {
       return "This functionality is limited to users with permission 'Create Content'";
     }
@@ -410,7 +449,7 @@ public class RenderApi {
 
   @GET
   @Path( "/listRenderers" )
-  @Produces( APPLICATION_JSON )
+  @Produces( MediaType.APPLICATION_JSON )
   public String listRenderers() {
     return "{\"result\": [\""
       + DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT.getType()
@@ -423,7 +462,7 @@ public class RenderApi {
 
   @GET
   @Path( "/refresh" )
-  @Produces( TEXT_PLAIN )
+  @Produces( MediaType.TEXT_PLAIN )
   public String refresh( @Context HttpServletResponse servletResponse ) throws Exception {
     String msg = "Refreshed CDE Successfully";
 
@@ -441,7 +480,7 @@ public class RenderApi {
 
   @GET
   @Path( "/cde-embed.js" )
-  @Produces( JAVASCRIPT )
+  @Produces( MimeTypes.JAVASCRIPT )
   public String getCdeEmbeddedContext( @Context HttpServletRequest servletRequest,
                                        @Context HttpServletResponse servletResponse ) throws Exception {
     return InterPluginBroker.getCdfEmbed( servletRequest.getProtocol(), servletRequest.getServerName(),
@@ -515,7 +554,7 @@ public class RenderApi {
 
   private String getEditor( String path, boolean debug, String scheme, boolean isDefault,
                             HttpServletResponse response, boolean isRequire ) throws Exception {
-    response.setContentType( TEXT_HTML );
+    response.setContentType( MediaType.TEXT_HTML );
     String result = DashboardEditor.getEditor( path, debug, scheme, isDefault, isRequire );
 
     //i18n token replacement
