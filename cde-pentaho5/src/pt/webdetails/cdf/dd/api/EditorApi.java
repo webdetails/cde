@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -63,6 +63,8 @@ public class EditorApi {
                          @Context HttpServletResponse response )
     throws IOException {
 
+    path = XSSHelper.getInstance().escape( path );
+
     IResourceLoader loader = getResourceLoader( path );
     IReadAccess reader = loader.getReader();
 
@@ -104,6 +106,8 @@ public class EditorApi {
                            @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
                            @Context HttpServletResponse response ) throws IOException {
 
+    path = XSSHelper.getInstance().escape( path );
+
     IResourceLoader loader = getResourceLoader( path );
     IACAccess access = loader.getAccessControl();
     IRWAccess writer = loader.getWriter();
@@ -132,6 +136,8 @@ public class EditorApi {
   public String createFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
                             @Context HttpServletResponse response ) throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
 
     IResourceLoader loader = getResourceLoader( path );
     IACAccess access = loader.getAccessControl();
@@ -169,6 +175,8 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String createFolder( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                               @Context HttpServletResponse response ) throws IOException {
+
+    path = XSSHelper.getInstance().escape( path );
 
     IResourceLoader loader = getResourceLoader( path );
     IReadAccess reader = loader.getReader();
