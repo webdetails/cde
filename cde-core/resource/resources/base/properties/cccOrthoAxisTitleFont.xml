@@ -2,7 +2,7 @@
   <Header>
     <Name>cccOrthoAxisTitleFont</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>12px sans-serif</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>orthoAxisTitleFont</Description>
     <Tooltip>The font of the panel.</Tooltip>
     <InputType>String</InputType>

@@ -2,7 +2,7 @@
   <Header>
     <Name>cccValuesFont</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>10px sans-serif</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>valuesFont</Description>
     <Tooltip>The font of a value label.</Tooltip>
     <InputType>String</InputType>
