@@ -2,7 +2,7 @@
   <Header>
     <Name>cccPlot2ValuesFont</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>10px sans-serif</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>plot2ValuesFont</Description>
     <Tooltip>The font of a value label.</Tooltip>
     <InputType>String</InputType>

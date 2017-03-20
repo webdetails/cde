@@ -2,7 +2,7 @@
   <Header>
     <Name>cccTrendValuesFont</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>10px sans-serif</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>trendValuesFont</Description>
     <Tooltip>The font of a value label.</Tooltip>
     <InputType>String</InputType>
