@@ -2,7 +2,7 @@
   <Header>
     <Name>cccPlotFrameVisible</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>true</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>plotFrameVisible</Description>
     <Tooltip>Indicates whether the plot frame is drawn in leaf charts.</Tooltip>
     <InputType>Boolean</InputType>
