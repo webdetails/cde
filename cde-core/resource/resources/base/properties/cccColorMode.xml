@@ -15,6 +15,7 @@
     <Value display="By-Parent">byParent</Value>
     <Value display="By-Self">bySelf</Value>
     <Value display="Fan">fan</Value>
+    <Value display="Level">level</Value>
     <Value display="Slice">slice</Value>
   </Values>
 </DesignerProperty>
