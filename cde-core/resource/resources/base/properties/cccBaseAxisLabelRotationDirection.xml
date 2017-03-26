@@ -2,7 +2,7 @@
   <Header>
     <Name>cccBaseAxisLabelRotationDirection</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>clockwise</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>baseAxisLabelRotationDirection</Description>
     <Tooltip>Controls the rotation direction of the labels (applies to normal discrete axes).</Tooltip>
     <InputType type="valuelist"/>
