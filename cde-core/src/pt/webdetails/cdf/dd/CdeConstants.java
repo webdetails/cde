@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -35,6 +35,8 @@ public class CdeConstants {
   public static final String LEGACY_UNSAVED_FILE_PATH = "/null/null/null";
 
   public static final String PLUGIN_SETTINGS_ALLOW_CROSS_DOMAIN_RESOURCES = "settings/allow-cross-domain-resources";
+  //CORS util constants
+  public static final String PLUGIN_SETTINGS_CROSS_DOMAIN_RESOURCES_WHITELIST = "settings/cross-domain-resources-whitelist";
   public static final String PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS = "settings/resources/downloadable-formats";
 
   /**
