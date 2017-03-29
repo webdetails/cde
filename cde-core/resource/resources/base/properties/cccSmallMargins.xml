@@ -7,7 +7,7 @@
     <Tooltip>The margins of a small chart.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>498</Order>
+    <Order>500</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

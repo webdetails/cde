@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the title panel is visible.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>521</Order>
+    <Order>523</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -7,7 +7,7 @@
     <Tooltip>Swaps the columns of the "series" and "categories" physical groups.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>479</Order>
+    <Order>481</Order>
     <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>

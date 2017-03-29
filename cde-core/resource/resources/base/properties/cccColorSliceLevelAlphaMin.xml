@@ -1,13 +1,13 @@
 <DesignerProperty>
   <Header>
-    <Name>cccTrendColorAxis</Name>
+    <Name>cccColorSliceLevelAlphaMin</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>2</DefaultValue>
-    <Description>trendColorAxis</Description>
-    <Tooltip>The index of the color axis to use for the plot.</Tooltip>
+    <DefaultValue>0.1</DefaultValue>
+    <Description>colorSliceLevelAlphaMin</Description>
+    <Tooltip>The minimum color alpha channel value.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>539</Order>
+    <Order>293</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

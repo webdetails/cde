@@ -7,7 +7,7 @@
     <Tooltip>The fixed ratio value which is the proportion between the axis' range and domain lengths (applies to continuous axes).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>379</Order>
+    <Order>381</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -7,7 +7,7 @@
     <Tooltip>The dataPart visual role is a chart-level visual role that allows partitioning of the data into several datum subsets.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>304</Order>
+    <Order>306</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

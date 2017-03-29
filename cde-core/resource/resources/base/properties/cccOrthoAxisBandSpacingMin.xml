@@ -7,7 +7,7 @@
     <Tooltip>The minimum space, in pixels, separating/surrounding bands (applies to discrete axes).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>403</Order>
+    <Order>405</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

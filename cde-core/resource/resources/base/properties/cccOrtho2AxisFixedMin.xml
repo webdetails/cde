@@ -7,7 +7,7 @@
     <Tooltip>The fixed minimum value of the axis domain (applies to continuous axes).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>370</Order>
+    <Order>372</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
