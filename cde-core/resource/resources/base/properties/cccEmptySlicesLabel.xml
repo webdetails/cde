@@ -7,7 +7,7 @@
     <Tooltip>Defines a label to use for empty slices.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>310</Order>
+    <Order>312</Order>
     <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>

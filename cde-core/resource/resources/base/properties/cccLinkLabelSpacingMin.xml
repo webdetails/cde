@@ -7,7 +7,7 @@
     <Tooltip>The minimum vertical space between consecutive link labels, in em units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>344</Order>
+    <Order>346</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -3758,6 +3758,8 @@
           <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorSliceBrightnessFactor">cccColorSliceBrightnessFactor</Property>
+          <Property name="colorSliceLevelAlphaMin">cccColorSliceLevelAlphaMin</Property>
+          <Property name="colorSliceLevelAlphaRatio">cccColorSliceLevelAlphaRatio</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
           <Property name="compatVersion">cccCompatVersion</Property>

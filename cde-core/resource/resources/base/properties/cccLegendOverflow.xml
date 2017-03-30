@@ -7,7 +7,7 @@
     <Tooltip>The behavior of the legend panel when an overflow is detected.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>332</Order>
+    <Order>334</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

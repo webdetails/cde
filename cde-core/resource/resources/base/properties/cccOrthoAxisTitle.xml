@@ -7,7 +7,7 @@
     <Tooltip>The axis title and title options.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>435</Order>
+    <Order>437</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

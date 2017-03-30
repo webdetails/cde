@@ -7,7 +7,7 @@
     <Tooltip>The position of the axis panel.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>377</Order>
+    <Order>379</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

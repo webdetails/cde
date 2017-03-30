@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccColorSliceLevelAlphaRatio</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0.15</DefaultValue>
+    <Description>colorSliceLevelAlphaRatio</Description>
+    <Tooltip>How much the color alpha channel is decremented per slice level, relative to the alpha of the base color.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>294</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>
