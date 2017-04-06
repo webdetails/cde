@@ -3,7 +3,7 @@
     <Name>cccBaseAxisTitleMargins</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0</DefaultValue>
-    <Description>baseAxisTitleMargins</Description>
+    <Description>Base Axis Title Margins</Description>
     <Tooltip>The margins of the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

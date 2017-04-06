@@ -3,7 +3,7 @@
     <Name>cccColorSliceBrightnessFactor</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>1</DefaultValue>
-    <Description>colorSliceBrightnessFactor</Description>
+    <Description>Color Slice Brightness Factor</Description>
     <Tooltip>How much a last sibling slice will be brighter than a first sibling slice.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

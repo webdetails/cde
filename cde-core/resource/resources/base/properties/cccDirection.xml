@@ -3,7 +3,7 @@
     <Name>cccDirection</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>down</DefaultValue>
-    <Description>direction</Description>
+    <Description>Direction</Description>
     <Tooltip>The direction of the waterfall.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

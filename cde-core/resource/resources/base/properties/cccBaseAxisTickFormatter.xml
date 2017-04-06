@@ -3,7 +3,7 @@
     <Name>cccBaseAxisTickFormatter</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisTickFormatter</Description>
+    <Description>Base Axis Tick Formatter</Description>
     <Tooltip>A tick formatter function.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccValuesVisible</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>valuesVisible</Description>
+    <Description>Values Visible</Description>
     <Tooltip>Indicates if value labels are shown next to the visual elements.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

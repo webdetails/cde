@@ -3,7 +3,7 @@
     <Name>cccColorMode</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>colorMode</Description>
+    <Description>Color Mode</Description>
     <Tooltip>Controls how colors are drawn from the color scale to paint visual elements.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

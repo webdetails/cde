@@ -3,7 +3,7 @@
     <Name>cccBaseAxisTickExponentMax</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisTickExponentMax</Description>
+    <Description>Base Axis Tick Exponent Max</Description>
     <Tooltip>The maximum exponent of 10 that is used to generate ticks (applies to continuous-numeric axes).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

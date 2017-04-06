@@ -3,7 +3,7 @@
     <Name>cccLinkLabelSpacingMin</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0.5</DefaultValue>
-    <Description>linkLabelSpacingMin</Description>
+    <Description>Link Label Spacing Min</Description>
     <Tooltip>The minimum vertical space between consecutive link labels, in em units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

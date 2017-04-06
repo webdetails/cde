@@ -3,7 +3,7 @@
     <Name>cccLegendTextMargin</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>legendTextMargin</Description>
+    <Description>Legend Text Margin</Description>
     <Tooltip>The space between the marker and the associated label, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

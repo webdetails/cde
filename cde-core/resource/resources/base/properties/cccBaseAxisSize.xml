@@ -3,7 +3,7 @@
     <Name>cccBaseAxisSize</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisSize</Description>
+    <Description>Base Axis Size</Description>
     <Tooltip>The fixed size of the panel, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

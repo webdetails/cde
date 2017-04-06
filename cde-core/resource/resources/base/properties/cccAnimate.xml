@@ -3,7 +3,7 @@
     <Name>cccAnimate</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>true</DefaultValue>
-    <Description>animate</Description>
+    <Description>Animate</Description>
     <Tooltip>Indicates if a chart should show an entry animation, every time it is fully rendered.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccTrendStacked</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
-    <Description>trendStacked</Description>
+    <Description>Trend Stacked</Description>
     <Tooltip>Indicates that visual elements having identical category, but different series, are displayed on top of each other, along the plot's orthogonal direction, instead of side-by-side, along the base direction.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

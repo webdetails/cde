@@ -3,7 +3,7 @@
     <Name>cccBaseAxisOverlappedLabelsMode</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisOverlappedLabelsMode</Description>
+    <Description>Base Axis Overlapped Labels Mode</Description>
     <Tooltip>Controls how labels are laid out when they overlap (applies to normal discrete axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccContentMargins</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>contentMargins</Description>
+    <Description>Content Margins</Description>
     <Tooltip>The margins of the root content panel, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

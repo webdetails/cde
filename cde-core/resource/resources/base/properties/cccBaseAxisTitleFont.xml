@@ -3,7 +3,7 @@
     <Name>cccBaseAxisTitleFont</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisTitleFont</Description>
+    <Description>Base Axis Title Font</Description>
     <Tooltip>The font of the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

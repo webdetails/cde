@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisTitleVisible</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>orthoAxisTitleVisible</Description>
+    <Description>Ortho Axis Title Visible</Description>
     <Tooltip>Indicates if the title panel is visible.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

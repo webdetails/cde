@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisSizeMax</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>orthoAxisSizeMax</Description>
+    <Description>Ortho Axis Size Max</Description>
     <Tooltip>The maximum size of the panel, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

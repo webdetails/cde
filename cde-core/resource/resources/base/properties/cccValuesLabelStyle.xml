@@ -3,7 +3,7 @@
     <Name>cccValuesLabelStyle</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>linked</DefaultValue>
-    <Description>valuesLabelStyle</Description>
+    <Description>Values Label Style</Description>
     <Tooltip>The style used to place value labels.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

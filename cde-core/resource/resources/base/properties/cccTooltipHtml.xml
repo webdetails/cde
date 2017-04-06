@@ -3,7 +3,7 @@
     <Name>cccTooltipHtml</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>true</DefaultValue>
-    <Description>tooltipHtml</Description>
+    <Description>Tooltip Html</Description>
     <Tooltip>Indicates if the tooltip text that the format function builds is in HTML format.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

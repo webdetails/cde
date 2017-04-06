@@ -3,7 +3,7 @@
     <Name>cccLegendOverflow</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>legendOverflow</Description>
+    <Description>Legend Overflow</Description>
     <Tooltip>The behavior of the legend panel when an overflow is detected.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

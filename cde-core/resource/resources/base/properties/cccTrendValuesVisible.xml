@@ -3,7 +3,7 @@
     <Name>cccTrendValuesVisible</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
-    <Description>trendValuesVisible</Description>
+    <Description>Trend Values Visible</Description>
     <Tooltip>Indicates if value labels are shown next to the visual elements.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

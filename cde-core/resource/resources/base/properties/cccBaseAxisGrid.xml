@@ -3,7 +3,7 @@
     <Name>cccBaseAxisGrid</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisGrid</Description>
+    <Description>Base Axis Grid</Description>
     <Tooltip>Indicates if grid rules are drawn separating discrete values or at each major continuous tick.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

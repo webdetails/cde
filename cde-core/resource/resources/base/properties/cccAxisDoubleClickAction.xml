@@ -3,7 +3,7 @@
     <Name>cccAxisDoubleClickAction</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>axisDoubleClickAction</Description>
+    <Description>Axis Double Click Action</Description>
     <Tooltip>A callback function that is called when the user double-clicks on a bullet's title or sub-title.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>

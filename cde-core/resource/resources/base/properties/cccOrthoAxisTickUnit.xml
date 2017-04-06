@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisTickUnit</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>orthoAxisTickUnit</Description>
+    <Description>Ortho Axis Tick Unit</Description>
     <Tooltip>The ticks' major unit (difference in domain value between consecutive ticks).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

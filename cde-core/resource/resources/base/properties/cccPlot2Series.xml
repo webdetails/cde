@@ -3,7 +3,7 @@
     <Name>cccPlot2Series</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>plot2Series</Description>
+    <Description>Plot 2 Series</Description>
     <Tooltip>The key values of the series visual role, that are to be shown in the second plot.</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>

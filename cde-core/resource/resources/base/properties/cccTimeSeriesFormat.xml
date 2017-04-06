@@ -3,7 +3,7 @@
     <Name>cccTimeSeriesFormat</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>%Y-%m-%d</DefaultValue>
-    <Description>timeSeriesFormat</Description>
+    <Description>Time Series Format</Description>
     <Tooltip>The format string used to parse dimensions of the Date value type, by default.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

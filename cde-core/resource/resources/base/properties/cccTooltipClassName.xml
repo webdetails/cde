@@ -3,7 +3,7 @@
     <Name>cccTooltipClassName</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>tooltipClassName</Description>
+    <Description>Tooltip Class Name</Description>
     <Tooltip>A custom class to mark the root tooltip element.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

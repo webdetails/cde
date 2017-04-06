@@ -3,7 +3,7 @@
     <Name>cccBulletSpacing</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>50</DefaultValue>
-    <Description>bulletSpacing</Description>
+    <Description>Bullet Spacing</Description>
     <Tooltip>The space between bullets, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccLowerQuartilRole</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>lowerQuartilRole</Description>
+    <Description>Lower Quartil Role</Description>
     <Tooltip>The lowerQuartil visual role is a plot-level visual role that is visually encoded by the bottom position of the box visual element, along the orthogonal axis.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

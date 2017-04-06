@@ -3,7 +3,7 @@
     <Name>cccBaseAxisDomainAlign</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>center</DefaultValue>
-    <Description>baseAxisDomainAlign</Description>
+    <Description>Base Axis Domain Align</Description>
     <Tooltip>The domain alignment to use when the domain has a fixed or implied length (applies to continuous axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

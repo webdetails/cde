@@ -3,7 +3,7 @@
     <Name>cccPreserveLayout</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
-    <Description>preserveLayout</Description>
+    <Description>Preserve Layout</Description>
     <Tooltip>Indicates if the layout should be preserved between renders.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

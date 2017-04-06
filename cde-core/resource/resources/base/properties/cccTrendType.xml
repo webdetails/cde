@@ -3,7 +3,7 @@
     <Name>cccTrendType</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>trendType</Description>
+    <Description>Trend Type</Description>
     <Tooltip>The type of trend to perform on the data of the associated plot.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

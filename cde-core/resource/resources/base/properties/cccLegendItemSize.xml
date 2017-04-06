@@ -3,7 +3,7 @@
     <Name>cccLegendItemSize</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>legendItemSize</Description>
+    <Description>Legend Item Size</Description>
     <Tooltip>The fixed size of legend items, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

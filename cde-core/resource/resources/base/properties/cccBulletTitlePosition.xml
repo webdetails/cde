@@ -3,7 +3,7 @@
     <Name>cccBulletTitlePosition</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>left</DefaultValue>
-    <Description>bulletTitlePosition</Description>
+    <Description>Bullet Title Position</Description>
     <Tooltip>The side of the bullet where the title and sub-title are placed.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

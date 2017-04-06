@@ -3,7 +3,7 @@
     <Name>cccBaseAxisBandSpacingMax</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisBandSpacingMax</Description>
+    <Description>Base Axis Band Spacing Max</Description>
     <Tooltip>The maximum space, in pixels, separating/surrounding bands (applies to discrete axes).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

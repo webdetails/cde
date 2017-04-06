@@ -3,7 +3,7 @@
     <Name>cccPlot2ValuesMask</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>{value}</DefaultValue>
-    <Description>plot2ValuesMask</Description>
+    <Description>Plot 2 Values Mask</Description>
     <Tooltip>The values mask used to build the text of value labels.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

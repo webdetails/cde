@@ -3,7 +3,7 @@
     <Name>cccColorDomain</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>colorDomain</Description>
+    <Description>Color Domain</Description>
     <Tooltip>The domain values (applies to numeric domain axes).</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>

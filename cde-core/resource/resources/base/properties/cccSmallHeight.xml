@@ -3,7 +3,7 @@
     <Name>cccSmallHeight</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>smallHeight</Description>
+    <Description>Small Height</Description>
     <Tooltip>Fixates the height of each small chart, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

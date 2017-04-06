@@ -3,7 +3,7 @@
     <Name>cccLinkHandleWidth</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0.5</DefaultValue>
-    <Description>linkHandleWidth</Description>
+    <Description>Link Handle Width</Description>
     <Tooltip>The width of the link line handle width, in em units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

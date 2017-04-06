@@ -3,7 +3,7 @@
     <Name>cccBaseAxisBandSpacing</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisBandSpacing</Description>
+    <Description>Base Axis Band Spacing</Description>
     <Tooltip>The space, in pixels, separating/surrounding bands (applies to discrete axes).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

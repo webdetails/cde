@@ -3,7 +3,7 @@
     <Name>cccSizeRole</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>sizeRole</Description>
+    <Description>Size Role</Description>
     <Tooltip>The size visual role is a plot-level visual role that is visually encoded by the size of visual elements.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

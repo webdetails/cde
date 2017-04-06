@@ -3,7 +3,7 @@
     <Name>cccTrendValuesAnchor</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>right</DefaultValue>
-    <Description>trendValuesAnchor</Description>
+    <Description>Trend Values Anchor</Description>
     <Tooltip>The alignment of a value label relative to its corresponding visual element position.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

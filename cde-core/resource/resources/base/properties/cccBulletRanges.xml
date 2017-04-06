@@ -3,7 +3,7 @@
     <Name>cccBulletRanges</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>"[30,60,90]"</DefaultValue>
-    <Description>bulletRanges</Description>
+    <Description>Bullet Ranges</Description>
     <Tooltip>The default bullet ranges.</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>

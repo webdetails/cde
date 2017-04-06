@@ -3,7 +3,7 @@
     <Name>cccGroupedLabelSep</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue> ~ </DefaultValue>
-    <Description>groupedLabelSep</Description>
+    <Description>Grouped Label Sep</Description>
     <Tooltip>The separator used to join the labels of the values of a multi-dimensional visual role.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

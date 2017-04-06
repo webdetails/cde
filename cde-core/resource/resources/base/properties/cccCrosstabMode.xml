@@ -3,7 +3,7 @@
     <Name>cccCrosstabMode</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>true</DefaultValue>
-    <Description>crosstabMode</Description>
+    <Description>Crosstab Mode</Description>
     <Tooltip>Indicates if the data source is in the crosstab format, or, when false, the relational format.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

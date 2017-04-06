@@ -3,7 +3,7 @@
     <Name>cccSeriesInRows</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
-    <Description>seriesInRows</Description>
+    <Description>Series In Rows</Description>
     <Tooltip>Swaps the columns of the "series" and "categories" physical groups.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

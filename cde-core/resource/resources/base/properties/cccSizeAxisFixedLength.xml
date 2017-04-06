@@ -3,7 +3,7 @@
     <Name>cccSizeAxisFixedLength</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>sizeAxisFixedLength</Description>
+    <Description>Size Axis Fixed Length</Description>
     <Tooltip>The fixed domain length that the axis will show (applies to continuous axes).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

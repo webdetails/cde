@@ -3,7 +3,7 @@
     <Name>cccAreasFillOpacity</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0.5</DefaultValue>
-    <Description>areasFillOpacity</Description>
+    <Description>Areas Fill Opacity</Description>
     <Tooltip>A value that is multiplied by the opacity value of the area's base color.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

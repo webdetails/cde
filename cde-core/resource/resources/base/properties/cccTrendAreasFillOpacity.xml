@@ -3,7 +3,7 @@
     <Name>cccTrendAreasFillOpacity</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0.5</DefaultValue>
-    <Description>trendAreasFillOpacity</Description>
+    <Description>Trend Areas Fill Opacity</Description>
     <Tooltip>A value that is multiplied by the opacity value of the area's base color.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

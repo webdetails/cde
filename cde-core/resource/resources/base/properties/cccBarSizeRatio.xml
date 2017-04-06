@@ -3,7 +3,7 @@
     <Name>cccBarSizeRatio</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>barSizeRatio</Description>
+    <Description>Bar Size Ratio</Description>
     <Tooltip>The percentage of the grouped bar width versus the space between grouped bars (does not apply to stacked bars).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

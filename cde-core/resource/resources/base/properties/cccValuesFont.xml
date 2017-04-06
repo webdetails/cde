@@ -3,7 +3,7 @@
     <Name>cccValuesFont</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>valuesFont</Description>
+    <Description>Values Font</Description>
     <Tooltip>The font of a value label.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

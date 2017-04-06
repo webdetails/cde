@@ -3,7 +3,7 @@
     <Name>cccDotsVisible</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>dotsVisible</Description>
+    <Description>Dots Visible</Description>
     <Tooltip>Indicates if the visual elements show dots/markers in each point's position.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

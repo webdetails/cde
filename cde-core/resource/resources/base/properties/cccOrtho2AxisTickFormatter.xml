@@ -3,7 +3,7 @@
     <Name>cccOrtho2AxisTickFormatter</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>ortho2AxisTickFormatter</Description>
+    <Description>Ortho 2 Axis Tick Formatter</Description>
     <Tooltip>A tick formatter function.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>

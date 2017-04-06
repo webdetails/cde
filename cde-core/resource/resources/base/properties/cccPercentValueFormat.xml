@@ -3,7 +3,7 @@
     <Name>cccPercentValueFormat</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>percentValueFormat</Description>
+    <Description>Percent Value Format</Description>
     <Tooltip>A function used to format non-null numeric values as percentages.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>

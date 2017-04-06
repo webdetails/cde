@@ -3,7 +3,7 @@
     <Name>cccColorMissing</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>lightgray</DefaultValue>
-    <Description>colorMissing</Description>
+    <Description>Color Missing</Description>
     <Tooltip>The color used for a null domain value (applies to numeric domain axes).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

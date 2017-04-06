@@ -3,7 +3,7 @@
     <Name>cccTooltipOpacity</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0.9</DefaultValue>
-    <Description>tooltipOpacity</Description>
+    <Description>Tooltip Opacity</Description>
     <Tooltip>The opacity level of the tooltip box (range from 0, completely transparent, to 1).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

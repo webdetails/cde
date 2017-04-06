@@ -3,7 +3,7 @@
     <Name>cccBaseAxisPosition</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisPosition</Description>
+    <Description>Base Axis Position</Description>
     <Tooltip>The position of the axis panel.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

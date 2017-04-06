@@ -3,7 +3,7 @@
     <Name>cccSizeAxisFixedMin</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>sizeAxisFixedMin</Description>
+    <Description>Size Axis Fixed Min</Description>
     <Tooltip>The fixed minimum domain value that the axis will show (applies to continuous axes).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccBoxSizeRatio</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0.333</DefaultValue>
-    <Description>boxSizeRatio</Description>
+    <Description>Box Size Ratio</Description>
     <Tooltip>The percentage of box space over total space in a category band and with a grouped layout.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

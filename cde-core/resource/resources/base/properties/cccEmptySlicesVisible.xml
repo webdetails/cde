@@ -3,7 +3,7 @@
     <Name>cccEmptySlicesVisible</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
-    <Description>emptySlicesVisible</Description>
+    <Description>Empty Slices Visible</Description>
     <Tooltip>Indicates if empty slices should be shown.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

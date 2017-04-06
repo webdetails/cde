@@ -3,7 +3,7 @@
     <Name>cccTrendAreasVisible</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
-    <Description>trendAreasVisible</Description>
+    <Description>Trend Areas Visible</Description>
     <Tooltip>Indicates if shaded areas are shown in the plot.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

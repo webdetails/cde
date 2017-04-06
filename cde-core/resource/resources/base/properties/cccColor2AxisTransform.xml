@@ -3,7 +3,7 @@
     <Name>cccColor2AxisTransform</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>color2AxisTransform</Description>
+    <Description>Color 2 Axis Transform</Description>
     <Tooltip>The color transform function.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>

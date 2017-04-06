@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisTitle</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>orthoAxisTitle</Description>
+    <Description>Ortho Axis Title</Description>
     <Tooltip>The axis title and title options.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

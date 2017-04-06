@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisBandSpacingMin</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>orthoAxisBandSpacingMin</Description>
+    <Description>Ortho Axis Band Spacing Min</Description>
     <Tooltip>The minimum space, in pixels, separating/surrounding bands (applies to discrete axes).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

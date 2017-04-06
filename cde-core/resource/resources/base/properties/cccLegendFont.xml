@@ -3,7 +3,7 @@
     <Name>cccLegendFont</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>legendFont</Description>
+    <Description>Legend Font</Description>
     <Tooltip>The font of the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

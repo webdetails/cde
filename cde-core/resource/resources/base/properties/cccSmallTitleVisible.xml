@@ -3,7 +3,7 @@
     <Name>cccSmallTitleVisible</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>smallTitleVisible</Description>
+    <Description>Small Title Visible</Description>
     <Tooltip>Indicates if the title panel is visible.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

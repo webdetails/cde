@@ -3,7 +3,7 @@
     <Name>cccBaseAxisLabelRotationDirection</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisLabelRotationDirection</Description>
+    <Description>Base Axis Label Rotation Direction</Description>
     <Tooltip>Controls the rotation direction of the labels (applies to normal discrete axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

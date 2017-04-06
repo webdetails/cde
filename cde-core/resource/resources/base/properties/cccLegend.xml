@@ -3,7 +3,7 @@
     <Name>cccLegend</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>legend</Description>
+    <Description>Legend</Description>
     <Tooltip>The legend panel of the root chart.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

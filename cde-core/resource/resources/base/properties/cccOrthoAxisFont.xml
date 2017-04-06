@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisFont</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>orthoAxisFont</Description>
+    <Description>Ortho Axis Font</Description>
     <Tooltip>The font used by the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

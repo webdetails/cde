@@ -3,7 +3,7 @@
     <Name>cccPaddings</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>paddings</Description>
+    <Description>Paddings</Description>
     <Tooltip>The paddings of the root chart.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

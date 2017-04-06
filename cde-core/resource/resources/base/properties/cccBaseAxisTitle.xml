@@ -3,7 +3,7 @@
     <Name>cccBaseAxisTitle</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisTitle</Description>
+    <Description>Base Axis Title</Description>
     <Tooltip>The axis title and title options.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

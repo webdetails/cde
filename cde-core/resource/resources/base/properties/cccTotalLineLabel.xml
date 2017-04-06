@@ -3,7 +3,7 @@
     <Name>cccTotalLineLabel</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>Accumulated</DefaultValue>
-    <Description>totalLineLabel</Description>
+    <Description>Total Line Label</Description>
     <Tooltip>The description of the legend item of the water line.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

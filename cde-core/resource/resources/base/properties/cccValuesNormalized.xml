@@ -3,7 +3,7 @@
     <Name>cccValuesNormalized</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
-    <Description>valuesNormalized</Description>
+    <Description>Values Normalized</Description>
     <Tooltip>Normalize the domain of bars' values by category.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

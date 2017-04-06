@@ -3,7 +3,7 @@
     <Name>cccPlot2OrthoAxis</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>1</DefaultValue>
-    <Description>plot2OrthoAxis</Description>
+    <Description>Plot 2 Ortho Axis</Description>
     <Tooltip>The index of the orthogonal cartesian axis to use for the plot.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

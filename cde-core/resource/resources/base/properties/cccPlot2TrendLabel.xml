@@ -3,7 +3,7 @@
     <Name>cccPlot2TrendLabel</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>plot2TrendLabel</Description>
+    <Description>Plot 2 Trend Label</Description>
     <Tooltip>A description to show next to the trended data.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

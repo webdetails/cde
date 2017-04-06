@@ -3,7 +3,7 @@
     <Name>cccOrtho2AxisSize</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>ortho2AxisSize</Description>
+    <Description>Ortho 2 Axis Size</Description>
     <Tooltip>The fixed size of the panel, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccMultiChartSingleColFillsHeight</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>true</DefaultValue>
-    <Description>multiChartSingleColFillsHeight</Description>
+    <Description>Multi Chart Single Col Fills Height</Description>
     <Tooltip>Indicates that, when the layout results in a single column and the value of is still to be determined, it should be set to all the initially available content height, instead of determining the height from the and the .</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

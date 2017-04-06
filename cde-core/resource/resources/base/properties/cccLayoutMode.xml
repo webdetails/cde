@@ -3,7 +3,7 @@
     <Name>cccLayoutMode</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>layoutMode</Description>
+    <Description>Layout Mode</Description>
     <Tooltip>The placement of boxes within the same category band.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

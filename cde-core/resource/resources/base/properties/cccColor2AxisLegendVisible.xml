@@ -3,7 +3,7 @@
     <Name>cccColor2AxisLegendVisible</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>true</DefaultValue>
-    <Description>color2AxisLegendVisible</Description>
+    <Description>Color 2 Axis Legend Visible</Description>
     <Tooltip>Indicates if the legend items of the color axis should be visible (applies to color axes of discrete domain).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

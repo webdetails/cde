@@ -3,7 +3,7 @@
     <Name>cccTooltipFollowMouse</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
-    <Description>tooltipFollowMouse</Description>
+    <Description>Tooltip Follow Mouse</Description>
     <Tooltip>Indicates if the visual element's anchor point should be the current mouse position.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

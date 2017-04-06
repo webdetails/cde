@@ -3,7 +3,7 @@
     <Name>cccOrtho2AxisFixedMax</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>ortho2AxisFixedMax</Description>
+    <Description>Ortho 2 Axis Fixed Max</Description>
     <Tooltip>The fixed maximum value of the axis domain (applies to continuous axes).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

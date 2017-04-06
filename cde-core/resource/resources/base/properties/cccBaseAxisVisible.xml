@@ -3,7 +3,7 @@
     <Name>cccBaseAxisVisible</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>true</DefaultValue>
-    <Description>baseAxisVisible</Description>
+    <Description>Base Axis Visible</Description>
     <Tooltip>Indicates if the axis panel is shown.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

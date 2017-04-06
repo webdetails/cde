@@ -3,7 +3,7 @@
     <Name>cccMargins</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>margins</Description>
+    <Description>Margins</Description>
     <Tooltip>The margins of the root chart.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

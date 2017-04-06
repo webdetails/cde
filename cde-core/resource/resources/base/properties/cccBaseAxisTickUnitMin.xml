@@ -3,7 +3,7 @@
     <Name>cccBaseAxisTickUnitMin</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0</DefaultValue>
-    <Description>baseAxisTickUnitMin</Description>
+    <Description>Base Axis Tick Unit Min</Description>
     <Tooltip>The minimum ticks' major unit (difference in domain value between consecutive ticks).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

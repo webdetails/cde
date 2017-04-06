@@ -3,7 +3,7 @@
     <Name>cccBaseAxisDesiredTickCount</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisDesiredTickCount</Description>
+    <Description>Base Axis Desired Tick Count</Description>
     <Tooltip>The desired number of major ticks.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

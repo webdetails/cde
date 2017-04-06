@@ -3,7 +3,7 @@
     <Name>cccSliceOrder</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>sliceOrder</Description>
+    <Description>Slice Order</Description>
     <Tooltip>The slices' layout order.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

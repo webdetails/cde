@@ -3,7 +3,7 @@
     <Name>cccBulletMeasures</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>bulletMeasures</Description>
+    <Description>Bullet Measures</Description>
     <Tooltip>The default bullet measures.</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>

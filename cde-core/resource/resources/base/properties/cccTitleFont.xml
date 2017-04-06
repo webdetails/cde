@@ -3,7 +3,7 @@
     <Name>cccTitleFont</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>titleFont</Description>
+    <Description>Title Font</Description>
     <Tooltip>The font of the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

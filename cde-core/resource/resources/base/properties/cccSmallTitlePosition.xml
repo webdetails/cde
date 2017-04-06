@@ -3,7 +3,7 @@
     <Name>cccSmallTitlePosition</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>top</DefaultValue>
-    <Description>smallTitlePosition</Description>
+    <Description>Small Title Position</Description>
     <Tooltip>The docking position of the panel.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

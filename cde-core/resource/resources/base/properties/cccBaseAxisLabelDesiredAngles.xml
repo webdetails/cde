@@ -3,7 +3,7 @@
     <Name>cccBaseAxisLabelDesiredAngles</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisLabelDesiredAngles</Description>
+    <Description>Base Axis Label Desired Angles</Description>
     <Tooltip>List of angles to try when overlappedLabelsMode is 'rotate' or 'rotatethenhide' (applies to normal discrete axes).</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>

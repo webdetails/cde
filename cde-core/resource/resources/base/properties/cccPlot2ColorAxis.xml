@@ -3,7 +3,7 @@
     <Name>cccPlot2ColorAxis</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>2</DefaultValue>
-    <Description>plot2ColorAxis</Description>
+    <Description>Plot 2 Color Axis</Description>
     <Tooltip>The index of the color axis to use for the plot.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

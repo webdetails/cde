@@ -3,7 +3,7 @@
     <Name>cccSmallTitleMargins</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0</DefaultValue>
-    <Description>smallTitleMargins</Description>
+    <Description>Small Title Margins</Description>
     <Tooltip>The margins of the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccNullInterpolationMode</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>none</DefaultValue>
-    <Description>nullInterpolationMode</Description>
+    <Description>Null Interpolation Mode</Description>
     <Tooltip>The interpolation mode used to fill-in null or missing values.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

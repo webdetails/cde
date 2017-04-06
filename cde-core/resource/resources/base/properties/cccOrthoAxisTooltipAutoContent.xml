@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisTooltipAutoContent</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>value</DefaultValue>
-    <Description>orthoAxisTooltipAutoContent</Description>
+    <Description>Ortho Axis Tooltip Auto Content</Description>
     <Tooltip>Indicates the type of automatic content generated for the tooltip of axis' labels (applies to discrete axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

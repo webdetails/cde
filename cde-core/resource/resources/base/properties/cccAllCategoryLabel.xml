@@ -3,7 +3,7 @@
     <Name>cccAllCategoryLabel</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>All</DefaultValue>
-    <Description>allCategoryLabel</Description>
+    <Description>All Category Label</Description>
     <Tooltip>The description of the fictitious root category that aggregates all other categories.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

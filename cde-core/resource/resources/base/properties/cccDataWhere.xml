@@ -3,7 +3,7 @@
     <Name>cccDataWhere</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>dataWhere</Description>
+    <Description>Data Where</Description>
     <Tooltip>A function that filters datums as they are being loading.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
