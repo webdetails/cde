@@ -3,7 +3,7 @@
     <Name>cccDataSeparator</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>~</DefaultValue>
-    <Description>dataSeparator</Description>
+    <Description>Data Separator</Description>
     <Tooltip>The separator character used to join multiple values in the crosstab format, and to build composite keys for multiple level groupings.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

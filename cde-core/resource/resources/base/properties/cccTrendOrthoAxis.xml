@@ -3,7 +3,7 @@
     <Name>cccTrendOrthoAxis</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>1</DefaultValue>
-    <Description>trendOrthoAxis</Description>
+    <Description>Trend Ortho Axis</Description>
     <Tooltip>The index of the orthogonal cartesian axis to use for the plot.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

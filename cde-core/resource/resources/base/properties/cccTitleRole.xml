@@ -3,7 +3,7 @@
     <Name>cccTitleRole</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>titleRole</Description>
+    <Description>Title Role</Description>
     <Tooltip>The title visual role is a plot-level visual role that represents the title of each bullet.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

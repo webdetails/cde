@@ -3,7 +3,7 @@
     <Name>cccMultiChartMax</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>multiChartMax</Description>
+    <Description>Multi Chart Max</Description>
     <Tooltip>The maximum number of small charts that should be displayed.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

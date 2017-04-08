@@ -3,7 +3,7 @@
     <Name>cccBulletMargin</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>100</DefaultValue>
-    <Description>bulletMargin</Description>
+    <Description>Bullet Margin</Description>
     <Tooltip>The top margin, for vertical orientation, or left margin, for horizontal orientation, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccColorMin</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>colorMin</Description>
+    <Description>Color Min</Description>
     <Tooltip>The minimum color (applies to numeric domain axes).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

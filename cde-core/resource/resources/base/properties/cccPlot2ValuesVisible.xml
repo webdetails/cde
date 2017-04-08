@@ -3,7 +3,7 @@
     <Name>cccPlot2ValuesVisible</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
-    <Description>plot2ValuesVisible</Description>
+    <Description>Plot 2 Values Visible</Description>
     <Tooltip>Indicates if value labels are shown next to the visual elements.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

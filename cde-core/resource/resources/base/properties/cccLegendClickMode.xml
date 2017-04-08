@@ -3,7 +3,7 @@
     <Name>cccLegendClickMode</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>toggleVisible</DefaultValue>
-    <Description>legendClickMode</Description>
+    <Description>Legend Click Mode</Description>
     <Tooltip>What happens when the user clicks a legend item (applies to color axes of discrete domain).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

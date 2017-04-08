@@ -3,7 +3,7 @@
     <Name>cccOrtho2AxisPosition</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>ortho2AxisPosition</Description>
+    <Description>Ortho 2 Axis Position</Description>
     <Tooltip>The position of the axis panel.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccLegendMargins</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>legendMargins</Description>
+    <Description>Legend Margins</Description>
     <Tooltip>The margins of the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

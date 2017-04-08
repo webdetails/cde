@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisLabelRotationDirection</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>clockwise</DefaultValue>
-    <Description>orthoAxisLabelRotationDirection</Description>
+    <Description>Ortho Axis Label Rotation Direction</Description>
     <Tooltip>Controls the rotation direction of the labels (applies to normal discrete axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccPointingMode</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>near</DefaultValue>
-    <Description>pointingMode</Description>
+    <Description>Pointing Mode</Description>
     <Tooltip>The pointing mode used by the chart.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

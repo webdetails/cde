@@ -3,7 +3,7 @@
     <Name>cccOrtho2AxisPreserveRatio</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>ortho2AxisPreserveRatio</Description>
+    <Description>Ortho 2 Axis Preserve Ratio</Description>
     <Tooltip>Indicates if the initial proportion between the axis' domain and range lengths should be preserved between renders (applies to continuous axes).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

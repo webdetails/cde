@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisDesiredTickCount</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>orthoAxisDesiredTickCount</Description>
+    <Description>Ortho Axis Desired Tick Count</Description>
     <Tooltip>The desired number of major ticks.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

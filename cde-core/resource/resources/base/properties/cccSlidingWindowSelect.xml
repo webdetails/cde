@@ -3,7 +3,7 @@
     <Name>cccSlidingWindowSelect</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>slidingWindowSelect</Description>
+    <Description>Sliding Window Select</Description>
     <Tooltip>A function that, given a dataset, selects the data to be removed.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>

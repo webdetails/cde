@@ -3,7 +3,7 @@
     <Name>cccSmallTitleSize</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>smallTitleSize</Description>
+    <Description>Small Title Size</Description>
     <Tooltip>The fixed size of the panel, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

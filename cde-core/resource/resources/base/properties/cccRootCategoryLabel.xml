@@ -3,7 +3,7 @@
     <Name>cccRootCategoryLabel</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>All</DefaultValue>
-    <Description>rootCategoryLabel</Description>
+    <Description>Root Category Label</Description>
     <Tooltip>The label that is used for the root node.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

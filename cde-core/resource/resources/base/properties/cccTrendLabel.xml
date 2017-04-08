@@ -3,7 +3,7 @@
     <Name>cccTrendLabel</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>trendLabel</Description>
+    <Description>Trend Label</Description>
     <Tooltip>A description to show next to the trended data.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

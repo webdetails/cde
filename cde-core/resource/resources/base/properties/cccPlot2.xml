@@ -3,7 +3,7 @@
     <Name>cccPlot2</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
-    <Description>plot2</Description>
+    <Description>Plot 2</Description>
     <Tooltip>Activates the second plot.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

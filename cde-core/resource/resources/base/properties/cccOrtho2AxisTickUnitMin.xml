@@ -3,7 +3,7 @@
     <Name>cccOrtho2AxisTickUnitMin</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0</DefaultValue>
-    <Description>ortho2AxisTickUnitMin</Description>
+    <Description>Ortho 2 Axis Tick Unit Min</Description>
     <Tooltip>The minimum ticks' major unit (difference in domain value between consecutive ticks).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

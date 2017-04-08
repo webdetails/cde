@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisFixedLength</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>orthoAxisFixedLength</Description>
+    <Description>Ortho Axis Fixed Length</Description>
     <Tooltip>The fixed length of the axis domain (applies to continuous axes).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

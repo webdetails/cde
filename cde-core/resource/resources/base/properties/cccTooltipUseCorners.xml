@@ -3,7 +3,7 @@
     <Name>cccTooltipUseCorners</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>tooltipUseCorners</Description>
+    <Description>Tooltip Use Corners</Description>
     <Tooltip>Indicates if the collateral tooltip gravities should be aligned with corners.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccCtrlSelectMode</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>true</DefaultValue>
-    <Description>ctrlSelectMode</Description>
+    <Description>Ctrl Select Mode</Description>
     <Tooltip>When true, indicates that a selection made by the user replaces the current selection, if any.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

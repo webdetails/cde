@@ -3,7 +3,7 @@
     <Name>cccSmallWidth</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>smallWidth</Description>
+    <Description>Small Width</Description>
     <Tooltip>Fixates the width of each small chart, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

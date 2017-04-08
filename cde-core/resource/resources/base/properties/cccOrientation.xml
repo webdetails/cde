@@ -3,7 +3,7 @@
     <Name>cccOrientation</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>vertical</DefaultValue>
-    <Description>orientation</Description>
+    <Description>Orientation</Description>
     <Tooltip>The chart orientation indicates if its main direction is vertical or horizontal.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

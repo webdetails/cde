@@ -3,7 +3,7 @@
     <Name>cccMaximumRole</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>maximumRole</Description>
+    <Description>Maximum Role</Description>
     <Tooltip>The maximum visual role is a plot-level visual role that is visually encoded by the position of the rule that crosses the bottom whisker of the box visual element, along the orthogonal axis.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccTitlePosition</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>titlePosition</Description>
+    <Description>Title Position</Description>
     <Tooltip>The docking position of the panel.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

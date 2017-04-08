@@ -3,7 +3,7 @@
     <Name>cccValuesMask</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>valuesMask</Description>
+    <Description>Values Mask</Description>
     <Tooltip>The values mask used to build the text of value labels.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

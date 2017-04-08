@@ -3,7 +3,7 @@
     <Name>cccOrtho2AxisOffset</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0</DefaultValue>
-    <Description>ortho2AxisOffset</Description>
+    <Description>Ortho 2 Axis Offset</Description>
     <Tooltip>The percentage padding, on each of the sides of the plot panel that are orthogonal to the axis orientation.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

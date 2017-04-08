@@ -3,7 +3,7 @@
     <Name>cccSlidingWindowLength</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>slidingWindowLength</Description>
+    <Description>Sliding Window Length</Description>
     <Tooltip>The domain length to show on the sliding window axis.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

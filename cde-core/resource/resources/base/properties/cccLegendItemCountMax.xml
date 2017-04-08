@@ -3,7 +3,7 @@
     <Name>cccLegendItemCountMax</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>legendItemCountMax</Description>
+    <Description>Legend Item Count Max</Description>
     <Tooltip>The maximum positive number of legend items that can fit in the legend panel.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

@@ -3,12 +3,12 @@
     <Name>cccOrtho2AxisTitle</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>ortho2AxisTitle</Description>
+    <Description>Ortho 2 Axis Title</Description>
     <Tooltip>The axis title and title options.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
     <Order>391</Order>
-    <Advanced>false</Advanced>
+    <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
 </DesignerProperty>

@@ -3,7 +3,7 @@
     <Name>cccBulletSubtitle</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>bulletSubtitle</Description>
+    <Description>Bullet Subtitle</Description>
     <Tooltip>The default bullet sub-title.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

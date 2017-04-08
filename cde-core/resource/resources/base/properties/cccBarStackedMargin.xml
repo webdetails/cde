@@ -3,7 +3,7 @@
     <Name>cccBarStackedMargin</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0</DefaultValue>
-    <Description>barStackedMargin</Description>
+    <Description>Bar Stacked Margin</Description>
     <Tooltip>The space between bars of a given stack, in pixel units (applies to stacked bars).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

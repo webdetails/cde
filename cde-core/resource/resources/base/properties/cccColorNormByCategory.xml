@@ -3,7 +3,7 @@
     <Name>cccColorNormByCategory</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
-    <Description>colorNormByCategory</Description>
+    <Description>Color Norm By Category</Description>
     <Tooltip>A separate scale is used for each category.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

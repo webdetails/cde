@@ -3,7 +3,7 @@
     <Name>cccColorTransform</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>colorTransform</Description>
+    <Description>Color Transform</Description>
     <Tooltip>The color transform function.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>

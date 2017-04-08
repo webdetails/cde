@@ -3,7 +3,7 @@
     <Name>cccUseShapes</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>useShapes</Description>
+    <Description>Use Shapes</Description>
     <Tooltip>Indicates if the heat-grid uses as visual elements dot-shapes, within each grid cell.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

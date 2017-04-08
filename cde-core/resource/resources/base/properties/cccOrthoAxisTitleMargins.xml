@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisTitleMargins</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0</DefaultValue>
-    <Description>orthoAxisTitleMargins</Description>
+    <Description>Ortho Axis Title Margins</Description>
     <Tooltip>The margins of the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccBaseAxisTitleVisible</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>baseAxisTitleVisible</Description>
+    <Description>Base Axis Title Visible</Description>
     <Tooltip>Indicates if the title panel is visible.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

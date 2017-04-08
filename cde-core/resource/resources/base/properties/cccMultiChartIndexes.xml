@@ -3,7 +3,7 @@
     <Name>cccMultiChartIndexes</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>multiChartIndexes</Description>
+    <Description>Multi Chart Indexes</Description>
     <Tooltip>The indexes of columns of the logical table that are to feed the default multiChart, multiChart2, .</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>

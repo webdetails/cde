@@ -3,7 +3,7 @@
     <Name>cccBaseAxisDomainRoundMode</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>tick</DefaultValue>
-    <Description>baseAxisDomainRoundMode</Description>
+    <Description>Base Axis Domain Round Mode</Description>
     <Tooltip>The axis' domain rounding mode (applies to continuous axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

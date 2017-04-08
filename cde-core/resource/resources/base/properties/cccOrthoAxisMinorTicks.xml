@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisMinorTicks</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>orthoAxisMinorTicks</Description>
+    <Description>Ortho Axis Minor Ticks</Description>
     <Tooltip>Indicates if minor ticks are shown between major ticks (applies to continuous axes).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

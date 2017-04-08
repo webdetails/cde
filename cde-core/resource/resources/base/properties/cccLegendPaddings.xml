@@ -3,7 +3,7 @@
     <Name>cccLegendPaddings</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>legendPaddings</Description>
+    <Description>Legend Paddings</Description>
     <Tooltip>The paddings of the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

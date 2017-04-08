@@ -3,7 +3,7 @@
     <Name>cccColorMax</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>colorMax</Description>
+    <Description>Color Max</Description>
     <Tooltip>The maximum color (applies to numeric domain axes).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

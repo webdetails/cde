@@ -3,7 +3,7 @@
     <Name>cccBulletMarkers</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>bulletMarkers</Description>
+    <Description>Bullet Markers</Description>
     <Tooltip>The default bullet markers.</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>

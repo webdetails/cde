@@ -3,7 +3,7 @@
     <Name>cccOrtho2AxisDomainAlign</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>center</DefaultValue>
-    <Description>ortho2AxisDomainAlign</Description>
+    <Description>Ortho 2 Axis Domain Align</Description>
     <Tooltip>The domain alignment to use when the domain has a fixed or implied length (applies to continuous axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

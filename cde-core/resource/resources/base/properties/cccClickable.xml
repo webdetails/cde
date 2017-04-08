@@ -3,7 +3,7 @@
     <Name>cccClickable</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
-    <Description>clickable</Description>
+    <Description>Clickable</Description>
     <Tooltip>Indicates if the chart is clickable by the user.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

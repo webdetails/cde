@@ -3,7 +3,7 @@
     <Name>cccReaders</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>readers</Description>
+    <Description>Readers</Description>
     <Tooltip>A list of dimension names to load from corresponding logical table columns.</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>

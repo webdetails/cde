@@ -3,7 +3,7 @@
     <Name>cccColorSliceLevelAlphaMin</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0.1</DefaultValue>
-    <Description>colorSliceLevelAlphaMin</Description>
+    <Description>Color Slice Level Alpha Min</Description>
     <Tooltip>The minimum color alpha channel value.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccTrendShape</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>circle</DefaultValue>
-    <Description>trendShape</Description>
+    <Description>Trend Shape</Description>
     <Tooltip>Forces a given shape to be used in the dot mark.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccClearSelectionMode</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>emptySpaceClick</DefaultValue>
-    <Description>clearSelectionMode</Description>
+    <Description>Clear Selection Mode</Description>
     <Tooltip>Controls if and how the selection can be cleared by the user.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

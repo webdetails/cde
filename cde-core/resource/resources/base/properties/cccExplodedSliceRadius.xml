@@ -3,7 +3,7 @@
     <Name>cccExplodedSliceRadius</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0</DefaultValue>
-    <Description>explodedSliceRadius</Description>
+    <Description>Exploded Slice Radius</Description>
     <Tooltip>Increment radius of an exploded slice, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

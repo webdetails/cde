@@ -3,7 +3,7 @@
     <Name>cccLegendPosition</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>legendPosition</Description>
+    <Description>Legend Position</Description>
     <Tooltip>The docking position of the panel.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

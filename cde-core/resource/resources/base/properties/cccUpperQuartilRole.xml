@@ -3,7 +3,7 @@
     <Name>cccUpperQuartilRole</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>upperQuartilRole</Description>
+    <Description>Upper Quartil Role</Description>
     <Tooltip>The upperQuartil visual role is a plot-level visual role that is visually encoded by the top position of the box visual element, along the orthogonal axis.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

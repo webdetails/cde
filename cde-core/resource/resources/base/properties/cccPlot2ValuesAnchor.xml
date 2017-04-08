@@ -3,7 +3,7 @@
     <Name>cccPlot2ValuesAnchor</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>plot2ValuesAnchor</Description>
+    <Description>Plot 2 Values Anchor</Description>
     <Tooltip>The alignment of a value label relative to its corresponding visual element position.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

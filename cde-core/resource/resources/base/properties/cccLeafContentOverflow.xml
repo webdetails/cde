@@ -3,7 +3,7 @@
     <Name>cccLeafContentOverflow</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>auto</DefaultValue>
-    <Description>leafContentOverflow</Description>
+    <Description>Leaf Content Overflow</Description>
     <Tooltip>Indicates what is to be done with content that overflows in leaf charts.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

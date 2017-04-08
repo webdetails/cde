@@ -3,7 +3,7 @@
     <Name>cccBulletSize</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>30</DefaultValue>
-    <Description>bulletSize</Description>
+    <Description>Bullet Size</Description>
     <Tooltip>The orthogonal size of each bullet, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccDataMeasuresInColumns</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>dataMeasuresInColumns</Description>
+    <Description>Data Measures In Columns</Description>
     <Tooltip>Indicates if multiple measures "are in" columns or in rows (applies to crosstab data format).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccTrendValuesFont</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>trendValuesFont</Description>
+    <Description>Trend Values Font</Description>
     <Tooltip>The font of a value label.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

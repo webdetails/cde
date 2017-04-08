@@ -3,7 +3,7 @@
     <Name>cccMeasuresIndexes</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>measuresIndexes</Description>
+    <Description>Measures Indexes</Description>
     <Tooltip>The indexes of columns of the "measures" physical group (applies to relational data format).</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>

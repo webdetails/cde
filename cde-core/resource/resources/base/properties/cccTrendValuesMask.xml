@@ -3,7 +3,7 @@
     <Name>cccTrendValuesMask</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>trendValuesMask</Description>
+    <Description>Trend Values Mask</Description>
     <Tooltip>The values mask used to build the text of value labels.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

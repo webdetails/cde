@@ -3,7 +3,7 @@
     <Name>cccNullShape</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>cross</DefaultValue>
-    <Description>nullShape</Description>
+    <Description>Null Shape</Description>
     <Tooltip>The shape to use when the value of the size role is null.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

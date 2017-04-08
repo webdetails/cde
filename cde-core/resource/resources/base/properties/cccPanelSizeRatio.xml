@@ -3,7 +3,7 @@
     <Name>cccPanelSizeRatio</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>panelSizeRatio</Description>
+    <Description>Panel Size Ratio</Description>
     <Tooltip>Percentage of occupied space over total space in a discrete axis band.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>

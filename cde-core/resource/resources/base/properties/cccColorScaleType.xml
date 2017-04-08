@@ -3,7 +3,7 @@
     <Name>cccColorScaleType</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>linear</DefaultValue>
-    <Description>colorScaleType</Description>
+    <Description>Color Scale Type</Description>
     <Tooltip>The type of scale to use, in what concerns the range of the scale (applies to numeric domain axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

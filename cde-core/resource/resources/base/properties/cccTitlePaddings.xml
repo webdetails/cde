@@ -3,7 +3,7 @@
     <Name>cccTitlePaddings</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0</DefaultValue>
-    <Description>titlePaddings</Description>
+    <Description>Title Paddings</Description>
     <Tooltip>The paddings of the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>

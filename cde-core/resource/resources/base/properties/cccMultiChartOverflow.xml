@@ -3,7 +3,7 @@
     <Name>cccMultiChartOverflow</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>grow</DefaultValue>
-    <Description>multiChartOverflow</Description>
+    <Description>Multi Chart Overflow</Description>
     <Tooltip>The strategy to follow when the resulting multi-chart layout does not fit entirely in the initial chart size.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

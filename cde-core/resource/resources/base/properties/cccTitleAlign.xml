@@ -3,7 +3,7 @@
     <Name>cccTitleAlign</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>titleAlign</Description>
+    <Description>Title Align</Description>
     <Tooltip>The alignment side of the panel (the source) that will align to a side of the parent panel (the target).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

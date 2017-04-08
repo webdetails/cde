@@ -3,7 +3,7 @@
     <Name>cccBaseAxisDomainScope</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>global</DefaultValue>
-    <Description>baseAxisDomainScope</Description>
+    <Description>Base Axis Domain Scope</Description>
     <Tooltip>Controls the type of scale domain coordination that should be performed amongst the axes of the same id of each small chart (applies to continuous axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>

@@ -3,7 +3,7 @@
     <Name>cccOrthoAxisTitleSize</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>orthoAxisTitleSize</Description>
+    <Description>Ortho Axis Title Size</Description>
     <Tooltip>The fixed size of the panel, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
