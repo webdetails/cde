@@ -2,7 +2,7 @@
   <Header>
     <Name>cccHoverable</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue></DefaultValue>
+    <DefaultValue>false</DefaultValue>
     <Description>Hoverable</Description>
     <Tooltip>Indicates if the chart's visual elements are automatically highlighted when the user hovers over them with the mouse.</Tooltip>
     <InputType>Boolean</InputType>
