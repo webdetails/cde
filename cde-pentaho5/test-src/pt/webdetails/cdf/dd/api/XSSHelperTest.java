@@ -15,26 +15,37 @@
 package pt.webdetails.cdf.dd.api;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
 public class XSSHelperTest {
 
   private final String XSS = "<html><script>alert(1);</script></html>";
+  private static XSSHelper xssHelper;
+
+  @BeforeClass
+  public static void setUp() {
+    xssHelper = new XSSHelper() {
+      @Override protected String getPluginSetting() {
+        return "true";
+      }
+    };
+  }
 
   @Test
   public void escape() throws Exception {
-    Assert.assertFalse( XSS.equals( XSSHelper.getInstance().escape( XSS ) ) );
+    Assert.assertFalse( XSS.equals( xssHelper.escape( XSS ) ) );
   }
 
   @Test
   public void escapeEmpty() throws Exception {
-    Assert.assertEquals( "", XSSHelper.getInstance().escape( "" ) );
+    Assert.assertEquals( "", xssHelper.escape( "" ) );
   }
 
   @Test
   public void escapeNull() throws Exception {
-    Assert.assertEquals( null, XSSHelper.getInstance().escape( null ) );
+    Assert.assertEquals( null, xssHelper.escape( null ) );
   }
 
 }
