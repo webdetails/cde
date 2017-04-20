@@ -15,6 +15,9 @@ package pt.webdetails.cdf.dd.api;
 
 import org.pentaho.platform.util.StringUtil;
 import org.pentaho.platform.web.http.api.resources.utils.EscapeUtils;
+import pt.webdetails.cdf.dd.CdeConstants;
+import pt.webdetails.cdf.dd.CdeEngine;
+import pt.webdetails.cdf.dd.util.CorsUtil;
 
 public class XSSHelper {
 
@@ -33,7 +36,15 @@ public class XSSHelper {
     if ( StringUtil.isEmpty( userInput ) ) {
       return userInput;
     }
+    if ( "false".equals( getPluginSetting() ) ) {
+      return userInput;
+    }
     return EscapeUtils.escapeJsonOrRaw( userInput );
+  }
+
+  protected String getPluginSetting() {
+    return CdeEngine.getInstance().getEnvironment().getResourceLoader().getPluginSetting( CorsUtil.class,
+      CdeConstants.PARAMETER_XSS_ESCAPING );
   }
 
 }
