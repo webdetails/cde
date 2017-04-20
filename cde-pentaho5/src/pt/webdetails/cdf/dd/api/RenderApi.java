@@ -103,7 +103,6 @@ public class RenderApi {
     solution = XSSHelper.getInstance().escape( solution );
     path = XSSHelper.getInstance().escape( path );
     file = XSSHelper.getInstance().escape( file );
-    root = XSSHelper.getInstance().escape( root );
     scheme = XSSHelper.getInstance().escape( scheme );
 
     String schemeToUse = "";
@@ -135,7 +134,6 @@ public class RenderApi {
     solution = XSSHelper.getInstance().escape( solution );
     path = XSSHelper.getInstance().escape( path );
     file = XSSHelper.getInstance().escape( file );
-    root = XSSHelper.getInstance().escape( root );
     scheme = XSSHelper.getInstance().escape( scheme );
 
     String schemeToUse = "";
@@ -168,7 +166,6 @@ public class RenderApi {
     solution = XSSHelper.getInstance().escape( solution );
     path = XSSHelper.getInstance().escape( path );
     file = XSSHelper.getInstance().escape( file );
-    root = XSSHelper.getInstance().escape( root );
     scheme = XSSHelper.getInstance().escape( scheme );
     view = XSSHelper.getInstance().escape( view );
     style = XSSHelper.getInstance().escape( style );
@@ -257,7 +254,6 @@ public class RenderApi {
 
 
     path = XSSHelper.getInstance().escape( path );
-    root = XSSHelper.getInstance().escape( root );
     scheme = XSSHelper.getInstance().escape( scheme );
     view = XSSHelper.getInstance().escape( view );
     style = XSSHelper.getInstance().escape( style );
