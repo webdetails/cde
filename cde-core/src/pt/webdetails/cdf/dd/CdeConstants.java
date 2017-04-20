@@ -38,6 +38,7 @@ public class CdeConstants {
   //CORS util constants
   public static final String PLUGIN_SETTINGS_CROSS_DOMAIN_RESOURCES_WHITELIST = "settings/cross-domain-resources-whitelist";
   public static final String PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS = "settings/resources/downloadable-formats";
+  public static final String PARAMETER_XSS_ESCAPING = "settings/parameter-xss-escaping";
 
   /**
    * Inner paths relative to plugin repository dir
