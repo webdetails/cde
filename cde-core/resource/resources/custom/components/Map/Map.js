@@ -820,7 +820,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       legalInfo: ["http://www.esri.com/legal/software-license", "http://downloads2.esri.com/ArcGISOnline/docs/tou_summary.pdf"]
     });
   }));
-  return tileServices["default"] = tileServices["cartodb-positron-nolabels"], {
+  return tileServices["default"] = tileServices["openstreetmaps"], {
     tileServices: tileServices,
     otherTileServices: [],
     tileServicesOptions: {
