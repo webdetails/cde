@@ -108,22 +108,42 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     context = new PentahoCdfRunJsDashboardWriteContextForTesting( factory,
         indent, bypassCacheRead, getDashboard( dashboardPath, true ), options );
 
-    final String filePath = "pentaho-cdf-dd/css/master.css";
-
-    String systemRelativeResource = "${system:" + filePath + "}";
-    String systemAbsoluteResource = "${system:/" + filePath + "}";
-
-    final String systemResourceExpected =
-        "/pentaho/plugin/pentaho-cdf-dd/api/resources/system/" + filePath;
+    // Absolute paths
+    String filePath = "/pentaho-cdf-dd/css/master.css";
+    String systemResourceExpected =
+      "/pentaho/plugin/pentaho-cdf-dd/api/resources/system/mockPlugin" + filePath;
 
     Assert.assertEquals(
-        "absolute ${system:} replacement failed",
-        systemResourceExpected,
-        context.replaceTokens( systemAbsoluteResource ) );
+      "absolute ${system:} replacement failed",
+      systemResourceExpected,
+      context.replaceTokens( "${system:" + filePath + "}" ) );
+
+    // Relative paths
+    filePath = "pentaho-cdf-dd/css/master.css";
+    systemResourceExpected =
+      "/pentaho/plugin/pentaho-cdf-dd/api/resources/system/mockPlugin/" + filePath;
     Assert.assertEquals(
-        "relative ${system:} replacement failed",
-        systemResourceExpected,
-        context.replaceTokens( systemRelativeResource )
+      "relative ${system:} replacement failed",
+      systemResourceExpected,
+      context.replaceTokens( "${system:" + filePath + "}" )
+    );
+
+    filePath = "./pentaho-cdf-dd/css/master.css";
+    systemResourceExpected =
+      "/pentaho/plugin/pentaho-cdf-dd/api/resources/system/mockPlugin/" + filePath;
+    Assert.assertEquals(
+      "relative ${system:} replacement failed",
+      systemResourceExpected,
+      context.replaceTokens( "${system:" + filePath + "}" )
+    );
+
+    filePath = "../pentaho-cdf-dd/css/master.css";
+    systemResourceExpected =
+      "/pentaho/plugin/pentaho-cdf-dd/api/resources/system/mockPlugin/" + filePath;
+    Assert.assertEquals(
+      "relative ${system:} replacement failed",
+      systemResourceExpected,
+      context.replaceTokens( "${system:" + filePath + "}" )
     );
   }
 

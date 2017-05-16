@@ -40,6 +40,6 @@ public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRu
 
   @Override
   protected String getPluginId( String path ) {
-    return "";
+    return "mockPlugin";
   }
 }
