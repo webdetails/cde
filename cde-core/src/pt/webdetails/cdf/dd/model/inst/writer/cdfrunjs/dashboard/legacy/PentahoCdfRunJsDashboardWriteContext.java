@@ -13,6 +13,7 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy;
 
+import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
@@ -34,10 +35,10 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   @Override
   public String replaceTokens( String content ) {
     final long timestamp = this._writeDate.getTime();
-
     final String root = getRoot();
-
     final String path = this._dash.getSourcePath().replaceAll( "(.+/).*", "$1" );
+    final String systemDir = getSystemDir();
+    final String pluginId = getPluginId( path );
 
     return content
       // replace the dashboard path token
@@ -52,9 +53,9 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
       .replaceAll( ABS_RES_TAG, root + RESOURCE_API_GET + "$2" + "?v=" + timestamp )
       .replaceAll( REL_RES_TAG, root + RESOURCE_API_GET + path + "$2" + "?v=" + timestamp )
       // build the system resource links, with a timestamp for caching purposes
-      .replaceAll( ABS_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir()
-        + getPluginId( path ) + "$1" )
-      .replaceAll( REL_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/"
-        + getPluginId( path ) + "$1" );
+      .replaceAll( ABS_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + systemDir
+        + ( StringUtils.isEmpty( pluginId ) ? "$1" : "/" + pluginId + "$1" ) )
+      .replaceAll( REL_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + systemDir
+        + ( StringUtils.isEmpty( pluginId ) ? "/$1" : "/" + pluginId + "/$1" ) );
   }
 }
