@@ -483,7 +483,8 @@ public class RenderApi {
                                        @Context HttpServletResponse servletResponse ) throws Exception {
     return InterPluginBroker.getCdfEmbed( servletRequest.getProtocol(), servletRequest.getServerName(),
       servletRequest.getServerPort(), servletRequest.getSession().getMaxInactiveInterval(),
-      servletRequest.getParameter( "locale" ), getParameterProvider( servletRequest.getParameterMap() ) );
+      servletRequest.getParameter( "locale" ), servletRequest.isSecure(),
+      getParameterProvider( servletRequest.getParameterMap() ) );
   }
 
   private CdfRunJsDashboardWriteResult loadDashboard( String filePath, String scheme, String root, boolean absolute,

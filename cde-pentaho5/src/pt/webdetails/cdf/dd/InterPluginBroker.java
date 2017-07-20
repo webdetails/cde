@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -190,12 +190,18 @@ public class InterPluginBroker {
 
   public static String getCdfEmbed( String protocol, String name, int port, int inactiveInterval, String locale,
                                     IParameterProvider requestParams ) throws Exception {
+    return getCdfEmbed( protocol, name, port, inactiveInterval, locale, false, requestParams );
+  }
+
+  public static String getCdfEmbed( String protocol, String name, int port, int inactiveInterval, String locale,
+                                    boolean secure, IParameterProvider requestParams ) throws Exception {
     CallParameters params = new CallParameters();
     params.put( "protocol", protocol );
     params.put( "name", name );
     params.put( "port", port );
     params.put( "inactiveInterval", inactiveInterval );
     params.put( "locale", locale );
+    params.put( "secure", secure );
 
     if ( requestParams != null ) {
       Iterator<String> iterator = requestParams.getParameterNames();
@@ -217,7 +223,7 @@ public class InterPluginBroker {
     }
 
     IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), "cdfApi",
-        "buildCdfEmbedContext" );
+        "buildCdfEmbedContextSecure" );
     return pluginCall.call( params.getParameters() );
   }
 }
