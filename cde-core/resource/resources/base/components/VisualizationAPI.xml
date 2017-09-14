@@ -14,6 +14,7 @@
       <Definition name="queryDefinition">
         <Property>dataSource</Property>
       </Definition>
+      <Property name="parameters">xActionArrayParameter</Property>
       <Property name="vizId">visualizationId</Property>
       <Property name="vizOptions">visualizationOptions</Property>
       <Property>executeAtStart</Property>
