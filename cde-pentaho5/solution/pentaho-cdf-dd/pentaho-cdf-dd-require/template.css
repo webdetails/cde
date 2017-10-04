@@ -24,18 +24,18 @@ body .webdetailsWrapper {
 }
 
 .webdetailsHead {
+  position: relative;  
   width: 1150px;
   z-index: 100;
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
   clear: both;
-  position: relative;
+  height: 60px;
 }
 
 .webdetailsHead > div {
   display: inline-block;
-  position: relative;
   line-height: 32px;
   vertical-align: middle;
   bottom: 0px;
@@ -47,7 +47,6 @@ body .webdetailsWrapper {
   height: 39px;
   margin: 10px 0px 20px 50px;
   display: inline-block;
-  background: url('images/logo.png') no-repeat left;
   float: left;
 }
 
@@ -59,7 +58,7 @@ body .webdetailsWrapper {
 
 .buttoncontact {
   position: absolute;
-  left: 760px;
+  right: 48px;
   top: 12px;
 }
 
@@ -200,11 +199,6 @@ body .webdetailsWrapper {
   display: block;
   width: 100%;
   height: 100%;
-}
-
-.webdetailsFooter > .webdetailsFooterWebdetails {
-  background: url('images/logobottomWebdetails.png') center no-repeat;
-  width: 292px;
 }
 
 .webdetailsFooter > .webdetailsFooterCtools {
