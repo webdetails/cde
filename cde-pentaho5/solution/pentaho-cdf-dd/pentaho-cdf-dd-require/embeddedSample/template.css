@@ -24,18 +24,18 @@ body .webdetailsWrapper {
 }
 
 .webdetailsHead {
+  position: relative;  
   width: 1150px;
   z-index: 100;
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
   clear: both;
-  position: relative;
+  height: 60px;
 }
 
 .webdetailsHead > div {
   display: inline-block;
-  position: relative;
   line-height: 32px;
   vertical-align: middle;
   bottom: 0px;
@@ -58,7 +58,7 @@ body .webdetailsWrapper {
 
 .buttoncontact {
   position: absolute;
-  left: 760px;
+  right: 48px;
   top: 12px;
 }
 
