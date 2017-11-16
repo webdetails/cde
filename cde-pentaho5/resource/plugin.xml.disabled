@@ -15,7 +15,6 @@
 			<title>Dashboard Designer</title>
 			<description>Dashboard Designer</description>
 			<icon-url>plugin/pentaho-cdf-dd/api/resources/get?resource=/resources/wcdfFileType.png</icon-url>
-            <meta-provider>pt.webdetails.cdf.dd.DashboardDesignerFileInfoGenerator</meta-provider>
             <operations>
     <!--              
                 <operation>
