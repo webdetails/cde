@@ -449,32 +449,11 @@
     </for>
   </target>
 
-  <target name='replace-ext-editor-labels'>
-    <property file="${basedir}/build.properties"/>
-    <replace file="${stage.dir}/${plugin.name}/resources/ext-editor.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url}" />
-    <replace file="${stage.dir}/${plugin.name}/resources/ext-editor.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url}" />
-
-    <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-component-editor.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url}" />
-    <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-component-editor.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url}" />
-  </target>
-
-  <!-- used to build two different editors -->
-  <target name='replace-editor-labels'>
-    <copy file="${stage.dir}/${plugin.name}/resources/cdf-dd.html" tofile="${stage.dir}/${plugin.name}/resources/cdf-dd-default.html"/>
-
-    <property file="${basedir}/build.properties"/>
-    <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url}" />
-    <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url}" />
-    <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-default.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url.default}" />
-    <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-default.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url.default}" />
-  </target>
-
   <!-- Overriding retrieve pattern to distinguish artifacts from same module -->
   <target name="resolve-test" depends="resolve-init">
     <ivy:resolve file="${ivyfile}" conf="test" />
     <ivy:retrieve conf="test" pattern="${testlib.dir}/[artifact]-[revision](-[classifier]).[ext]" />
   </target>
-
 
   <target name="publish-nojar" depends="subfloor-pkg.publish-nojar">
     <ivy:makepom ivyfile="package-ivy-samples.xml" pomfile="samples-pom.xml" />   

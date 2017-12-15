@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <!-- Generic stuff --><!-- Framework CSS --><!--[if lt IE 8]><link rel="stylesheet" href="@CDF_RESOURCES_BASE_URL@/js-legacy/lib/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+  <!-- Generic stuff --><!-- Framework CSS --><!--[if lt IE 8]><link rel="stylesheet" href="../../../../api/repos/pentaho-cdf/js-legacy/lib/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
   <!-- CDF TODO: change paths? move to an include? -->
-  <link rel="stylesheet" href="@CDF_RESOURCES_BASE_URL@/js-legacy/lib/blueprint/screen.css" type="text/css">
-  <link rel="stylesheet" href="@CDF_RESOURCES_BASE_URL@/js-legacy/lib/fancybox/jquery.fancybox.css" type="text/css">
+  <link rel="stylesheet" href="../../../../api/repos/pentaho-cdf/js-legacy/lib/blueprint/screen.css" type="text/css">
+  <link rel="stylesheet" href="../../../../api/repos/pentaho-cdf/js-legacy/lib/fancybox/jquery.fancybox.css" type="text/css">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
 
@@ -83,7 +83,7 @@
         <div class="span-3 button cdfdd-about last" onclick="cdfdd.footerMode('about.fancybox')"> About </div>
         <div class="span-3 button cdfdd-documentation last" onclick="cdfdd.footerMode('documentation.fancybox')"> Documentation  </div>
 
-        <a class="webdetailsLogo" target="_blank" href="http://www.webdetails.pt" border="0"> <img src="@CDE_RESOURCES_BASE_URL@/images/NAV/logo_webdetails.png"></a>
+        <a class="webdetailsLogo" target="_blank" href="http://www.webdetails.pt" border="0"> <img src="../resources/get?resource=/images/NAV/logo_webdetails.png"></a>
 
       </div>
     </div>
@@ -173,7 +173,7 @@
       var CDFDDDataUrl = "@DATAURL@";
       var WEB_CONTEXT_BASE = CDFDDServerUrl + "../../";//TODO: use a new tag here?
     </script>
-    <script type="text/javascript" src="@CDF_RESOURCES_BASE_URL@/js-legacy/lib/json.js"></script>
+    <script type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/lib/json.js"></script>
     <!-- CDF files -->
  @CDF@
  @STYLES@ 
@@ -183,12 +183,12 @@
 <script type="text/javascript" src="@CDE_RENDERER_API@/getComponentDefinitions?supports=@SUPPORT_TYPE@"></script>
 <!-- ACE -->
 <!-- TODO: move ACE -->
-<script language="javascript" type="text/javascript" src="@CDE_RESOURCES_BASE_URL@/resources/ace/src/ace.js"></script>
-<script language="javascript" type="text/javascript" src="@CDE_RESOURCES_BASE_URL@/resources/ace/src/mode-javascript.js"></script>
-<script language="javascript" type="text/javascript" src="@CDE_RESOURCES_BASE_URL@/resources/ace/src/mode-css.js"></script>
-<script language="javascript" type="text/javascript" src="@CDE_RESOURCES_BASE_URL@/resources/ace/src/mode-xml.js"></script>
-<script language="javascript" type="text/javascript" src="@CDE_RESOURCES_BASE_URL@/resources/ace/src/mode-html.js"></script>
-<script language="javascript" type="text/javascript" src="@CDE_RESOURCES_BASE_URL@/js/cdf-dd-aceWrapper.js"></script>
+<script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/src/ace.js"></script>
+<script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/src/mode-javascript.js"></script>
+<script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/src/mode-css.js"></script>
+<script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/src/mode-xml.js"></script>
+<script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/src/mode-html.js"></script>
+<script language="javascript" type="text/javascript" src="../resources/get?resource=/js/cdf-dd-aceWrapper.js"></script>
 
 <!-- i18n plugin -->
 <script type="text/javascript">
