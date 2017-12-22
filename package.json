@@ -1,0 +1,37 @@
+{
+  "name": "CDE",
+  "version": "1.0.0",
+  "description": "Community Dashboard Editor",
+  "directories": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webdetails/cde.git"
+  },
+  "keywords": [
+    "Pentaho",
+    "CTool"
+  ],
+  "author": "WebDetails",
+  "license": "MPL-2",
+  "bugs": {
+    "url": "http://jira.pentaho.com/browse/CDE"
+  },
+  "devDependencies": {
+    "jasmine-core": "^2.6.4",
+    "karma": "^0.13.19",
+    "karma-cli": "^0.1.2",
+    "karma-jasmine": "^0.3.6",
+    "karma-requirejs": "0.2.x",
+    "karma-junit-reporter": "^0.3.8",
+    "karma-html-reporter": "0.2.x",
+    "karma-jasmine-html-reporter": "^0.2.0",
+    "karma-coverage": "^0.5.3",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-firefox-launcher": "~0.1",
+    "requirejs": "~2.1.9"
+  }
+}
