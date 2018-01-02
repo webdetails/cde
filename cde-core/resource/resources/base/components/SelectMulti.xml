@@ -19,6 +19,7 @@
       </Definition>
       <Property>postFetch</Property>
       <Property>valuesArray</Property>
+      <Property>useFirstValue</Property>
       <Property>valueAsId</Property>
       <Property>size</Property>
       <Property>externalPlugin</Property>
