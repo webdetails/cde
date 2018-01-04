@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>pentaho</groupId>
+    <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-components-amd</artifactId>
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
@@ -11,9 +11,6 @@
   <version>8.1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Pentaho Community Dashboard Editor AMD Custom Components Implementations</description>
-  <properties>
-    <pentaho-osgi-bundles.version>8.1.0.0-SNAPSHOT</pentaho-osgi-bundles.version>
-  </properties>
   <modules>
     <module>core</module>
     <module>pentaho</module>

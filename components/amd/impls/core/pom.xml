@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>pentaho</groupId>
+    <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-components-amd-impls</artifactId>
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
@@ -18,14 +18,7 @@
     <dependency>
       <groupId>pentaho</groupId>
       <artifactId>pentaho-cdf-js</artifactId>
-      <version>${project.version}</version>
       <type>zip</type>
-      <exclusions>
-        <exclusion>
-          <artifactId>*</artifactId>
-          <groupId>*</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 </project>

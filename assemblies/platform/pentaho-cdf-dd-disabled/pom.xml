@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>pentaho</groupId>
+    <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-plugin-assemblies-platform</artifactId>
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
@@ -16,7 +16,7 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>pentaho</groupId>
+      <groupId>org.pentaho.ctools</groupId>
       <artifactId>pentaho-cdf-dd</artifactId>
       <version>${project.version}</version>
       <type>zip</type>
