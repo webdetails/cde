@@ -190,6 +190,14 @@ define([
       this.map.addPopup(popup, true);
     },
 
+    closePopups: function(){
+      var me = this;
+      _.each(this.map.popups, function(popup){
+        me.map.removePopup(popup);
+        popup.destroy();
+      });           
+    },
+
     renderMap: function(target) {
       var projectionMap = new OpenLayers.Projection("EPSG:900913");
       var projectionWGS84 = new OpenLayers.Projection("EPSG:4326");
@@ -424,10 +432,13 @@ define([
     },
 
     _addControlClick: function() {
+
+      var me = this;
+      
       this.controls.clickCtrl = new OpenLayers.Control.SelectFeature([this.layers.markers, this.layers.shapes], {
         clickout: true,
         callbacks: {
-          clickout: this._createClickHandler(null, doZoomIn),
+          clickout: this._createClickHandler(me.closePopups, doZoomIn),
           click: function(feature) {
             this.clickFeature(feature);
             var modelItem = feature.attributes.model;
