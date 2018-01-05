@@ -1,0 +1,615 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Component Editor </title>
+
+<link href="../resources/get?resource=/css/cdf-dd-component-editor.css" rel="stylesheet">
+
+
+
+<!-- Generico -->
+<script src="../../../../api/repos/pentaho-cdf/js-legacy/lib/jQuery/jquery.js" type="text/javascript" language="javascript"></script>
+<script src="../../../../api/repos/pentaho-cdf/js-legacy/lib/jQuery/jquery.ui.js" type="text/javascript" language="javascript"></script>
+<script src="../../../../api/repos/pentaho-cdf/js-legacy/lib/daterangepicker/daterangepicker.jQuery.js"  type="text/javascript" language="javascript"></script>
+<script src="../resources/get?resource=/js/jquery.impromptu.js" type="text/javascript" language="javascript"></script>
+<script src="../resources/get?resource=/js/jqueryFileTree.js"  type="text/javascript" language="javascript"></script>
+<script src="../../../../api/repos/pentaho-cdf/js-legacy/lib/base/Base.js" type="text/javascript" language="javascript"></script>
+<script src="../../../../api/repos/pentaho-cdf/js-legacy/Dashboards.js" type="text/javascript" language="javascript"></script>
+<script src="../../../../api/repos/pentaho-cdf/js-legacy/CoreComponents.js" type="text/javascript" language="javascript"></script>
+<script src="../../../../api/repos/pentaho-cdf/js-legacy/NavigationComponents.js" language="javascript" type="text/javascript" ></script>
+<script src="../../../../api/repos/pentaho-cdf/js-legacy/MapComponents.js" language="javascript" type="text/javascript" ></script>
+<script src="../../../../api/repos/pentaho-cdf/js-legacy/OlapUtils.js" language="javascript" type="text/javascript"></script>
+<script src="../../../../api/repos/pentaho-cdf/js-legacy/lib/captify/captify.js" language="javascript" type="text/javascript"></script>
+<script src="../../../../api/repos/pentaho-cdf/js-legacy/lib/fancybox/jquery.fancybox.js" language="javascript" type="text/javascript" ></script>
+
+<script src="../resources/get?resource=/js/cdf-dd-component-editor.js" language="javascript" type="text/javascript" ></script>
+
+
+<link href="../resources/get?resource=/css/jqueryfileTree.css" rel="stylesheet">
+<link href="../resources/get?resource=/css/jquery.treeTable.css" rel="stylesheet">
+<link href="../resources/get?resource=/css/jquery.impromptu.css" rel="stylesheet">
+<link href="../../../../api/repos/pentaho-cdf/js-legacy/lib/captify/captify.css" type="text/css" rel="stylesheet">
+
+
+<!-- ace -->
+<script src="../resources/get?resource=/js/cdf-dd-aceWrapper.js" type="text/javascript" language="javascript"></script>
+<script src="../resources/get?resource=/resources/ace/src/ace.js" type="text/javascript" language="javascript"></script>
+<script src="../resources/get?resource=/resources/ace/src/mode-javascript.js" type="text/javascript" language="javascript"></script>
+<script src="../resources/get?resource=/resources/ace/src/mode-css.js" type="text/javascript" language="javascript"></script>
+<script src="../resources/get?resource=/resources/ace/src/mode-xml.js" type="text/javascript" language="javascript"></script>
+<script src="../resources/get?resource=/resources/ace/src/mode-html.js" type="text/javascript" language="javascript"></script>
+<script src="../resources/get?resource=/resources/ace/src/theme-twilight.js" type="text/javascript" language="javascript"></script>
+<script src="../resources/get?resource=/resources/ace/src/theme-eclipse.js" type="text/javascript" language="javascript"></script>
+
+<script src="https://raw.github.com/misfo/jim/master/build/jim-ace.min.js" type="text/javascript" language="javascript"></script>
+
+
+
+
+</head>
+
+<body>
+
+
+<script>
+
+
+var viMode = false;
+
+$.ajaxSetup({
+  type: "POST",
+  async:false,
+  traditional: true,
+  scriptCharset: "utf-8",
+  contentType: "application/x-www-form-urlencoded;charset=UTF-8"
+});
+
+
+var editors = {};
+var componentName;
+
+
+
+function updateStatus(editor){
+	var info = editor.fileName + (editor.editor.isReadOnly()? ' (readonly)' : '') + (editor.dirty? '*' : '');
+    $('#' + editor.parentId + 'infoArea').text(info);
+}
+
+
+	function save(editorW){
+          editorW.editor.saveFile(editorW.fileName, editorW.editor.getContents(),
+            function(result){
+              if(result.indexOf('saved ok') > -1){
+                setDirty(editorW, false);
+              }
+              else {
+                alert(result);
+              }
+            }
+          );
+        }
+
+
+function setDirty (editorW, dirty){
+            editorW.dirty = dirty;
+            updateStatus(editorW);
+        }
+        
+        
+function drawEditor(containerDiv, file, extension, parent) {
+	var editor = new CodeEditor();
+ 
+	editor.setMode(extension.replace('.', ''));
+	editor.initEditor(containerDiv);
+ 
+  if (viMode)
+    Jim.aceInit(editor.editor);  
+	editor.loadFile(file);
+	
+	var editorWrapper = {};
+	editorWrapper.editor = editor;
+	editorWrapper.fileName = file;
+	editorWrapper.fileExtension = extension;
+	editorWrapper.parentId = parent;
+	editorWrapper.dirty = false;
+		
+		updateStatus(editorWrapper);
+		
+          editor.onChange(function(){
+               setDirty(editorWrapper, true);
+            });		
+            
+	return editorWrapper;
+	
+}
+
+
+function callback(file, extension, containerDiv) {
+    if(file == null) return;
+	
+	var url = "extEditor?path=" + file + "&mode=" + extension;
+   	var containerDivObj = $('#' + containerDiv);
+	
+	var buttonNewTab = $('<button id="brownJqi_edit_buttonOpen File in new Tab/Window" class="brownJqidefaultbutton" value="newtab" name="brownJqi_edit_buttonOpen File in new Tab/Window">Open File in new Tab/Window</button>');
+	buttonNewTab.click(function() {
+		 window.open(url);
+	});
+
+	containerDivObj.append(buttonNewTab); 
+    
+    var _button = $('<button id=' + containerDiv + '"saveBtn" > Save </button>');    
+    var _other =    '<div id="' + containerDiv + 'btnArea">  <span id="' + containerDiv + 'infoArea"/> </div>';    
+    var _inner = "<div id='" + containerDiv + "externalEditor'></div>";
+	var innerDiv = $(_inner);
+	
+	innerDiv.css('left',containerDivObj.css('left'));
+	innerDiv.css('top', containerDivObj.css('top'));	
+	
+	
+	innerDiv.css('height', expandedMode?'80%':'40%');
+	innerDiv.css('width', expandedMode?'90%':'45%');
+	
+
+	containerDivObj.append($(_other).append(_button));
+	containerDivObj.append(innerDiv);
+	
+
+
+	var edit = drawEditor(containerDiv + 'externalEditor', file, extension, containerDiv);
+	
+	editors[extension] = edit;
+	_button.click (function () {save(edit); });
+
+}
+
+
+function chooseFileLoader(fileExtension, containerDiv){
+
+      var fileExplorercontent = 'Choose Resource:<div id="container_id" class="urltargetfolderexplorer"></div>';
+      var selectedFile = "";
+      var selectedFolder = "";
+      var myself = this;
+      var openOrNew =
+      {
+        browse:
+        {// file explorer
+          html: fileExplorercontent,
+          buttons: {
+            Ok: true,
+            Cancel: false
+          },
+          opacity: 0.2,
+          submit: function(v,m,f){
+            if(v){
+              if(selectedFile.length > 0){
+                myself.callback(selectedFile, fileExtension,  containerDiv);
+                return true;
+              }
+              else if(selectedFolder.length > 0){
+                $.prompt.goToState('newFile');
+                return false;
+              }
+            }
+            return true;
+          }
+          
+        },
+        
+        newFile:
+        {// new file prompt when folder selected
+          html: '<div> New File: <input name="fileName"></input></div>',
+          buttons: {
+            Ok: true,
+            Cancel: false
+          },
+          submit: function(v,m,f){
+            if(v){
+              //new file
+              selectedFile = selectedFolder + f.fileName;
+              
+              //check extension
+              var ext = selectedFile.substring( selectedFile.lastIndexOf('.') + 1);
+              if( '.' + ext != fileExtension ){
+                selectedFile += fileExtension;
+              }             
+              myself.callback(selectedFile , fileExtension,  containerDiv);
+              return true;
+            }
+            else {
+              $.prompt.goToState('browse');
+              return false;
+            }
+          }
+        }
+      };
+      
+      $.prompt(openOrNew,{
+        opacity: '0.2',
+        loaded: function(){
+          selectedFile = "";
+          $('#container_id').fileTree(
+          {		
+            root: '/',
+            script: 'ExploreFolder?fileExtensions=' + fileExtension,
+            expandSpeed: 1000,
+            collapseSpeed: 1000,
+            multiFolder: false,
+            folderClick:
+            function(obj,folder){
+              if($(".selectedFolder").length > 0)$(".selectedFolder").attr("class","");
+              $(obj).attr("class","selectedFolder");
+              selectedFolder = folder;//TODO:
+            }
+          },
+          function(file) {
+            selectedFile = file;
+            $(".selectedFile").attr("class","");
+            $("a[rel='" + file + "']").attr("class","selectedFile");
+          });
+        }
+      });
+      
+    }
+  
+
+
+
+function runComponent() {
+
+//Get css editor
+var cssEditor = editors['.css'].editor;
+//Get html editor
+var htmlEditor = editors['.html'].editor;
+//Get js editor
+var jsEditor = editors['.js'].editor;
+
+
+//Create content
+var html = htmlEditor.getContents();
+var headFinish = html.indexOf('</head>');
+html = html.substring(0, headFinish) + '<script>' + jsEditor.getContents() + '<\/script>' + html.substring(headFinish);
+headFinish = html.indexOf('</head>');
+html = html.substring(0, headFinish) + '<style>' + cssEditor.getContents() + "</style>" + html.substring(headFinish);
+
+
+
+var _inner = $('#resultTabFrame');
+
+if (_inner.length == 0)  {
+	_inner = $("<iframe id=resultTabFrame width='98%' height='85%' border='0' ></iframe>");
+	$('#resultTab').append(_inner);
+}
+
+
+	if (expandedMode)  {
+		$(['#htmlTab',  '#cssTab', '#scriptTab']).each(function (i, elt) {
+			$(elt).css('display','none');
+		});	
+		
+		$('#resultTab').css('display','block');
+		
+	}
+
+var doc = document.getElementById('resultTabFrame').contentWindow.document;
+doc.open();
+doc.write(html);
+doc.close();
+
+
+}
+
+function saveAll() {
+  for (var editor in editors) {
+    save(editors[editor]);
+  }
+}
+
+
+function loadComponent() {
+	var myself = this;
+	var newComponentNamePrompt =  { newComponent: {
+          html: '<div> Load Component: <input name="componentName"></input></div>',
+          buttons: {
+            Ok: true,
+            Cancel: false
+          },
+          submit: function(v,m,f){
+            if(v){
+            	componentName = f.componentName;
+              myself.loadComponentCallBack();
+              return true;
+            }
+
+          }
+          }
+	};
+
+
+     $.prompt(newComponentNamePrompt,{
+        opacity: '0.2'
+        }
+      );
+
+}
+
+
+
+function newComponent() {
+	var myself = this;
+	var newComponentNamePrompt =  { newComponent: {
+          html: '<div> New Component: <input name="componentName"></input></div>',
+          buttons: {
+            Ok: true,
+            Cancel: false
+          },
+          submit: function(v,m,f){
+            if(v){
+            	componentName = f.componentName;
+              myself.newComponentCallBack();
+              return true;
+            }
+
+          }
+          }
+	};
+
+
+     $.prompt(newComponentNamePrompt,{
+        opacity: '0.2'
+        }
+      );
+
+}
+
+
+function loadComponentCallBack() {
+	if (componentName.indexOf('Component') != componentName.length - 9) {
+		componentName = componentName + "Component";
+	}
+
+
+	if (expandedMode)  {
+		$(['#scriptTab', '#htmlTab',  '#cssTab', '#resultTab']).each(function (i, elt) {
+			$(elt).css('display','block');
+		});		
+	
+	}
+
+	callback('/cde/components/' + componentName + '/' + componentName + '.js', '.js', 'scriptTab');
+	callback('/cde/components/' + componentName + '/' + componentName + '.html', '.html', 'htmlTab');	
+	callback('/cde/components/' + componentName + '/' + componentName + '.css', '.css', 'cssTab');
+
+
+	if (expandedMode)  {
+		$(['#htmlTab',  '#cssTab', '#resultTab']).each(function (i, elt) {
+			$(elt).css('display','none');
+		});		
+	
+	}
+	
+	
+}
+
+
+function newComponentCallBack() {
+	if (componentName.indexOf('Component') != componentName.length - 9) {
+		componentName = componentName + "Component";
+	}
+
+	if (expandedMode)  {
+		$(['#scriptTab', '#htmlTab',  '#cssTab', '#resultTab']).each(function (i, elt) {
+			$(elt).css('display','block');
+		});		
+	
+	}
+
+	$.post("createFolder", { path: '/cde/components/' + componentName },		
+		function (result) {
+	   		if(result.indexOf('created ok') <= -1){
+            	alert(result);
+            }
+    	}
+   	);
+
+
+
+	callback('/cde/components/' + componentName + '/' + componentName + '.js', '.js', 'scriptTab');
+	callback('/cde/components/' + componentName + '/' + componentName + '.html', '.html', 'htmlTab');	
+	callback('/cde/components/' + componentName + '/' + componentName + '.css', '.css', 'cssTab');
+	
+	
+	if (expandedMode)  {
+		$(['#htmlTab',  '#cssTab', '#resultTab']).each(function (i, elt) {
+			$(elt).css('display','none');
+		});		
+	
+	}
+	
+	
+	// http://localhost:8080/pentaho/content/pentaho-cdf-dd/writeFile?data=&path=%2Fcde%2Fcomponents%2FmyEditorTestComponent%2FmyEditorTestComponent.js
+	var path = '/cde/components/' + componentName + '/component.xml';
+	var data = componentTemplateForComponent.replace(/<COMPONENTNAME>/g, componentName);
+	
+	$.post("writeFile", { path: path, data: data },		
+		function (result) {
+	   		if(result.indexOf('saved ok') <= -1){
+            	alert(result);
+            }
+    	}
+   	);
+	
+	editors['.js'].editor.setContents(jsTemplateForComponent.replace(/<COMPONENTNAME>/g, componentName));
+	editors['.html'].editor.setContents(htmlTemplateForComponent.replace(/<COMPONENTNAME>/g, componentName));
+	editors['.css'].editor.setContents(cssTemplateForComponent.replace(/<COMPONENTNAME>/g, componentName));
+	
+}
+
+
+
+function toggleTabVisibility(tabToShow) {
+	$(['#scriptTab', '#htmlTab',  '#cssTab', '#resultTab']).each(function (i, elt) {
+	$(elt).css('display','none');
+	$(elt + 'Element').removeClass('tabElementSelected');
+	});
+	
+	$('#' + tabToShow).css('display', 'block');		
+		$('#' + tabToShow + 'Element').addClass('tabElementSelected');
+}
+
+
+var expandedMode = false;
+
+function toggleView() {
+
+expandedMode = !expandedMode;
+
+$(['#scriptTab', '#htmlTab',  '#cssTab', '#resultTab']).each(function (i, elt) {
+	$(elt).toggleClass('contentTab contentTabExpanded');
+	});
+
+
+
+if (expandedMode) {
+
+	$('#tabs').css('display', 'block');
+	$('#scriptTab').css('display', 'block');
+	$('#htmlTab').css('display', 'none');
+	$('#cssTab').css('display', 'none');
+	$('#resultTab').css('display', 'none');	
+	
+	
+} else {
+	$('#tabs').css('display', 'none');
+	$(['#scriptTab', '#htmlTab',  '#cssTab', '#resultTab']).each(function (i, elt) {
+	$(elt).css('display','block');
+	});
+	
+}
+
+}
+
+function hideEditComponents() {
+  $('#menu').css('display', 'none');
+  $('#tabs').css('display', 'none');
+	$('#scriptTab').css('display', 'none');
+	$('#htmlTab').css('display', 'none');
+	$('#cssTab').css('display', 'none');
+        $('#resultTab').css('visibility', 'visible');    
+	$('#resultTab').css('display', 'block');	  
+    $('#resultTab').css('height', '90%');  
+    $('#resultTab').css('width', '90%');  
+}
+
+
+</script>
+
+
+
+
+<!--
+//Uma tab para script
+
+//Uma tab para html
+
+//uma tab para css
+
+//Uma tab de resultados
+
+As três primeiras fazem um wrapper ao Ace e permitem fazer load (?) e save
+
+A 4ª tem que mostrar o resultado mediante o press de um botão
+
+-->
+
+
+<div id='menu'  class='menu'>
+
+<input type='button' value = 'Run' onclick='javascript:runComponent();'></input>
+<input type='button' value = 'New' onclick='javascript:newComponent();'></input>
+<input type='button' value = 'Load' onclick='javascript:loadComponent();'></input>
+<input type='button' value = 'Save All' onclick='javascript:saveAll();'></input>
+<input type='button' value='Simple/Expanded'  onclick='toggleView()'></input>
+
+
+<div id='tabs' class='tabs' >
+	<div id='scriptTabElement' class='tabElement' onclick='javascript:toggleTabVisibility("scriptTab");'>Script</div>
+	<div id='htmlTabElement' class='tabElement' onclick='javascript:toggleTabVisibility("htmlTab");'>HTML</div>
+	<div id='cssTabElement' class='tabElement' onclick='javascript:toggleTabVisibility("cssTab");'>CSS</div>
+	<div id='resultTabElement' class='tabElement' onclick='javascript:toggleTabVisibility("resultTab");'>Result</div>	
+</div>
+
+
+</div>
+
+
+<div id='scriptTab' class='contentTab scriptTab'>
+Javascript
+</div>
+
+<div id='htmlTab' class='contentTab  htmlTab'>
+HTML
+</div>
+
+<div id='cssTab' class='contentTab  cssTab'>
+CSS
+</div>
+
+<div id='resultTab' class='contentTab resultTab'>
+Result
+</div>
+
+
+
+<script>
+
+$(document).ready(function() {
+
+	var urlParams = {};
+	(function () {
+    	var e,
+        	a = /\+/g,  // Regex for replacing addition symbol with a space
+	        r = /([^&=]+)=?([^&]*)/g,
+    	    d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+        	q = window.location.search.substring(1);
+
+	    while (e = r.exec(q))
+    	   urlParams[d(e[1])] = d(e[2]);
+	})();
+
+
+  if (urlParams['view']) {
+    $('#menu').css('visibility', 'hidden');
+    $('#tabs').css('visibility', 'hidden');
+    $('#scriptTab').css('visibility', 'hidden');
+    $('#htmlTab').css('visibility', 'hidden');
+    $('#cssTab').css('visibility', 'hidden');    
+    $('#resultTab').css('visibility', 'hidden');    
+    
+  }
+
+
+  if (urlParams['StillInThe70s'])
+      viMode = true;
+
+	if (urlParams['expanded'])
+		toggleView();
+
+
+
+	if (urlParams['component']) {
+		componentName = urlParams['component'];
+		loadComponentCallBack();
+	}
+
+
+	if (urlParams['runComponent'])
+		runComponent();
+  
+  
+  if (urlParams['view'])
+    hideEditComponents();  
+  
+});
+
+</script>
+</body>

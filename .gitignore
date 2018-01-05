@@ -1,61 +1,19 @@
-build/
-dist/
-server/plugin/lib/
-server/plugin/runtime-lib/
-server/plugin/test-lib/
-server/plugin/bin/
-server/plugin/override.properties
-server/plugin/resource/resources/cdf-dd.html
-server/plugin/resource/resources/ext-editor.html
-server/plugin/resource/images/
-server/plugin/resource/js/
-server/plugin/resource/css/
-server/plugin/resource/includes.properties
-server/plugin/resource/resources/scripts.html
-server/plugin/resource/resources/styles.html
-nbproject/private/
-.DS_Store
-*~
-/server/plugin/resource/resources/base/export
-/server/plugin/runtime-lib/
-/bin
-out
+# OS-generated files
+.DS_Store*
 
-#Eclipe project files
+#Eclipse project files
 .classpath
 .project
 .settings
-.metadata/
+.metadata
 
-#Intellij IDEA project files
+#IntelliJ files
+.idea/
 *.iml
-.idea
 
-.ant-targets-build.xml
+#Output dir
+**/target
 
-
-cde-core/bin
-cde-pentaho/bin
-cde-pentaho5/bin
-cde-core/lib
-cde-pentaho/lib
-cde-pentaho5/lib
-cde-core/runtime-lib
-cde-pentaho/runtime-lib
-cde-pentaho5/runtime-lib
-cde-core/test-lib
-cde-pentaho/test-lib
-cde-pentaho5/test-lib
-
-cde-core/node_modules
-cde-core/build-res/pentaho-js-build
-cde-core/js-lib
-npm-debug.log
-cde-pentaho5/build-res/module-scripts
-cde-pentaho5/build-res/pentaho-js-build
-cde-pentaho5/js-lib
-cde-pentaho5/node_modules
-pentaho-js-build.zip
-requireCfg.js
-requireCfg-raw.js
-package-pom.xml
+#Node dirs
+**/node
+**/node_modules

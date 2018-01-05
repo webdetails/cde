@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      
+      #saveBtn{
+        width:auto;
+        border: solid 2px #bbb;
+        height: 25px;
+        font-size: 12px;
+        padding: 3px 10px;
+        background-color: #eaedee;
+        color: #444;
+      }
+
+      #saveBtn:hover{
+        background-color: #bbb;
+        color: #444;
+      }
+
+      #infoArea{
+        padding-left: 10px;
+        padding-right: 10px;
+        position: relative;
+        font-size: 13px;
+        font-weight: bold;
+        color: #444;
+        border: 1px solid #bbb;
+        left: 10px;
+      }
+
+      body{
+        color: #444;
+        background-color: #eaedee;
+      }
+    
+    </style>
+    <meta charset="UTF-8">
+    <title>Editor</title>
+    <!--jquery -->
+    <!-- Using jquery v1.4.4 because of IE8. When using newer versions like v1.7.1 IE8 forces compatibility mode and breaks CDE -->
+    <script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/jquery.js"></script>
+    
+    <!-- CDF files -->
+    <script language="javascript" type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/lib/shims.js"></script>
+    <script language="javascript" type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/lib/blockUI/jquery.blockUI.js"></script>
+    <script language="javascript" type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/lib/underscore/underscore.js"></script>  
+    <script language="javascript" type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/lib/mustache/mustache.js"></script>  
+    <script language="javascript" type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/lib/backbone/backbone.js"></script>    
+    <script language="javascript" type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/lib/base/Base.js"></script>
+    <script language="javascript" type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/CoreComponents.js"></script>
+    <script language="javascript" type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/OlapUtils.js"></script>
+    
+    
+    <script language="javascript" type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/lib/captify/captify.js"></script>
+    <script language="javascript" type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/lib/daterangepicker/daterangepicker.jQuery.js"></script>
+    <script language="javascript" type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/Dashboards.Startup.js"></script> <!-- This line must really be included after DateRangePicker -->
+    <script language="javascript" type="text/javascript" src="../../../../api/repos/pentaho-cdf/js-legacy/lib/fancybox/jquery.fancybox.js"></script>
+    <link rel="stylesheet" href="../../../../api/repos/pentaho-cdf/js-legacy/lib/captify/captify.css" type="text/css"/>
+    <!-- ACE -->
+    <script language="javascript" type="text/javascript" src="../resources/get?resource=/js/cdf-dd-base.js"></script>
+    <script language="javascript" type="text/javascript" src="../resources/get?resource=/js/cdf-dd-aceWrapper.js"></script>
+    <script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/src/ace.js"></script>
+    <script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/src/mode-javascript.js"></script>
+    <script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/src/mode-css.js"></script>
+    <script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/src/mode-xml.js"></script>
+    <script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/src/mode-html.js"></script>
+    <script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/src/theme-twilight.js"></script>
+    <script language="javascript" type="text/javascript" src="../resources/get?resource=/resources/ace/src/theme-eclipse.js"></script>
+    <script language="javascript">
+        var editor = new CodeEditor();
+        var params = {};
+        var fileName = null;
+        var isDirty = false;
+        var listeners = {
+          onStatusUpdate: null,
+          onSave: null,
+          notify:null
+        };
+        
+        var getUrlParams = function() {
+          
+          var url = document.location.href;
+          var output = {};
+          var index = url.indexOf('?');
+          if (index < 0) {
+              return null;
+          } else {
+              // First we get the part of the url with the parameters in it (i.e. after the '?'), and partition
+              // it into individual 'var=value' pieces. Then we split those pieces and add them to the output object
+              args = url.slice(index + 1).split('&');
+              for(i = 0; i < args.length; i++) {
+                  pair = args[i].split('=');
+                  output[pair[0]] = unescape(pair[1]);
+              }
+              return output;
+          }
+        };
+        
+
+        var save = function(){
+          editor.saveFile(params.path, editor.getContents(),
+            function(result){
+                var msg = "";
+                if($.type(result) == "object"){
+                    msg = result.responseText;
+                } else if($.type(result) == "string"){
+                    msg = result;
+                }
+                if(msg.indexOf('saved ok') > -1){
+                    setDirty(false);
+                    notify(msg);
+                }
+                else {
+                    notify(msg,'error');
+                }
+            }
+          );
+        };
+
+        var notifyType = {
+          ERROR : 'error',
+          INFO : 'info',
+          WARN : 'warn'
+        };
+        var notify = function(msg, type){
+            if(type == null) type = notifyType.INFO;
+            if(typeof(listeners.notify) == 'function'){
+                listeners.notify(msg,type);
+            }
+        };
+
+        var updateStatus = function(){
+           var info = fileName + (editor.isReadOnly()? ' (readonly)' : '') + (isDirty? '*' : '');
+            $('#infoArea').text(info);
+           if(typeof(listeners.onStatusUpdate) == 'function'){
+            listeners.onStatusUpdate(isDirty);
+           }
+        };
+        
+        var setDirty = function(dirty){
+            var wasDirty = isDirty;
+            isDirty = dirty;
+            
+            if(isDirty != wasDirty){
+                if(!wasDirty && isDirty){
+                  setExitNotification(true);
+                }
+                else if (wasDirty && !isDirty){
+                  setExitNotification(false);
+                }
+                updateStatus();
+            }
+        };
+        
+        var setExitNotification= function(enable){
+          if(window.parent && window.parent != window){//only mess with unload if owning the window
+            return;
+          }
+          
+          if(enable){
+            window.onbeforeunload = function(e) { return 'Any unsaved changes will be lost.'; }
+          }
+          else {
+             window.onbeforeunload = function() {null};
+          }
+        };
+        
+    </script>
+    
+    
+  </head>
+  <body>
+
+    <div id="btnArea"> <button id="saveBtn" onclick ="save()" style=""> Save </button><span id="infoArea"/></div>
+    <pre style="position:relative;height:310px;width:760px;" id="editArea">
+    </pre>
+
+    <script>
+        window.onload = function() {
+            params = getUrlParams();
+            fileName = params.path;
+            
+            if(params.editorOnly){
+                $('#btnArea').css('display','none');
+                $('#editArea').css('margin-top',0);
+                $('#editArea').css('margin-bottom',0);
+            }
+            
+            if(params.height){
+                $('#editArea').height(params.height);
+            }
+            else {
+                $('#editArea').height(window.innerHeight - ( params.editorOnly? 20 : 60));
+            }
+            
+            if(params.width){
+                $('#editArea').width(params.width);
+            }
+            else{
+                $('#editArea').width(window.innerWidth - 30);
+            }
+            
+            if(fileName == null) {
+                return;
+            }
+            
+	    editor.initEditor('editArea');
+
+            if(params.theme){
+                editor.setTheme(params.theme);
+            }
+            
+            if(params.mode){
+                editor.setMode(params.mode);
+            }
+            else {
+                var dotPos = fileName.lastIndexOf('.');
+                if(dotPos > -1 && dotPos < fileName.length -1){
+                    var ext = fileName.substring(dotPos+1);
+                    editor.setMode(ext);
+                }
+            }
+            
+            editor.loadFile(fileName);
+            updateStatus();
+            
+            editor.onChange(function(){
+               setDirty(true);
+            });
+        };
+    </script>
+
+  </body>
+</html>

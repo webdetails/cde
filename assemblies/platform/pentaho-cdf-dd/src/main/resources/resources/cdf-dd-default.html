@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <!-- Generic stuff --><!-- Framework CSS --><!--[if lt IE 8]><link rel="stylesheet" href="../pentaho-cdf/js-legacy/lib/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+  <!-- CDF TODO: change paths? move to an include? -->
+  <link rel="stylesheet" href="../pentaho-cdf/js-legacy/lib/blueprint/screen.css" type="text/css">
+  <link rel="stylesheet" href="../pentaho-cdf/js-legacy/lib/fancybox/jquery.fancybox.css" type="text/css">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+
+  <title>Webdetails CDE</title>
+</head>
+<body>
+  <div class="outside">
+    <div class="container">
+      <div class="cdfdd-toolbar-logo"></div>
+      <div class="cdfdd-toolbar span-24 last">
+
+        <!-- Header Buttons -->
+        <div id = "header" class="cdfdd-main prepend-2">
+          <div id = "headerLinks" class="headerLinks">
+            <div class="headerButton">
+              <a class="headerButton" onclick="cdfdd.newDashboard()">
+                New
+              </a>
+            </div>
+            <div class="headerButton">
+              <a class="headerButton" id="Save" onclick="cdfdd.save()">
+                Save
+              </a>
+            </div>
+            <div class="headerButton">
+              <a class="headerButton" id="SaveAs" onclick="cdfdd.combinedSaveAs()">Save as...</a>
+            </div>
+            <div class="headerButton">
+              <a class="headerButton" id="cdfdd-main-Reload" href="javascript:Panel.enableThisButton(this);cdfdd.reload()">
+                Reload
+              </a>
+            </div>
+            <div class="headerButton">
+              <a class="headerButton" onclick="cdfdd.saveSettings()">
+                Settings
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Title -->
+        <div class="cdfdd-title" title="@DASHBOARD_TITLE@">
+          @DASHBOARD_TITLE@
+          <div class="cdfdd-title-status"></div>
+        </div>
+
+        <!-- Modes -->
+        <div class="cdfdd-modes-container">
+          <div class="cdfdd-preview last">
+            <div class="panelButton" title="Preview your Dashboard" style="width: 40px;">
+              <a onclick="cdfdd.previewMode()" class="tooltip panelButtonClickableArea"><div id="previewButton"></div></a>
+            </div>
+          </div>
+
+          <div class="cdfdd-modes">
+
+            <div class="panelButton" title="Datasources Panel">
+              <a onclick="window.cdfdd &amp;&amp; cdfdd.datasources &amp;&amp; (Panel.enableThisButton(this), cdfdd.datasources.switchTo())" class="tooltip panelButtonClickableArea"><div class="datasourcesPanelButton"></div></a>
+            </div>
+            <div class="panelButton" title="Components Panel">
+              <a onclick="window.cdfdd &amp;&amp; cdfdd.components &amp;&amp; (Panel.enableThisButton(this),cdfdd.components.switchTo())" class="tooltip panelButtonClickableArea"><div class="componentsPanelButton"></div></a>
+            </div>
+            <div class="panelButton panelButton-active" title="Layout Panel">
+              <a onclick="window.cdfdd &amp;&amp; cdfdd.layout &amp;&amp; (Panel.enableThisButton(this), cdfdd.layout.switchTo())" class="tooltip panelButtonClickableArea"><div class="layoutPanelButton"></div></a>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+      <hr class="hr-hidden">
+      <div id="cdfdd-panels" class="span-24 round last"></div>
+
+      <div id="footer" class="footer span-24">
+
+        <div class="span-3 button cdfdd-about last" onclick="cdfdd.footerMode('about.fancybox')"> About </div>
+        <div class="span-3 button cdfdd-documentation last" onclick="cdfdd.footerMode('documentation.fancybox')"> Documentation  </div>
+
+        <a class="webdetailsLogo" target="_blank" href="http://www.webdetails.pt" border="0"> <img src="./images/NAV/logo_webdetails.png"></a>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="wizardDialog" class="jqmWindow" style="display: none"> </div>
+  <div id="keyboard_shortcuts_help" style="display: none;">
+    <div style="margin: 1.5em;">
+      <h4>Keyboard Shortcuts</h4>
+
+      <div class="shortcutCategory">
+        <h6>Utilities</h6>
+        <p>
+          <span>Help (this) </span>?
+        </p>
+        <p>
+          <span>Configure CGG</span>&lt;Shift&gt; + G
+        </p>
+        <p>
+          <span>Save Dashboard</span>&lt;Shift&gt; + S
+        </p>
+        <p>
+          <span>Preview Dashboard</span>&lt;Shift&gt; + P
+        </p>
+        <p>
+          <span>Validate Components (testing)</span>&lt;Shift&gt; + V
+        </p>
+      </div>
+
+      <div class="shortcutCategory">
+        <h6>Navigation</h6>
+        <p>
+          <span>Switch to Layout</span>1 or Numpad 1
+        </p>
+        <p>
+          <span>Switch to Components</span>2 or Numpad 2
+        </p>
+        <p>
+          <span>Switch to Datasources</span>3 or Numpad 3
+        </p>
+        <p>
+          <span>Select Previous Row</span>Up
+        </p>
+        <p>
+          <span>Select Next Row</span>Down
+        </p>
+        <p>
+          <span>Collapse Row</span>Left
+        </p>
+        <p>
+          <span>Expand Row</span>Right
+        </p>
+        <p>
+          <span>Switch Table Focus</span>Tab
+        </p>
+        <p>
+          <span>Click on Row</span>Enter
+        </p>
+        <p>
+          <span>Unselect Row</span>&lt;Shift&gt; + Enter
+        </p>
+      </div>
+
+      <div class="shortcutCategory">
+        <h6>Row Operations</h6>
+        <p>
+          <span>Move Row Up</span>&lt;Shift&gt; + Up
+        </p>
+        <p>
+          <span>Move Row Down</span>&lt;Shift&gt; + Down
+        </p>
+        <p>
+          <span>Duplicate Row</span>&lt;Shift&gt; + D
+        </p>
+        <p>
+          <span>Delete Row</span>&lt;Shift&gt; + X
+        </p>
+      </div>
+      <span><span colspan="2" style="text-align: right;">
+      <a href="#" onclick="cdfdd.toggleHelp()" style="color: #0091F6; font-weight: normal;">close</a></span>
+      </span>
+    </div>
+  </div>
+    <script language="javascript" type="text/javascript">
+      var CDFDDFileName = decodeURIComponent('@FILENAME@');
+      var CDFDDServerUrl = '@SERVERURL@';
+      var CDFDDDataUrl = "@DATAURL@";
+      var WEB_CONTEXT_BASE = CDFDDServerUrl + "../../";//TODO: use a new tag here?
+    </script>
+    <script type="text/javascript" src="../pentaho-cdf/js-legacy/lib/json.js"></script>
+    <!-- CDF files -->
+ @CDF@
+ @STYLES@ 
+    <!-- CDF-DD files -->
+ @SCRIPTS@
+<!-- TODO: ugly as hell: -->
+<script type="text/javascript" src="@CDE_RENDERER_API@/getComponentDefinitions?supports=@SUPPORT_TYPE@"></script>
+<!-- ACE -->
+<!-- TODO: move ACE -->
+<script language="javascript" type="text/javascript" src="./resources/ace/src/ace.js"></script>
+<script language="javascript" type="text/javascript" src="./resources/ace/src/mode-javascript.js"></script>
+<script language="javascript" type="text/javascript" src="./resources/ace/src/mode-css.js"></script>
+<script language="javascript" type="text/javascript" src="./resources/ace/src/mode-xml.js"></script>
+<script language="javascript" type="text/javascript" src="./resources/ace/src/mode-html.js"></script>
+<script language="javascript" type="text/javascript" src="./js/cdf-dd-aceWrapper.js"></script>
+
+<!-- i18n plugin -->
+<script type="text/javascript">
+  // Init jQuery i18n plugin
+  loadMessageBundles = function(lang) {
+    jQuery.i18n.properties({
+      name:'#{GLOBAL_MESSAGE_SET_NAME}',
+      path:'#{GLOBAL_MESSAGE_SET_PATH}',
+      mode:'both',
+      language:(lang == 'browser' ? jQuery.i18n.browserLang() : lang),
+      callback: function() {
+        #{GLOBAL_MESSAGE_SET}
+      }
+    });
+    Dashboards.setI18nSupport('#{LANGUAGE_CODE}', jQuery.i18n);
+  };
+
+  $(document).ready(function(){
+    // Initialize jquery.i18n plugin - load message files
+    var userLocale = '#{LANGUAGE_CODE}';
+    var formProvider = cdo.format.language(userLocale);
+    cdo.format.language(formProvider);
+    moment.locale(userLocale);
+    loadMessageBundles(userLocale);
+  });
+</script>
+<!-- Layout formats -->
+<script type="text/javascript">
+
+$(function() {
+  $(".round").corner();
+});
+
+//Fix the logo for IE<9 & Popup stretch problems
+/* CDF-271 $.browser is depricated http://msdn.microsoft.com/en-us/library/ms537509.aspx */
+var rv;
+var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+if(re.exec(navigator.userAgent) != null) { rv = parseFloat(RegExp.$1); }
+if(rv) {
+  if(rv < 9) {
+    $('.cdfdd-toolbar-logo').css('position','relative');
+    $('.cdfdd-toolbar-logo').css('position','absolute');
+    $('.hr-hidden').css('display','none');
+  } else if(rv == 9) {
+    $(document).bind('DOMNodeInserted', function(event) { 
+      if(event != null && event.srcElement != null && event.srcElement.lastChild != null) {
+        var childClassName = event.srcElement.lastChild.className;
+        if(childClassName == "popup") {
+          $(".popup").addClass("popup-ie9");
+        }
+      }
+    });
+  }
+}
+
+$(document).ready(function(){
+  var initPlugins = function (result) {
+    result.map(function(plugin){
+      //Verify if there are space characters on the plugin ID if there are the plugin title will be used as if it is the ID
+      if(plugin.pluginId.indexOf(" ") == -1){
+        $.getScript("../"+plugin.pluginId+plugin.jsPath);
+      }else{
+        $.getScript("../"+plugin.title+plugin.jsPath);
+      }
+    });
+  }
+
+
+  PluginRequests.getCDEPlugins(initPlugins);
+
+});
+
+
+</script>
+</body>
+</html>
