@@ -37,14 +37,15 @@
       <directory>${basedir}/target/dependency/cde/amd-components-compressed</directory>
       <outputDirectory>pentaho-cdf-dd/resources/custom/amd-components-compressed</outputDirectory>
     </fileSet>
+    <!-- AMD Custom Components RequireJS configuration files -->
+    <fileSet>
+      <directory>${basedir}/target/dependency/cde</directory>
+      <outputDirectory>pentaho-cdf-dd/js</outputDirectory>
+      <includes>
+        <include>${requirejs.config.files.pattern}</include>
+      </includes>
+    </fileSet>
   </fileSets>
-  <!-- AMD Custom Components RequireJS configuration file -->
-  <files>
-    <file>
-      <source>${basedir}/target/dependency/cde/${global.require.file}</source>
-      <destName>pentaho-cdf-dd/js/${global.require.file}</destName>
-    </file>
-  </files>
 
   <dependencySets>
     <dependencySet>
