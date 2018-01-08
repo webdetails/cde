@@ -14,8 +14,14 @@
       <destName>cde/${global.require.file}</destName>
     </file>
   </files>
-
   <fileSets>
+    <fileSet>
+      <directory>${basedir}/target/dependency/cde</directory>
+      <outputDirectory>cde</outputDirectory>
+      <includes>
+        <include>${requirejs.config.files.pattern}</include>
+      </includes>
+    </fileSet>
     <fileSet>
       <directory>${basedir}/target/dependency/cde/amd-components</directory>
       <outputDirectory>cde/amd-components</outputDirectory>

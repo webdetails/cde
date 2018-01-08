@@ -60,7 +60,7 @@
               <target>
                 <concat destfile="${project.build.directory}/${global.require.file}" force="yes" append="true">
                   <fileset casesensitive="yes" dir="${basedir}/target/dependency/cde">
-                    <include name="${requirejs.config.files.pattern}" />
+                    <include name="${requirejs.config.files.pattern}"/>
                   </fileset>
                 </concat>
               </target>
