@@ -2,19 +2,19 @@
 <CDADescriptor>
    <DataSources>
       <Connection id="sampleQuery" type="scripting.scripting">
-         <Initscript></Initscript>
+         <Initscript/>
          <Language>beanshell</Language>
       </Connection>
       <Connection id="sqlQuery" type="sql.jndi">
          <Jndi>SampleData</Jndi>
       </Connection>
    </DataSources>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="sampleQuery"
-               id="sampleQuery"
-               type="scriptable">
+   <DataAccess access="public" connection="sampleQuery" id="sampleQuery" type="scriptable">
+      <Name>sampleQuery</Name>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
 
 String[] columnNames = new String[]{
 "series",
@@ -56,17 +56,17 @@ model.addRow(new Object[]{ new String("Train"), new String("Red"), new Integer("
 model.addRow(new Object[]{ new String("Train"), new String("Blue"), new Integer("50") });
 model.addRow(new Object[]{ new String("Train"), new String("Green"), new Integer("7") });
 
-return model;</Query>
+return model;]]></Query>
    </DataAccess>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="sqlQuery"
-               id="sqlQuery"
-               type="sql">
+   <DataAccess access="public" connection="sqlQuery" id="sqlQuery" type="sql">
+      <Name>sqlQuery</Name>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters>
          <Parameter default="Classic Cars" name="productLine" type="String"/>
          <Parameter default="APAC" name="territory" type="String"/>
       </Parameters>
-      <Query>SELECT
+      <Query><![CDATA[SELECT
 c.CUSTOMERNAME as customer, sum(f.TOTALPRICE) as total
 FROM ORDERFACT f
 inner join PRODUCTS p on ( p.PRODUCTCODE = f.PRODUCTCODE )
@@ -74,6 +74,6 @@ inner join CUSTOMER_W_TER c on (c.CUSTOMERNUMBER = f.CUSTOMERNUMBER)
 where p.PRODUCTLINE=${productLine}
 and c.TERRITORY=${territory}
 group by c.CUSTOMERNAME
-order by total desc</Query>
+order by total desc]]></Query>
    </DataAccess>
 </CDADescriptor>

@@ -2,19 +2,19 @@
 <CDADescriptor>
    <DataSources>
       <Connection id="ThreeColumns" type="scripting.scripting">
-         <Initscript></Initscript>
+         <Initscript/>
          <Language>beanshell</Language>
       </Connection>
       <Connection id="localSampleData" type="sql.jndi">
          <Jndi>SampleData</Jndi>
       </Connection>
    </DataSources>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="ThreeColumns"
-               id="ThreeColumns"
-               type="scriptable">
+   <DataAccess access="public" connection="ThreeColumns" id="ThreeColumns" type="scriptable">
+      <Name>ThreeColumns</Name>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
 
 String[] columnNames = new String[]{
 "series",
@@ -56,19 +56,19 @@ model.addRow(new Object[]{ new String("Train"), new String("Red"), new Integer("
 model.addRow(new Object[]{ new String("Train"), new String("Blue"), new Integer("50") });
 model.addRow(new Object[]{ new String("Train"), new String("Green"), new Integer("7") });
 
-return model;</Query>
+return model;]]></Query>
    </DataAccess>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="localSampleData"
-               id="localSampleData"
-               type="sql">
+   <DataAccess access="public" connection="localSampleData" id="localSampleData" type="sql">
+      <Name>localSampleData</Name>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>SELECT
+      <Query><![CDATA[SELECT
 c.CUSTOMERNAME as customer, sum(f.TOTALPRICE) as total
 FROM ORDERFACT f
 inner join PRODUCTS p on ( p.PRODUCTCODE = f.PRODUCTCODE )
 inner join CUSTOMER_W_TER c on (c.CUSTOMERNUMBER = f.CUSTOMERNUMBER)
 group by c.CUSTOMERNAME
-order by total desc</Query>
+order by total desc]]></Query>
    </DataAccess>
 </CDADescriptor>

@@ -2,16 +2,16 @@
 <CDADescriptor>
    <DataSources>
       <Connection id="Char3Col" type="scripting.scripting">
-         <Initscript></Initscript>
+         <Initscript/>
          <Language>beanshell</Language>
       </Connection>
    </DataSources>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="Char3Col"
-               id="Char3Col"
-               type="scriptable">
+   <DataAccess access="public" connection="Char3Col" id="Char3Col" type="scriptable">
+      <Name>Char3Col</Name>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
 
 String[] columnNames = new String[]{
 "series",
@@ -53,6 +53,6 @@ model.addRow(new Object[]{ new String("Train"), new String("Red"), new Integer("
 model.addRow(new Object[]{ new String("Train"), new String("Blue"), new Integer("50") });
 model.addRow(new Object[]{ new String("Train"), new String("Green"), new Integer("7") });
 
-return model;</Query>
+return model;]]></Query>
    </DataAccess>
 </CDADescriptor>
