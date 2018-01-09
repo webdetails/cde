@@ -6,14 +6,14 @@
          <Jndi>SampleData</Jndi>
       </Connection>
    </DataSources>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="chartQuery"
-               id="chartQuery"
-               type="mdx">
+   <DataAccess access="public" connection="chartQuery" id="chartQuery" type="mdx">
+      <Name>chartQuery</Name>
       <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>select NON EMPTY({Descendants([Markets].[All Markets] ,[Markets].[Territory])}) on ROWS, 
+      <Query><![CDATA[select NON EMPTY({Descendants([Markets].[All Markets] ,[Markets].[Territory])}) on ROWS, 
  NON EMPTY({[Measures].[Quantity]}) on Columns 
- from [SteelWheelsSales]</Query>
+ from [SteelWheelsSales]]]></Query>
    </DataAccess>
 </CDADescriptor>

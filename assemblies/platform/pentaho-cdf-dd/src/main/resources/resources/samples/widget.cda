@@ -6,16 +6,17 @@
          <Jndi>SampleData</Jndi>
       </Connection>
    </DataSources>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="sales" id="sales"
-               type="mdx">
+   <DataAccess access="public" connection="sales" id="sales" type="mdx">
+      <Name>sales</Name>
       <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters>
-         <Parameter default="All Years" name="year" type="String"/>
+         <Parameter default="year" name="year" type="String"/>
       </Parameters>
-      <Query>select NON EMPTY {[Product].Children} ON COLUMNS,
+      <Query><![CDATA[select NON EMPTY {[Product].Children} ON COLUMNS,
   NON EMPTY {[Markets].Children} ON ROWS
 from [SteelWheelsSales]
-where [Time].[${year}]</Query>
+where [Time].[${year}]]]></Query>
    </DataAccess>
 </CDADescriptor>

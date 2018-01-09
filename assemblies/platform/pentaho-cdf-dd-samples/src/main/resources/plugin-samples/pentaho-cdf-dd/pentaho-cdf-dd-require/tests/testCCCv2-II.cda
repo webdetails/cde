@@ -10,24 +10,24 @@
          <Jndi>SampleData</Jndi>
       </Connection>
    </DataSources>
-   <DataAccess access="public" cache="true" cacheDuration="3600"
-               connection="queryQuantityMonths"
-               id="queryQuantityMonths"
+   <DataAccess access="public" connection="queryQuantityMonths" id="queryQuantityMonths"
                type="mdx">
+      <Name>queryQuantityMonths</Name>
       <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>SELECT
+      <Query><![CDATA[SELECT
 NON EMPTY {{{[Time].[Months].Members}}} ON COLUMNS,
 NON EMPTY {{[Measures].[Quantity]}} ON ROWS
-FROM [SteelWheelsSales]</Query>
+FROM [SteelWheelsSales]]]></Query>
    </DataAccess>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="querySalesYears"
-               id="querySalesYears"
-               type="mdx">
+   <DataAccess access="public" connection="querySalesYears" id="querySalesYears" type="mdx">
+      <Name>querySalesYears</Name>
       <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>SELECT NON EMPTY {Hierarchize({[Measures].[Sales]})} ON COLUMNS, NON EMPTY {Hierarchize({[Time].[Years].Members})} ON ROWS FROM [SteelWheelsSales]</Query>
+      <Query><![CDATA[SELECT NON EMPTY {Hierarchize({[Measures].[Sales]})} ON COLUMNS, NON EMPTY {Hierarchize({[Time].[Years].Members})} ON ROWS FROM [SteelWheelsSales]]]></Query>
    </DataAccess>
 </CDADescriptor>
