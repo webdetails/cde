@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -534,8 +534,8 @@ var SaveRequests = {
     $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function(result) {
       try {
         if(result && result.status == "true") {
-          myself.setDashboardWcdf(wcdf);
-          refreshTitle(wcdf.title);
+          myself.setDashboardWcdf(result.result.wcdf);
+          refreshTitle(result.result.wcdf.title);
           // We need to reload the layout engine in case the rendererType changed
           cdfdd.layout.init();
           NotifyBarUtils.successNotifyBar("Dashboard Settings saved successfully");
