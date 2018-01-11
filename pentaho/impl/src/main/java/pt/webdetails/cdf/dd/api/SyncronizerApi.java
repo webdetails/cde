@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -88,6 +88,7 @@ public class SyncronizerApi { //TODO: synchronizer?
 
     file = XSSHelper.getInstance().escape( file );
     path = XSSHelper.getInstance().escape( path );
+    title = XSSHelper.getInstance().escape( title );
     author = XSSHelper.getInstance().escape( author );
     description = XSSHelper.getInstance().escape( description );
     style = XSSHelper.getInstance().escape( style );
@@ -100,7 +101,6 @@ public class SyncronizerApi { //TODO: synchronizer?
         widgetParams.add( i, XSSHelper.getInstance().escape( widgetParams.get( i ) ) );
       }
     }
-
 
     servletResponse.setContentType( APPLICATION_JSON );
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
@@ -180,7 +180,7 @@ public class SyncronizerApi { //TODO: synchronizer?
           logger.warn( getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
           return JsonUtils.getJsonResult( false, getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
         }
-        dashboardStructure.savesettings( params );
+        result = dashboardStructure.saveSettingsToWcdf( params );
       } else {
         logger.error( "Unknown operation: " + operation );
       }
