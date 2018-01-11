@@ -222,214 +222,6 @@
         "typeDesc": "Export Popup Component"
       },
       {
-        "id": "dc7f8d32-5ecb-7b28-3627-7b7c36ffc63c",
-        "parent": "OTHERCOMPONENTS",
-        "properties": [
-          {
-            "name": "name",
-            "type": "Id",
-            "value": "TheTable"
-          },
-          {
-            "name": "expandContainerObject",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "listeners",
-            "type": "Listeners",
-            "value": "[]"
-          },
-          {
-            "name": "oLanguage",
-            "type": "JavaScript",
-            "value": ""
-          },
-          {
-            "name": "language",
-            "type": "JavaScript",
-            "value": ""
-          },
-          {
-            "name": "colFormats",
-            "type": "Array",
-            "value": "[]"
-          },
-          {
-            "name": "colHeaders",
-            "type": "Array",
-            "value": "[\"Series\",\"Category\",\"Value\"]"
-          },
-          {
-            "name": "colSortable",
-            "type": "Array",
-            "value": "[]"
-          },
-          {
-            "name": "colTypes",
-            "type": "colTypesCustom",
-            "value": "[\"string\",\"string\",\"numeric\"]"
-          },
-          {
-            "name": "colWidths",
-            "type": "Array",
-            "value": "[]"
-          },
-          {
-            "name": "expandParameters",
-            "type": "ValuesArray",
-            "value": "[]"
-          },
-          {
-            "name": "parameters",
-            "type": "ValuesArray",
-            "value": "[]"
-          },
-          {
-            "name": "displayLength",
-            "type": "Integer",
-            "value": ""
-          },
-          {
-            "name": "expandOnClick",
-            "type": "Boolean",
-            "value": "false"
-          },
-          {
-            "name": "filter",
-            "type": "Boolean",
-            "value": "false"
-          },
-          {
-            "name": "info",
-            "type": "Boolean",
-            "value": "true"
-          },
-          {
-            "name": "lengthChange",
-            "type": "Boolean",
-            "value": "false"
-          },
-          {
-            "name": "paginate",
-            "type": "Boolean",
-            "value": "true"
-          },
-          {
-            "name": "sort",
-            "type": "Boolean",
-            "value": "true"
-          },
-          {
-            "name": "colSearchable",
-            "type": "Array",
-            "value": "[]"
-          },
-          {
-            "name": "drawCallback",
-            "type": "JavaScript",
-            "value": ""
-          },
-          {
-            "name": "dataSource",
-            "type": "Datasource",
-            "value": "ThreeColumns"
-          },
-          {
-            "name": "sDom",
-            "type": "JavaScript",
-            "value": ""
-          },
-          {
-            "name": "sortBy",
-            "type": "SortByArray",
-            "value": "[]"
-          },
-          {
-            "name": "priority",
-            "type": "Integer",
-            "value": 5
-          },
-          {
-            "name": "refreshPeriod",
-            "type": "Integer",
-            "value": ""
-          },
-          {
-            "name": "paginationType",
-            "type": "PaginationType",
-            "value": "two_button"
-          },
-          {
-            "name": "tableStyle",
-            "type": "TableStyle",
-            "value": "classic"
-          },
-          {
-            "name": "htmlObject",
-            "type": "HtmlObject",
-            "value": ""
-          },
-          {
-            "name": "executeAtStart",
-            "type": "Boolean",
-            "value": "true"
-          },
-          {
-            "name": "paginateServerside",
-            "type": "Boolean",
-            "value": "false"
-          },
-          {
-            "name": "failureCallback",
-            "type": "JavaScript",
-            "value": ""
-          },
-          {
-            "name": "preExecution",
-            "type": "JavaScript",
-            "value": ""
-          },
-          {
-            "name": "postExecution",
-            "type": "JavaScript",
-            "value": ""
-          },
-          {
-            "name": "postFetch",
-            "type": "JavaScript",
-            "value": ""
-          },
-          {
-            "name": "preChange",
-            "type": "JavaScript",
-            "value": ""
-          },
-          {
-            "name": "postChange",
-            "type": "JavaScript",
-            "value": ""
-          },
-          {
-            "name": "extraOptions",
-            "type": "OptionArray",
-            "value": "[]"
-          },
-          {
-            "name": "tooltip",
-            "type": "Html",
-            "value": ""
-          },
-          {
-            "name": "clickAction",
-            "type": "JavaScript",
-            "value": ""
-          }
-        ],
-        "type": "ComponentsTable",
-        "typeDesc": "Table Component"
-      },
-      {
         "id": "15db9ab1-9d19-ff0f-854f-5e5cf74445b6",
         "parent": "OTHERCOMPONENTS",
         "properties": [
@@ -988,7 +780,7 @@
           {
             "name": "htmlObject",
             "type": "HtmlObject",
-            "value": "${h:TheTable}"
+            "value": "${h:sampletableCol}"
           },
           {
             "name": "executeAtStart",
@@ -4888,7 +4680,7 @@
           {
             "name": "name",
             "type": "Id",
-            "value": "TheTable"
+            "value": ""
           },
           {
             "name": "height",
@@ -4918,6 +4710,79 @@
         ],
         "type": "LayoutRow",
         "typeDesc": "Row"
+      },
+      {
+        "id": "d7250426-0435-97da-5f56-76cc14589010",
+        "type": "LayoutColumn",
+        "typeDesc": "Column",
+        "parent": "f1924aeb-3149-93be-416d-13102768f39f",
+        "properties": [
+          {
+            "name": "name",
+            "value": "sampletableCol",
+            "type": "Id"
+          },
+          {
+            "name": "columnSpan",
+            "value": "24",
+            "type": "Integer"
+          },
+          {
+            "name": "columnPrepend",
+            "value": "",
+            "type": "Integer"
+          },
+          {
+            "name": "columnAppend",
+            "value": "",
+            "type": "Integer"
+          },
+          {
+            "name": "columnPrependTop",
+            "value": "false",
+            "type": "Boolean"
+          },
+          {
+            "name": "columnAppendBottom",
+            "value": "false",
+            "type": "Boolean"
+          },
+          {
+            "name": "columnBorder",
+            "value": "false",
+            "type": "Boolean"
+          },
+          {
+            "name": "columnBigBorder",
+            "value": "false",
+            "type": "Boolean"
+          },
+          {
+            "name": "height",
+            "value": "",
+            "type": "Integer"
+          },
+          {
+            "name": "backgroundColor",
+            "value": "",
+            "type": "Color"
+          },
+          {
+            "name": "roundCorners",
+            "value": "",
+            "type": "RoundCorners"
+          },
+          {
+            "name": "textAlign",
+            "value": "",
+            "type": "TextAlign"
+          },
+          {
+            "name": "cssClass",
+            "value": "",
+            "type": "String"
+          }
+        ]
       }
     ],
     "title": "CDF - Sample structure"

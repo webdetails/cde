@@ -9,10 +9,15 @@
     <p> Loads CDE require configs from a server and creates a new dashboard with a Select Component, including a loaded CDE Dashboard. </p>
     <p> This will make it possible for any server and/or 3rd party applications to embed CDE Dashboards, from a Pentaho Server.</p>
 
-    <b>Note:</b>
-    <p> To properly allow the embedded scenario, which probably requires Cross-Origin Resource Sharing<br>
-    there is one extra setting that needs to be turned on in the settings.xml of CDE and CDF:</p>
+    <p>To allow embedded scenarios using an external HTTP server, e.g. running on localhost port 8070, users need to enable Cross-Origin Resource Sharing (CORS) by editing the file <strong>settings.xml</strong> of each plugin (CDF, CDE and CDA; example location for CDF: <strong>system/pentaho-cdf/settings.xml</strong>) and set the following content:</p>
     <pre>&lt;allow-cross-domain-resources&gt;true&lt;/allow-cross-domain-resources&gt;</pre>
+    <pre>&lt;cross-domain-resources-whitelist&gt;http://localhost:8070&lt;/cross-domain-resources-whitelist&gt;</pre><br>
+
+    <p>CORS also needs to be enabled for the Pentaho Server, this can be done by editing the file <strong>system/pentaho.xml</strong> and setting the following content:</p>
+    <pre>&lt;cors-requests-allowed&gt;true&lt;/cors-requests-allowed&gt;</pre>
+    <pre>&lt;cors-requests-allowed-domains&gt;http://localhost:8070&lt;/cors-requests-allowed-domains&gt;</pre><br>
+    
+    <p>Start the server after applying the latter changes. If it is already running restart it.</p>
 
     <h3>Configurations</h3>
 
@@ -22,16 +27,16 @@
     </dl>
     
     <br>
-    <p>To demonstrate the embedding capabilities of CDE, we have an embedded.html file (located in the same folder), which is is capable of embedding CDE.<br>
-    This is done by simply including a javascript resource, which will make sure to embed the necessary files.<br>
+    <p>To demonstrate the embedding capabilities of CDE, we have an embedded.html file (located in the same folder), which is is capable of embedding CDE.
+    This is done by simply including a javascript resource, which will make sure to embed the necessary files.
     You can drop the embedded.html file into any web server and you'll be able to embed a CDE dashboard, as long as you provide the correct url for the script tag mentioned below.
     </p>
     
     <p>You really only need to know the path to the Pentaho Server from which you want to embed CDF, and then include the embed javascript resource:</p>
     <pre>&lt;script type="text/javascript" src="path/to/server/pentaho/plugin/pentaho-cdf-dd/api/renderer/cde-embed.js"&gt;&lt;/script&gt;</pre><br>
     <p>Our embedded.html demonstrates this:</p>
-    <p>ln12:</p> <pre>&lt;script type="text/javascript" src="http://localhost:8080/pentaho/plugin/pentaho-cdf-dd/api/renderer/cde-embed.js"&gt;&lt;/script&gt;</pre>
-    <br>
+    <p>ln12:</p> <pre>&lt;script type="text/javascript" src="http://localhost:8080/pentaho/plugin/pentaho-cdf-dd/api/renderer/cde-embed.js"&gt;&lt;/script&gt;</pre><br>
+
     <p>We can then assume we are in a Pentaho CDE environment, we are embedded!</p>
     <p>ln54:</p>
     <pre>
