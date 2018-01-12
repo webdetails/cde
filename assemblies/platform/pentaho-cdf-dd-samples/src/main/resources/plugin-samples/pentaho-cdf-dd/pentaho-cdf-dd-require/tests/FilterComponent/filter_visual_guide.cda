@@ -2,19 +2,19 @@
 <CDADescriptor>
    <DataSources>
       <Connection id="getData_IdValue" type="scripting.scripting">
-         <Initscript></Initscript>
+         <Initscript/>
          <Language>beanshell</Language>
       </Connection>
       <Connection id="getData_IdValue_IdGroup" type="scripting.scripting">
-         <Initscript></Initscript>
+         <Initscript/>
          <Language>beanshell</Language>
       </Connection>
       <Connection id="getData_IdValueGroup" type="scripting.scripting">
-         <Initscript></Initscript>
+         <Initscript/>
          <Language>beanshell</Language>
       </Connection>
       <Connection id="getData_idValue_long" type="scripting.scripting">
-         <Initscript></Initscript>
+         <Initscript/>
          <Language>beanshell</Language>
       </Connection>
       <Connection id="getDataSearchable" type="kettle.TransFromFile">
@@ -24,11 +24,12 @@
    </DataSources>
    <DataAccess access="public" connection="getData_IdValue" id="getData_IdValue"
                type="scriptable">
+      <Name>getData_IdValue</Name>
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Output indexes="0,1" mode="include"/>
       <Parameters/>
-      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    			
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    			
 String[] columnNames = new String[]{				
 	"id",	"label",	"group"	
 };				
@@ -60,15 +61,16 @@ model.addRow(new Object[]{	new Float(2.8),	new String ("Eight"),	new String ("Tw
 model.addRow(new Object[]{	new Float(2.9),	new String ("Nine"),	new String ("Twos")	});
 
 
-return model;</Query>
+return model;]]></Query>
    </DataAccess>
    <DataAccess access="public" connection="getData_IdValue_IdGroup"
                id="getData_IdValue_IdGroup"
                type="scriptable">
+      <Name>getData_IdValue_IdGroup</Name>
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    				
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    				
 String[] columnNames = new String[]{					
 	"id",	"name",	"parentid",	"parentname"	
 };					
@@ -108,14 +110,15 @@ model.addRow(new Object[]{	new String ("[Twos].[Twenty-seven]"),	new String ("Tw
 model.addRow(new Object[]{	new String ("[Twos].[Twenty-eight]"),	new String ("Twenty-eight"),	new String ("[Twos]"),	new String ("Twos")	});
 model.addRow(new Object[]{	new String ("[Twos].[Twenty-nine]"),	new String ("Twenty-nine"),	new String ("[Twos]"),	new String ("Twos")	});
 
-return model;</Query>
+return model;]]></Query>
    </DataAccess>
    <DataAccess access="public" connection="getData_IdValueGroup" id="getData_IdValueGroup"
                type="scriptable">
+      <Name>getData_IdValueGroup</Name>
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    			
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    			
 String[] columnNames = new String[]{				
 	"id",	"label",	"group"	
 };				
@@ -147,14 +150,15 @@ model.addRow(new Object[]{	new Float(2.8),	new String ("Eight"),	new String ("Tw
 model.addRow(new Object[]{	new Float(2.9),	new String ("Nine"),	new String ("Twos")	});
 
 
-return model;</Query>
+return model;]]></Query>
    </DataAccess>
    <DataAccess access="public" connection="getData_idValue_long" id="getData_idValue_long"
                type="scriptable">
+      <Name>getData_idValue_long</Name>
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    		
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    		
 String[] columnNames = new String[]{			
 	"id",	"label"	
 };			
@@ -667,16 +671,17 @@ model.addRow(new Object[]{	new Float(499),	new String ("Entry 499")	});
 model.addRow(new Object[]{	new Float(500),	new String ("Entry 500")	});
 
 
-return model;</Query>
+return model;]]></Query>
    </DataAccess>
    <DataAccess access="public" connection="getDataSearchable" id="getDataSearchable"
                type="kettle">
+      <Name>getDataSearchable</Name>
       <Cache duration="3600" enabled="false"/>
       <Columns/>
       <Output indexes="0,1" mode="include"/>
       <Parameters>
          <Parameter default="" name="searchBox" type="String"/>
       </Parameters>
-      <Query>OUTPUT</Query>
+      <Query><![CDATA[OUTPUT]]></Query>
    </DataAccess>
 </CDADescriptor>

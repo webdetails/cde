@@ -2,17 +2,18 @@
 <CDADescriptor>
    <DataSources>
       <Connection id="getData_IdValue_IdGroup" type="scripting.scripting">
-         <Initscript></Initscript>
+         <Initscript/>
          <Language>beanshell</Language>
       </Connection>
    </DataSources>
    <DataAccess access="public" connection="getData_IdValue_IdGroup"
                id="getData_IdValue_IdGroup"
                type="scriptable">
+      <Name>getData_IdValue_IdGroup</Name>
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    				
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    				
 String[] columnNames = new String[]{					
 	"id",	"name",	"parentid",	"parentname"	
 };					
@@ -52,6 +53,6 @@ model.addRow(new Object[]{	new String ("[Twos].[Twenty-seven]"),	new String ("Tw
 model.addRow(new Object[]{	new String ("[Twos].[Twenty-eight]"),	new String ("Twenty-eight"),	new String ("[Twos]"),	new String ("Twos")	});
 model.addRow(new Object[]{	new String ("[Twos].[Twenty-nine]"),	new String ("Twenty-nine"),	new String ("[Twos]"),	new String ("Twos")	});
 
-return model;</Query>
+return model;]]></Query>
    </DataAccess>
 </CDADescriptor>
