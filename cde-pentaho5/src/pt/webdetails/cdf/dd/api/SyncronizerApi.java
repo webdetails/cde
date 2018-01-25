@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -87,6 +87,7 @@ public class SyncronizerApi { //TODO: synchronizer?
                             @Context HttpServletResponse servletResponse ) throws Exception {
 
     file = XSSHelper.getInstance().escape( file );
+    title = XSSHelper.getInstance().escape( title );
     path = XSSHelper.getInstance().escape( path );
     author = XSSHelper.getInstance().escape( author );
     description = XSSHelper.getInstance().escape( description );
@@ -180,6 +181,7 @@ public class SyncronizerApi { //TODO: synchronizer?
           logger.warn( getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
           return JsonUtils.getJsonResult( false, getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
         }
+        result = dashboardStructure.saveSettingsToWcdf( params );
         dashboardStructure.savesettings( params );
       } else {
         logger.error( "Unknown operation: " + operation );
