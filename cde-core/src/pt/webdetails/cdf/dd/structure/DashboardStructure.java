@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -277,6 +277,24 @@ public class DashboardStructure implements IDashboardStructure {
     } finally {
       IOUtils.closeQuietly( cdfstructure );
     }
+  }
+
+      /**
+     * Deligates parameters setting to {@link #savesettings(HashMap)} adds updated wcdf to JSON object
+     * and returns it.
+     *
+     * @param parameters map of parameters of wcdf to updating
+     * @return JSON object with wcdf that conatins updated parameters
+     * @throws Exception
+     */
+  public JSONObject saveSettingsToWcdf( HashMap<String, Object> parameters ) throws Exception {
+    savesettings( parameters );
+
+    final JSONObject wcdfData = this.loadWcdfDescriptor( (String) parameters.get( "file" ) ).toJSON();
+    final JSONObject result = new JSONObject();
+    result.put( "wcdf", wcdfData );
+
+    return result;
   }
 
   // .WCDF file
