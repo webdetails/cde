@@ -31,6 +31,13 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cpf.packager.origin.PathOrigin;
 import pt.webdetails.cpf.packager.origin.OtherPluginStaticSystemOrigin;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.AttributeName.META;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.AttributeName.CONNECTION_TYPE;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.AttributeName.DATA_ACCESS_TYPE;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyValue.CPK_QUERY_TYPE;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.META_TYPE_CDA;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.META_TYPE_CPK;
+
 /**
  * Loads XML model files, component types and property types, from the file system, of a Pentaho CDE plugin
  * instalation.
@@ -74,87 +81,99 @@ public final class DataSourcesModelReader {
     Map<String, Object> def = (Map<String, Object>) pointer.getNode();
     JXPathContext jctx = JXPathContext.newContext( def );
 
+    String name = pointer.asPath().replaceAll( ".*name='(.*?)'.*", "$1" );
     String label = (String) jctx.getValue( "metadata/name" );
 
-    String dataSourceType = (String) jctx.getValue( "metadata/datype" );
+    String category = (String) jctx.getValue( "metadata/group" );
+    String categoryLabel = (String) jctx.getValue( "metadata/groupdesc" );
 
-    boolean isCPK = dataSourceType.equalsIgnoreCase( "cpk" );
-    boolean isCDA = !isCPK;
+    String dataAccessType = (String) jctx.getValue( "metadata/datype" );
+    boolean isCPK = dataAccessType.equalsIgnoreCase( CPK_QUERY_TYPE );
 
     //TODO: oh so wrong
     PathOrigin origin = new OtherPluginStaticSystemOrigin( isCPK ? "cpk" : "cda", "" );
     builder.setOrigin( origin );
 
-    // This specific Data Source has special treatment below
-    boolean isKettleOverX = isCDA && "kettle over kettleTransFromFile".equalsIgnoreCase( label );
-
     logger.debug( String.format( "\t%s", label ) );
 
-    String connType = (String) jctx.getValue( "metadata/conntype" );
-    connType = connType != null ? connType : "";
-
     builder
-      .setName( pointer.asPath().replaceAll( ".*name='(.*?)'.*", "$1" ) )
+      .setName( name )
       .setLabel( label )
       .setTooltip( label )
-      .setCategory( (String) jctx.getValue( "metadata/group" ) )
-      .setCategoryLabel( (String) jctx.getValue( "metadata/groupdesc" ) )
+      .setCategory( category )
+      .setCategoryLabel( categoryLabel )
       .setSourcePath( sourcePath )
-      .addAttribute( "", isCPK ? "CPK" : "CDA" ); // meta: "CDA"
+      .addAttribute( META, isCPK ? META_TYPE_CDA : META_TYPE_CPK ); // meta: "CDA"
 
-    if ( isCDA ) {
-      builder
-        .addAttribute( "conntype", connType )
-        .addAttribute( "datype", dataSourceType );
-    } else if ( isCPK ) {
-      builder
-        .useProperty( null, "stepName" )
-        .useProperty( null, "kettleOutput" )
-        .addAttribute( "pluginId", (String) jctx.getValue( "metadata/pluginId" ) )
-        .addAttribute( "endpoint", (String) jctx.getValue( "metadata/endpoint" ) );
+    if ( isCPK ) {
+      readCPKDataSourceComponent( builder, jctx );
+    } else {
+      readCDADataSourceComponent( builder, jctx );
     }
 
-    if ( isCDA ) {
-      for ( String cdaPropName : this.getCDAPropertyNames( def ) ) {
-        if ( cdaPropName.equals( "id" ) || cdaPropName.equals( "connection" ) ) {
-          continue;
-        } else if ( cdaPropName.equals( "columns" ) ) {
-          builder.useProperty( null, "cdacolumns" );
-          builder.useProperty( null, "cdacalculatedcolumns" );
-        } else if ( cdaPropName.equals( "output" ) ) {
-          builder.useProperty( null, "output" );
-          builder.useProperty( null, "outputMode" );
-        } else if ( cdaPropName.equals( "left" ) ) {
-          builder.useProperty( null, "left" );
-          builder.useProperty( null, "leftkeys" );
-        } else if ( cdaPropName.equals( "right" ) ) {
-          builder.useProperty( null, "right" );
-          builder.useProperty( null, "rightkeys" );
-        } else if ( isKettleOverX && cdaPropName.equalsIgnoreCase( "query" ) ) {
-          builder.useProperty( cdaPropName, "kettleQuery" );
-        } else {
-          builder.useProperty( null, cdaPropName );
-        }
-      }
-    }
     model.addComponent( builder );
   }
 
-  private List<String> getCDAPropertyNames( Map<String, Object> def ) {
-    ArrayList<String> props = new ArrayList<String>();
+  private void readCDADataSourceComponent( DataSourceComponentType.Builder builder, JXPathContext jctx ) {
+    String dataAccessType = (String) jctx.getValue( "metadata/datype" );
+    String connectionType = (String) jctx.getValue( "metadata/conntype" );
+    connectionType = connectionType != null ? connectionType : "";
 
-    JXPathContext context = JXPathContext.newContext( def );
+    builder
+      .addAttribute( CONNECTION_TYPE, connectionType )
+      .addAttribute( DATA_ACCESS_TYPE, dataAccessType );
 
-    Map<String, Object> connection = (Map<String, Object>) context.getValue( "definition/connection" );
+    for ( String cdaPropName : this.getCDAPropertyNames( jctx ) ) {
+      if ( cdaPropName.equals( "id" ) || cdaPropName.equals( "connection" ) ) {
+        continue;
+      } else if ( cdaPropName.equals( "columns" ) ) {
+        builder.useProperty( null, "cdacolumns" );
+        builder.useProperty( null, "cdacalculatedcolumns" );
+      } else if ( cdaPropName.equals( "output" ) ) {
+        builder.useProperty( null, "output" );
+        builder.useProperty( null, "outputMode" );
+      } else if ( cdaPropName.equals( "left" ) ) {
+        builder.useProperty( null, "left" );
+        builder.useProperty( null, "leftkeys" );
+      } else if ( cdaPropName.equals( "right" ) ) {
+        builder.useProperty( null, "right" );
+        builder.useProperty( null, "rightkeys" );
+      } else if ( isKettleOverX( jctx ) && cdaPropName.equalsIgnoreCase( "query" ) ) {
+        builder.useProperty( cdaPropName, "kettleQuery" );
+      } else {
+        builder.useProperty( null, cdaPropName );
+      }
+    }
+  }
+
+  private void readCPKDataSourceComponent( DataSourceComponentType.Builder builder, JXPathContext jctx ) {
+    builder
+      .useProperty( null, "stepName" )
+      .useProperty( null, "kettleOutput" )
+      .addAttribute( "pluginId", (String) jctx.getValue( "metadata/pluginId" ) )
+      .addAttribute( "endpoint", (String) jctx.getValue( "metadata/endpoint" ) );
+  }
+
+  private List<String> getCDAPropertyNames( JXPathContext jctx ) {
+    ArrayList<String> props = new ArrayList<>();
+
+    Map<String, Object> connection = (Map<String, Object>) jctx.getValue( "definition/connection" );
     if ( connection != null ) {
       props.addAll( connection.keySet() );
     }
 
-    Map<String, Object> dataaccess = (Map<String, Object>) context.getValue( "definition/dataaccess" );
+    Map<String, Object> dataaccess = (Map<String, Object>) jctx.getValue( "definition/dataaccess" );
     if ( dataaccess != null ) {
       props.addAll( dataaccess.keySet() );
     }
 
     return props;
+  }
+
+  private boolean isKettleOverX( JXPathContext jctx ) {
+    String label = (String) jctx.getValue( "metadata/name" );
+
+    // This specific Data Source has special treatment below
+    return "kettle over kettleTransFromFile".equalsIgnoreCase( label );
   }
 }
