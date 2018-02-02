@@ -1,0 +1,13 @@
+<DesignerProperty>
+    <Header>
+        <Name>endpoint</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue/>
+        <Description>A REST Endpoint</Description>
+        <Tooltip>A REST Endpoint</Tooltip>
+        <InputType>String</InputType>
+        <OutputType>String</OutputType>
+        <Order>600</Order>
+        <Version>1.0</Version>
+    </Header>
+</DesignerProperty>

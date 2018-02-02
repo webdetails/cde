@@ -1,0 +1,13 @@
+<DesignerProperty>
+    <Header>
+        <Name>responseType</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue/>
+        <Description>Response Type</Description>
+        <Tooltip>Response Type</Tooltip>
+        <InputType>String</InputType>
+        <OutputType>String</OutputType>
+        <Order>603</Order>
+        <Version>1.0</Version>
+    </Header>
+</DesignerProperty>

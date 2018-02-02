@@ -1,0 +1,13 @@
+<DesignerProperty>
+    <Header>
+        <Name>collection</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue/>
+        <Description>Datasource Collection</Description>
+        <Tooltip>Datasource Collection</Tooltip>
+        <InputType>String</InputType>
+        <OutputType>String</OutputType>
+        <Order>601</Order>
+        <Version>1.0</Version>
+    </Header>
+</DesignerProperty>
