@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -272,6 +272,7 @@ public class CdeConstants {
     public static class DataSource {
       public static final String META_TYPE_CDA = "CDA";
       public static final String META_TYPE_CPK = "CPK";
+      public static final String META_TYPE_SOLR = "SOLR";
 
       /**
        * This class contains the constants that represent the names of the data source properties that are to be
@@ -309,6 +310,12 @@ public class CdeConstants {
         public static final String CPK_QUERY_TYPE = "cpk";
         public static final String MDX_QUERY_TYPE = "mdx";
         public static final String SQL_QUERY_TYPE = "sql";
+      }
+
+      public static class AttributeName {
+        public static final String META = "";
+        public static final String DATA_ACCESS_TYPE = "datype";
+        public static final String CONNECTION_TYPE = "conntype";
       }
     }
 
