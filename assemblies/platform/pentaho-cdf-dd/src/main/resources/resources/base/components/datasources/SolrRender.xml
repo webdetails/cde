@@ -15,12 +15,14 @@
   </Metadata>
   <Contents>
     <Model prefix="Datasources">
-      <!--<Property>name</Property>-->
       <Property>endpoint</Property>
       <Property>collection</Property>
       <Property>requestHandler</Property>
       <Property>responseType</Property>
       <Property>solrQuery</Property>
+
+      <Property>colTypes</Property>
+      <Property>colHeaders</Property>
     </Model>
   </Contents>
 </DesignerComponent>

@@ -103,7 +103,7 @@ public final class DataSourcesModelReader {
       .setCategory( category )
       .setCategoryLabel( categoryLabel )
       .setSourcePath( sourcePath )
-      .addAttribute( META, isCPK ? META_TYPE_CDA : META_TYPE_CPK ); // meta: "CDA"
+      .addAttribute( META, isCPK ? META_TYPE_CPK : META_TYPE_CDA ); // meta: "CDA"
 
     if ( isCPK ) {
       readCPKDataSourceComponent( builder, jctx );

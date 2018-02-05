@@ -26,6 +26,7 @@ import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.meta.DataSourceComponentType;
+import pt.webdetails.cdf.dd.model.meta.PropertyType;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
@@ -104,9 +105,14 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
     String queryType = dataSourceComp.tryGetAttributeValue( AttributeName.DATA_ACCESS_TYPE, "" );
     addFirstJsProperty( out, PropertyName.QUERY_TYPE, buildJsStringValue ( queryType ), INDENT2 );
 
-    for ( PropertyBinding prop : dataSourceComp.getPropertyBindings() ) {
-      String name = prop.getName();
-      String value = buildJsStringValue( prop.getValue() );
+    for ( PropertyBinding binding : dataSourceComp.getPropertyBindings() ) {
+      String name = binding.getName();
+      String value = binding.getValue();
+
+      PropertyType.ValueType valueType = binding.getProperty().getValueType();
+      if ( !"ARRAY".equals( valueType.toString() ) ) {
+        value = buildJsStringValue( value );
+      }
 
       addJsProperty( out, name, value, INDENT2 );
     }
