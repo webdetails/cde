@@ -13,5 +13,6 @@
   <description>Pentaho Community Dashboard Editor plugin assemblies</description>
   <modules>
     <module>platform</module>
+    <module>pentaho-cde-renderer</module>
   </modules>
 </project>

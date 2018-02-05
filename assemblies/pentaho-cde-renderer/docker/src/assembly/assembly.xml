@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+  <id>${project.artifactId}</id>
+
+  <formats>
+    <format>tar.gz</format>
+  </formats>
+
+  <includeBaseDirectory>false</includeBaseDirectory>
+
+  <fileSets>
+    <fileSet>
+      <directory>${docker.image.build.directory}</directory>
+      <outputDirectory>.</outputDirectory>
+
+      <excludes>
+        <exclude>*.sh</exclude>
+        <exclude>${docker.image.output.directory}/*</exclude>
+        <exclude>${docker.image.output.directory}</exclude>
+      </excludes>
+    </fileSet>
+
+    <fileSet>
+      <directory>${docker.image.build.directory}</directory>
+      <outputDirectory>.</outputDirectory>
+
+      <includes>
+        <include>*.sh</include>
+      </includes>
+
+      <fileMode>0744</fileMode>
+    </fileSet>
+  </fileSets>
+</assembly>
