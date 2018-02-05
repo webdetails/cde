@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -20,10 +20,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.Util;
-import pt.webdetails.cpf.bean.IBeanFactory;
-import pt.webdetails.cpf.bean.AbstractBeanFactory;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
@@ -50,44 +47,21 @@ public class CdeEngine {
           instance = new CdeEngine();
         }
       }
-      try {
-        initialize();
-      } catch ( Exception ex ) {
-        logger.fatal( "Error initializing CdeEngine: " + Util.getExceptionDescription( ex ) );
-      }
     }
 
     return instance;
   }
 
   public ICdeEnvironment getEnvironment() {
-    return getInstance().cdeEnv;
+    return this.cdeEnv;
   }
 
-  private static void initialize() throws InitializationException {
-    if ( instance.cdeEnv == null ) {
-
-      IBeanFactory factory = new AbstractBeanFactory() {
-        @Override
-        public String getSpringXMLFilename() {
-          return "cde.spring.xml";
-        }
-      };
-
-      // try to get the environment from the configuration
-      ICdeEnvironment env = instance.getConfiguredEnvironment( factory );
-
-      if ( env != null ) {
-        env.init( factory );
-      }
-
-      instance.cdeEnv = env;
-      instance.ensureBasicDirs();
-    }
+  public void setEnvironment( ICdeEnvironment environment ) {
+    this.cdeEnv = environment;
   }
 
   public void ensureBasicDirs() {
-    IRWAccess repoBase = CdeEnvironment.getPluginRepositoryWriter();
+    IRWAccess repoBase = getEnvironment().getContentAccessFactory().getPluginRepositoryWriter( null );
     // TODO: better error messages
     if ( !ensureDirExists( repoBase, ".", true ) ) {
       logger.error( "Couldn't find or create CDE base dir." );
@@ -114,7 +88,9 @@ public class CdeEngine {
       if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.WIDGETS, false ) ) {
         logger.error( "Couldn't find or create CDE widgets dir." );
       } else {
-        IReadAccess sysPluginSamples = CdeEnvironment.getPluginSystemReader( "resources/samples/" );
+        IReadAccess sysPluginSamples = getEnvironment()
+          .getContentAccessFactory()
+          .getPluginSystemReader( "resources/samples/" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde" ), sysPluginSamples,
             "widget.cdfde" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ), sysPluginSamples,
@@ -147,19 +123,5 @@ public class CdeEngine {
 
   public static ICdeEnvironment getEnv() {
     return getInstance().getEnvironment();
-  }
-
-  protected synchronized ICdeEnvironment getConfiguredEnvironment( IBeanFactory factory )
-    throws InitializationException {
-
-    Object obj = factory.getBean( ICdeEnvironment.class.getSimpleName() );
-
-    if ( obj != null && obj instanceof ICdeEnvironment ) {
-      return (ICdeEnvironment) obj;
-    } else {
-      String msg = "No bean found for ICdeEnvironment!!";
-      logger.fatal( msg );
-      throw new InitializationException( msg, null );
-    }
   }
 }

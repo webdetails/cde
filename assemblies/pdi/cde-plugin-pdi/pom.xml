@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.pentaho.ctools</groupId>
+    <artifactId>cde-plugin-assemblies-pdi</artifactId>
+    <version>8.1.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>cde-plugin-pdi</artifactId>
+  <version>8.1.0.0-SNAPSHOT</version>
+  <packaging>feature</packaging>
+  <description>Pentaho Community Dashboard Editor plugin for PDI</description>
+
+  <properties>
+    <karaf-maven-plugin.aggregateFeatures>true</karaf-maven-plugin.aggregateFeatures>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>pentaho</groupId>
+      <artifactId>cpf-plugin-pdi</artifactId>
+      <version>${project.version}</version>
+      <type>xml</type>
+      <classifier>features</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>cde-core-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>cde-osgi-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+</project>

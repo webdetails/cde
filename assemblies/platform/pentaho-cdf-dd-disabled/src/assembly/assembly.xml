@@ -10,7 +10,7 @@
 
   <fileSets>
     <fileSet>
-      <directory>${basedir}/target/dependency/pentaho-cdf-dd</directory>
+      <directory>${project.build.directory}/dependency/pentaho-cdf-dd</directory>
       <outputDirectory>pentaho-cdf-dd</outputDirectory>
       <excludes>
         <exclude>plugin.xml</exclude>

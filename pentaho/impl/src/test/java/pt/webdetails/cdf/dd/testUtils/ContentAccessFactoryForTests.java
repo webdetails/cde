@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -41,7 +41,7 @@ public class ContentAccessFactoryForTests implements IContentAccessFactory {
   private IRWAccess mockedRWAccess;
   private static final String USER_DIR = System.getProperty( "user.dir" );
   private static final String TEST_RESOURCES = USER_DIR + File.separator + "src" + File.separator + "test" + File.separator + "resources";
-  private static final String LIST_COMPONENTS = "resources" + File.separator + "base" + File.separator + "components";
+  private static final String LIST_COMPONENTS = "resources" + File.separator + "components";
 
   public ContentAccessFactoryForTests( IUserContentAccess mockedContentAccess, IReadAccess mockedReadAccess ) {
     this.mockedContentAccess = mockedContentAccess;

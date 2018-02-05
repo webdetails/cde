@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DesignerComponent>
+  <Header>
+    <Name>Mobile Navigation Component</Name>
+    <IName>mobileNav</IName>
+    <Description>Mobile Navigation Component</Description>
+    <Category>LEGACY</Category>
+    <CatDescription>Legacy</CatDescription>
+    <Order>690</Order>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>navTargets</Property>
+    </Model>
+    <Implementation>
+      <Code src="legacy/nav-implementation.js" />
+      <CustomProperties>
+        <DesignerProperty>
+          <Header>
+            <Name>navTargets</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"[]"</DefaultValue>
+            <Description>Navigation Targets</Description>
+            <Tooltip>Location of the dashboards you can navigate to</Tooltip>
+            <InputType>ValuesArray</InputType>
+            <OutputType>Array</OutputType>
+            <Order>44</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+      </CustomProperties>
+    </Implementation>
+  </Contents>
+</DesignerComponent>

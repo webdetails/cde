@@ -1,0 +1,33 @@
+<DesignerComponent>
+  <Header>
+    <Override>PrimitiveComponentType</Override>
+    <Name>Month Picker Component</Name>
+    <IName>monthPicker</IName>
+    <Description>Month picker Component</Description>
+    <Category>LEGACY</Category>
+    <CatDescription>Legacy</CatDescription>
+    <Order>630</Order>
+    <Type>PalleteEntry</Type>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>parameter</Property>
+      <Property>htmlObject</Property>
+      <Property>listeners</Property>
+      <Property>valuesArray</Property>
+      <Property>valueAsId</Property>
+      <Property>initialDate</Property>
+      <Property>months</Property>
+      <Property>minDate</Property>
+      <Property>maxDate</Property>
+      <Property>size</Property>
+      <Property>executeAtStart</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>preChange</Property>
+      <Property>postChange</Property>
+      <Property>refreshPeriod</Property>
+      <Property>tooltip</Property>
+    </Model>
+  </Contents>
+</DesignerComponent>

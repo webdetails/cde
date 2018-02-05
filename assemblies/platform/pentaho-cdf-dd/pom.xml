@@ -13,27 +13,14 @@
   <description>Pentaho Community Dashboard Editor plugin for the Platform Server</description>
   <properties>
     <js.project.list>
-      cde-components-amd-platform,cde-components-legacy-impls-core,
-      cde-webclient-impls-core,cde-webclient-impls-pentaho
+      cde-components-platform,cde-webclient-impls-core,cde-webclient-impls-pentaho
     </js.project.list>
     <ant-contrib.version>1.0b3</ant-contrib.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
-      <artifactId>cde-components-amd-platform</artifactId>
-      <version>${project.version}</version>
-      <type>zip</type>
-      <exclusions>
-        <exclusion>
-          <artifactId>*</artifactId>
-          <groupId>*</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.pentaho.ctools</groupId>
-      <artifactId>cde-components-legacy-impls-core</artifactId>
+      <artifactId>cde-components-platform</artifactId>
       <version>${project.version}</version>
       <type>zip</type>
       <exclusions>
@@ -143,20 +130,20 @@
             <configuration>
               <target>
                 <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="maven.compile.classpath"/>
-                <property file="${basedir}/target/classes/editor.includes.properties"/>
+                <property file="${project.build.directory}/classes/editor.includes.properties"/>
                 <!-- JavaScript -->
-                <touch file='${basedir}/target/classes/resources/scripts.html'/>
+                <touch file='${project.build.directory}/classes/resources/scripts.html'/>
                 <for list='${scripts}' param='filename'>
                   <sequential>
-                    <echo file='${basedir}/target/classes/resources/scripts.html'
+                    <echo file='${project.build.directory}/classes/resources/scripts.html'
                           append='true'>&lt;script language="javascript" type="text/javascript" src="#{WEBAPP_PATH}@{filename}"/&gt;&lt;/script&gt;${line.separator}</echo>
                   </sequential>
                 </for>
                 <!-- CSS -->
-                <touch file='${basedir}/target/classes/resources/styles.html'/>
+                <touch file='${project.build.directory}/classes/resources/styles.html'/>
                 <for list='${styles}' param='filename'>
                   <sequential>
-                    <echo file='${basedir}/target/classes/resources/styles.html'
+                    <echo file='${project.build.directory}/classes/resources/styles.html'
                           append='true'>&lt;link href="#{WEBAPP_PATH}@{filename}" rel="stylesheet" type="text/css"/&gt;${line.separator}</echo>
                   </sequential>
                 </for>

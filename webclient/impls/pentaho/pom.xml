@@ -46,10 +46,10 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>${basedir}/target/test-javascript</outputDirectory>
+              <outputDirectory>${project.build.directory}/test-javascript</outputDirectory>
               <resources>
                 <resource>
-                  <directory>${basedir}/target/dependency/cde</directory>
+                  <directory>${project.build.directory}/dependency/cde</directory>
                 </resource>
               </resources>
             </configuration>

@@ -1,0 +1,26 @@
+<DesignerComponent>
+  <Header>
+    <Override>PrimitiveComponentType</Override>
+    <Name>Comments Component</Name>
+    <IName>comments</IName>
+    <Description>Comment Component</Description>
+    <Category>LEGACY</Category>
+    <CatDescription>Legacy</CatDescription>
+    <Order>610</Order>
+    <Type>PalleteEntry</Type>
+  </Header>
+  <Contents>
+    <Model>
+      <Property name="page">commentsPage</Property>
+      <Property>htmlObject</Property>
+      <Property>listeners</Property>
+      <Property>executeAtStart</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>preChange</Property>
+      <Property>postChange</Property>
+      <Property>refreshPeriod</Property>
+      <Property>tooltip</Property>
+    </Model>
+  </Contents>
+</DesignerComponent>

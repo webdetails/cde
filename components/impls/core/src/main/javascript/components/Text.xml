@@ -1,0 +1,24 @@
+<DesignerComponent>
+  <Header>
+    <Override>PrimitiveComponentType</Override>
+    <Name>Text Component</Name>
+    <IName>textComponent</IName>
+    <Description>Text Component</Description>
+    <Category>STANDARDCOMPONENTS</Category>
+    <CatDescription>Standard</CatDescription>
+    <Order>340</Order>
+    <Type>PalleteEntry</Type>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>expression</Property>
+      <Property>htmlObject</Property>
+      <Property>listeners</Property>
+      <Property>executeAtStart</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>refreshPeriod</Property>
+      <Property>tooltip</Property>
+    </Model>
+  </Contents>
+</DesignerComponent>

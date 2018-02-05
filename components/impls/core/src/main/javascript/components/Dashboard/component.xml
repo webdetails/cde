@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DesignerComponent>
+  <Header>
+    <Name>Dashboard Component</Name>
+    <IName>DashboardComponent</IName>
+    <Description>Dashboard Component</Description>
+    <Category>STANDARDCOMPONENTS</Category>
+    <CatDescription>Standard</CatDescription>
+    <Order>350</Order>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>dashboardPath</Property>
+      <Property>parameterMapping</Property>
+      <Property>dataSourceMapping</Property>
+      <Property>executeAtStart</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>refreshPeriod</Property>
+      <Property>htmlObject</Property>
+      <Property>listeners</Property>
+      <Property>oneWayMap</Property>
+    </Model>
+    <Implementation supportsLegacy="false" supportsAMD="true">
+      <Code src="amd/DashboardComponent.js" />
+      <Dependencies/>
+      <CustomProperties>
+        <DesignerProperty>
+          <Header>
+            <Name>dashboardPath</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Dashboard Path</Description>
+            <Tooltip>URL or path to use when requiring the dashboard</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>30</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>parameterMapping</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"[]"</DefaultValue>
+            <Description>Parameter Mapping</Description>
+            <Tooltip>Map parameters to the dashboard</Tooltip>
+            <InputType>ParameterMapping</InputType>
+            <OutputType>Array</OutputType>
+            <Order>30</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>dataSourceMapping</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"[]"</DefaultValue>
+            <Description>Datasource Mapping</Description>
+            <Tooltip>Map datasources to the dashboard</Tooltip>
+            <InputType>DataSourceMapping</InputType>
+            <OutputType>Array</OutputType>
+            <Order>30</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>oneWayMap</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"false"</DefaultValue>
+            <Description>One Way Map</Description>
+            <Tooltip>If true parameter propagation will only go from this dashboard, to the required one</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>30</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+      </CustomProperties>
+    </Implementation>
+  </Contents>
+</DesignerComponent>

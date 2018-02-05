@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -18,25 +18,23 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 
 public class DashboardManagerForTests extends DashboardManager {
 
-  private ICdeEnvironment cdeEnvironment;
-
   public DashboardManagerForTests( ICdeEnvironment cdeEnvironment ) {
-    this.cdeEnvironment = cdeEnvironment;
+    this.setEnvironment( cdeEnvironment );
   }
 
   @Override
   protected IPluginResourceLocationManager getPluginResourceLocationManager() {
-    return cdeEnvironment.getPluginResourceLocationManager();
+    return getEnvironment().getPluginResourceLocationManager();
   }
 
   @Override
   protected IRWAccess getPluginSystemWriter() {
-    return cdeEnvironment.getContentAccessFactory().getPluginSystemWriter( null );
+    return getEnvironment().getContentAccessFactory().getPluginSystemWriter( null );
   }
 
   @Override
   protected IReadAccess getPluginSystemReader() {
-    return cdeEnvironment.getContentAccessFactory().getPluginSystemReader( null );
+    return getEnvironment().getContentAccessFactory().getPluginSystemReader( null );
   }
 
 }

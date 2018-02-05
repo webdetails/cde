@@ -19,5 +19,6 @@
   <modules>
     <module>platform</module>
     <module>cde-renderer</module>
+    <module>pdi</module>
   </modules>
 </project>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+           xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
+                               http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+                               http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd">
+
+  <bean id="cdeEngine" class="pt.webdetails.cdf.dd.CdeEngine" scope="singleton" factory-method="getInstance">
+    <property name="environment" ref="cdeEnvironment"/>
+  </bean>
+  <bean id="cdeEnvironment" class="pt.webdetails.cdf.dd.environment.CdeEnvironment" scope="singleton">
+    <property name="pluginResourceLocationManager" ref="pluginResourceLocationManager"/>
+    <property name="dataSourceManager" ref="dataSourceManager"/>
+    <property name="contentAccessFactory" ref="iContentAccessFactory"/>
+  </bean>
+  <bean id="pluginResourceLocationManager" class="pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager"/>
+  <bean id="dataSourceManager" class="pt.webdetails.cdf.dd.datasources.manager.DataSourceManager"/>
+  <reference id="iContentAccessFactory" interface="pt.webdetails.cpf.repository.api.IContentAccessFactory" />
+
+  <service interface="pt.webdetails.cpf.repository.api.IReadAccess">
+    <bean class="pt.webdetails.cpf.repository.bundle.ReadAccess">
+      <property name="bundle" ref="blueprintBundle"/>
+    </bean>
+  </service>
+
+  <jaxrs:server address="/cde" id="cdeService">
+    <jaxrs:serviceBeans>
+      <ref component-id="renderApi"/>
+    </jaxrs:serviceBeans>
+    <jaxrs:extensionMappings>
+      <entry key="json" value="application/json"/>
+      <entry key="xml" value="application/xml"/>
+    </jaxrs:extensionMappings>
+  </jaxrs:server>
+  <bean id="renderApi" class="pt.webdetails.cdf.dd.api.RenderApi">
+    <property name="dashboardManager" ref="dashboardManager"/>
+  </bean>
+  <bean id="dashboardManager" class="pt.webdetails.cdf.dd.DashboardManager" scope="singleton" factory-method="getInstance" init-method="init">
+    <property name="environment" ref="cdeEnvironment"/>
+  </bean>
+</blueprint>

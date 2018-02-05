@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DesignerComponents>
+  <DesignerComponent>
+    <Header>
+      <Name>Popup Component</Name>
+      <IName>popup</IName>
+      <Description>Popup Component</Description>
+      <Category>STANDARDCOMPONENTS</Category>
+      <CatDescription>Standard</CatDescription>
+      <Order>325</Order>
+      <Type>PalleteEntry</Type>
+      <Version>1.0</Version>
+    </Header>
+    <Contents>
+      <Model>
+        <Property>executeAtStart</Property>
+        <Property>htmlObject</Property>
+        <Property>gravity</Property>
+        <Property>draggable</Property>
+        <Property>closeOnClickOutside</Property>
+        <Property name="parameters">xActionArrayParameter</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>horizontalScroll</Property>
+        <Property>verticalScroll</Property>
+        <Property>popupClass</Property>
+        <Property>popupOverlayClass</Property>
+      </Model>
+      <Implementation supportsLegacy="true" supportsAMD="true">
+        <Code src="legacy/popup.js" />
+        <Styles>
+          <Style version="1.0" src="legacy/popup.css">
+            Popup
+          </Style>
+        </Styles>
+        <Dependencies/>
+        <CustomProperties>
+          <DesignerProperty>
+            <Header>
+              <Name>draggable</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue>"true"</DefaultValue>
+              <Description>Draggable</Description>
+              <Tooltip>Allow dragging element?</Tooltip>
+              <InputType>Boolean</InputType>
+              <OutputType>Boolean</OutputType>
+              <Order>81</Order>
+              <Advanced>false</Advanced>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+          <DesignerProperty>
+            <Header>
+              <Name>horizontalScroll</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue>"false"</DefaultValue>
+              <Description>Horizontal scrollbar</Description>
+              <Tooltip>Place an horizontal scroll on popup?</Tooltip>
+              <InputType>Boolean</InputType>
+              <OutputType>Boolean</OutputType>
+              <Order>81</Order>
+              <Advanced>true</Advanced>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+          <DesignerProperty>
+            <Header>
+              <Name>verticalScroll</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue>"false"</DefaultValue>
+              <Description>Vertical scrollbar</Description>
+              <Tooltip>Place a vertical scroll on popup?</Tooltip>
+              <InputType>Boolean</InputType>
+              <OutputType>Boolean</OutputType>
+              <Order>81</Order>
+              <Advanced>true</Advanced>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+          <DesignerProperty>
+            <Header>
+              <Name>closeOnClickOutside</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue>"false"</DefaultValue>
+              <Description>Close on click outside</Description>
+              <Tooltip>Close on click outside?</Tooltip>
+              <InputType>Boolean</InputType>
+              <OutputType>Boolean</OutputType>
+              <Order>82</Order>
+              <Advanced>false</Advanced>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+          <DesignerProperty>
+            <Header>
+              <Name>popupClass</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue></DefaultValue>
+              <Description>Popup's custom class</Description>
+              <Tooltip>Add a css class to the popup</Tooltip>
+              <InputType>String</InputType>
+              <OutputType>String</OutputType>
+              <Order>83</Order>
+              <Advanced>true</Advanced>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+          <DesignerProperty>
+            <Header>
+              <Name>popupOverlayClass</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue></DefaultValue>
+              <Description>Popup's overlay custom class</Description>
+              <Tooltip>Add a css class to the popup overlay</Tooltip>
+              <InputType>String</InputType>
+              <OutputType>String</OutputType>
+              <Order>83</Order>
+              <Advanced>true</Advanced>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+        </CustomProperties>
+      </Implementation>
+    </Contents>
+  </DesignerComponent>
+
+  <DesignerComponent>
+    <Header>
+      <Name>Export Popup Component</Name>
+      <IName>ExportPopupComponent</IName>
+      <Description>Export Popup Component</Description>
+      <Category>STANDARDCOMPONENTS</Category>
+      <CatDescription>Standard</CatDescription>
+      <Order>330</Order>
+      <Type>PalleteEntry</Type>
+      <Version>1.0</Version>
+    </Header>
+    <Contents>
+      <Model>
+        <Property>executeAtStart</Property>
+        <Property>htmlObject</Property>
+        <Property>tooltip</Property>
+        <Property>gravity</Property>
+        <Property>title</Property>
+        <Property>chartExportComponent</Property>
+        <Property>chartExportType</Property>
+        <Property>chartExportLabel</Property>
+        <Property>dataExportComponent</Property>
+        <Property>dataExportType</Property>
+        <Property>dataExportLabel</Property>
+        <Property>dataExportAttachmentName</Property>
+        <Property>contentLinks</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>refreshPeriod</Property>
+      <Property>listeners</Property>
+      </Model>
+      <Implementation supportsLegacy="true" supportsAMD="true">
+        <Code src="legacy/popup.js"/>
+        <Styles>
+          <Style version="1.0" src="legacy/ExportPopupComponent.css">ExportPopupComponentExtra</Style>
+          <Style version="1.0" src="legacy/popup.css">ExportPopupComponent</Style>        
+        </Styles>
+        <Dependencies/>
+        <CustomProperties>
+          <DesignerProperty>
+            <Header>
+              <Name>contentLinks</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue>"[]"</DefaultValue>
+              <Description>Content Links</Description>
+              <Tooltip>Content Links</Tooltip>
+              <InputType>ValuesArray</InputType>
+              <OutputType>Array</OutputType>
+              <Order>99</Order>
+              <Advanced>true</Advanced>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+          <DesignerProperty>
+            <Header>
+              <Name>dataExportComponent</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue/>
+              <Description>Data Component to Export</Description>
+              <Tooltip>Id for Data Component to Export</Tooltip>
+              <InputType>ComponentToExport</InputType>
+              <OutputType>String</OutputType>
+              <Order>40</Order>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+          <DesignerProperty>
+            <Header>
+              <Name>dataExportType</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue>xls</DefaultValue>
+              <Description>Data Export Type</Description>
+              <Tooltip>Type for Data File to Export</Tooltip>
+              <InputType>DataExportType</InputType>
+              <OutputType>String</OutputType>
+              <Order>41</Order>
+              <Advanced>true</Advanced>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+          <DesignerProperty>
+            <Header>
+              <Name>dataExportLabel</Name>
+              <Parent>AdvancedProperty</Parent>
+              <DefaultValue>Export Table</DefaultValue>
+              <Description>Data Export Label</Description>
+              <Tooltip>Label to appear in popup</Tooltip>
+              <InputType>String</InputType>
+              <OutputType>String</OutputType>
+              <Order>41</Order>
+              <Version>1.0</Version>
+              <Advanced>true</Advanced>
+            </Header>
+          </DesignerProperty>
+          <DesignerProperty>
+            <Header>
+              <Name>dataExportAttachmentName</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue>export</DefaultValue>
+              <Description>Name for Data Export attachment</Description>
+              <Tooltip>Name for Data Export attachment</Tooltip>
+              <InputType>String</InputType>
+              <OutputType>String</OutputType>
+              <Order>41</Order>
+              <Advanced>true</Advanced>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+          <DesignerProperty>
+            <Header>
+              <Name>chartExportComponent</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue/>
+              <Description>Chart Component to Export</Description>
+              <Tooltip>Id for Chart Component to Export</Tooltip>
+              <InputType>ChartComponentToExport</InputType>
+              <OutputType>String</OutputType>
+              <Order>40</Order>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+          <DesignerProperty>
+            <Header>
+              <Name>chartExportType</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue>png</DefaultValue>
+              <Description>Chart Export Type</Description>
+              <Tooltip>Type for Chart Image to Export</Tooltip>
+              <InputType>ChartExportType</InputType>
+              <OutputType>String</OutputType>
+              <Order>40</Order>
+              <Advanced>true</Advanced>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+          <DesignerProperty>
+            <Header>
+              <Name>chartExportLabel</Name>
+              <Parent>AdvancedProperty</Parent>
+              <DefaultValue>Export Chart</DefaultValue>
+              <Description>Chart Export Label</Description>
+              <Tooltip>Label to appear in popup</Tooltip>
+              <InputType>String</InputType>
+              <OutputType>String</OutputType>
+              <Order>40</Order>
+              <Version>1.0</Version>
+              <Advanced>true</Advanced>
+            </Header>
+          </DesignerProperty>
+        </CustomProperties>
+      </Implementation>
+    </Contents>
+  </DesignerComponent>
+</DesignerComponents>

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -69,7 +69,7 @@ public class RenderApiTest {
   private static final String DUMMY_REQUIRE_WCDF =
     TEST_RESOURCES + File.separator + "dummyDashboard" + File.separator + "dummyRequire.wcdf";
   private static final String PROPERTY_NAME =
-    TEST_RESOURCES + File.separator + "resources" + File.separator + "base" + File.separator + "properties"
+    TEST_RESOURCES + File.separator + "resources" + File.separator + "properties"
       + File.separator + "Name.xml";
   private static final String STYLE_CLEAN =
     TEST_RESOURCES + File.separator + "resources" + File.separator + "styles" + File.separator + "Clean.html";
@@ -84,8 +84,8 @@ public class RenderApiTest {
   @BeforeClass
   public static void setUp() throws Exception {
     final File propertyName = new File( PROPERTY_NAME );
-    List<IBasicFile> baseProperties = new ArrayList<IBasicFile>();
-    baseProperties.add( getBasicFileFromFile( propertyName ) );
+    List<IBasicFile> properties = new ArrayList<IBasicFile>();
+    properties.add( getBasicFileFromFile( propertyName ) );
 
     //mock IUserContentAccess
     mockedUserContentAccess = mock( IUserContentAccess.class );
@@ -111,7 +111,7 @@ public class RenderApiTest {
     //mock IReadAccess
     IReadAccess mockedReadAccess = mock( IReadAccess.class );
     when( mockedReadAccess.listFiles( anyString(), any( IBasicFileFilter.class ), anyInt() ) )
-      .thenReturn( baseProperties );
+      .thenReturn( properties );
     when( mockedReadAccess.getFileInputStream( anyString() ) ).thenAnswer( new Answer<InputStream>() {
       @Override
       public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {

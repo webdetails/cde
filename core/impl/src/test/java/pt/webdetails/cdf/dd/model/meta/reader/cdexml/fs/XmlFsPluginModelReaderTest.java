@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -57,7 +57,7 @@ public class XmlFsPluginModelReaderTest extends TestCase {
   private static final String RESOURCE_DIR = Utils.joinPath( TEST_DIR, "resources" );
   private static final String DUMMY_XML =
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?><DesignerComponent></DesignerComponent>";
-  private static final String BASE_PROPERTIES_MATCHER = "base/properties";
+  private static final String PROPERTIES_MATCHER = "properties";
 
   @Before
   public void setUp() throws Exception {
@@ -76,15 +76,11 @@ public class XmlFsPluginModelReaderTest extends TestCase {
       public Object answer( InvocationOnMock invocation ) throws Throwable {
         String path = (String) invocation.getArguments()[ 0 ];
 
-        if ( path.equals( XmlFsPluginModelReader.BASE_COMPS_DIR ) ) {
-          return buildReadAccessMock( Utils.joinPath( RESOURCE_DIR, XmlFsPluginModelReader.BASE_COMPS_DIR ) );
-        } else if ( path.equals( XmlFsPluginModelReader.BASE_PROPS_DIR ) ) {
-          return buildReadAccessMock( Utils.joinPath( RESOURCE_DIR, XmlFsPluginModelReader.BASE_PROPS_DIR ) );
-        } else if ( path.equals( XmlFsPluginModelReader.CUSTOM_PROPS_DIR ) ) {
-          return buildReadAccessMock( Utils.joinPath( RESOURCE_DIR, XmlFsPluginModelReader.CUSTOM_PROPS_DIR ) );
-        } else if ( path.equals( Utils.joinPath( RESOURCE_DIR, XmlFsPluginModelReader.CUSTOM_DIR ) ) ) {
-          return buildReadAccessMock( Utils.joinPath( RESOURCE_DIR, XmlFsPluginModelReader.CUSTOM_DIR ) );
-        } else {
+        if ( path.equals( XmlFsPluginModelReader.COMPONENTS_DIR ) ) {
+          return buildReadAccessMock( Utils.joinPath( RESOURCE_DIR, XmlFsPluginModelReader.COMPONENTS_DIR ) );
+        } else if ( path.equals( XmlFsPluginModelReader.PROPERTIES_DIR ) ) {
+          return buildReadAccessMock( Utils.joinPath( RESOURCE_DIR, XmlFsPluginModelReader.PROPERTIES_DIR ) );
+       } else {
           return mockedReadAccess;
         }
       }
@@ -93,7 +89,7 @@ public class XmlFsPluginModelReaderTest extends TestCase {
 
     IPluginResourceLocationManager mockedPluginResourceLocationManager = mock( IPluginResourceLocationManager.class );
     List<PathOrigin> pathOrigins = new ArrayList<PathOrigin>();
-    pathOrigins.add( new StaticSystemOrigin( Utils.joinPath( RESOURCE_DIR, XmlFsPluginModelReader.CUSTOM_DIR ) ) );
+    pathOrigins.add( new StaticSystemOrigin( Utils.joinPath( RESOURCE_DIR, XmlFsPluginModelReader.COMPONENTS_DIR ) ) );
     when( mockedPluginResourceLocationManager.getCustomComponentsLocations() ).thenReturn( pathOrigins );
 
     ICdeEnvironment mockedEnvironment = mock( ICdeEnvironment.class );
@@ -110,7 +106,7 @@ public class XmlFsPluginModelReaderTest extends TestCase {
     try {
       MetaModel.Builder builder = modelReader.read( factory );
       MetaModel model = builder.build();
-      List<List<ComponentType>> splitComponentTypes = buildSplitComponentTypes( model.getComponentTypes() );
+      List<List<ComponentType>> splitComponentTypes = buildComponentTypes( model.getComponentTypes() );
 
       if ( model.getComponentTypeCount() == 0 ) {
         Assert.fail( "Couldn't read ComponentTypes" );
@@ -128,7 +124,7 @@ public class XmlFsPluginModelReaderTest extends TestCase {
           oldSourcePath = currentPath;
         }
       }
-      List<List<PropertyType>> splitPropertyTypes = buildSplitPropertyTypes( model.getPropertyTypes() );
+      List<List<PropertyType>> splitPropertyTypes = buildPropertyTypes( model.getPropertyTypes() );
 
       for ( List<PropertyType> propTypes : splitPropertyTypes ) {
         String oldSourcePath = "";
@@ -147,24 +143,20 @@ public class XmlFsPluginModelReaderTest extends TestCase {
     }
   }
 
-  private List<List<PropertyType>> buildSplitPropertyTypes( Iterable<PropertyType> propertyTypes ) {
+  private List<List<PropertyType>> buildPropertyTypes( Iterable<PropertyType> propertyTypes ) {
     List<List<PropertyType>> splitPropertyTypes = new ArrayList<List<PropertyType>>();
-    List<PropertyType> base = new ArrayList<PropertyType>();
-    List<PropertyType> custom = new ArrayList<PropertyType>();
+    List<PropertyType> properties = new ArrayList<PropertyType>();
 
     for ( PropertyType prop : propertyTypes ) {
-      if ( prop.getSourcePath().contains( BASE_PROPERTIES_MATCHER ) ) {
-        base.add( prop );
-      } else {
-        custom.add( prop );
+      if ( prop.getSourcePath().contains( PROPERTIES_MATCHER ) ) {
+        properties.add( prop );
       }
     }
-    splitPropertyTypes.add( base );
-    splitPropertyTypes.add( custom );
+    splitPropertyTypes.add( properties );
     return splitPropertyTypes;
   }
 
-  private List<List<ComponentType>> buildSplitComponentTypes( Iterable<ComponentType> componentTypes ) {
+  private List<List<ComponentType>> buildComponentTypes( Iterable<ComponentType> componentTypes ) {
     List<List<ComponentType>> splitComponentTypes = new ArrayList<List<ComponentType>>();
     List<String> pathOrigins = new ArrayList<String>();
 

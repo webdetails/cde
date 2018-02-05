@@ -1,0 +1,28 @@
+<DesignerComponent>
+  <Header>
+    <Override>PrimitiveComponentType</Override>
+    <Name>Pivot Link Component</Name>
+    <IName>pivotLink</IName>
+    <Description>Pivot Link Component</Description>
+    <Category>LEGACY</Category>
+    <CatDescription>Legacy</CatDescription>
+    <Order>650</Order>
+    <Type>PalleteEntry</Type>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>htmlObject</Property>
+      <Property>listeners</Property>
+      <Definition name="queryDefinition">
+        <Property>dataSource</Property>
+      </Definition>
+      <Property>executeAtStart</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>preChange</Property>
+      <Property>postChange</Property>
+      <Property>refreshPeriod</Property>
+      <Property>tooltip</Property>
+    </Model>
+  </Contents>
+</DesignerComponent>
