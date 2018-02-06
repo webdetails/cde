@@ -1,0 +1,13 @@
+<DesignerProperty>
+    <Header>
+        <Name>sColumnPaths</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue>"[]"</DefaultValue>
+        <Description>Schema Column Paths</Description>
+        <Tooltip>Solr schema column paths for query metadata</Tooltip>
+        <InputType>SchemaColumnPathsArray</InputType>
+        <OutputType>Array</OutputType>
+        <Order>607</Order>
+        <Version>1.0</Version>
+    </Header>
+</DesignerProperty>

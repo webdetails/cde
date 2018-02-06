@@ -3,8 +3,8 @@
         <Name>endpoint</Name>
         <Parent>BaseProperty</Parent>
         <DefaultValue/>
-        <Description>A REST Endpoint</Description>
-        <Tooltip>A REST Endpoint</Tooltip>
+        <Description>Solr Rest Endpoint</Description>
+        <Tooltip>Solr Rest Endpoint</Tooltip>
         <InputType>String</InputType>
         <OutputType>String</OutputType>
         <Order>600</Order>

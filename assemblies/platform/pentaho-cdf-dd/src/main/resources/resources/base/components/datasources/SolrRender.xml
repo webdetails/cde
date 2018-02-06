@@ -21,8 +21,9 @@
       <Property>responseType</Property>
       <Property>solrQuery</Property>
 
-      <Property>colTypes</Property>
-      <Property>colHeaders</Property>
+      <Property>sColumnNames</Property>
+      <Property>sColumnTypes</Property>
+      <Property>sColumnPaths</Property>
     </Model>
   </Contents>
 </DesignerComponent>

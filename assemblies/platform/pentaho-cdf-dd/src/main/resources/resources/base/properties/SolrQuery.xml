@@ -2,7 +2,7 @@
     <Header>
         <Name>solrQuery</Name>
         <Parent>BaseProperty</Parent>
-        <DefaultValue/>
+        <DefaultValue>*:*</DefaultValue>
         <Description>Solr Query</Description>
         <Tooltip>Solr Query</Tooltip>
         <InputType>String</InputType>

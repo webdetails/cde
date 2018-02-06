@@ -3,8 +3,8 @@
         <Name>collection</Name>
         <Parent>BaseProperty</Parent>
         <DefaultValue/>
-        <Description>Datasource Collection</Description>
-        <Tooltip>Datasource Collection</Tooltip>
+        <Description>Solr Collection</Description>
+        <Tooltip>Solr Collection</Tooltip>
         <InputType>String</InputType>
         <OutputType>String</OutputType>
         <Order>601</Order>

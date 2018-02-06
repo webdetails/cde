@@ -2,7 +2,7 @@
     <Header>
         <Name>requestHandler</Name>
         <Parent>BaseProperty</Parent>
-        <DefaultValue/>
+        <DefaultValue>select</DefaultValue>
         <Description>Request Handler</Description>
         <Tooltip>Request Handler</Tooltip>
         <InputType>String</InputType>

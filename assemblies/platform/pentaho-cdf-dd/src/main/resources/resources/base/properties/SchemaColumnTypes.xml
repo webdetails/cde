@@ -1,0 +1,15 @@
+<DesignerProperty>
+  <Header>
+    <Name>sColumnTypes</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>"[]"</DefaultValue>
+    <Description>Schema Column Types</Description>
+    <Tooltip>Solr schema column types for query metadata</Tooltip>
+    <InputType type='valueList' base='ColTypesArrayRender'/>
+    <OutputType>Array</OutputType>
+    <Order>606</Order>
+    <Version>1.0</Version>
+  </Header>
+
+  <Values source='Dashboards.listAddIns("Table","colType")'/>
+</DesignerProperty>

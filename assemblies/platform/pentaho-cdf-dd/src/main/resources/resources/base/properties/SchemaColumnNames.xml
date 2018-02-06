@@ -1,0 +1,13 @@
+<DesignerProperty>
+  <Header>
+    <Name>sColumnNames</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>"[]"</DefaultValue>
+    <Description>Schema Column Names</Description>
+    <Tooltip>Solr schema column names for query metadata</Tooltip>
+    <InputType>SchemaColumnNamesArray</InputType>
+    <OutputType>Array</OutputType>
+    <Order>605</Order>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>

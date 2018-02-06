@@ -2,7 +2,7 @@
     <Header>
         <Name>responseType</Name>
         <Parent>BaseProperty</Parent>
-        <DefaultValue/>
+        <DefaultValue>json</DefaultValue>
         <Description>Response Type</Description>
         <Tooltip>Response Type</Tooltip>
         <InputType>String</InputType>
