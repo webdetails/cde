@@ -24,6 +24,8 @@
       <Property>sColumnNames</Property>
       <Property>sColumnTypes</Property>
       <Property>sColumnPaths</Property>
+
+      <Property>rowsLimit</Property>
     </Model>
   </Contents>
 </DesignerComponent>

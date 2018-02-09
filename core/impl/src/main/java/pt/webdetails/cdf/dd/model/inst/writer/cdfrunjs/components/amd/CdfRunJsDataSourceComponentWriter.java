@@ -110,7 +110,7 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
       String value = binding.getValue();
 
       PropertyType.ValueType valueType = binding.getProperty().getValueType();
-      if ( !"ARRAY".equals( valueType.toString() ) ) {
+      if ( "STRING".equals( valueType.toString() ) ) {
         value = buildJsStringValue( value );
       }
 
