@@ -18,17 +18,17 @@ import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
 
 public abstract class CdfRunJsThingWriterBaseFactory {
-  private final static String SIMPLE_PARAMETER = "parameter";
-  private final static String OLAP_PARAMETER = "olapparameter";
-  private final static String DATE_PARAMETER = "dateparameter";
-  private final static String JS_EXPRESSION_PARAMETER = "javascriptparameter";
+  private static final String SIMPLE_PARAMETER = "parameter";
+  private static final String OLAP_PARAMETER = "olapparameter";
+  private static final String DATE_PARAMETER = "dateparameter";
+  private static final String JS_EXPRESSION_PARAMETER = "javascriptparameter";
 
   public IThingWriter getParameterWriter( Thing t ) {
     ParameterComponent paramComp = (ParameterComponent) t;
     String typeName = paramComp.getMeta().getName().toLowerCase();
 
     IThingWriter parameterWriter;
-    switch( typeName ) {
+    switch ( typeName ) {
       case SIMPLE_PARAMETER:
       case OLAP_PARAMETER:
         parameterWriter = getSimpleParameter();
