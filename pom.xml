@@ -44,27 +44,20 @@
     <commons-lang.version>2.4</commons-lang.version>
     <commons-jxpath.version>1.3</commons-jxpath.version>
     <jdom.version>1.0</jdom.version>
-    <commons-logging.version>1.1</commons-logging.version>
+    <commons-logging.version>1.1.1</commons-logging.version>
     <dom4j.version>1.6.1</dom4j.version>
     <ehcache.version>1.4.1</ehcache.version>
     <json.version>${project.version}</json.version>
     <servlet-api.version>3.0.1</servlet-api.version>
-    <slf4j-api.version>1.7.5</slf4j-api.version>
-    <mockito-all.version>1.8.4</mockito-all.version>
-    <junit.version>4.10</junit.version>
+    <junit.version>4.12</junit.version>
+    <mockito-all.version>1.9.5</mockito-all.version>
     <jaxen.version>1.1</jaxen.version>
-    <xmlunit.version>1.3</xmlunit.version>
-    <commons-beanutils.version>1.9.1</commons-beanutils.version>
     <ezmorph.version>1.0.6</ezmorph.version>
-    <log4j.version>1.2.16</log4j.version>
     <spring.framework.version>4.3.2.RELEASE</spring.framework.version>
     <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
     <jersey-multipart.version>1.19.1</jersey-multipart.version>
     <mondrian.version>${project.version}</mondrian.version>
     <jackson-mapper-asl.version>1.8.2</jackson-mapper-asl.version>
-    <hamcrest-core.version>1.1</hamcrest-core.version>
-    <objenesis.version>1.0</objenesis.version>
-    <spring-asm.version>3.1.4.RELEASE</spring-asm.version>
     <backport-util-concurrent.version>3.1</backport-util-concurrent.version>
     <jackson-core-asl.version>1.9.3</jackson-core-asl.version>
     <maven-filtering.version>3.1.1</maven-filtering.version>
@@ -209,17 +202,6 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>${slf4j-api.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-all</artifactId>
         <version>${mockito-all.version}</version>
@@ -253,42 +235,9 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>xmlunit</groupId>
-        <artifactId>xmlunit</artifactId>
-        <version>${xmlunit.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>commons-beanutils</groupId>
-        <artifactId>commons-beanutils</artifactId>
-        <version>${commons-beanutils.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
         <groupId>net.sf.ezmorph</groupId>
         <artifactId>ezmorph</artifactId>
         <version>${ezmorph.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
-        <version>${log4j.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -393,74 +342,8 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.hamcrest</groupId>
-        <artifactId>hamcrest-core</artifactId>
-        <version>${hamcrest-core.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.objenesis</groupId>
-        <artifactId>objenesis</artifactId>
-        <version>${objenesis.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-asm</artifactId>
-        <version>${spring-asm.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-core</artifactId>
-        <version>${spring.framework.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-expression</artifactId>
-        <version>${spring.framework.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-beans</artifactId>
-        <version>${spring.framework.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
         <version>${spring.framework.version}</version>
         <exclusions>
           <exclusion>

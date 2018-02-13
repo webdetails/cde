@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -15,14 +15,14 @@ package pt.webdetails.cdf.dd.plugin.resource;
 import java.io.UnsupportedEncodingException;
 
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cpf.resources.IResourceLoader;
 
 public class ResourceLoader implements IResourceLoader {
 
-  protected Logger logger = LoggerFactory.getLogger( getClass() );
+  protected Log logger = LogFactory.getLog( getClass() );
   private IPluginResourceLoader pluginResourceLoader;
 
   public ResourceLoader( IPluginResourceLoader pluginResourceLoader ) {

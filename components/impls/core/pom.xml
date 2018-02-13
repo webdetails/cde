@@ -19,6 +19,7 @@
       <groupId>pentaho</groupId>
       <artifactId>pentaho-cdf-js</artifactId>
       <type>zip</type>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

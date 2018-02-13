@@ -12,25 +12,14 @@
   <packaging>pom</packaging>
   <description>Pentaho Community Dashboard Editor Webclient Pentaho Server Implementation</description>
   <properties>
-    <js.project.list>pentaho-cdf-js,cde-webclient-impls-core</js.project.list>
+    <js.project.list>cde-webclient-impls-core</js.project.list>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>pentaho</groupId>
-      <artifactId>pentaho-cdf-js</artifactId>
-      <type>zip</type>
-    </dependency>
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
       <artifactId>cde-webclient-impls-core</artifactId>
       <version>${project.version}</version>
       <type>zip</type>
-      <exclusions>
-        <exclusion>
-          <artifactId>*</artifactId>
-          <groupId>*</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
   <build>

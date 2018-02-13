@@ -16,8 +16,8 @@ package pt.webdetails.cdf.dd.model.inst.reader.cdfdejs;
 import java.util.Iterator;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
@@ -30,7 +30,7 @@ import pt.webdetails.cdf.dd.model.inst.LayoutComponent;
 import pt.webdetails.cdf.dd.model.meta.DashboardType;
 
 public class CdfdeJsDashboardReader implements IThingReader {
-  private static final Logger logger = LoggerFactory.getLogger( CdfdeJsDashboardReader.class );
+  private static final Log logger = LogFactory.getLog( CdfdeJsDashboardReader.class );
 
   public Dashboard.Builder read( IThingReadContext context, Object source, String sourcePath )
     throws ThingReadException {

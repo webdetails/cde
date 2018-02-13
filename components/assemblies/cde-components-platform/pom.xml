@@ -14,37 +14,28 @@
   <properties>
     <js.project.list>pentaho-cdf-js,cde-components-impls-core,cde-components-impls-pentaho</js.project.list>
   </properties>
+
   <dependencies>
-    <dependency>
-      <groupId>pentaho</groupId>
-      <artifactId>pentaho-cdf-js</artifactId>
-      <type>zip</type>
-    </dependency>
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
       <artifactId>cde-components-impls-core</artifactId>
       <version>${project.version}</version>
       <type>zip</type>
-      <exclusions>
-        <exclusion>
-          <artifactId>*</artifactId>
-          <groupId>*</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
       <artifactId>cde-components-impls-pentaho</artifactId>
       <version>${project.version}</version>
       <type>zip</type>
-      <exclusions>
-        <exclusion>
-          <artifactId>*</artifactId>
-          <groupId>*</groupId>
-        </exclusion>
-      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>pentaho</groupId>
+      <artifactId>pentaho-cdf-js</artifactId>
+      <type>zip</type>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
