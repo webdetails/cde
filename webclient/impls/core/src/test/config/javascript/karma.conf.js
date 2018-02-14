@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -49,6 +49,7 @@ module.exports = function(config) {
       'src/main/javascript/cdf-dd-components.js',
       'src/main/javascript/cdf-dd-components-generic.js',
       'src/main/javascript/cdf-dd-components-selectors.js',
+      'src/main/javascript/cdf-dd-components-others.js',
       'src/main/javascript/cdf-dd-prompt-properties.js',
       'src/main/javascript/cdf-dd-prompt-wizard.js',
       'src/main/javascript/cdf-dd-datasources.js',
