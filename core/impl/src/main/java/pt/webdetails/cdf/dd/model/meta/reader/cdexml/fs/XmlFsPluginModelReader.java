@@ -135,7 +135,7 @@ public final class XmlFsPluginModelReader {
       new GenericBasicFileFilter( null, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
 
     if ( filesList != null ) {
-      this.readPropertiesList( model, factory, filesList );
+      this.readPropertiesFilesList( model, factory, filesList );
     }
   }
 
@@ -148,11 +148,11 @@ public final class XmlFsPluginModelReader {
       new GenericBasicFileFilter( CUSTOM_PROPS_FILENAME, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
 
     if ( filesList != null ) {
-      this.readPropertiesList( model, factory, filesList );
+      this.readPropertiesFilesList( model, factory, filesList );
     }
   }
 
-  private void readPropertiesList( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory,
+  private void readPropertiesFilesList( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory,
                                    List<IBasicFile> filesList ) throws ThingReadException {
     IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
     Arrays.sort( filesArray, getFileComparator() );

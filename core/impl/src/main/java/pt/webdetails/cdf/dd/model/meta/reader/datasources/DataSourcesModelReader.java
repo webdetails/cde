@@ -87,8 +87,8 @@ public final class DataSourcesModelReader {
     String category = (String) jctx.getValue( "metadata/group" );
     String categoryLabel = (String) jctx.getValue( "metadata/groupdesc" );
 
-    String dataAccessType = (String) jctx.getValue( "metadata/datype" );
-    boolean isCPK = dataAccessType.equalsIgnoreCase( CPK_QUERY_TYPE );
+    String dataSourceType = (String) jctx.getValue( "metadata/datype" );
+    boolean isCPK = dataSourceType.equalsIgnoreCase( CPK_QUERY_TYPE );
 
     //TODO: oh so wrong
     PathOrigin origin = new OtherPluginStaticSystemOrigin( isCPK ? "cpk" : "cda", "" );
@@ -115,13 +115,15 @@ public final class DataSourcesModelReader {
   }
 
   private void readCDADataSourceComponent( DataSourceComponentType.Builder builder, JXPathContext jctx ) {
-    String dataAccessType = (String) jctx.getValue( "metadata/datype" );
+    String label = (String) jctx.getValue( "metadata/name" );
+
+    String dataSourceType = (String) jctx.getValue( "metadata/datype" );
     String connectionType = (String) jctx.getValue( "metadata/conntype" );
     connectionType = connectionType != null ? connectionType : "";
 
     builder
       .addAttribute( CONNECTION_TYPE, connectionType )
-      .addAttribute( DATA_ACCESS_TYPE, dataAccessType );
+      .addAttribute( DATA_ACCESS_TYPE, dataSourceType );
 
     for ( String cdaPropName : this.getCDAPropertyNames( jctx ) ) {
       if ( cdaPropName.equals( "id" ) || cdaPropName.equals( "connection" ) ) {
@@ -138,7 +140,7 @@ public final class DataSourcesModelReader {
       } else if ( cdaPropName.equals( "right" ) ) {
         builder.useProperty( null, "right" );
         builder.useProperty( null, "rightkeys" );
-      } else if ( isKettleOverX( jctx ) && cdaPropName.equalsIgnoreCase( "query" ) ) {
+      } else if ( isKettleOverX( label ) && cdaPropName.equalsIgnoreCase( "query" ) ) {
         builder.useProperty( cdaPropName, "kettleQuery" );
       } else {
         builder.useProperty( null, cdaPropName );
@@ -170,9 +172,7 @@ public final class DataSourcesModelReader {
     return props;
   }
 
-  private boolean isKettleOverX( JXPathContext jctx ) {
-    String label = (String) jctx.getValue( "metadata/name" );
-
+  private boolean isKettleOverX( String label ) {
     // This specific Data Source has special treatment below
     return "kettle over kettleTransFromFile".equalsIgnoreCase( label );
   }

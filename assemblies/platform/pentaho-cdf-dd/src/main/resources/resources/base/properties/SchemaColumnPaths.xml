@@ -1,6 +1,6 @@
 <DesignerProperty>
     <Header>
-        <Name>sColumnPaths</Name>
+        <Name>schemaColumnPaths</Name>
         <Parent>BaseProperty</Parent>
         <DefaultValue>"[]"</DefaultValue>
         <Description>Schema Column Paths</Description>

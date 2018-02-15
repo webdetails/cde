@@ -1,6 +1,6 @@
 <DesignerProperty>
   <Header>
-    <Name>sColumnNames</Name>
+    <Name>schemaColumnNames</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>"[]"</DefaultValue>
     <Description>Schema Column Names</Description>

@@ -24,7 +24,6 @@ import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
 import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.CdfRunJsThingWriterBaseFactory;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.CdfRunJsCodeComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsGenericComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsWidgetComponentWriter;
@@ -37,7 +36,7 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsDataSo
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsGenericPropertyBindingWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsJFreeChartDataSourcePropertyBindingWriter;
 
-public class CdfRunJsThingWriterFactory extends CdfRunJsThingWriterBaseFactory implements IThingWriterFactory  {
+public class CdfRunJsThingWriterFactory implements IThingWriterFactory  {
 
   @Override
   public IThingWriter getWriter( Thing t ) throws UnsupportedThingException {
@@ -62,21 +61,6 @@ public class CdfRunJsThingWriterFactory extends CdfRunJsThingWriterBaseFactory i
     return new CdfRunJsDashboardWriter( dashboard.getWcdf().getParsedRendererType() );
   }
 
-  @Override
-  public IThingWriter getSimpleParameter() {
-    return new CdfRunJsParameterComponentWriter();
-  }
-
-  @Override
-  public IThingWriter getDateParameter() {
-    return new CdfRunJsDateParameterComponentWriter();
-  }
-
-  @Override
-  public IThingWriter getJsExpressionParameter() {
-    return new CdfRunJsExpressionParameterComponentWriter();
-  }
-
   private IThingWriter getComponentWriter( Thing t ) {
     Class compClass = t.getClass();
 
@@ -97,6 +81,29 @@ public class CdfRunJsThingWriterFactory extends CdfRunJsThingWriterBaseFactory i
     }
 
     return null;
+  }
+
+  private IThingWriter getParameterWriter( Thing t ) {
+    ParameterComponent paramComp = (ParameterComponent) t;
+    String typeName = paramComp.getMeta().getName().toLowerCase();
+
+    IThingWriter parameterWriter;
+    switch ( typeName ) {
+      case SIMPLE_PARAMETER:
+      case OLAP_PARAMETER:
+        parameterWriter = new CdfRunJsParameterComponentWriter();
+        break;
+      case DATE_PARAMETER:
+        parameterWriter = new CdfRunJsDateParameterComponentWriter();
+        break;
+      case JS_EXPRESSION_PARAMETER:
+        parameterWriter = new CdfRunJsExpressionParameterComponentWriter();
+        break;
+      default:
+        parameterWriter = null;
+    }
+
+    return parameterWriter;
   }
 
   private IThingWriter getPropertyBindingWriter( Thing t ) {

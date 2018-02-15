@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -17,6 +17,12 @@ import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 
 public interface IThingWriterFactory {
+
+  String SIMPLE_PARAMETER = "parameter";
+  String OLAP_PARAMETER = "olapparameter";
+  String DATE_PARAMETER = "dateparameter";
+  String JS_EXPRESSION_PARAMETER = "javascriptparameter";
+
   /**
    * Obtains a thing writer for a given thing,
    * and a pre-specified output format.

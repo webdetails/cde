@@ -2,7 +2,7 @@
   <Header>
     <Name>rowsLimit</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue>10</DefaultValue>
     <Description>Results limit</Description>
     <Tooltip>Limit number of rows to display.</Tooltip>
     <InputType>Integer</InputType>

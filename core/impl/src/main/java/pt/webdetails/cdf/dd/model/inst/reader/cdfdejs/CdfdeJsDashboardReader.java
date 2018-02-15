@@ -101,9 +101,9 @@ public class CdfdeJsDashboardReader implements IThingReader {
 
   private void readDataSourceComponents( Dashboard.Builder builder, JXPathContext source,
                                          CdfdeJsReadContext context ) throws ThingReadException {
-    Iterator<Pointer> regularComponents = source.iteratePointers( "/datasources/rows" );
+    Iterator<Pointer> datasourceComponents = source.iteratePointers( "/datasources/rows" );
 
-    readKind( builder, KnownThingKind.Component, source, regularComponents, context );
+    readKind( builder, KnownThingKind.Component, source, datasourceComponents, context );
 
   }
 
@@ -115,9 +115,8 @@ public class CdfdeJsDashboardReader implements IThingReader {
     try {
       reader = context.getFactory().getReader( KnownThingKind.Component, "layout", null );
 
-      // TOTO: HACK: Until layout is handled the right way, we need to detect 
-      // a null reader, returned when there is an error building the layout inside
-      // the factory :-(
+      // TODO: HACK: Until layout is handled the right way, we need to detect a null reader,
+      // returned when there is an error building the layout inside the factory :-(
       if ( reader == null ) {
         return;
       }

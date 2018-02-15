@@ -21,9 +21,9 @@
       <Property>responseType</Property>
       <Property>solrQuery</Property>
 
-      <Property>sColumnNames</Property>
-      <Property>sColumnTypes</Property>
-      <Property>sColumnPaths</Property>
+      <Property>schemaColumnNames</Property>
+      <Property>schemaColumnTypes</Property>
+      <Property>schemaColumnPaths</Property>
 
       <Property>rowsLimit</Property>
     </Model>
