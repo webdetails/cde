@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.pentaho.ctools</groupId>
+    <artifactId>cde-renderer-assembly</artifactId>
+    <version>8.1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>cde-renderer-docker</artifactId>
+
+  <packaging>pom</packaging>
+
+  <properties>
+    <docker.image.build.directory>${project.build.directory}/build</docker.image.build.directory>
+
+    <docker.image.repository>${project.groupId}</docker.image.repository>
+    <docker.image.name>${project.name}</docker.image.name>
+    <docker.image.version>${project.version}</docker.image.version>
+
+    <docker.image.tag>${docker.image.repository}/${docker.image.name}:${docker.image.version}</docker.image.tag>
+
+    <docker.image.output.directory>output</docker.image.output.directory>
+    <docker.image.output.file>${docker.image.output.directory}/${project.artifactId}-${project.version}</docker.image.output.file>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>cde-renderer-karaf-assembly</artifactId>
+      <version>${project.version}</version>
+      <type>tar.gz</type>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+
+        <executions>
+          <execution>
+            <id>copy-resources-${project.artifactId}</id>
+
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+
+            <phase>generate-resources</phase>
+
+            <configuration>
+              <outputDirectory>${docker.image.build.directory}</outputDirectory>
+
+              <resources>
+                <resource>
+                  <filtering>true</filtering>
+                  <directory>src/main/resources/build</directory>
+                </resource>
+                <resource>
+                  <filtering>true</filtering>
+                  <directory>src/main/docker</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+
+        <executions>
+          <execution>
+            <id>unpack-karaf-pkg</id>
+
+            <phase>generate-resources</phase>
+
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+
+            <configuration>
+              <includeArtifactIds>cde-renderer-karaf-assembly</includeArtifactIds>
+              <outputDirectory>${docker.image.build.directory}</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <!-- In addition to the docker image build package, builds and publishes the docker image itself -->
+      <id>dev</id>
+
+      <activation>
+        <property>
+          <name>dev</name>
+        </property>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+
+            <executions>
+              <execution>
+                <id>run-build-${project.artifactId}</id>
+
+                <phase>package</phase>
+
+                <goals>
+                  <goal>run</goal>
+                </goals>
+
+                <configuration>
+                  <target>
+                    <chmod dir="${docker.image.build.directory}" perm="ugo+rx" includes="**/*.sh"/>
+                    <exec dir="${docker.image.build.directory}" executable="./create-image.sh"/>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+
+            <executions>
+              <execution>
+                <id>attach-artifact</id>
+
+                <phase>package</phase>
+
+                <goals>
+                  <goal>attach-artifact</goal>
+                </goals>
+
+                <configuration>
+                  <artifacts>
+                    <artifact>
+                      <file>${docker.image.build.directory}/${docker.image.output.file}.tar.gz</file>
+                      <classifier>docker-image</classifier>
+                      <type>tar.gz</type>
+                    </artifact>
+                  </artifacts>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

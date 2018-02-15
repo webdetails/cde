@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.pentaho.ctools</groupId>
+    <artifactId>cde-plugin-assemblies</artifactId>
+    <version>8.1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>cde-renderer-assembly</artifactId>
+
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>feature</module>
+    <module>karaf</module>
+    <module>docker</module>
+  </modules>
+
+  <properties>
+    <karaf-maven-plugin.version>3.0.8</karaf-maven-plugin.version>
+    <karaf-maven-plugin.aggregateFeatures>false</karaf-maven-plugin.aggregateFeatures>
+
+    <assembly.tarLongFileMode>posix</assembly.tarLongFileMode>
+
+    <pentaho-osgi-bundles.version>${project.version}</pentaho-osgi-bundles.version>
+  </properties>
+
+  <profiles>
+    <profile>
+      <!-- This profile generates a feature file to deploy in karaf. -->
+      <id>feature-generation</id>
+
+      <activation>
+        <file>
+          <exists>${basedir}/src/main/feature</exists>
+        </file>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.karaf.tooling</groupId>
+            <artifactId>karaf-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.karaf.tooling</groupId>
+          <artifactId>karaf-maven-plugin</artifactId>
+          <version>${karaf-maven-plugin.version}</version>
+          <extensions>true</extensions>
+
+          <configuration>
+            <aggregateFeatures>${karaf-maven-plugin.aggregateFeatures}</aggregateFeatures>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>

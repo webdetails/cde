@@ -1,0 +1,39 @@
+<property-edits xmlns="http://karaf.apache.org/tools/property-edits/1.0.0">
+  <edits>
+    <!-- Get network ports from foundry environment variables -->
+    <!-- Property edits don't work on configs declared in features -->
+    <!-- So they need to be overrided via resource folder copies -->
+    <!--<edit>-->
+      <!--<file>org.ops4j.pax.web.cfg</file>-->
+      <!--<operation>put</operation>-->
+      <!--<key>org.osgi.service.http.port</key>-->
+      <!--<value>${env:PORT_DEF_HTTP_PORT}</value>-->
+    <!--</edit>-->
+    <!--<edit>-->
+      <!--<file>org.apache.karaf.shell.cfg</file>-->
+      <!--<operation>put</operation>-->
+      <!--<key>sshPort</key>-->
+      <!--<value>${env:PORT_DEF_SSH_PORT}</value>-->
+    <!--</edit>-->
+
+    <!-- Use external mount points for deploy and log folders -->
+    <edit>
+      <file>org.apache.felix.fileinstall-deploy.cfg</file>
+      <operation>put</operation>
+      <key>felix.fileinstall.dir</key>
+      <value>${deploy.folder}</value>
+    </edit>
+    <edit>
+      <file>org.ops4j.pax.logging.cfg</file>
+      <operation>put</operation>
+      <key>log4j.appender.out.file</key>
+      <value>${log.folder}/karaf.log</value>
+    </edit>
+    <edit>
+      <file>org.ops4j.pax.logging.cfg</file>
+      <operation>put</operation>
+      <key>log4j.appender.sift.appender.file</key>
+      <value>${log.folder}/${bundle.name}.log</value>
+    </edit>
+  </edits>
+</property-edits>
