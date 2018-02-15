@@ -35,19 +35,5 @@
       <key>log4j.appender.sift.appender.file</key>
       <value>${log.folder}/${bundle.name}.log</value>
     </edit>
-
-    <!-- Karaf 4.x: log4j2 -->
-    <!--<edit>-->
-      <!--<file>org.ops4j.pax.logging.cfg</file>-->
-      <!--<operation>put</operation>-->
-      <!--<key>log4j2.appender.audit.fileName</key>-->
-      <!--<value>${env:LOG_FOLDER}/security.log</value>-->
-    <!--</edit>-->
-    <!--<edit>-->
-      <!--<file>org.ops4j.pax.logging.cfg</file>-->
-      <!--<operation>put</operation>-->
-      <!--<key>log4j2.appender.audit.filePattern</key>-->
-      <!--<value>${env:LOG_FOLDER}/security-%i.log</value>-->
-    <!--</edit>-->
   </edits>
 </property-edits>

@@ -6,11 +6,11 @@
 
   <parent>
     <groupId>org.pentaho.ctools</groupId>
-    <artifactId>pentaho-cde-renderer-assembly</artifactId>
+    <artifactId>cde-renderer-assembly</artifactId>
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>pentaho-cde-renderer-docker</artifactId>
+  <artifactId>cde-renderer-docker</artifactId>
 
   <packaging>pom</packaging>
 
@@ -30,7 +30,7 @@
   <dependencies>
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
-      <artifactId>pentaho-cde-renderer-karaf-assembly</artifactId>
+      <artifactId>cde-renderer-karaf-assembly</artifactId>
       <version>${project.version}</version>
       <type>tar.gz</type>
     </dependency>
@@ -39,17 +39,18 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.0.2</version>
 
         <executions>
           <execution>
             <id>copy-resources-${project.artifactId}</id>
+
             <goals>
               <goal>copy-resources</goal>
             </goals>
+
             <phase>generate-resources</phase>
+
             <configuration>
               <outputDirectory>${docker.image.build.directory}</outputDirectory>
 
@@ -69,19 +70,20 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.0.2</version>
 
         <executions>
           <execution>
             <id>unpack-karaf-pkg</id>
+
             <phase>generate-resources</phase>
+
             <goals>
               <goal>unpack-dependencies</goal>
             </goals>
+
             <configuration>
-              <includeArtifactIds>pentaho-cde-renderer-karaf-assembly</includeArtifactIds>
+              <includeArtifactIds>cde-renderer-karaf-assembly</includeArtifactIds>
               <outputDirectory>${docker.image.build.directory}</outputDirectory>
             </configuration>
           </execution>
@@ -93,11 +95,9 @@
   <profiles>
     <profile>
       <!-- In addition to the docker image build package, builds and publishes the docker image itself -->
-
       <id>dev</id>
 
       <activation>
-        <activeByDefault>false</activeByDefault>
         <property>
           <name>dev</name>
         </property>
@@ -106,14 +106,14 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.8</version>
 
             <executions>
               <execution>
                 <id>run-build-${project.artifactId}</id>
+
                 <phase>package</phase>
+
                 <goals>
                   <goal>run</goal>
                 </goals>
@@ -131,11 +131,13 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>build-helper-maven-plugin</artifactId>
-            <version>3.0.0</version>
+
             <executions>
               <execution>
                 <id>attach-artifact</id>
+
                 <phase>package</phase>
+
                 <goals>
                   <goal>attach-artifact</goal>
                 </goals>
@@ -156,5 +158,4 @@
       </build>
     </profile>
   </profiles>
-
 </project>
