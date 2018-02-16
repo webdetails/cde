@@ -23,7 +23,6 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
 import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
-import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.meta.DataSourceComponentType;
 import pt.webdetails.cdf.dd.model.meta.PropertyType;
@@ -112,7 +111,7 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
       }
 
       addJsProperty( out, name, value, Writer.INDENT2 );
-    });
+    } );
 
     String queryType = PropertyValue.SOLR_QUERY_TYPE;
     addFirstJsProperty( out, PropertyName.QUERY_TYPE, buildJsStringValue( queryType ), Writer.INDENT2 );
