@@ -27,7 +27,7 @@ if(!requireConfig['amd']) {
 if(!requireConfig['amd']['shim']) {
   requireConfig['amd']['shim'] = {};
 }
-requireConfig['amd']['shim']["cde/components/googleAnalytics/amd/lib/jquery.ga"] = {
+requireConfig['amd']['shim']["cde/components/GoogleAnalyticsComponent/lib/jquery.ga"] = {
   exports: "jQuery",        
   deps: {
     "cdf/lib/jquery": "jQuery"

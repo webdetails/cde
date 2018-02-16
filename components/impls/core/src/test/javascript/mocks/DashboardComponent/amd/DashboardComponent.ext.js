@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -11,21 +11,16 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['./CggComponent'], function(CggComponent) {
+define('cde/components/DashboardComponent/DashboardComponent.ext', [], function() {
 
-  return CggComponent.extend({
-    script: "system/pentaho-cdf-dd/resources/custom/amd-components/cgg/charts/dial.js",
-    priority: 6,
-    
-    getScriptUrl: function() {
-      return this.script;
+  return {
+    getDashboardUrl: function(path) {
+      return path;
     },
 
-    _processParametersCore: function(data) {
-      data.paramvalue  = this.dashboard.getParameterValue(this.parameter);
-      data.paramcolors = this.colors;
-      data.paramscale  = this.intervals;
+    getDashboardParametersEndpoint: function() {
+      return CONTEXT_PATH + "plugin/pentaho-cdf-dd/api/renderer/getDashboardParameters?path=";
     }
-  });
+  };
 
 });

@@ -158,7 +158,7 @@
     //of its dependencies includes i18n bundles, they may not be included in the
     //built file unless the locale: section is set above.
     {
-      name: "cde/components/AjaxRequest/amd/AjaxRequestComponent",
+      name: "cde/components/AjaxRequestComponent",
       //create: true can be used to create the module layer at the given
       //name, if it does not already exist in the source location. If
       //there is a module at the source location with this name, then
@@ -181,7 +181,7 @@
       ]
     },
     {
-      name: "cde/components/cgg/amd/CggComponent",
+      name: "cde/components/CggComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
@@ -189,7 +189,7 @@
       ]
     },
     {
-      name: "cde/components/cgg/amd/CggDialComponent",
+      name: "cde/components/CggComponent/CggDialComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
@@ -197,7 +197,7 @@
       ]
     },
     {
-      name: "cde/components/Dashboard/amd/DashboardComponent",
+      name: "cde/components/DashboardComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
@@ -205,7 +205,7 @@
       ]
     },
     {
-      name: "cde/components/Duplicate/amd/DuplicateComponent",
+      name: "cde/components/DuplicateComponent",
       exclude: [
         // CDF libs / components / utils
         "cdf/lib/jquery",
@@ -214,10 +214,10 @@
       ]
     },
     {
-      name: "cde/components/exportButton/amd/ExportButtonComponent",
+      name: "cde/components/ExportButtonComponent",
       exclude: [
         // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/exportButton/amd/ExportButtonComponent",
+        "css!cde/components/ExportButtonComponent",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "cdf/components/BaseComponent",
@@ -226,21 +226,21 @@
       ]
     },
     {
-      name: "cde/components/googleAnalytics/amd/GoogleAnalyticsComponent",
+      name: "cde/components/GoogleAnalyticsComponent",
       exclude: [
         // exclude resources that depend on requirejs loader plugins,
         // this avoids including requirejs loader plugins from CDF into the output module
-        "amd!cde/components/googleAnalytics/amd/lib/jquery.ga",
+        "amd!cde/components/GoogleAnalyticsComponent/lib/jquery.ga",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "cdf/components/BaseComponent"
       ]
     },
     {
-      name: "cde/components/NewSelector/amd/NewSelectorComponent",
+      name: "cde/components/NewSelectorComponent",
       exclude: [
         // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/NewSelector/amd/NewSelectorComponent",
+        "css!cde/components/NewSelectorComponent",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "amd!cdf/lib/underscore",
@@ -252,21 +252,21 @@
       ]
     },
     {
-      name: "cde/components/popup/amd/PopupComponent",
+      name: "cde/components/PopupComponent",
       exclude: [
         // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/popup/amd/PopupComponent",
+        "css!cde/components/PopupComponent",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "cdf/components/BaseComponent"
       ]
     },
     {
-      name: "cde/components/popup/amd/ExportPopupComponent",
+      name: "cde/components/PopupComponent/ExportPopupComponent",
       exclude: [
         // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/popup/amd/ExportPopupComponent",
-        "css!cde/components/popup/amd/PopupComponent",
+        "css!cde/components/PopupComponent/ExportPopupComponent",
+        "css!cde/components/PopupComponent",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "amd!cdf/lib/jquery.fancybox",
@@ -277,7 +277,7 @@
       ]
     },
     {
-      name: "cde/components/Raphael/amd/RaphaelComponent",
+      name: "cde/components/RaphaelComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
         //"cdf/lib/raphael", // don't exclude raphael
@@ -285,7 +285,7 @@
       ]
     },
     {
-      name: "cde/components/RelatedContent/amd/RelatedContentComponent",
+      name: "cde/components/RelatedContentComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
@@ -293,7 +293,7 @@
       ]
     },
     {
-      name: "cde/components/SiteMap/amd/SiteMapComponent",
+      name: "cde/components/SiteMapComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",

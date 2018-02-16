@@ -12,7 +12,7 @@
  */
 
 define([
-  'cde/components/Map/amd/Map.featureStyles'
+  'cde/components/NewMapComponent/Map.featureStyles'
 ], function (Map) {
 
   xdescribe('Map.getStyle', function () {

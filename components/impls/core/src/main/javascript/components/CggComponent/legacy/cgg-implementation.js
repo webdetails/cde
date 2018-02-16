@@ -120,7 +120,7 @@ var CggComponent = UnmanagedComponent.extend({
 
 
 var CggDialComponent = CggComponent.extend({
-  script: "system/pentaho-cdf-dd/resources/custom/components/cgg/charts/dial.js",
+  script: "system/pentaho-cdf-dd/resources/components/CggComponent/legacy/charts/dial.js",
   priority: 6,
   
   getScriptUrl: function() {

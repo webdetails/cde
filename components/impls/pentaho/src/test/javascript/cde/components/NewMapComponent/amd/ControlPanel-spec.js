@@ -14,8 +14,8 @@
 define([
   'cdf/lib/jquery',
   'cdf/Dashboard.Clean',
-  'cde/components/Map/amd/ControlPanel/ControlPanel',
-  'cde/components/Map/amd/model/MapModel'
+  'cde/components/NewMapComponent/ControlPanel/ControlPanel',
+  'cde/components/NewMapComponent/model/MapModel'
 ], function ($, Dashboard, ControlPanel, MapModel) {
 
   describe('NewMapComponent/ControlPanel', function () {
