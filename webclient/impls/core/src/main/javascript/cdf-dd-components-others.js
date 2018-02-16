@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -122,5 +122,29 @@ var TopBottomRenderer = SelectRenderer.extend({
   selectData: {
     'top':    'Top',
     'bottom': 'Bottom'
+  }
+});
+
+var DataServiceNameRenderer = SelectRenderer.extend({
+  selectData: {},
+
+  parseXml: function(xml) {
+    var myself = this;
+    $xml = $( xml );
+    $.each($xml.find('services > service > name'), function(idx, node) {
+      var name = node.textContent
+      myself.selectData[name] = name;
+    });
+  },
+
+  getDataInit:  function() {
+    var url ='/pentaho/kettle/listServices';
+
+    $.ajax({
+      type: "GET",
+      url: url,
+      dataType: "xml",
+      success: this.parseXml.bind(this)
+    });
   }
 });
