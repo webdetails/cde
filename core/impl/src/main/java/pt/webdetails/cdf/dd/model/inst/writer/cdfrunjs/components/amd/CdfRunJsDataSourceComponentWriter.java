@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
 
 import static pt.webdetails.cdf.dd.CdeConstants.Writer;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource;
-import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.AttributeName;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyValue;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyName;
 
@@ -103,20 +102,20 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
   }
 
   private void renderSolrDataSource( StringBuilder out, DataSourceComponent dataSourceComp ) {
-    String queryType = dataSourceComp.tryGetAttributeValue( AttributeName.DATA_ACCESS_TYPE, "" );
-    addFirstJsProperty( out, PropertyName.QUERY_TYPE, buildJsStringValue( queryType ), Writer.INDENT2 );
-
-    for ( PropertyBinding binding : dataSourceComp.getPropertyBindings() ) {
+    dataSourceComp.getPropertyBindings().forEach( binding -> {
       String name = binding.getName();
       String value = binding.getValue();
 
       PropertyType.ValueType valueType = binding.getProperty().getValueType();
-      if ( "STRING".equals( valueType.toString() ) ) {
+      if ( PropertyType.ValueType.STRING.equals( valueType ) ) {
         value = buildJsStringValue( value );
       }
 
       addJsProperty( out, name, value, Writer.INDENT2 );
-    }
+    });
+
+    String queryType = PropertyValue.SOLR_QUERY_TYPE;
+    addFirstJsProperty( out, PropertyName.QUERY_TYPE, buildJsStringValue( queryType ), Writer.INDENT2 );
   }
 
   private void renderCdaDatasource( StringBuilder out, CdfRunJsDashboardWriteContext context,
@@ -144,6 +143,7 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
         dashPath = FilenameUtils.getPath( dashPath );
         cdaPath = RepositoryHelper.normalize( Util.joinPath( dashPath, cdaPath ) );
       }
+
       addJsProperty( out, PropertyName.PATH, buildJsStringValue( cdaPath ), Writer.INDENT2 );
 
     } else {
@@ -168,12 +168,11 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
 
     String cdeFilePath = context.getDashboard().getSourcePath();
     if ( cdeFilePath != null ) {
-      if ( cdeFilePath.contains( ".cdfde" ) ) {
-        cdeFilePath = cdeFilePath.replace( ".cdfde", ".cda" );
-
-      } else if ( cdeFilePath.contains( ".wcdf" ) ) {
+      if ( cdeFilePath.contains( ".wcdf" ) ) {
         logger.error( "renderBuiltinCdaDatasource: [fileName] receiving a .wcdf when a .cdfde was expected!" );
         cdeFilePath = cdeFilePath.replace( ".wcdf", ".cda" );
+      } else {
+        cdeFilePath = cdeFilePath.replace( ".cdfde", ".cda" );
       }
 
     } else {
@@ -197,11 +196,11 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
     addJsProperty( out, PropertyName.PLUGIN_ID, buildJsStringValue( pluginID ), Writer.INDENT2 );
 
     String outputStepName = dataSourceComp
-      .tryGetPropertyValueByName( PropertyName.KETTLE_OUTPUT_STEP_NAME, "OUTPUT" );
+      .tryGetPropertyValue( PropertyName.KETTLE_OUTPUT_STEP_NAME, "OUTPUT" );
     addJsProperty( out, PropertyName.KETTLE_OUTPUT_STEP_NAME, buildJsStringValue( outputStepName ), Writer.INDENT2 );
 
     String outputFormat = dataSourceComp
-      .tryGetPropertyValueByName( PropertyName.KETTLE_OUTPUT_FORMAT, "Infered" );
+      .tryGetPropertyValue( PropertyName.KETTLE_OUTPUT_FORMAT, "Infered" );
     addJsProperty( out, PropertyName.KETTLE_OUTPUT_FORMAT, buildJsStringValue( outputFormat ), Writer.INDENT2 );
 
     String queryType = PropertyValue.CPK_QUERY_TYPE;

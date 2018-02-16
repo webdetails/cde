@@ -291,6 +291,7 @@ public class CdeConstants {
         // CPK DataSource
         public static final String DATA_ACCESS_ID = "dataAccessId";
         public static final String ENDPOINT = "endpoint";
+        public static final String COLLECTION = "collection";
         public static final String PLUGIN_ID = "pluginId";
         public static final String KETTLE_OUTPUT_FORMAT = "kettleOutput";
         public static final String KETTLE_OUTPUT_STEP_NAME = "stepName";
@@ -310,6 +311,7 @@ public class CdeConstants {
         public static final String CPK_QUERY_TYPE = "cpk";
         public static final String MDX_QUERY_TYPE = "mdx";
         public static final String SQL_QUERY_TYPE = "sql";
+        public static final String SOLR_QUERY_TYPE = "solr";
       }
 
       public static class AttributeName {
