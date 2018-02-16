@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -135,11 +135,7 @@ public final class XmlFsPluginModelReader {
       new GenericBasicFileFilter( null, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
 
     if ( filesList != null ) {
-      IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
-      Arrays.sort( filesArray, getFileComparator() );
-      for ( IBasicFile file : filesArray ) {
-        this.readPropertiesFile( model, factory, file );
-      }
+      this.readPropertiesFilesList( model, factory, filesList );
     }
   }
 
@@ -152,11 +148,16 @@ public final class XmlFsPluginModelReader {
       new GenericBasicFileFilter( CUSTOM_PROPS_FILENAME, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
 
     if ( filesList != null ) {
-      IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
-      Arrays.sort( filesArray, getFileComparator() );
-      for ( IBasicFile file : filesArray ) {
-        this.readPropertiesFile( model, factory, file );
-      }
+      this.readPropertiesFilesList( model, factory, filesList );
+    }
+  }
+
+  private void readPropertiesFilesList( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory,
+                                   List<IBasicFile> filesList ) throws ThingReadException {
+    IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
+    Arrays.sort( filesArray, getFileComparator() );
+    for ( IBasicFile file : filesArray ) {
+      this.readPropertiesFile( model, factory, file );
     }
   }
 
@@ -184,11 +185,8 @@ public final class XmlFsPluginModelReader {
     }
   }
 
-  private void readProperty(
-    MetaModel.Builder modelBuilder,
-    XmlFsPluginThingReaderFactory factory,
-    Element propertyElem,
-    IBasicFile file ) {
+  private void readProperty( MetaModel.Builder modelBuilder, XmlFsPluginThingReaderFactory factory,
+                             Element propertyElem, IBasicFile file ) {
     try {
       PropertyType.Builder prop = factory.getPropertyTypeReader().read( propertyElem, file.getPath() );
       modelBuilder.addProperty( prop );

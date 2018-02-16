@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -41,6 +41,27 @@ import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererT
 public class CdfRunJsThingWriterFactory implements IThingWriterFactory {
   protected static final Log logger = LogFactory.getLog( CdfRunJsThingWriterFactory.class );
 
+  @Override
+  public IThingWriter getWriter( Thing t ) throws UnsupportedThingException {
+    if ( t == null ) {
+      throw new IllegalArgumentException( "t" );
+    }
+
+    String kind = t.getKind();
+    if ( KnownThingKind.Component.equals( kind ) ) {
+      return getComponentWriter( t );
+
+    } else if ( KnownThingKind.PropertyBinding.equals( kind ) ) {
+      return new CdfRunJsGenericPropertyBindingWriter();
+
+    } else if ( KnownThingKind.Dashboard.equals( kind ) ) { // shouldn't get here anymore
+      return getDashboardWriter( ( (Dashboard) t ) );
+
+    }
+
+    throw new UnsupportedThingException( kind, t.getId() );
+  }
+
   /**
    * @param dashboard the dashboard
    * @return an instance of a dashboard writer of the same render type as the provided dashboard
@@ -57,52 +78,53 @@ public class CdfRunJsThingWriterFactory implements IThingWriterFactory {
     return new CdfRunJsDashboardModuleWriter( rendererType );
   }
 
-  public IThingWriter getWriter( Thing t ) throws UnsupportedThingException {
-    if ( t == null ) {
-      throw new IllegalArgumentException( "t" );
+  private IThingWriter getComponentWriter( Thing t ) throws UnsupportedThingException {
+    Class compClass = t.getClass();
+
+    if ( GenericComponent.class.isAssignableFrom( compClass ) ) {
+      if ( WidgetComponent.class.isAssignableFrom( compClass ) ) {
+        logger.error( "Widget component is no longer supported" );
+        throw new UnsupportedThingException( t.getKind(), t.getId() );
+      }
+
+      return new CdfRunJsGenericComponentWriter();
     }
 
-    String kind = t.getKind();
-
-    if ( KnownThingKind.Component.equals( kind ) ) {
-      Class compClass = t.getClass();
-
-      if ( GenericComponent.class.isAssignableFrom( compClass ) ) {
-        if ( WidgetComponent.class.isAssignableFrom( compClass ) ) {
-          logger.error( "Widget component is no longer supported" );
-          throw new UnsupportedThingException( kind, t.getId() );
-        }
-
-        return new CdfRunJsGenericComponentWriter();
-      }
-
-      if ( ParameterComponent.class.isAssignableFrom( compClass ) ) {
-        ParameterComponent paramComp = (ParameterComponent) t;
-        String typeName = paramComp.getMeta().getName().toLowerCase();
-        if ( typeName.equals( "parameter" ) || typeName.equals( "olapparameter" ) ) {
-          return new CdfRunJsParameterComponentWriter();
-        }
-        if ( typeName.equals( "dateparameter" ) ) {
-          return new CdfRunJsDateParameterComponentWriter();
-        }
-        if ( typeName.equals( "javascriptparameter" ) ) {
-          return new CdfRunJsExpressionParameterComponentWriter();
-        }
-      }
-
-      if ( CodeComponent.class.isAssignableFrom( compClass ) ) {
-        return new CdfRunJsCodeComponentWriter();
-      }
-
-      if ( DataSourceComponent.class.isAssignableFrom( compClass ) ) {
-        return new CdfRunJsDataSourceComponentWriter();
-      }
-    } else if ( KnownThingKind.PropertyBinding.equals( kind ) ) {
-      return new CdfRunJsGenericPropertyBindingWriter();
-    } else if ( KnownThingKind.Dashboard.equals( kind ) ) { // shouldn't get here anymore
-      return getDashboardWriter( ( (Dashboard) t ) );
+    if ( ParameterComponent.class.isAssignableFrom( compClass ) ) {
+      return getParameterWriter( t );
     }
 
-    throw new UnsupportedThingException( kind, t.getId() );
+    if ( CodeComponent.class.isAssignableFrom( compClass ) ) {
+      return new CdfRunJsCodeComponentWriter();
+    }
+
+    if ( DataSourceComponent.class.isAssignableFrom( compClass ) ) {
+      return new CdfRunJsDataSourceComponentWriter();
+    }
+
+    return null;
+  }
+
+  private IThingWriter getParameterWriter( Thing t ) {
+    ParameterComponent paramComp = (ParameterComponent) t;
+    String typeName = paramComp.getMeta().getName().toLowerCase();
+
+    IThingWriter parameterWriter;
+    switch ( typeName ) {
+      case SIMPLE_PARAMETER:
+      case OLAP_PARAMETER:
+        parameterWriter = new CdfRunJsParameterComponentWriter();
+        break;
+      case DATE_PARAMETER:
+        parameterWriter = new CdfRunJsDateParameterComponentWriter();
+        break;
+      case JS_EXPRESSION_PARAMETER:
+        parameterWriter = new CdfRunJsExpressionParameterComponentWriter();
+        break;
+      default:
+        parameterWriter = null;
+    }
+
+    return parameterWriter;
   }
 }

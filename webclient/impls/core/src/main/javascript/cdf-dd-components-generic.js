@@ -1076,6 +1076,14 @@ var IndexArrayRenderer = ArrayNoParamRenderer.extend({
 var ColSearchableArrayRenderer = ArrayNoParamRenderer.extend({
   popupTitle: 'Searchable Columns'
 });
+
+var SchemaColumnNamesArrayRenderer = ArrayNoParamRenderer.extend({
+    popupTitle: 'Column Names'
+});
+
+var SchemaColumnPathsArrayRenderer = ArrayNoParamRenderer.extend({
+    popupTitle: 'Column Paths'
+});
 //endregion
 
 //region Mapping Renderers

@@ -1,0 +1,31 @@
+<DesignerComponent>
+  <Header>
+    <Override>DataSourceComponentType</Override>
+    <Name>Apache Solr</Name>
+    <IName>ApacheSolr</IName>
+    <Description>Apache Solr Datasource</Description>
+    <Category>SOLR</Category>
+    <CatDescription>Apache Solr Datasources</CatDescription>
+    <Type>PalleteEntry</Type>
+  </Header>
+  <Metadata>
+    <meta name="conntype">rest</meta>
+    <meta name="datype">solr</meta>
+    <meta name="">SOLR</meta>
+  </Metadata>
+  <Contents>
+    <Model prefix="Datasources">
+      <Property>endpoint</Property>
+      <Property>collection</Property>
+      <Property>requestHandler</Property>
+      <Property>responseType</Property>
+      <Property>solrQuery</Property>
+
+      <Property>schemaColumnNames</Property>
+      <Property>schemaColumnTypes</Property>
+      <Property>schemaColumnPaths</Property>
+
+      <Property>rowsLimit</Property>
+    </Model>
+  </Contents>
+</DesignerComponent>

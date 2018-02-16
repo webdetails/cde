@@ -1,0 +1,13 @@
+<DesignerProperty>
+    <Header>
+        <Name>requestHandler</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue>select</DefaultValue>
+        <Description>Request Handler</Description>
+        <Tooltip>Request Handler</Tooltip>
+        <InputType>String</InputType>
+        <OutputType>String</OutputType>
+        <Order>602</Order>
+        <Version>1.0</Version>
+    </Header>
+</DesignerProperty>

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -36,6 +36,7 @@ public class CdfdeJsDashboardReader implements IThingReader {
     throws ThingReadException {
     Dashboard.Builder builder = new Dashboard.Builder();
     this.read( builder, context, source, sourcePath );
+
     return builder;
   }
 
@@ -55,54 +56,18 @@ public class CdfdeJsDashboardReader implements IThingReader {
     // 1. WCDF
     builder.setWcdf( context.getWcdf() );
 
-    // 2. REGULAR
-    readKind(
-        builder,
-        KnownThingKind.Component,
-        source,
-        source.iteratePointers( "/components/rows" ),
-        context,
-        sourcePath );
+    // 2. REGULARS
+    readRegularComponents( builder, source, context );
 
-    // 3. DATASOURCE
-    readKind(
-        builder,
-        KnownThingKind.Component,
-        source,
-        source.iteratePointers( "/datasources/rows" ),
-        context,
-        sourcePath );
+    // 3. DATASOURCES
+    readDataSourceComponents( builder, source, context );
 
     // 4. LAYOUT
-    //JXPathContext layoutXP = source.getRelativeContext(source.getPointer("/layout"));
-    // HACK: 'layout' key for getting the reader
-    IThingReader reader;
-    try {
-      reader = context.getFactory().getReader( KnownThingKind.Component, "layout", null );
-
-      // TOTO: HACK: Until layout is handled the right way, we need to detect 
-      // a null reader, returned when there is an error building the layout inside
-      // the factory :-(
-      if ( reader == null ) {
-        return;
-      }
-    } catch ( UnsupportedThingException ex ) {
-      logger.error( "While rendering dashboard. " + ex );
-      return;
-    }
-
-    LayoutComponent.Builder compBuilder = (LayoutComponent.Builder) reader.read( context, source, sourcePath );
-
-    builder.addComponent( compBuilder );
+    readLayoutComponent( builder, source, context );
   }
 
-  private void readKind(
-      Dashboard.Builder builder,
-      String thingKind,
-      JXPathContext source,
-      Iterator<Pointer> componentPointers,
-      CdfdeJsReadContext context,
-      String sourcePath ) throws ThingReadException {
+  private void readKind( Dashboard.Builder builder, String thingKind, JXPathContext source,
+                         Iterator<Pointer> componentPointers, CdfdeJsReadContext context ) throws ThingReadException {
     while ( componentPointers.hasNext() ) {
       Pointer componentPointer = componentPointers.next();
       JXPathContext compXP = source.getRelativeContext( componentPointer );
@@ -119,10 +84,50 @@ public class CdfdeJsDashboardReader implements IThingReader {
           continue;
         }
 
+        String sourcePath = builder.getSourcePath();
         Component.Builder compBuilder = (Component.Builder) reader.read( context, compXP, sourcePath );
 
         builder.addComponent( compBuilder );
       }
     }
+  }
+
+  private void readRegularComponents( Dashboard.Builder builder, JXPathContext source,
+                                      CdfdeJsReadContext context ) throws ThingReadException {
+    Iterator<Pointer> regularComponents = source.iteratePointers( "/components/rows" );
+
+    readKind( builder, KnownThingKind.Component, source, regularComponents, context );
+  }
+
+  private void readDataSourceComponents( Dashboard.Builder builder, JXPathContext source,
+                                         CdfdeJsReadContext context ) throws ThingReadException {
+    Iterator<Pointer> datasourceComponents = source.iteratePointers( "/datasources/rows" );
+
+    readKind( builder, KnownThingKind.Component, source, datasourceComponents, context );
+
+  }
+
+  private void readLayoutComponent( Dashboard.Builder builder, JXPathContext source,
+                                    CdfdeJsReadContext context ) throws ThingReadException {
+    //JXPathContext layoutXP = source.getRelativeContext(source.getPointer("/layout"));
+    // HACK: 'layout' key for getting the reader
+    IThingReader reader;
+    try {
+      reader = context.getFactory().getReader( KnownThingKind.Component, "layout", null );
+
+      // TODO: HACK: Until layout is handled the right way, we need to detect a null reader,
+      // returned when there is an error building the layout inside the factory :-(
+      if ( reader == null ) {
+        return;
+      }
+    } catch ( UnsupportedThingException ex ) {
+      logger.error( "While rendering dashboard. " + ex );
+      return;
+    }
+
+    String sourcePath = builder.getSourcePath();
+    LayoutComponent.Builder compBuilder = (LayoutComponent.Builder) reader.read( context, source, sourcePath );
+
+    builder.addComponent( compBuilder );
   }
 }

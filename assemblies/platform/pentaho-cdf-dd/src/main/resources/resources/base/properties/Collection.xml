@@ -1,0 +1,13 @@
+<DesignerProperty>
+    <Header>
+        <Name>collection</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue/>
+        <Description>Solr Collection</Description>
+        <Tooltip>Solr Collection</Tooltip>
+        <InputType>String</InputType>
+        <OutputType>String</OutputType>
+        <Order>601</Order>
+        <Version>1.0</Version>
+    </Header>
+</DesignerProperty>
