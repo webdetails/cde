@@ -7,18 +7,7 @@
     <artifactId>cde-components-impls</artifactId>
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>cde-components-impls-pentaho</artifactId>
+  <artifactId>cde-components-impls-osgi</artifactId>
   <packaging>pom</packaging>
-  <description>Pentaho Community Dashboard Editor Components for Pentaho platform server</description>
-  <properties>
-    <js.project.list>pentaho-cdf-js</js.project.list>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>pentaho</groupId>
-      <artifactId>pentaho-cdf-js</artifactId>
-      <type>zip</type>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+  <description>Pentaho Community Dashboard Editor Components for the OSGi environment</description>
 </project>

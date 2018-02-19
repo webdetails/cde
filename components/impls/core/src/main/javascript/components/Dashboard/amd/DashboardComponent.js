@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -89,7 +89,10 @@ define([
             if(myself.isParameterPublic(otherParam)) {
               var eventName = myParam + ":fireChange";
               var fun = function(evt) {
-                if((!myself._pause) && (reqDash.getParameterValue(otherParam) !== evt.value)) {
+                if((!myself._pause) &&
+                  // deep comparison to avoid infinite loop after bubbling up the param change event
+                  JSON.stringify(reqDash.getParameterValue(otherParam)) !== JSON.stringify(evt.value)) {
+
                   myself.loopThroughMapping(function(myParam, otherParam) {
                     reqDash.setParameter(otherParam, myself.dashboard.getParameterValue(myParam));
                   });
@@ -98,10 +101,13 @@ define([
               };
               myself.dashboard.on(eventName, fun);
               reqDash.on(otherParam + ":fireChange", function (evt) {
-                if((!myself._pause) && (myself.oneWayMap == false) && (myself.dashboard.getParameterValue(myParam) !== evt.value)) {
-                  myself.loopThroughMapping(function(myParam, otherParam) {
-                    myself.dashboard.setParameter(myParam, reqDash.getParameterValue(otherParam));
-                  });
+                if(!myself._pause && myself.oneWayMap == false) {
+                  if(JSON.stringify(myself.dashboard.getParameterValue(myParam)) !== JSON.stringify(evt.value)) {
+                    myself.loopThroughMapping(function(myParam, otherParam) {
+                      myself.dashboard.setParameter(myParam, reqDash.getParameterValue(otherParam));
+                    });
+                  }
+                  // buble up the param change event
                   myself.dashboard.fireChange(myParam, evt.value);
                 }
               });

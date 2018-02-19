@@ -25,6 +25,11 @@ import org.pentaho.ctools.cde.datasources.provider.DataSourceProvider;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceProvider;
 
+/**
+ * Class used for managing a list of known Data Source providers.
+ * Note: In OSGi environments data sources, other than the bundle resources, are no currently supported. This is a
+ * dummy class that is currently required by CDE core.
+ */
 public class DataSourceManager implements IDataSourceManager {
   private static Log logger = LogFactory.getLog( DataSourceManager.class );
   // The map key is the data source provider id.
@@ -40,49 +45,18 @@ public class DataSourceManager implements IDataSourceManager {
   }
 
   public JSONObject getJsDefinition() throws JSONException {
-    JSONObject dsSpec = new JSONObject();
-
-    // TODO: this code seems to make more ifs than necessary...
-    for ( IDataSourceProvider provider : getProviders() ) {
-      JSONObject dsDefinition = this.getProviderJsDefinition( provider.getId() );
-      if ( dsDefinition != null && ( dsDefinition.length() > 0 ) ) {
-        if ( dsDefinition instanceof JSONObject ) {
-          JSONObject obj = dsDefinition;
-          if ( !obj.equals( JSONObject.NULL ) ) {
-            for ( String key : JSONObject.getNames( obj ) ) {
-              dsSpec.put( key, obj.get( key ) );
-            }
-          }
-        }
-      }
-    }
-
-    return dsSpec;
+    return null;
   }
 
+  @Override
   public JSONObject getProviderJsDefinition( String providerId ) {
     return this.getProviderJsDefinition( providerId, false );
   }
 
+  @Override
   public JSONObject getProviderJsDefinition( String providerId, boolean bypassCacheRead ) {
-    JSONObject result = null;
 
-    if ( !bypassCacheRead ) {
-      result = providerDefinitionsById.get( providerId );
-    }
-
-    if ( result == null ) {
-      DataSourceProvider provider = providersById.get( providerId );
-
-      if ( provider != null ) {
-        result = provider.getDataSourceDefinitions( this._isRefresh );
-        if ( result != null ) {
-          providerDefinitionsById.put( providerId, result );
-        }
-      }
-    }
-
-    return result;
+    return null;
   }
 
   /**
@@ -91,6 +65,7 @@ public class DataSourceManager implements IDataSourceManager {
    * @param id Data Source Provider Id
    * @return DataSourceProvider if found, null otherwise
    */
+  @Override
   public DataSourceProvider getProvider( String id ) {
     return providersById.get( id );
   }
@@ -100,6 +75,7 @@ public class DataSourceManager implements IDataSourceManager {
    *
    * @return List of currently loaded DataSourceProvider
    */
+  @Override
   public List<IDataSourceProvider> getProviders() {
     return new ArrayList<IDataSourceProvider>( providersById.values() );
   }
@@ -120,6 +96,7 @@ public class DataSourceManager implements IDataSourceManager {
   /**
    * Refreshes the Data Source Providers cache.
    */
+  @Override
   public void refresh() {
     init( true );
   }

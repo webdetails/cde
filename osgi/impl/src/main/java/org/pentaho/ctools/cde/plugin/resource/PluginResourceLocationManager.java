@@ -17,6 +17,11 @@ import java.util.List;
 import pt.webdetails.cdf.dd.IPluginResourceLocationManager;
 import pt.webdetails.cpf.packager.origin.PathOrigin;
 
+/**
+ * Class used for accessing custom components provided by other plugins.
+ * Note: In OSGi environments custom components are only made available via the available
+ * {@code IReadAccess} resource services. This is a dummy class that is currently required by CDE core.
+ */
 public class PluginResourceLocationManager implements IPluginResourceLocationManager {
   private static final String STYLES_RESOURCE_PATH = "styles/";
   private static final String DEFAULT_STYLE = "Clean";

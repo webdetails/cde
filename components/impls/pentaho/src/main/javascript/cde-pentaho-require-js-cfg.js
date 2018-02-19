@@ -43,4 +43,13 @@ if(typeof CONTEXT_PATH !== "undefined") { // production
     'endpoint': prefix + 'plugin/pentaho-cdf-dd/api/renderer/getDashboard?path='
   };
 
+  requireCfg.map['*']['cde/components/GMapsOverlayComponent'] = 'cde/components/gmapsoverlay/amd/GMapsOverlayComponent';
+
+  requireCfg.map['*']['cde/components/NewMapComponent'] = 'cde/components/Map/amd/Map';
+
+  requireCfg.map['*']['cde/components/OlapSelectorComponent'] = 'cde/components/OlapSelector/amd/OlapSelectorComponent';
+
+  requireCfg.map['*']['cde/components/TextEditorComponent'] = 'cde/components/TextEditor/amd/TextEditorComponent';
+
+
 })();

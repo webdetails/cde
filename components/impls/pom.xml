@@ -13,5 +13,6 @@
   <modules>
     <module>core</module>
     <module>pentaho</module>
+    <module>osgi</module>
   </modules>
 </project>

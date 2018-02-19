@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -11,13 +11,19 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define('cde/components/Map/amd/Map.ext', [], function() {
-
-  return {
-
-    getMarkerImgPath: function() {
-      return 'dummy/Map/images/';
+define({
+  getDashboardUrl: function(path) {
+    // full endpoint URL already provided
+    if(path.indexOf("getDashboard?path=") > 0) {
+      return path;
     }
-  };
+    // use the dash! requirejs loader plugin
+    return "dash!" + encodeURIComponent(path).replace(/[!'()*]/g, function(c) {
+      return '%' + c.charCodeAt(0).toString(16);
+    });
+  },
 
+  getDashboardParametersEndpoint: function() {
+    return "/cxf/cde/renderer/getDashboardParameters?path=";
+  }
 });

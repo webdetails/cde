@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -11,13 +11,25 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define('cde/components/TextEditor/amd/TextEditorComponent.ext', [], function() {
+// Find and inject tests using require
+(function() {
+  var karma = window.__karma__;
 
-  return {
-
-    getUrl: function() {
-      return "dummy/path?";
+  var tests = [];
+  for(var file in karma.files) {
+    if((/test.*\-spec\.js$/).test(file)) {
+      tests.push(file);
     }
-  };
+  }
 
-});
+  requireCfg['baseUrl'] = '/base';
+  requirejs.config(requireCfg);
+
+  console.log = function() {};
+  console.info = function() {};
+  console.debug = function() {};
+  console.warn = function() {};
+
+  // Ask Require.js to load all test files and start test run
+  require(tests, karma.start);
+})();

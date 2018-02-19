@@ -46,8 +46,6 @@
   requireCfg.map['*']['cde/components/PopupComponent'] = 'cde/components/popup/amd/PopupComponent';
   requireCfg.map['*']['cde/components/ExportPopupComponent'] = 'cde/components/popup/amd/ExportPopupComponent';
 
-  requireCfg.map['*']['cde/components/NewMapComponent'] = 'cde/components/Map/amd/Map';
-
   requireCfg.map['*']['cde/components/ExportButtonComponent'] = 'cde/components/exportButton/amd/ExportButtonComponent';
 
   requireCfg.map['*']['cde/components/AjaxRequestComponent'] = 'cde/components/AjaxRequest/amd/AjaxRequestComponent';
@@ -59,17 +57,11 @@
 
   requireCfg.map['*']['cde/components/NewSelectorComponent'] = 'cde/components/NewSelector/amd/NewSelectorComponent';
 
-  requireCfg.map['*']['cde/components/OlapSelectorComponent'] = 'cde/components/OlapSelector/amd/OlapSelectorComponent';
-
   requireCfg.map['*']['cde/components/RaphaelComponent'] = 'cde/components/Raphael/amd/RaphaelComponent';
 
   requireCfg.map['*']['cde/components/RelatedContentComponent'] = 'cde/components/RelatedContent/amd/RelatedContentComponent';
 
   requireCfg.map['*']['cde/components/SiteMapComponent'] = 'cde/components/SiteMap/amd/SiteMapComponent';
-
-  requireCfg.map['*']['cde/components/TextEditorComponent'] = 'cde/components/TextEditor/amd/TextEditorComponent';
-
-  requireCfg.map['*']['cde/components/GMapsOverlayComponent'] = 'cde/components/gmapsoverlay/amd/GMapsOverlayComponent';
 
   requireCfg.map['*']['cde/components/ViewManagerComponent'] = 'cde/components/ViewManager/amd/ViewManagerComponent';
   

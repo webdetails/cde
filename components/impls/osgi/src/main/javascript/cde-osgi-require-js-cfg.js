@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -11,19 +11,13 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define('cde/components/gmapsoverlay/amd/GMapsOverlayComponent.ext', [], function() {
+(function() {
 
-  /*
-   *  Google Maps Overlay component
-   */
-  return {
-    getResourceUrl: function() {
-      return "res";
-    },
+  requireCfg.config = requireCfg.config || {};
 
-    getBaseSolutionPluginRoot: function() {
-      return "/public/";
-    }
+  // configure the CDE endpoint to be used by the dash! loader plugin
+  requireCfg.config['dash'] = {
+    'endpoint': '/cxf/cde/renderer/getDashboard?path='
   };
 
-});
+})();

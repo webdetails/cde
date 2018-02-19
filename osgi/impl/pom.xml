@@ -27,7 +27,7 @@
     </dependency>
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
-      <artifactId>cde-components-impls-core</artifactId>
+      <artifactId>cde-components-pdi</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
       <type>zip</type>
@@ -66,7 +66,7 @@
               <goal>unpack-dependencies</goal>
             </goals>
             <configuration>
-              <includeArtifactIds>cde-components-impls-core</includeArtifactIds>
+              <includeArtifactIds>cde-components-pdi</includeArtifactIds>
             </configuration>
           </execution>
         </executions>

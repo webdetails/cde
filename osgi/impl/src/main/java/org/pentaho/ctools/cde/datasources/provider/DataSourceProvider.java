@@ -18,6 +18,11 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import pt.webdetails.cdf.dd.datasources.IDataSourceProvider;
 
+/**
+ * Class used for accessing data sources provided by a plugin according to a specified plugin identifier.
+ * Note: In OSGi environments data sources, other than the bundle resources, are no currently supported. This is a
+ * dummy class that is currently required by CDE core.
+ */
 public class DataSourceProvider implements IDataSourceProvider {
   private static Log logger = LogFactory.getLog( DataSourceProvider.class );
   private final String pluginId;
@@ -35,6 +40,7 @@ public class DataSourceProvider implements IDataSourceProvider {
   /**
    * Returns the identifier of the plugin that contains the data source definitions.
    */
+  @Override
   public String getId() {
     return pluginId;
   }

@@ -12,5 +12,6 @@
   <description>Pentaho Community Dashboard Editor Components Assemblies</description>
   <modules>
     <module>cde-components-platform</module>
+    <module>cde-components-pdi</module>
   </modules>
 </project>
