@@ -8,7 +8,6 @@
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>cde-components-impls-core</artifactId>
-  <version>8.1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Pentaho Community Dashboard Editor Core Components</description>
   <properties>

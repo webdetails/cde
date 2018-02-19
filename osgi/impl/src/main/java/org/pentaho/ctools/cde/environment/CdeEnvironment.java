@@ -10,11 +10,12 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-package pt.webdetails.cdf.dd.environment;
+package org.pentaho.ctools.cde.environment;
 
 import java.util.Locale;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.pentaho.ctools.cde.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
 import pt.webdetails.cdf.dd.IPluginResourceLocationManager;
 import pt.webdetails.cdf.dd.InitializationException;
@@ -26,7 +27,6 @@ import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.PentahoCdfRunJsDashboardWriteContext;
-import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PluginEnvironment;
 import pt.webdetails.cpf.bean.IBeanFactory;

@@ -8,7 +8,6 @@
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>cde-pentaho-impl</artifactId>
-  <version>8.1.0.0-SNAPSHOT</version>
   <description>Pentaho Community Dashboard Editor Pentaho Server Implementation</description>
   <dependencies>
     <dependency>

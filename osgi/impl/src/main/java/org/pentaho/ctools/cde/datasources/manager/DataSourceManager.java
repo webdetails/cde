@@ -10,7 +10,7 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-package pt.webdetails.cdf.dd.datasources.manager;
+package org.pentaho.ctools.cde.datasources.manager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
-import pt.webdetails.cdf.dd.datasources.provider.DataSourceProvider;
+import org.pentaho.ctools.cde.datasources.provider.DataSourceProvider;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceProvider;
 

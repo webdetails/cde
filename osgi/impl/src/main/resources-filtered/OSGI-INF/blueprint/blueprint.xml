@@ -9,17 +9,17 @@
   <bean id="cdeEngine" class="pt.webdetails.cdf.dd.CdeEngine" scope="singleton" factory-method="getInstance">
     <property name="environment" ref="cdeEnvironment"/>
   </bean>
-  <bean id="cdeEnvironment" class="pt.webdetails.cdf.dd.environment.CdeEnvironment" scope="singleton">
+  <bean id="cdeEnvironment" class="org.pentaho.ctools.cde.environment.CdeEnvironment" scope="singleton">
     <property name="pluginResourceLocationManager" ref="pluginResourceLocationManager"/>
     <property name="dataSourceManager" ref="dataSourceManager"/>
     <property name="contentAccessFactory" ref="iContentAccessFactory"/>
   </bean>
-  <bean id="pluginResourceLocationManager" class="pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager"/>
-  <bean id="dataSourceManager" class="pt.webdetails.cdf.dd.datasources.manager.DataSourceManager"/>
+  <bean id="pluginResourceLocationManager" class="org.pentaho.ctools.cde.plugin.resource.PluginResourceLocationManager"/>
+  <bean id="dataSourceManager" class="org.pentaho.ctools.cde.datasources.manager.DataSourceManager"/>
   <reference id="iContentAccessFactory" interface="pt.webdetails.cpf.repository.api.IContentAccessFactory" />
 
   <service interface="pt.webdetails.cpf.repository.api.IReadAccess">
-    <bean class="pt.webdetails.cpf.repository.bundle.ReadAccess">
+    <bean class="org.pentaho.ctools.cpf.repository.bundle.ReadAccess">
       <property name="bundle" ref="blueprintBundle"/>
     </bean>
   </service>
@@ -28,12 +28,8 @@
     <jaxrs:serviceBeans>
       <ref component-id="renderApi"/>
     </jaxrs:serviceBeans>
-    <jaxrs:extensionMappings>
-      <entry key="json" value="application/json"/>
-      <entry key="xml" value="application/xml"/>
-    </jaxrs:extensionMappings>
   </jaxrs:server>
-  <bean id="renderApi" class="pt.webdetails.cdf.dd.api.RenderApi">
+  <bean id="renderApi" class="org.pentaho.ctools.cde.api.RenderApi">
     <property name="dashboardManager" ref="dashboardManager"/>
   </bean>
   <bean id="dashboardManager" class="pt.webdetails.cdf.dd.DashboardManager" scope="singleton" factory-method="getInstance" init-method="init">

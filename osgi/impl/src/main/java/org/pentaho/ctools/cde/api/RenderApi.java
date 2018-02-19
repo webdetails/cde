@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-package pt.webdetails.cdf.dd.api;
+package org.pentaho.ctools.cde.api;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 

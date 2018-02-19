@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-package pt.webdetails.cdf.dd.datasources.provider;
+package org.pentaho.ctools.cde.datasources.provider;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
