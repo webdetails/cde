@@ -101,6 +101,9 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
   }
 
   private void renderSolrDataSource( StringBuilder out, DataSourceComponent dataSourceComp ) {
+    String queryType = PropertyValue.SOLR_QUERY_TYPE;
+    addFirstJsProperty( out, PropertyName.QUERY_TYPE, buildJsStringValue( queryType ), Writer.INDENT2 );
+
     dataSourceComp.getPropertyBindings().forEach( binding -> {
       String name = binding.getName();
       String value = binding.getValue();
@@ -112,9 +115,6 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
 
       addJsProperty( out, name, value, Writer.INDENT2 );
     } );
-
-    String queryType = PropertyValue.SOLR_QUERY_TYPE;
-    addFirstJsProperty( out, PropertyName.QUERY_TYPE, buildJsStringValue( queryType ), Writer.INDENT2 );
   }
 
   private void renderCdaDatasource( StringBuilder out, CdfRunJsDashboardWriteContext context,

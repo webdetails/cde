@@ -139,7 +139,7 @@ public class CdfRunJsDataSourceComponentWriterTest {
 
   @Test
   public void testSolrDataSourceComponentWriter() throws ThingWriteException {
-    Map<String, String> properties = new LinkedHashMap<>( 4 );
+    Map<String, String> properties = new LinkedHashMap<>( 2 );
     properties.put( PropertyName.DATA_ACCESS_ID, null );
     properties.put( PropertyName.QUERY_TYPE, PropertyValue.SOLR_QUERY_TYPE );
 
