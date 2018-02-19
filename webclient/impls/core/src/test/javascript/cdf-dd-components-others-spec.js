@@ -11,11 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-fdescribe("CDF-DD-COMPONENTS-OTHERS-TESTS", function () {
+describe("CDF-DD-COMPONENTS-OTHERS-TESTS", function () {
   var tableManager = new TableManager('test-tableManager');
   var dataServiceNameRenderer = new DataServiceNameRenderer();
 
-  fdescribe("Testing DataServiceNameRenderer", function () {
+  describe("Testing DataServiceNameRenderer", function () {
 
     beforeEach(function () {
       dataServicNameRenderer = new DataServiceNameRenderer();
