@@ -1462,7 +1462,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           description="Cleans all the files generated from a build with the exception of IVY-downloaded jars (see clean-all)"
           depends="clean-tests, clean-cobertura, clean-sonar, clean-javadoc, clean-dist">
     <delete dir="${classes.dir}"/>
-    <delete dir="${bin.dir}"/>
+    <delete includeemptydirs="true" failonerror="false" verbose="true">
+      <fileset dir="${bin.dir}" includes="**/*"/>
+    </delete>
   </target>
 
 
@@ -1738,7 +1740,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       Removes all files related to tests
       ====================================================================-->
   <target name="clean-tests">
-    <delete dir="${testbin.dir}"/>
+    <delete includeemptydirs="true" failonerror="false" verbose="true">
+      <fileset dir="${testbin.dir}" includes="**/*"/>
+    </delete>
   </target>
 
 
