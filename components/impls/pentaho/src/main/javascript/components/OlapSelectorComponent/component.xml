@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DesignerComponent>
+  <Header>
+    <Name>Olap Selector Component</Name>
+    <IName>olapSelector</IName>
+    <Description>Olap Selector Component</Description>
+    <Category>LEGACY</Category>
+    <CatDescription>Legacy</CatDescription>
+    <Order>640</Order>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>title</Property>
+      <Property>parameter</Property>
+      <Property>executeAtStart</Property>
+      <Property>htmlObject</Property>
+      <Property name="parameters">xActionArrayParameter</Property>
+      <Property>catalog</Property>
+      <Property>cube</Property>
+      <Property>dimensionName</Property>
+      <Property>multiSelect</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>postFetch</Property>
+      <Property>preChange</Property>
+      <Property>postChange</Property>
+      <Property>tooltip</Property>
+      <Property>listeners</Property>
+    </Model>
+    <Implementation supportsLegacy="true" supportsAMD="true">
+      <Code src="legacy/OlapSelectorComponent.js" />
+      <Styles>
+        <Style version="1.0" src="legacy/OlapSelector.css">OlapSelector</Style>
+      </Styles>
+      <Dependencies>
+        <Dependency src="legacy/OlapSelector.js" version="1.0">OlapSelector</Dependency>
+        <Dependency src="legacy/lib/OlapUtils.js" version="1.1">NewOlapUtils</Dependency>
+        <Dependency src="legacy/lib/wd.js" version="1.1">libwd</Dependency>
+      </Dependencies>
+      <CustomProperties>
+        <DesignerProperty>
+          <Header>
+            <Name>multiSelect</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>true</DefaultValue>
+            <Description>Multiselect</Description>
+            <Tooltip>Whether multiple options may be selected</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>dimensionName</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Dimension Name</Description>
+            <Tooltip>Name of the dimension the selector will explore</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>30</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+      </CustomProperties>
+    </Implementation>
+  </Contents>
+</DesignerComponent>

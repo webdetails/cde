@@ -33,7 +33,6 @@ import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.model.meta.PropertyType;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
 import pt.webdetails.cdf.dd.model.meta.CustomComponentType;
-import pt.webdetails.cdf.dd.model.meta.PrimitiveComponentType;
 import pt.webdetails.cdf.dd.model.meta.WidgetComponentType;
 import pt.webdetails.cpf.packager.origin.PluginRepositoryOrigin;
 import pt.webdetails.cpf.packager.origin.RepositoryPathOrigin;
@@ -54,23 +53,18 @@ public final class XmlFsPluginModelReader {
 
   public static final String RESOURCES_DIR = "resources";
 
-  public static final String DEF_BASE_TYPE = PrimitiveComponentType.class.getSimpleName();
+  // components are of type custom by default, can be overwritten
+  public static final String DEFAULT_COMPONENT_TYPE = CustomComponentType.class.getSimpleName();
 
-  public static final String BASE_DIR = Utils.joinPath( RESOURCES_DIR, "base" );
-  public static final String BASE_PROPS_DIR = Utils.joinPath( BASE_DIR, "properties" );
-  public static final String BASE_COMPS_DIR = Utils.joinPath( BASE_DIR, "components" );
-
-  public static final String DEF_CUSTOM_TYPE = CustomComponentType.class.getSimpleName();
-  public static final String CUSTOM_DIR = Utils.joinPath( RESOURCES_DIR, "custom" );
-  public static final String CUSTOM_PROPS_DIR = Utils.joinPath( CUSTOM_DIR, "properties" );
+  public static final String PROPERTIES_DIR = Utils.joinPath( RESOURCES_DIR, "properties" );
+  public static final String COMPONENTS_DIR = Utils.joinPath( RESOURCES_DIR, "components" );
 
   public static final String DEF_WIDGET_STUB_TYPE = WidgetComponentType.class.getSimpleName();
   public static final String WIDGETS_DIR = "widgets";
 
-  public static final String CUSTOM_PROPS_FILENAME = "property";
-  public static final String COMPONENT_FILENAME = "component";
   // extension for component properties definitions
   public static final String DEFINITION_FILE_EXT = "xml";
+  public static final String COMPONENT_FILENAME = "component";
 
   protected static final Log logger = LogFactory.getLog( XmlFsPluginModelReader.class );
 
@@ -99,53 +93,22 @@ public final class XmlFsPluginModelReader {
     MetaModel.Builder model = new MetaModel.Builder();
 
     // Read Properties
-    this.readBaseProperties( model, factory );
-    this.readCustomProperties( model, factory );
+    this.readProperties( model, factory );
 
     // Read Components
-    logger.info( String.format( "Loading BASE components from: %s", BASE_COMPS_DIR ) );
-    this.readBaseComponents( model, factory );
-    this.readCustomComponents( model, factory );
+    this.readComponents( model, factory );
+    // legacy widgets
     this.readWidgetStubComponents( model, factory );
 
     return model;
   }
 
-  private void readBaseComponents( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
+  private void readProperties( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
     throws ThingReadException {
-    List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader( BASE_COMPS_DIR ).listFiles( null,
+    logger.info( String.format( "Loading properties from: %s", PROPERTIES_DIR ) );
+
+    List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader( PROPERTIES_DIR ).listFiles( null,
       new GenericBasicFileFilter( null, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
-    PathOrigin origin = new StaticSystemOrigin( BASE_COMPS_DIR );
-
-    if ( filesList != null ) {
-      IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
-      Arrays.sort( filesArray, getFileComparator() );
-      for ( IBasicFile file : filesArray ) {
-        this.readComponentsFile( model, factory, file, DEF_BASE_TYPE, origin );
-      }
-    }
-  }
-
-  private void readBaseProperties( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
-    throws ThingReadException {
-
-    logger.info( String.format( "Loading BASE properties from: %s", BASE_PROPS_DIR ) );
-
-    List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader( BASE_PROPS_DIR ).listFiles( null,
-      new GenericBasicFileFilter( null, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
-
-    if ( filesList != null ) {
-      this.readPropertiesFilesList( model, factory, filesList );
-    }
-  }
-
-  private void readCustomProperties( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
-    throws ThingReadException {
-
-    logger.info( String.format( "Loading CUSTOM properties from: %s", CUSTOM_PROPS_DIR ) );
-
-    List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader( CUSTOM_PROPS_DIR ).listFiles( null,
-      new GenericBasicFileFilter( CUSTOM_PROPS_FILENAME, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
 
     if ( filesList != null ) {
       this.readPropertiesFilesList( model, factory, filesList );
@@ -200,7 +163,27 @@ public final class XmlFsPluginModelReader {
     }
   }
 
-  private void readCustomComponents( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
+  private void readComponents( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
+    throws ThingReadException {
+    logger.info( String.format( "Loading components from: %s", COMPONENTS_DIR ) );
+
+    List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader( COMPONENTS_DIR ).listFiles( null,
+      new GenericBasicFileFilter( null, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
+    PathOrigin origin = new StaticSystemOrigin( COMPONENTS_DIR );
+
+    if ( filesList != null ) {
+      IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
+      Arrays.sort( filesArray, getFileComparator() );
+      for ( IBasicFile file : filesArray ) {
+        this.readComponentsFile( model, factory, file, DEFAULT_COMPONENT_TYPE, origin );
+      }
+    }
+
+    // read custom components from other available locations
+    readCustomComponentsLocations( model, factory );
+  }
+
+  private void readCustomComponentsLocations( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
     throws ThingReadException {
     for ( PathOrigin origin : CdeEnvironment.getPluginResourceLocationManager().getCustomComponentsLocations() ) {
       readCustomComponentsLocation( model, factory, origin );
@@ -209,7 +192,7 @@ public final class XmlFsPluginModelReader {
 
   private void readCustomComponentsLocation( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory,
                                              PathOrigin origin ) throws ThingReadException {
-    logger.info( "reading custom components from " + origin );
+    logger.info( "Loading components from " + origin );
 
     GenericBasicFileFilter filter = new GenericBasicFileFilter( COMPONENT_FILENAME, DEFINITION_FILE_EXT );
     IReadAccess access = origin.getReader( contentAccessFactory );
@@ -220,7 +203,7 @@ public final class XmlFsPluginModelReader {
       IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
       Arrays.sort( filesArray, getFileComparator() );
       for ( IBasicFile file : filesArray ) {
-        this.readComponentsFile( model, factory, file, DEF_CUSTOM_TYPE, origin );
+        this.readComponentsFile( model, factory, file, DEFAULT_COMPONENT_TYPE, origin );
       }
     }
   }

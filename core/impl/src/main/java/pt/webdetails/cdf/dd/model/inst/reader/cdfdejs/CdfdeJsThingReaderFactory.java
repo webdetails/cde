@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -15,8 +15,8 @@ package pt.webdetails.cdf.dd.model.inst.reader.cdfdejs;
 
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReader;
@@ -43,7 +43,7 @@ import pt.webdetails.cdf.dd.model.meta.VisualComponentType;
 import pt.webdetails.cdf.dd.model.meta.WidgetComponentType;
 
 public class CdfdeJsThingReaderFactory implements IThingReaderFactory {
-  private static final Logger logger = LoggerFactory.getLogger( CdfdeJsThingReaderFactory.class );
+  private static final Log logger = LogFactory.getLog( CdfdeJsThingReaderFactory.class );
 
   private static final Pattern _modelIdToNamePattern =
       Pattern.compile( "^(?:Components|Layout|Datasources)?(.*?)(?:Model)?$" );
@@ -92,7 +92,7 @@ public class CdfdeJsThingReaderFactory implements IThingReaderFactory {
                   new LayoutComponentType.Builder()
                         .build( _metaModel.getPropertyTypeSource() ) );
         } catch ( ValidationException ex ) {
-          logger.error( "Error building dashboard layout.", ex.getError() );
+          logger.error( "Error building dashboard layout.", ex );
           return null;
         }
       }

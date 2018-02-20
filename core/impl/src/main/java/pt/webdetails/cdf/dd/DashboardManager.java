@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -61,7 +61,6 @@ import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererType;
-import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
@@ -78,13 +77,36 @@ public class DashboardManager {
   private static final String CACHE_NAME = "pentaho-cde";
   private static final String[] MAP_PARAMETERS = { "Parameter", "JavascriptParameter", "DateParameter" };
 
-  private final CacheManager _ehCacheManager;
-  private final Cache _ehCache;
-  private final Object _ehCacheLock;
+  private CacheManager _ehCacheManager;
+  private Cache _ehCache;
+  private Object _ehCacheLock;
 
-  private final Map<String, Dashboard> _dashboardsByCdfdeFilePath;
+  private Map<String, Dashboard> _dashboardsByCdfdeFilePath;
 
-  protected DashboardManager() {
+  private ICdeEnvironment environment;
+
+  protected DashboardManager() { }
+
+  public static DashboardManager getInstance() {
+    if ( _instance == null ) {
+      synchronized ( DashboardManager.class ) {
+        if ( _instance == null ) {
+          _instance = new DashboardManager();
+        }
+      }
+    }
+    return _instance;
+  }
+
+  public ICdeEnvironment getEnvironment() {
+    return this.environment;
+  }
+
+  public void setEnvironment( ICdeEnvironment environment ) {
+    this.environment = environment;
+  }
+
+  public void init() {
     // The eh-cache holds
     // CdfRunJsDashboardWriteResult objects indexed by DashboardCacheKey
     // Both these types are serializable.
@@ -114,24 +136,13 @@ public class DashboardManager {
     _dashboardsByCdfdeFilePath = new HashMap<String, Dashboard>();
   }
 
-  public static DashboardManager getInstance() {
-    if ( _instance == null ) {
-      synchronized ( DashboardManager.class ) {
-        if ( _instance == null ) {
-          _instance = new DashboardManager();
-        }
-      }
-    }
-    return _instance;
-  }
-
   public static JXPathContext openDashboardAsJXPathContext( DashboardWcdfDescriptor wcdf ) throws IOException,
-    FileNotFoundException, JSONException {
+    JSONException {
     return openDashboardAsJXPathContext( wcdf.getStructurePath(), wcdf );
   }
 
   public static JXPathContext openDashboardAsJXPathContext( String dashboardLocation, DashboardWcdfDescriptor wcdf )
-    throws IOException, FileNotFoundException, JSONException {
+    throws IOException, JSONException {
     InputStream input = null;
     try {
       input = Utils.getSystemOrUserReadAccess( dashboardLocation ).getFileInputStream( dashboardLocation );
@@ -264,7 +275,7 @@ public class DashboardManager {
   }
 
   protected IPluginResourceLocationManager getPluginResourceLocationManager() {
-    return CdeEnvironment.getPluginResourceLocationManager();
+    return getEnvironment().getPluginResourceLocationManager();
   }
 
   public Dashboard getDashboard(
@@ -417,7 +428,7 @@ public class DashboardManager {
   }
 
   protected IRWAccess getPluginSystemWriter() {
-    return CdeEnvironment.getPluginSystemWriter();
+    return getEnvironment().getContentAccessFactory().getPluginSystemWriter( null );
   }
 
   private void collectWidgetsToInvalidate( Set<String> invalidateDashboards,
@@ -665,13 +676,19 @@ public class DashboardManager {
     }
   }
 
-  private static CacheManager createWriteResultCacheManager() throws CacheException {
+  private CacheManager createWriteResultCacheManager() throws CacheException {
     // 'new CacheManager' used instead of 'CacheManager.create' to avoid overriding default cache
-    String cacheConfigFile = CACHE_CFG_FILE;
-
-    IBasicFile cfgFile = CdeEnvironment.getPluginSystemReader().fetchFile( cacheConfigFile );
-
-    CacheManager cacheMgr = new CacheManager( cfgFile != null ? cfgFile.getFullPath() : null );
+    CacheManager cacheMgr;
+    try {
+      cacheMgr = new CacheManager(
+        getEnvironment()
+          .getContentAccessFactory()
+          .getPluginSystemReader( null )
+          .getFileInputStream( CACHE_CFG_FILE ) );
+    } catch ( IOException e ) {
+      _logger.error( "Cache failed to load the configuration file.", e );
+      cacheMgr = new CacheManager();
+    }
 
     // enableCacheProperShutdown
     System.setProperty( CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY, "true" );
@@ -680,7 +697,7 @@ public class DashboardManager {
   }
 
   protected IReadAccess getPluginSystemReader() {
-    return CdeEnvironment.getPluginSystemReader();
+    return getEnvironment().getContentAccessFactory().getPluginSystemReader( null );
   }
 
   private Dashboard getDashboardFromCache( String cdeFullPath ) {

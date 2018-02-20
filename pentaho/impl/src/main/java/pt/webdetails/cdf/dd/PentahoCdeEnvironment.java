@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -10,11 +10,9 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-
 package pt.webdetails.cdf.dd;
 
 import java.util.Locale;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IAuthorizationPolicy;
@@ -24,6 +22,7 @@ import org.pentaho.platform.util.messages.LocaleHelper;
 import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.extapi.CdeApiPathProvider;
+import pt.webdetails.cdf.dd.extapi.FileHandler;
 import pt.webdetails.cdf.dd.extapi.ICdeApiPathProvider;
 import pt.webdetails.cdf.dd.extapi.IFileHandler;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
@@ -31,19 +30,19 @@ import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.PentahoCdfRunJsDashboardWriteContext;
-import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PentahoPluginEnvironment;
 import pt.webdetails.cpf.PentahoUrlProvider;
+import pt.webdetails.cpf.PluginEnvironment;
 import pt.webdetails.cpf.bean.IBeanFactory;
 import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.resources.IResourceLoader;
+import pt.webdetails.cpf.resources.PentahoPluginResourceLoader;
 import pt.webdetails.cpf.session.IUserSession;
 import pt.webdetails.cpf.session.PentahoSessionUtils;
 
 public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements ICdeEnvironmentExtended {
-
 
   private static final String PLUGIN_REPOSITORY_DIR = "/public/cde";
   private static final String SYSTEM_DIR = "system";
@@ -59,39 +58,18 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   private IFileHandler fileHandler;
   private IAuthorizationPolicy authorizationPolicy;
 
-  public PentahoCdeEnvironment() {
+  public PentahoCdeEnvironment() { }
 
-  }
-
-  public void init( IBeanFactory factory ) throws InitializationException {
+  @Override
+  public void init( IBeanFactory factory ) {
     this.factory = factory;
-
-    pluginResourceLocationManager = new PluginResourceLocationManager();
-
-    if ( factory.containsBean( IResourceLoader.class.getSimpleName() ) ) {
-      resourceLoader = (IResourceLoader) factory.getBean( IResourceLoader.class.getSimpleName() );
-    }
-
-    if ( factory.containsBean( IFileHandler.class.getSimpleName() ) ) {
-      fileHandler = (IFileHandler) factory.getBean( IFileHandler.class.getSimpleName() );
-    }
-
-    if ( factory.containsBean( IAuthorizationPolicy.class.getSimpleName() ) ) {
-      authorizationPolicy = (IAuthorizationPolicy) factory.getBean( IAuthorizationPolicy.class.getSimpleName() );
-    }
-
     super.init( this );
   }
 
   @Override
   public void refresh() {
-    try {
-      init( this.factory );
-    } catch ( InitializationException e ) {
-      logger.error( "PentahoCdeEnvironment.refresh()", e );
-    }
+    init( this.factory );
   }
-
 
   public String getApplicationBaseUrl() {
     return PentahoSystem.getApplicationContext().getBaseUrl();
@@ -116,9 +94,21 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     return pluginResourceLocationManager;
   }
 
+  public void setPluginResourceLocationManager( IPluginResourceLocationManager pluginResourceLocationManager ) {
+    this.pluginResourceLocationManager = pluginResourceLocationManager;
+  }
+
   @Override
   public IResourceLoader getResourceLoader() {
     return resourceLoader;
+  }
+
+  public void setResourceLoader( PentahoPluginResourceLoader resourceLoader ) {
+    this.resourceLoader = resourceLoader;
+  }
+
+  public void setAuthorizationPolicy( IAuthorizationPolicy authorizationPolicy ) {
+    this.authorizationPolicy = authorizationPolicy;
   }
 
   @Override
@@ -146,6 +136,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     return Utils.joinPath( getApplicationBaseUrl(), PLUGIN, getPluginId() ) + "/res/"; // TODO:
   }
 
+  @Override
   public String getCdfIncludes( String dashboard, String type, boolean debug, boolean absolute, String absRoot,
                                 String scheme ) throws Exception {
     return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absolute, absRoot, scheme );
@@ -155,10 +146,12 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   //    return InterPluginBroker.getCdfContext( dashboard, action, view );
   //  }
 
-  public PentahoPluginEnvironment getPluginEnv() {
+  @Override
+  public PluginEnvironment getPluginEnv() {
     return PentahoPluginEnvironment.getInstance();
   }
 
+  @Override
   public ICdeApiPathProvider getExtApi() {
     // not worth the sync
     if ( apiPaths == null ) {
@@ -170,6 +163,10 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   @Override
   public IFileHandler getFileHandler() {
     return fileHandler;
+  }
+
+  public void setFileHandler( FileHandler fileHandler ) {
+    this.fileHandler = fileHandler;
   }
 
   @Override
@@ -226,5 +223,4 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     }
     return authorizationPolicy.isAllowed( RepositoryCreateAction.NAME );
   }
-
 }

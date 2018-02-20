@@ -11,7 +11,7 @@
   <fileSets>
     <!-- resources -->
     <fileSet>
-      <directory>${basedir}/target/classes</directory>
+      <directory>${project.build.directory}/classes</directory>
       <outputDirectory>pentaho-cdf-dd</outputDirectory>
       <excludes>
         <exclude>editor.includes.core.properties</exclude>
@@ -20,29 +20,32 @@
     </fileSet>
     <!-- webclient -->
     <fileSet>
-      <directory>${basedir}/target/dependency/cde/webclient</directory>
+      <directory>${project.build.directory}/dependency/cde/webclient</directory>
       <outputDirectory>pentaho-cdf-dd/js</outputDirectory>
     </fileSet>
-    <!-- Legacy Custom Components -->
+    <!-- Components -->
     <fileSet>
-      <directory>${basedir}/target/dependency/cde/components</directory>
-      <outputDirectory>pentaho-cdf-dd/resources/custom/components</outputDirectory>
-    </fileSet>
-    <!-- AMD Custom Components -->
-    <fileSet>
-      <directory>${basedir}/target/dependency/cde/amd-components</directory>
-      <outputDirectory>pentaho-cdf-dd/resources/custom/amd-components</outputDirectory>
+      <directory>${project.build.directory}/dependency/cde/components</directory>
+      <outputDirectory>pentaho-cdf-dd/resources/components</outputDirectory>
     </fileSet>
     <fileSet>
-      <directory>${basedir}/target/dependency/cde/amd-components-compressed</directory>
-      <outputDirectory>pentaho-cdf-dd/resources/custom/amd-components-compressed</outputDirectory>
+      <directory>${project.build.directory}/dependency/cde/components-compressed</directory>
+      <outputDirectory>pentaho-cdf-dd/resources/components-compressed</outputDirectory>
+      <excludes>
+        <exclude>*.xml</exclude>
+      </excludes>
+    </fileSet>
+    <!-- Component Properties -->
+    <fileSet>
+      <directory>${project.build.directory}/dependency/cde/properties</directory>
+      <outputDirectory>pentaho-cdf-dd/resources/properties</outputDirectory>
     </fileSet>
   </fileSets>
 
-  <!-- AMD Custom Components RequireJS configuration file -->
+  <!-- Components client-side RequireJS configuration file -->
   <files>
     <file>
-      <source>${basedir}/target/dependency/cde/${global.require.file}</source>
+      <source>${project.build.directory}/dependency/cde/${global.require.file}</source>
       <destName>pentaho-cdf-dd/js/${global.require.file}</destName>
     </file>
   </files>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DesignerComponent>
+  <Header>
+    <Name>Google Analytics Component</Name>
+    <IName>googleAnalyticsComponent</IName>
+    <Description>Google Analytics (By Sinn Tecnologia -  rodrigo@sinn.com.br)</Description>
+    <Category>COMMUNITYCOMPONENTS</Category>
+    <CatDescription>Community Contributions</CatDescription>
+    <Order>810</Order>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>executeAtStart</Property>
+      <Property>htmlObject</Property>
+      <Property>gaTrackingId</Property>
+      <Property>preChange</Property>
+      <Property>postChange</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>listeners</Property>
+    </Model>
+    <Implementation supportsLegacy="true" supportsAMD="true">
+      <Code src="legacy/ga-implementation.js" />
+      <Dependencies>
+        <Dependency src="legacy/semicolon.js" version="1.0">Semicolon</Dependency>
+        <Dependency src="legacy/jquery.ga.js" version="2.0.0">ga</Dependency>
+      </Dependencies>
+      <CustomProperties>
+        <DesignerProperty>
+          <Header>
+            <Name>gaTrackingId</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>UA-xxxxxxx-x</DefaultValue>
+            <Description>GA Tracking ID</Description>
+            <Tooltip>GA Tracking ID</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+      </CustomProperties>
+    </Implementation>
+  </Contents>
+</DesignerComponent>

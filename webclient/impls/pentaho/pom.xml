@@ -8,29 +8,17 @@
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>cde-webclient-impls-pentaho</artifactId>
-  <version>8.1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Pentaho Community Dashboard Editor Webclient Pentaho Server Implementation</description>
   <properties>
-    <js.project.list>pentaho-cdf-js,cde-webclient-impls-core</js.project.list>
+    <js.project.list>cde-webclient-impls-core</js.project.list>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>pentaho</groupId>
-      <artifactId>pentaho-cdf-js</artifactId>
-      <type>zip</type>
-    </dependency>
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
       <artifactId>cde-webclient-impls-core</artifactId>
       <version>${project.version}</version>
       <type>zip</type>
-      <exclusions>
-        <exclusion>
-          <artifactId>*</artifactId>
-          <groupId>*</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
   <build>
@@ -46,10 +34,10 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>${basedir}/target/test-javascript</outputDirectory>
+              <outputDirectory>${project.build.directory}/test-javascript</outputDirectory>
               <resources>
                 <resource>
-                  <directory>${basedir}/target/dependency/cde</directory>
+                  <directory>${project.build.directory}/dependency/cde</directory>
                 </resource>
               </resources>
             </configuration>

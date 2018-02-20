@@ -8,7 +8,6 @@
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>cde-webclient</artifactId>
-  <version>8.1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Pentaho Community Dashboard Editor Webclient</description>
   <modules>

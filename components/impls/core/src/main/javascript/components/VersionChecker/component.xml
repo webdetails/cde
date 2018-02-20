@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DesignerComponents>
+  <DesignerComponent>
+    <Header>
+      <Name>Version Check Component</Name>
+      <IName>versionCheck</IName>
+      <Description>Version Checker</Description>
+      <Category>LEGACY</Category>
+      <CatDescription>Legacy</CatDescription>
+      <Order>675</Order>
+      <Type>PalleteEntry</Type>
+      <Version>1.0</Version>
+    </Header>
+    <Contents>
+      <Model>
+        <Property>htmlObject</Property>
+        <Property>versionCheckUrl</Property>
+        <Property>listeners</Property>
+        <Property>executeAtStart</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>refreshPeriod</Property>
+        <Property>tooltip</Property>
+      </Model>
+      <Implementation>
+        <Code src="legacy/versionChecker.js" />
+        <Dependencies/>
+        <CustomProperties>
+          <DesignerProperty>
+            <Header>
+              <Name>versionCheckUrl</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue></DefaultValue>
+              <Description>Version Check URL</Description>
+              <Tooltip>Version Check command URL</Tooltip>
+              <InputType>String</InputType>
+              <OutputType>String</OutputType>
+              <Order>40</Order>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+        </CustomProperties>
+      </Implementation>
+    </Contents>
+  </DesignerComponent>
+  
+  <DesignerComponent>
+    <Header>
+      <Name>Current Version Component</Name>
+      <IName>currentVersion</IName>
+      <Description>Get Current Plugin Version</Description>
+      <Category>LEGACY</Category>
+      <CatDescription>Legacy</CatDescription>
+      <Order>615</Order>
+      <Type>PalleteEntry</Type>
+      <Version>1.0</Version>
+    </Header>
+    <Contents>
+      <Model>
+        <Property>htmlObject</Property>
+        <Property>versionUrl</Property>
+        <Property>listeners</Property>
+        <Property>executeAtStart</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>refreshPeriod</Property>
+        <Property>tooltip</Property>
+      </Model>
+      <Implementation>
+        <Code src="legacy/versionChecker.js" />
+        <Dependencies/>
+        <CustomProperties>
+          <DesignerProperty>
+            <Header>
+              <Name>versionUrl</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue></DefaultValue>
+              <Description>Version URL</Description>
+              <Tooltip>Version URL</Tooltip>
+              <InputType>String</InputType>
+              <OutputType>String</OutputType>
+              <Order>40</Order>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+        </CustomProperties>
+      </Implementation>
+    </Contents>
+  </DesignerComponent>
+</DesignerComponents>

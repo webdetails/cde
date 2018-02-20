@@ -104,7 +104,7 @@ public class Olap4jDatasourceStructureTest {
 
       logger.info( "CdaRenderer.render() finished" );
 
-      logger.info( "cdaContentAsString ->\n" + cdaContentAsString );
+      logger.debug( "cdaContentAsString ->\n" + cdaContentAsString );
 
       Assert.assertTrue( !StringUtils.isEmpty( cdaContentAsString ) );
 

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -10,7 +10,6 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-
 package pt.webdetails.cdf.dd.api;
 
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
@@ -30,7 +29,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -71,7 +69,7 @@ public class RenderApi {
 
   private static final Log logger = LogFactory.getLog( RenderApi.class );
   protected ICdeEnvironment privateEnviroment;
-
+  private DashboardManager dashboardManager;
 
   @GET
   @Path( "/getComponentDefinitions" )
@@ -516,8 +514,12 @@ public class RenderApi {
 
   }
 
-  protected DashboardManager getDashboardManager() {
-    return DashboardManager.getInstance();
+  public DashboardManager getDashboardManager() {
+    return this.dashboardManager;
+  }
+
+  public void setDashboardManager( DashboardManager dashboardManager ) {
+    this.dashboardManager = dashboardManager;
   }
 
   private String getWcdfRelativePath( String solution, String path, String file ) {
@@ -547,7 +549,7 @@ public class RenderApi {
     return new SimpleLogger( RenderApi.class.getName() );
   }
 
-  private IParameterProvider getParameterProvider( Map<String, String> params ) {
+  private IParameterProvider getParameterProvider( Map<String, String[]> params ) {
     return new SimpleParameterProvider( params );
   }
 

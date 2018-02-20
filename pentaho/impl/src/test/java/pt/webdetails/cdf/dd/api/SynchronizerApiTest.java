@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -108,7 +108,7 @@ public class SynchronizerApiTest {
     file = StringUtils.EMPTY; // no file sent, therefore no initial dashboard save has been done
 
     HttpServletRequest mockRequest = Mockito.mock( HttpServletRequest.class );
-    Mockito.when( mockRequest.getParameterMap() ).thenReturn( new HashMap<String, Object>() );
+    Mockito.when( mockRequest.getParameterMap() ).thenReturn( new HashMap<>() );
 
     HttpServletResponse mockResponse = Mockito.mock( HttpServletResponse.class );
 

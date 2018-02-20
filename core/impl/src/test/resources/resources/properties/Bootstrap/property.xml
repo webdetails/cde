@@ -1,0 +1,169 @@
+<DesignerProperties>
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapExtraSmall</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>12</DefaultValue>
+      <Description>Extra Small Devices</Description>
+      <Tooltip>Bootstrap Extra Small Devices Property</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>30</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapSmall</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Small Devices</Description>
+      <Tooltip>Bootstrap Small Devices Property</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>31</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapMedium</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Medium Devices</Description>
+      <Tooltip>Bootstrap Medium Devices Property</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>32</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapLarge</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Large Devices</Description>
+      <Tooltip>Bootstrap Large Devices Property</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>33</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapCssClass</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Bootstrap Css Class</Description>
+      <Tooltip>Bootstrap Css Class to be used when this element is rendered</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>34</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+
+  <!-- Panel Properties -->
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapPanelStyle</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>panel-default</DefaultValue>
+      <Description>Panel Style</Description>
+      <Tooltip>Bootstrap Panel Style</Tooltip>
+      <InputType type="valuelist"/>
+      <OutputType>String</OutputType>
+      <Order>450</Order>
+      <Version>1.0</Version>
+    </Header>
+    <Values>
+      <Value display="Default">panel-default</Value>
+      <Value display="Primary">panel-primary</Value>
+      <Value display="Success">panel-success</Value>
+      <Value display="Info">panel-info</Value>
+      <Value display="Warning">panel-warning</Value>
+      <Value display="Danger">panel-danger</Value>
+    </Values>
+  </DesignerProperty>
+
+  <!-- Header Properties -->
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapPanelHeaderTitle</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue></DefaultValue>
+      <Description>Panel Title</Description>
+      <Tooltip>Bootstrap Panel Title</Tooltip>
+      <InputType>Html</InputType>
+      <OutputType>String</OutputType>
+      <Order>15</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapPanelHeaderStyle</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>panel-heading</DefaultValue>
+      <Description>Header Style</Description>
+      <Tooltip>Bootstrap Panel Header Style</Tooltip>
+      <InputType type="valuelist"/>
+      <OutputType>String</OutputType>
+      <Order>450</Order>
+      <Version>1.0</Version>
+    </Header>
+    <Values>
+      <Value display="Default">panel-heading</Value>
+    </Values>
+  </DesignerProperty>
+
+
+  <!-- Body Properties -->
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapPanelBodyStyle</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>panel-body</DefaultValue>
+      <Description>Body Style</Description>
+      <Tooltip>Bootstrap Panel Body Style</Tooltip>
+      <InputType type="valuelist"/>
+      <OutputType>String</OutputType>
+      <Order>450</Order>
+      <Version>1.0</Version>
+    </Header>
+    <Values>
+      <Value display="Default">panel-body</Value>
+    </Values>
+  </DesignerProperty>
+
+
+  <!-- Footer Porperties -->
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapPanelFooterStyle</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>panel-footer</DefaultValue>
+      <Description>Footer Style</Description>
+      <Tooltip>Bootstrap Panel Footer Style</Tooltip>
+      <InputType type="valuelist"/>
+      <OutputType>String</OutputType>
+      <Order>450</Order>
+      <Version>1.0</Version>
+    </Header>
+    <Values>
+      <Value display="Default">panel-footer</Value>
+    </Values>
+  </DesignerProperty>
+</DesignerProperties>

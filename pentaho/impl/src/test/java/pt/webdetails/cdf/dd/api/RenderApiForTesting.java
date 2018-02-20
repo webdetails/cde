@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,13 +13,12 @@
 
 package pt.webdetails.cdf.dd.api;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.DashboardManagerForTests;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class RenderApiForTesting extends RenderApi {
   private DashboardManager dashboardManagerForTests;
@@ -32,16 +31,16 @@ public class RenderApiForTesting extends RenderApi {
   }
 
   @Override
-  protected DashboardManager getDashboardManager() {
+  public DashboardManager getDashboardManager() {
     if ( dashboardManagerForTests == null ) {
       dashboardManagerForTests = new DashboardManagerForTests( this.privateEnviroment );
+      dashboardManagerForTests.init();
     }
     return dashboardManagerForTests;
   }
 
   @Override
-  protected void setCorsHeaders( HttpServletRequest request, HttpServletResponse response ) {
-  }
+  protected void setCorsHeaders( HttpServletRequest request, HttpServletResponse response ) { }
 
   @Override
   protected boolean hasSystemOrUserReadAccess( String path ) {
@@ -49,18 +48,17 @@ public class RenderApiForTesting extends RenderApi {
   }
 
   @Override
-  protected String getCdfRequireConfig( String filePath, IParameterProvider requestParams ) throws Exception {
+  protected String getCdfRequireConfig( String filePath, IParameterProvider requestParams ) {
     return cdfRequireContextConfiguration;
   }
 
   @Override
-  protected String getCdfRequireContext( String filePath, IParameterProvider requestParams ) throws Exception {
+  protected String getCdfRequireContext( String filePath, IParameterProvider requestParams ) {
     return cdfRequireContext;
   }
 
   @Override
-  protected String getCdfContext( String filePath, String action, String view, IParameterProvider requestParams )
-    throws Exception {
+  protected String getCdfContext( String filePath, String action, String view, IParameterProvider requestParams ) {
     return cdfContext;
   }
 }

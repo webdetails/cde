@@ -1,0 +1,28 @@
+<DesignerComponent>
+  <Header>
+    <Override>PrimitiveComponentType</Override>
+    <Name>Textarea Input Component</Name>
+    <IName>textareaInput</IName>
+    <Description>Textarea input Component</Description>
+    <Category>STANDARDCOMPONENTS</Category>
+    <CatDescription>Standard</CatDescription>
+    <Order>370</Order>
+    <Type>PalleteEntry</Type>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>parameter</Property>
+      <Property>listeners</Property>
+      <Property>htmlObject</Property>
+      <Property>numRows</Property>
+      <Property>numColumns</Property>
+      <Property>executeAtStart</Property>
+      <Property>preChange</Property>
+      <Property>postChange</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>refreshPeriod</Property>
+      <Property>tooltip</Property>
+    </Model>
+  </Contents>
+</DesignerComponent>
