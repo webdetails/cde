@@ -1,0 +1,148 @@
+{
+	"components": {
+        "rows": []
+    },
+    "datasources": {
+        "rows": []
+    },
+    "layout": {
+        "rows": [
+            {
+                "id": "241c67fd-b5af-e69f-395e-a4d9a992c888",
+                "type": "LayoutRow",
+                "typeDesc": "Row",
+                "parent": "UnIqEiD",
+                "properties": [
+                    {
+                        "name": "name",
+                        "value": "",
+                        "type": "Id"
+                    },
+                    {
+                        "name": "height",
+                        "value": "",
+                        "type": "Integer"
+                    },
+                    {
+                        "name": "backgroundColor",
+                        "value": "",
+                        "type": "Color"
+                    },
+                    {
+                        "name": "roundCorners",
+                        "value": "",
+                        "type": "RoundCorners"
+                    },
+                    {
+                        "name": "textAlign",
+                        "value": "",
+                        "type": "TextAlign"
+                    },
+                    {
+                        "name": "cssClass",
+                        "value": "",
+                        "type": "String"
+                    }
+                ]
+            },
+            {
+                "id": "ddef2b1e-9e6b-9c87-7373-6b1fb35a1d19",
+                "type": "LayoutBootstrapColumn",
+                "typeDesc": "Column",
+                "parent": "241c67fd-b5af-e69f-395e-a4d9a992c888",
+                "properties": [
+                    {
+                        "name": "name",
+                        "value": "",
+                        "type": "Id"
+                    },
+                    {
+                        "name": "bootstrapExtraSmall",
+                        "value": "12",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bootstrapSmall",
+                        "value": "",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bootstrapMedium",
+                        "value": "",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bootstrapLarge",
+                        "value": "",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bootstrapCssClass",
+                        "value": "",
+                        "type": "String"
+                    },
+                    {
+                        "name": "height",
+                        "value": "",
+                        "type": "Integer"
+                    },
+                    {
+                        "name": "backgroundColor",
+                        "value": "",
+                        "type": "Color"
+                    },
+                    {
+                        "name": "roundCorners",
+                        "value": "",
+                        "type": "RoundCorners"
+                    },
+                    {
+                        "name": "textAlign",
+                        "value": "",
+                        "type": "TextAlign"
+                    },
+                    {
+                        "name": "cssClass",
+                        "value": "",
+                        "type": "String"
+                    }
+                ]
+            },
+            {
+                "id": "ae0b09dc-d88b-c445-d367-9a46a0e1db10",
+                "type": "LayoutHtml",
+                "typeDesc": "Html",
+                "parent": "ddef2b1e-9e6b-9c87-7373-6b1fb35a1d19",
+                "properties": [
+                    {
+                        "name": "name",
+                        "value": "test",
+                        "type": "Id"
+                    },
+                    {
+                        "name": "html",
+                        "value": "Hello Foundry\n\nFrom: CDE ",
+                        "type": "Html"
+                    },
+                    {
+                        "name": "fontSize",
+                        "value": "",
+                        "type": "Integer"
+                    },
+                    {
+                        "name": "color",
+                        "value": "",
+                        "type": "Color"
+                    },
+                    {
+                        "name": "cssClass",
+                        "value": "",
+                        "type": "String"
+                    }
+                ]
+            }
+        ],
+        "title": "CDF - Sample structure"
+    },
+    "filename": "foundry_hw.wcdf"
+}
