@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features name="${project.artifactId}-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
+  <repository>mvn:org.apache.cxf.karaf/apache-cxf/${karaf.version}/xml/features</repository>
+  <!--<repository>mvn:org.apache.karaf.features/spring/${karaf.version}/xml/features</repository>-->
 
   <feature name="pentaho-cde-renderer" version="${project.version}">
+    <feature version="${karaf.version}">cxf-jaxrs</feature>
+    <!--<feature version="4.0.7.RELEASE_1">spring</feature>-->
+
     <feature version="${pentaho-osgi-bundles.version}">pentaho-requirejs-osgi-manager</feature>
   </feature>
 

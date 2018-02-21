@@ -13,6 +13,10 @@
 
   <packaging>feature</packaging>
 
+  <properties>
+    <karaf.version>3.0.8</karaf.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.pentaho.webpackage</groupId>
@@ -20,6 +24,58 @@
       <version>${pentaho-osgi-bundles.version}</version>
       <classifier>features</classifier>
       <type>xml</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>cde-core-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!-- Transitive dependency of cde-core-impl/Commons JXPath-->
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.9.3</version>
+    </dependency>
+
+    <!--repository.apache-cxf = mvn\:org.apache.cxf.karaf/apache-cxf/${profile:version/cxf}/xml/features-->
+    <!--<dependency>-->
+      <!--<groupId>org.apache.cxf.karaf</groupId>-->
+      <!--<artifactId>apache-cxf</artifactId>-->
+      <!--<version>${karaf.version}</version>-->
+      <!--<type>xml</type>-->
+      <!--<classifier>features</classifier>-->
+    <!--</dependency>-->
+
+    <!--<dependency>-->
+      <!--<groupId>org.apache.karaf.features</groupId>-->
+      <!--<artifactId>spring</artifactId>-->
+      <!--<version>${karaf.version}</version>-->
+      <!--<type>xml</type>-->
+      <!--<classifier>features</classifier>-->
+    <!--</dependency>-->
+
+    <!--<dependency>-->
+      <!--<groupId>org.apache.activemq</groupId>-->
+      <!--<artifactId>activemq-osgi</artifactId>-->
+      <!--<version>5.9.0</version>-->
+      <!--<type>xml</type>-->
+      <!--<classifier>features</classifier>-->
+    <!--</dependency>-->
+
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>cde-osgi-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>pentaho-cpf-plugin-foundry</artifactId>
+      <version>${project.version}</version>
+      <type>xml</type>
+      <classifier>features</classifier>
     </dependency>
   </dependencies>
 </project>
