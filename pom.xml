@@ -2,15 +2,18 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.pentaho</groupId>
     <artifactId>pentaho-ce-bundle-parent-pom</artifactId>
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
+
   <groupId>org.pentaho.ctools</groupId>
   <artifactId>cde-plugin</artifactId>
   <packaging>pom</packaging>
   <description>Pentaho Community Dashboard Editor</description>
+
   <modules>
     <module>core</module>
     <module>pentaho</module>
@@ -19,11 +22,13 @@
     <module>webclient</module>
     <module>assemblies</module>
   </modules>
+
   <scm>
     <connection>scm:git:git@github.com:webdetails/${project.artifactId}.git</connection>
     <developerConnection>scm:git:git@github.com:webdetails/${project.artifactId}.git</developerConnection>
     <url>scm:git:git@github.com:webdetails/${project.artifactId}.git</url>
   </scm>
+
   <distributionManagement>
     <site>
       <id>pentaho.public.snapshot.repo</id>
@@ -31,6 +36,7 @@
       <url>dav:${site.publish.url}/${project.groupId}/cde-plugin-${project.version}</url>
     </site>
   </distributionManagement>
+
   <properties>
     <project.stage>master</project.stage>
     <project.github-name>cde</project.github-name>
@@ -66,6 +72,7 @@
     <junit.version>4.12</junit.version>
     <slf4j.version>1.7.7</slf4j.version>
   </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>

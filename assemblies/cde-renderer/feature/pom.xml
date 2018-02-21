@@ -10,11 +10,12 @@
   </parent>
 
   <artifactId>pentaho-cde-renderer</artifactId>
-
   <packaging>feature</packaging>
 
   <properties>
     <karaf.version>3.0.8</karaf.version>
+    <commons-lang.version>2.6</commons-lang.version>
+    <commons-beanutils.version>1.9.3</commons-beanutils.version>
   </properties>
 
   <dependencies>
@@ -36,33 +37,8 @@
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
-      <version>1.9.3</version>
+      <version>${commons-beanutils.version}</version>
     </dependency>
-
-    <!--repository.apache-cxf = mvn\:org.apache.cxf.karaf/apache-cxf/${profile:version/cxf}/xml/features-->
-    <!--<dependency>-->
-      <!--<groupId>org.apache.cxf.karaf</groupId>-->
-      <!--<artifactId>apache-cxf</artifactId>-->
-      <!--<version>${karaf.version}</version>-->
-      <!--<type>xml</type>-->
-      <!--<classifier>features</classifier>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-      <!--<groupId>org.apache.karaf.features</groupId>-->
-      <!--<artifactId>spring</artifactId>-->
-      <!--<version>${karaf.version}</version>-->
-      <!--<type>xml</type>-->
-      <!--<classifier>features</classifier>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-      <!--<groupId>org.apache.activemq</groupId>-->
-      <!--<artifactId>activemq-osgi</artifactId>-->
-      <!--<version>5.9.0</version>-->
-      <!--<type>xml</type>-->
-      <!--<classifier>features</classifier>-->
-    <!--</dependency>-->
 
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
@@ -72,7 +48,7 @@
 
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
-      <artifactId>pentaho-cpf-plugin-foundry</artifactId>
+      <artifactId>pentaho-cpf-plugin-karaf</artifactId>
       <version>${project.version}</version>
       <type>xml</type>
       <classifier>features</classifier>
