@@ -1,18 +1,23 @@
 <DesignerComponent>
   <Header>
     <Override>DataSourceComponentType</Override>
+
     <Name>Apache Solr</Name>
-    <IName>ApacheSolr</IName>
     <Description>Apache Solr Datasource</Description>
-    <Category>SOLR</Category>
-    <CatDescription>Apache Solr Datasources</CatDescription>
+
+    <Category>NOSQL</Category>
+    <CatDescription>NoSQL Datasources</CatDescription>
+
+    <IName>ApacheSolr</IName>
     <Type>PalleteEntry</Type>
   </Header>
+
   <Metadata>
     <meta name="conntype">rest</meta>
     <meta name="datype">solr</meta>
     <meta name="">SOLR</meta>
   </Metadata>
+
   <Contents>
     <Model prefix="Datasources">
       <Property>endpoint</Property>

@@ -1,13 +1,16 @@
 <DesignerProperty>
-    <Header>
-        <Name>schemaColumnPaths</Name>
-        <Parent>BaseProperty</Parent>
-        <DefaultValue>"[]"</DefaultValue>
-        <Description>Schema Column Paths</Description>
-        <Tooltip>Solr schema column paths for query metadata</Tooltip>
-        <InputType>SchemaColumnPathsArray</InputType>
-        <OutputType>Array</OutputType>
-        <Order>607</Order>
-        <Version>1.0</Version>
-    </Header>
+  <Header>
+    <Name>schemaColumnPaths</Name>
+    <Description>Schema Column Paths</Description>
+    <Tooltip>Define the query's column paths for the resultset values.</Tooltip>
+
+    <Parent>BaseProperty</Parent>
+
+    <DefaultValue>"[]"</DefaultValue>
+    <InputType>SchemaColumnPathsArray</InputType>
+    <OutputType>Array</OutputType>
+
+    <Order>607</Order>
+    <Version>1.0</Version>
+  </Header>
 </DesignerProperty>
