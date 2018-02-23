@@ -1,0 +1,13 @@
+<DesignerProperty>
+  <Header>
+    <Name>StreamingDataServiceName</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>Streaming Data Service Name</Description>
+    <Tooltip>Data Service Name</Tooltip>
+    <InputType>StreamingDataServiceName</InputType>
+    <OutputType>String</OutputType>
+    <Order>5</Order>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>
