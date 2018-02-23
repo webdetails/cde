@@ -46,31 +46,33 @@
     <pentaho-cdf-plugin.version>8.1.0.0-SNAPSHOT</pentaho-cdf-plugin.version>
     <platform.version>8.1.0.0-SNAPSHOT</platform.version>
     <commons-io.version>1.4</commons-io.version>
-    <commons-lang.version>2.4</commons-lang.version>
+    <commons-lang.version>2.6</commons-lang.version>
     <commons-jxpath.version>1.3</commons-jxpath.version>
-    <jdom.version>1.0</jdom.version>
     <commons-logging.version>1.1.1</commons-logging.version>
+    <jdom.version>1.0</jdom.version>
     <dom4j.version>1.6.1</dom4j.version>
     <ehcache.version>2.5.1</ehcache.version>
     <pentaho-json.version>8.1.0.0-SNAPSHOT</pentaho-json.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <jaxen.version>1.1</jaxen.version>
+    <ehcache.version>2.5.1</ehcache.version>
     <ezmorph.version>1.0.6</ezmorph.version>
     <spring.framework.version>4.3.2.RELEASE</spring.framework.version>
+    <servlet-api.version>3.0.1</servlet-api.version>
     <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
     <jersey-multipart.version>1.19.1</jersey-multipart.version>
-    <mondrian.version>8.1.0.0-SNAPSHOT</mondrian.version>
     <jackson-mapper-asl.version>1.8.2</jackson-mapper-asl.version>
-    <backport-util-concurrent.version>3.1</backport-util-concurrent.version>
     <jackson-core-asl.version>1.9.3</jackson-core-asl.version>
-    <maven-filtering.version>3.1.1</maven-filtering.version>
+    <backport-util-concurrent.version>3.1</backport-util-concurrent.version>
     <osgi.version>4.3.1</osgi.version>
-    <karaf-maven-plugin.version>3.0.8</karaf-maven-plugin.version>
-    <karaf-maven-plugin.aggregateFeatures>false</karaf-maven-plugin.aggregateFeatures>
+    <karaf.version>3.0.8</karaf.version>
     <cxf.karaf.version>3.0.13</cxf.karaf.version>
-    <mockito-all.version>1.9.5</mockito-all.version>
-    <junit.version>4.12</junit.version>
     <slf4j.version>1.7.7</slf4j.version>
+    <junit.version>4.12</junit.version>
+    <mockito-all.version>1.9.5</mockito-all.version>
+    <karaf-maven-plugin.version>${karaf.version}</karaf-maven-plugin.version>
+    <karaf-maven-plugin.aggregateFeatures>false</karaf-maven-plugin.aggregateFeatures>
+    <maven-filtering.version>3.1.1</maven-filtering.version>
   </properties>
 
   <dependencyManagement>
