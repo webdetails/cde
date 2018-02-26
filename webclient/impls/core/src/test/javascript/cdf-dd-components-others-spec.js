@@ -40,7 +40,7 @@ describe("CDF-DD-COMPONENTS-OTHERS-TESTS", function () {
       service2El.appendChild(name2El);
     });
 
-    it("should correctly extract the non streaming data services names from the XML", function () {
+    it("should correctly extract data services names from the XML", function () {
       var streaming1El = xmlDoc.createElement("streaming");
       streaming1El.appendChild(document.createTextNode("Y"));
       service1El.appendChild(streaming1El);
@@ -54,32 +54,12 @@ describe("CDF-DD-COMPONENTS-OTHERS-TESTS", function () {
       xmlDoc.appendChild(servicesEl);
 
       var expectedResult = {
+        'ds_test_1': 'ds_test_1',
         'ds_test_2': 'ds_test_2'
       };
 
       dataServiceNameRenderer.parseXml(xmlDoc);
       expect(dataServiceNameRenderer.selectData).toEqual(expectedResult);
-    });
-
-    it("should correctly extract the streaming data services names from the XML", function () {
-      var streaming1El = xmlDoc.createElement("streaming");
-      streaming1El.appendChild(document.createTextNode("Y"));
-      service1El.appendChild(streaming1El);
-
-      var streaming2El = xmlDoc.createElement("streaming");
-      streaming2El.appendChild(document.createTextNode("N"));
-      service2El.appendChild(streaming2El);
-
-      servicesEl.appendChild(service1El);
-      servicesEl.appendChild(service2El);
-      xmlDoc.appendChild(servicesEl);
-
-      var expectedResult = {
-        'ds_test_1': 'ds_test_1'
-      };
-
-      streamingDataServiceNameRenderer.parseXml(xmlDoc);
-      expect(streamingDataServiceNameRenderer.selectData).toEqual(expectedResult);
     });
 
   });
