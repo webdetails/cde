@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Community Dashboard Designer</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+
+
+    <link rel="stylesheet" type="text/css" href="template.css"/>
+    <!-- change your server url here -->
+    <script type="text/javascript" src="http://localhost:8080/pentaho/plugin/pentaho-cdf-dd/api/renderer/cde-embed.js"></script>
+  </head>
+
+  <body>
+    <h2>CDE Embedded Example</h2>
+
+    <h3>Description</h3>
+
+    <p>A simple html page which will load the CDE require configs from a Pentaho server and render a new Dashboard with a Select Component and a custom module.</p>
+
+    <h3>Sample</h3>
+
+    <div id="example">
+      <div id="sample">
+        <div id="sampleObject"></div>
+        <div id="myModuleText"></div>
+        <div id="content1"></div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      require([
+        'dash!foundry_hw.wcdf'
+      ], function(SampleDash) {
+        var sampleDash = new SampleDash("content1");
+        sampleDash.render();
+      });
+    </script>
+  </body>
+</html>

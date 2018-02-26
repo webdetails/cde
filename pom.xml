@@ -54,7 +54,7 @@
     <ehcache.version>2.5.1</ehcache.version>
     <pentaho-json.version>8.1.0.0-SNAPSHOT</pentaho-json.version>
     <servlet-api.version>3.0.1</servlet-api.version>
-    <jaxen.version>1.1</jaxen.version>
+    <jaxen.version>1.1.6</jaxen.version>
     <ehcache.version>2.5.1</ehcache.version>
     <ezmorph.version>1.0.6</ezmorph.version>
     <spring.framework.version>4.3.2.RELEASE</spring.framework.version>
