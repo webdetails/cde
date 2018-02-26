@@ -10,43 +10,76 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-
 describe("CDF-DD-COMPONENTS-OTHERS-TESTS", function () {
   var tableManager = new TableManager('test-tableManager');
   var dataServiceNameRenderer = new DataServiceNameRenderer();
+  var streamingDataServiceNameRenderer = new StreamingDataServiceNameRenderer();
 
   describe("Testing DataServiceNameRenderer", function () {
+    var xmlDoc,
+        servicesEl,
+        service1El,
+        service2El
+
 
     beforeEach(function () {
-      dataServicNameRenderer = new DataServiceNameRenderer();
-    });
-
-    it("should correctly extract the data services names from the XML", function () {
-      var xmlDoc = document.implementation.createDocument("", "", null);
-      var servicesEl = xmlDoc.createElement("services");
+      // create test xml
+      xmlDoc = document.implementation.createDocument("", "", null);
+      servicesEl = xmlDoc.createElement("services");
 
       var name1El = xmlDoc.createElement("name");
       name1El.appendChild(document.createTextNode("ds_test_1"));
-      var service1El = xmlDoc.createElement("service");
-      service1El.appendChild(name1El);
 
-      servicesEl.appendChild(service1El);
+      service1El = xmlDoc.createElement("service");
+      service1El.appendChild(name1El);
 
       var name2El = xmlDoc.createElement("name");
       name2El.appendChild(document.createTextNode("ds_test_2"));
-      var service2El = xmlDoc.createElement("service");
-      service2El.appendChild(name2El);
 
+      service2El = xmlDoc.createElement("service");
+      service2El.appendChild(name2El);
+    });
+
+    it("should correctly extract the non streaming data services names from the XML", function () {
+      var streaming1El = xmlDoc.createElement("streaming");
+      streaming1El.appendChild(document.createTextNode("Y"));
+      service1El.appendChild(streaming1El);
+
+      var streaming2El = xmlDoc.createElement("streaming");
+      streaming2El.appendChild(document.createTextNode("N"));
+      service2El.appendChild(streaming2El);
+
+      servicesEl.appendChild(service1El);
       servicesEl.appendChild(service2El);
       xmlDoc.appendChild(servicesEl);
 
       var expectedResult = {
-        'ds_test_1': 'ds_test_1',
         'ds_test_2': 'ds_test_2'
       };
 
       dataServiceNameRenderer.parseXml(xmlDoc);
       expect(dataServiceNameRenderer.selectData).toEqual(expectedResult);
+    });
+
+    it("should correctly extract the streaming data services names from the XML", function () {
+      var streaming1El = xmlDoc.createElement("streaming");
+      streaming1El.appendChild(document.createTextNode("Y"));
+      service1El.appendChild(streaming1El);
+
+      var streaming2El = xmlDoc.createElement("streaming");
+      streaming2El.appendChild(document.createTextNode("N"));
+      service2El.appendChild(streaming2El);
+
+      servicesEl.appendChild(service1El);
+      servicesEl.appendChild(service2El);
+      xmlDoc.appendChild(servicesEl);
+
+      var expectedResult = {
+        'ds_test_1': 'ds_test_1'
+      };
+
+      streamingDataServiceNameRenderer.parseXml(xmlDoc);
+      expect(streamingDataServiceNameRenderer.selectData).toEqual(expectedResult);
     });
 
   });

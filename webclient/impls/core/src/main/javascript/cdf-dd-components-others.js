@@ -127,18 +127,19 @@ var TopBottomRenderer = SelectRenderer.extend({
 
 var DataServiceNameRenderer = SelectRenderer.extend({
   selectData: {},
+  streaming: false,
 
   parseXml: function(xml) {
     var myself = this;
-    $xml = $( xml );
+    $xml = $(xml);
     $.each($xml.find('services > service > name'), function(idx, node) {
-      var name = node.textContent
+      var name = node.textContent;
       myself.selectData[name] = name;
     });
   },
 
   getDataInit:  function() {
-    var url ='/pentaho/kettle/listServices';
+    var url ='/pentaho/kettle/listServices?streaming=' + this.streaming;
 
     $.ajax({
       type: "GET",
@@ -147,4 +148,9 @@ var DataServiceNameRenderer = SelectRenderer.extend({
       success: this.parseXml.bind(this)
     });
   }
+});
+
+var StreamingDataServiceNameRenderer = DataServiceNameRenderer.extend({
+  selectData: {},
+  streaming: true
 });
