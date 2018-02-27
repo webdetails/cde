@@ -1,0 +1,13 @@
+<DesignerProperty>
+  <Header>
+    <Name>windowMillisSize</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0</DefaultValue>
+    <Description>Window Milliseconds Size</Description>
+    <Tooltip>Window Milliseconds Size</Tooltip>
+    <InputType>Integer</InputType>
+    <OutputType>Number</OutputType>
+    <Order>27</Order>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>
