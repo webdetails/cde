@@ -7,7 +7,7 @@
 	<Tooltip>Query to be executed in the selected datasource</Tooltip>
 	<InputType>SqlQuery</InputType>
 	<OutputType>String</OutputType>
-	<Order>24</Order>
+	<Order>25</Order>
 	<Version>1.0</Version>
 </Header>
 </DesignerProperty>
