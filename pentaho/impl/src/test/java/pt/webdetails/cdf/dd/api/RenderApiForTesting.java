@@ -15,13 +15,15 @@ package pt.webdetails.cdf.dd.api;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.mockito.Mockito;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import pt.webdetails.cdf.dd.DashboardManager;
-import pt.webdetails.cdf.dd.DashboardManagerForTests;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
+import pt.webdetails.cdf.dd.cache.api.ICache;
 
 public class RenderApiForTesting extends RenderApi {
-  private DashboardManager dashboardManagerForTests;
+  private DashboardManager dashboardManager;
   static String cdfRequireContextConfiguration = "";
   static String cdfRequireContext = "";
   static String cdfContext = "";
@@ -32,11 +34,10 @@ public class RenderApiForTesting extends RenderApi {
 
   @Override
   public DashboardManager getDashboardManager() {
-    if ( dashboardManagerForTests == null ) {
-      dashboardManagerForTests = new DashboardManagerForTests( this.privateEnviroment );
-      dashboardManagerForTests.init();
-    }
-    return dashboardManagerForTests;
+    dashboardManager = DashboardManager.getInstance();
+    dashboardManager.init();
+    dashboardManager.setCache( Mockito.mock( ICache.class ) );
+    return dashboardManager;
   }
 
   @Override
