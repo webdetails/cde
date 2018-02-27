@@ -53,18 +53,23 @@
     <property name="pluginResourceLocationManager" ref="pluginResourceLocationManager"/>
     <property name="resourceLoader" ref="pentahoPluginResourceLoader"/>
     <property name="fileHandler" ref="fileHandler"/>
-    <property name="authorizationPolicy" ref="iAuthorizationPolicy"/>
+    <property name="authorizationPolicy" ref="authorizationPolicy"/>
   </bean>
   <bean id="pluginResourceLocationManager" class="pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager"/>
   <bean id="pentahoPluginResourceLoader" class="pt.webdetails.cpf.resources.PentahoPluginResourceLoader" scope="prototype"/>
   <bean id="fileHandler" class="pt.webdetails.cdf.dd.extapi.FileHandler" scope="prototype"/>
   <!-- this <pen:bean /> declaration is not mandatory -->
-  <pen:bean id="iAuthorizationPolicy" class="org.pentaho.platform.api.engine.IAuthorizationPolicy"/>
+  <pen:bean id="authorizationPolicy" class="org.pentaho.platform.api.engine.IAuthorizationPolicy"/>
 
   <bean id="renderApi" class="pt.webdetails.cdf.dd.api.RenderApi">
     <property name="dashboardManager" ref="dashboardManager"/>
   </bean>
-  <bean id="dashboardManager" class="pt.webdetails.cdf.dd.DashboardManager" scope="singleton"  factory-method="getInstance" init-method="init">
-    <property name="environment" ref="pentahoCdeEnvironment"/>
+
+  <bean id="cache" class="pt.webdetails.cdf.dd.cache.impl.Cache" scope="singleton">
+    <constructor-arg ref="pentahoCdeEnvironment"/>
   </bean>
+  <bean id="dashboardManager" class="pt.webdetails.cdf.dd.DashboardManager" scope="singleton" factory-method="getInstance" init-method="init">
+    <property name="cache" ref="cache"/>
+  </bean>
+
 </beans>

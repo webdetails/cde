@@ -43,6 +43,7 @@ public class CdeEnvironment implements ICdeEnvironment {
   private static final String CDE_XML = "cde.xml";
   private static final String SYSTEM_DIR = "system";
   private static final String PLUGIN = "plugin";
+  private static final String DEFAULT_PLUGIN_ID = "cde";
 
   private IPluginResourceLocationManager pluginResourceLocationManager;
   private IContentAccessFactory contentAccessFactory;
@@ -140,12 +141,12 @@ public class CdeEnvironment implements ICdeEnvironment {
 
   @Override
   public String getPluginId() {
-    return ""; // TODO: any reason to keep supporting???
+    return DEFAULT_PLUGIN_ID; // TODO: any reason to keep supporting???
   }
 
   @Override
   public PluginEnvironment getPluginEnv() {
-    return this.getPluginEnv();
+    return null;
   }
 
   @Override

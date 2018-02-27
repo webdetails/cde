@@ -26,11 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheException;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
@@ -38,6 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
+import pt.webdetails.cdf.dd.cache.api.ICache;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
@@ -64,7 +60,6 @@ import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererT
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
-import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
 public class DashboardManager {
@@ -73,17 +68,12 @@ public class DashboardManager {
   private static DashboardManager _instance;
 
   // Cache
-  private static final String CACHE_CFG_FILE = "ehcache.xml";
-  private static final String CACHE_NAME = "pentaho-cde";
   private static final String[] MAP_PARAMETERS = { "Parameter", "JavascriptParameter", "DateParameter" };
 
-  private CacheManager _ehCacheManager;
-  private Cache _ehCache;
-  private Object _ehCacheLock;
+  private ICache cache;
+  private Object cacheLock;
 
-  private Map<String, Dashboard> _dashboardsByCdfdeFilePath;
-
-  private ICdeEnvironment environment;
+  private Map<String, Dashboard> dashboardsByCdfdeFilePath;
 
   protected DashboardManager() { }
 
@@ -98,42 +88,19 @@ public class DashboardManager {
     return _instance;
   }
 
-  public ICdeEnvironment getEnvironment() {
-    return this.environment;
+  public ICache getCache() {
+    return this.cache;
   }
 
-  public void setEnvironment( ICdeEnvironment environment ) {
-    this.environment = environment;
+  public void setCache( ICache cache ) {
+    this.cache = cache;
   }
 
   public void init() {
-    // The eh-cache holds
-    // CdfRunJsDashboardWriteResult objects indexed by DashboardCacheKey
-    // Both these types are serializable.
-    //
-    // CdfRunJsDashboardWriteResult objects are
-    // an almost-final render of a given Dashboard and options.
-    //
-    // Dashboard objects allow rendering a dashboard
-    // multiple times, with different options.
-    //
-    // A Dashboard object is re-built from disk
-    // whenever the corresponding WCDF and/or CDE files have changed.
-
-    // INIT EH-CACHE for CdfRunJsDashboardWriteResult objects
-    _ehCacheManager = createWriteResultCacheManager();
-
-    // TODO: Not sure we need to check existence of the cache,
-    // since the cache manager is newly created.
-    if ( !_ehCacheManager.cacheExists( CACHE_NAME ) ) {
-      _ehCacheManager.addCache( CACHE_NAME );
-    }
-
-    _ehCache = _ehCacheManager.getCache( CACHE_NAME );
-    _ehCacheLock = new Object();
+    cacheLock = new Object();
 
     // In memory Dashboard objects cache
-    _dashboardsByCdfdeFilePath = new HashMap<String, Dashboard>();
+    dashboardsByCdfdeFilePath = new HashMap<String, Dashboard>();
   }
 
   public static JXPathContext openDashboardAsJXPathContext( DashboardWcdfDescriptor wcdf ) throws IOException,
@@ -223,7 +190,7 @@ public class DashboardManager {
 
     DashboardCacheKey cacheKey = new DashboardCacheKey(
         cdeFilePath,
-        getPluginResourceLocationManager().getStyleResourceLocation( wcdf.getStyle() ),
+        wcdf.getStyle(),
         options.isDebug(),
         options.isAbsolute(),
         options.getSchemedRoot(),
@@ -272,10 +239,6 @@ public class DashboardManager {
 
     // 6. Cache the dashboard write
     return this.replaceDashboardWriteResultInCache( cacheKey, dashWrite );
-  }
-
-  protected IPluginResourceLocationManager getPluginResourceLocationManager() {
-    return getEnvironment().getPluginResourceLocationManager();
   }
 
   public Dashboard getDashboard(
@@ -374,8 +337,8 @@ public class DashboardManager {
     String cdeFilePath = Utils.sanitizeSlashesInPath( DashboardWcdfDescriptor.toStructurePath( wcdfPath ) );
 
     Map<String, Dashboard> dashboardsByCdfdeFilePath;
-    synchronized ( this._dashboardsByCdfdeFilePath ) {
-      dashboardsByCdfdeFilePath = new HashMap<String, Dashboard>( this._dashboardsByCdfdeFilePath );
+    synchronized ( this.dashboardsByCdfdeFilePath ) {
+      dashboardsByCdfdeFilePath = new HashMap<String, Dashboard>( this.dashboardsByCdfdeFilePath );
     }
 
     Set<String> invalidateDashboards = new HashSet<String>();
@@ -392,18 +355,18 @@ public class DashboardManager {
       }
     }
 
-    synchronized ( this._dashboardsByCdfdeFilePath ) {
+    synchronized ( this.dashboardsByCdfdeFilePath ) {
       for ( String invalidCdeFilePath : invalidateDashboards ) {
-        this._dashboardsByCdfdeFilePath.remove( invalidCdeFilePath );
+        this.dashboardsByCdfdeFilePath.remove( invalidCdeFilePath );
       }
     }
 
-    // Clear the DashboardWriteResult eh-cache
-    synchronized ( this._ehCacheLock ) {
-      List<DashboardCacheKey> ehKeys = this._ehCache.getKeys();
-      for ( DashboardCacheKey ehKey : ehKeys ) {
-        if ( invalidateDashboards.contains( ehKey.getCdfde() ) ) {
-          this._ehCache.remove( ehKey );
+    // Clear the DashboardWriteResult cache
+    synchronized ( this.cacheLock ) {
+      List<DashboardCacheKey> keys = this.cache.getKeys();
+      for ( DashboardCacheKey key : keys ) {
+        if ( invalidateDashboards.contains( key.getCdfde() ) ) {
+          this.cache.remove( key );
         }
       }
     }
@@ -417,18 +380,14 @@ public class DashboardManager {
     MetaModelManager.getInstance().refresh( refreshDatasources );
     DependenciesManager.refresh();
 
-    synchronized ( this._dashboardsByCdfdeFilePath ) {
-      this._dashboardsByCdfdeFilePath.clear();
+    synchronized ( this.dashboardsByCdfdeFilePath ) {
+      this.dashboardsByCdfdeFilePath.clear();
     }
 
-    // Clear the DashboardWriteResult eh-cache
-    synchronized ( this._ehCacheLock ) {
-      this._ehCache.removeAll();
+    // Clear the DashboardWriteResult cache
+    synchronized ( this.cacheLock ) {
+      this.cache.removeAll();
     }
-  }
-
-  protected IRWAccess getPluginSystemWriter() {
-    return getEnvironment().getContentAccessFactory().getPluginSystemWriter( null );
   }
 
   private void collectWidgetsToInvalidate( Set<String> invalidateDashboards,
@@ -590,28 +549,16 @@ public class DashboardManager {
     IReadAccess userContentAccess = Utils.getSystemOrUserReadAccess( cdeFilePath );
 
     // 1. Try to obtain dashboard from cache
-    Element cacheElement;
-    try {
-      synchronized ( this._ehCacheLock ) {
-        cacheElement = this._ehCache.get( cacheKey );
-      }
-    } catch ( CacheException ex ) {
-      _logger.info( "Cached dashboard render invalidated, re-rendering." );
-      return null;
-    }
-
-    // 2. In the cache?
-    if ( cacheElement == null ) {
+    CdfRunJsDashboardWriteResult dashWrite = this.cache.get( cacheKey );
+    if ( dashWrite == null ) {
       _logger.debug( "Dashboard render is not in cache." );
       return null;
     }
 
-    CdfRunJsDashboardWriteResult dashWrite = (CdfRunJsDashboardWriteResult) cacheElement.getValue();
-
-    // 3. Get the template file
+    // 2. Get the template file
     String templPath = cacheKey.getTemplate();
 
-    // 4. Check if cache item has expired
+    // 3. Check if cache item has expired
     // Cache is invalidated if the dashboard or template have changed since
     // the cache was loaded, or at midnight every day,
     // because of dynamic generation of date parameters.
@@ -646,27 +593,17 @@ public class DashboardManager {
 
   private CdfRunJsDashboardWriteResult replaceDashboardWriteResultInCache( DashboardCacheKey cacheKey,
                                                                            CdfRunJsDashboardWriteResult newDashWrite ) {
-    synchronized ( this._ehCacheLock ) {
-      Element cacheElement;
-      try {
-        cacheElement = this._ehCache.get( cacheKey );
-      } catch ( CacheException ex ) {
-        cacheElement = null;
-      }
+    synchronized ( this.cacheLock ) {
+      // Keep the one which corresponds to the newest Dashboard object
+      // read from disk.
+      CdfRunJsDashboardWriteResult currDashWrite = this.cache.get( cacheKey );
 
-      if ( cacheElement != null ) {
-        // Keep the one which corresponds to the newest Dashboard object
-        // read from disk.
-        CdfRunJsDashboardWriteResult currDashWrite =
-            (CdfRunJsDashboardWriteResult) cacheElement.getValue();
-
-        if ( currDashWrite.getLoadedDate().getTime() > newDashWrite.getLoadedDate().getTime() ) {
-          return currDashWrite;
-        }
+      if ( currDashWrite != null && currDashWrite.getLoadedDate().getTime() > newDashWrite.getLoadedDate().getTime() ) {
+        return currDashWrite;
       }
 
       try {
-        this._ehCache.put( new Element( cacheKey, newDashWrite ) );
+        this.cache.put( cacheKey, newDashWrite );
       } catch ( Exception cnfe ) {
         //This is throwing a class not found sometimes... Trying to figure out why
         _logger.warn( "Class not found for cache key while writing to cache.", cnfe );
@@ -676,42 +613,18 @@ public class DashboardManager {
     }
   }
 
-  private CacheManager createWriteResultCacheManager() throws CacheException {
-    // 'new CacheManager' used instead of 'CacheManager.create' to avoid overriding default cache
-    CacheManager cacheMgr;
-    try {
-      cacheMgr = new CacheManager(
-        getEnvironment()
-          .getContentAccessFactory()
-          .getPluginSystemReader( null )
-          .getFileInputStream( CACHE_CFG_FILE ) );
-    } catch ( IOException e ) {
-      _logger.error( "Cache failed to load the configuration file.", e );
-      cacheMgr = new CacheManager();
-    }
-
-    // enableCacheProperShutdown
-    System.setProperty( CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY, "true" );
-
-    return cacheMgr;
-  }
-
-  protected IReadAccess getPluginSystemReader() {
-    return getEnvironment().getContentAccessFactory().getPluginSystemReader( null );
-  }
-
   private Dashboard getDashboardFromCache( String cdeFullPath ) {
-    synchronized ( this._dashboardsByCdfdeFilePath ) {
-      return this._dashboardsByCdfdeFilePath.get( cdeFullPath );
+    synchronized ( this.dashboardsByCdfdeFilePath ) {
+      return this.dashboardsByCdfdeFilePath.get( cdeFullPath );
     }
   }
 
   private Dashboard replaceDashboardInCache( String cdeFullPath, Dashboard newDash, Dashboard oldDash ) {
     assert newDash != null;
 
-    synchronized ( this._dashboardsByCdfdeFilePath ) {
+    synchronized ( this.dashboardsByCdfdeFilePath ) {
       if ( oldDash != null ) { // otherwise ignore
-        Dashboard currDash = this._dashboardsByCdfdeFilePath.get( cdeFullPath );
+        Dashboard currDash = this.dashboardsByCdfdeFilePath.get( cdeFullPath );
         if ( currDash != null && currDash != oldDash ) {
           // Do not set.
           // Assume newer
@@ -719,7 +632,7 @@ public class DashboardManager {
         }
       }
 
-      this._dashboardsByCdfdeFilePath.put( cdeFullPath, newDash );
+      this.dashboardsByCdfdeFilePath.put( cdeFullPath, newDash );
       return newDash;
     }
   }

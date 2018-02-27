@@ -83,14 +83,8 @@ public class DataSourceManager implements IDataSourceManager {
   private void init( boolean isRefresh ) {
     this._isRefresh = isRefresh;
 
-    try {
-      providersById.clear();
-      providerDefinitionsById.clear();
-
-      logger.debug( "Successfully initialized." );
-    } catch ( Exception e ) {
-      logger.error( "Error initializing.", e );
-    }
+    providersById.clear();
+    providerDefinitionsById.clear();
   }
 
   /**
