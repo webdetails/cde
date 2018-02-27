@@ -335,102 +335,6 @@
         "typeDesc": "Row"
       },
       {
-        "id": "ddef2b1e-9e6b-9c87-7373-6b1fb35a1d19",
-        "parent": "241c67fd-b5af-e69f-395e-a4d9a992c888",
-        "properties": [
-          {
-            "name": "name",
-            "type": "Id",
-            "value": ""
-          },
-          {
-            "name": "bootstrapExtraSmall",
-            "type": "String",
-            "value": "12"
-          },
-          {
-            "name": "bootstrapSmall",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "bootstrapMedium",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "bootstrapLarge",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "bootstrapCssClass",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "height",
-            "type": "Integer",
-            "value": ""
-          },
-          {
-            "name": "backgroundColor",
-            "type": "Color",
-            "value": ""
-          },
-          {
-            "name": "roundCorners",
-            "type": "RoundCorners",
-            "value": ""
-          },
-          {
-            "name": "textAlign",
-            "type": "TextAlign",
-            "value": ""
-          },
-          {
-            "name": "cssClass",
-            "type": "String",
-            "value": ""
-          }
-        ],
-        "type": "LayoutBootstrapColumn",
-        "typeDesc": "Column"
-      },
-      {
-        "id": "ae0b09dc-d88b-c445-d367-9a46a0e1db10",
-        "parent": "ddef2b1e-9e6b-9c87-7373-6b1fb35a1d19",
-        "properties": [
-          {
-            "name": "name",
-            "type": "Id",
-            "value": "test"
-          },
-          {
-            "name": "html",
-            "type": "Html",
-            "value": "Hello Foundry\n<br>\nFrom: CDE "
-          },
-          {
-            "name": "fontSize",
-            "type": "Integer",
-            "value": ""
-          },
-          {
-            "name": "color",
-            "type": "Color",
-            "value": ""
-          },
-          {
-            "name": "cssClass",
-            "type": "String",
-            "value": ""
-          }
-        ],
-        "type": "LayoutHtml",
-        "typeDesc": "Html"
-      },
-      {
         "id": "e8376fda-0713-ad1a-7bad-8c0233a8cea2",
         "parent": "241c67fd-b5af-e69f-395e-a4d9a992c888",
         "properties": [
@@ -558,7 +462,5 @@
       }
     ],
     "title": "CDF - Sample structure"
-  },
-
-  "filename": "/foundry_cc.cdfde"
+  }
 }

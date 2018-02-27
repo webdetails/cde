@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cdf>
-  <title>foundry_cc</title>
-  <description>foundry_hw</description>
-  <author></author>
+  <title>foundry_dashboard_example</title>
+  <description>Foundry Dashboard Example</description>
+  <author>Hitachi Vantara</author>
+
   <style>CleanRequire</style>
   <rendererType>bootstrap</rendererType>
+
   <require>true</require>
   <widget>false</widget>
-  <widgetName></widgetName>
-  <widgetParameters></widgetParameters>
 </cdf>
