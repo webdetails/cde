@@ -139,7 +139,7 @@ var DataServiceNameRenderer = SelectRenderer.extend({
   },
 
   getDataInit:  function() {
-    var url ='/pentaho/kettle/listServices?streaming=' + this.streaming;
+    var url = webAppPath + '/kettle/listServices?streaming=' + this.streaming;
 
     $.ajax({
       type: "GET",
