@@ -11,6 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 describe("CDF-DD-COMPONENTS-OTHERS-TESTS", function () {
+  webAppPath = "/pentaho";
   var tableManager = new TableManager('test-tableManager');
   var dataServiceNameRenderer = new DataServiceNameRenderer();
   var streamingDataServiceNameRenderer = new StreamingDataServiceNameRenderer();
@@ -19,8 +20,7 @@ describe("CDF-DD-COMPONENTS-OTHERS-TESTS", function () {
     var xmlDoc,
         servicesEl,
         service1El,
-        service2El
-
+        service2El;
 
     beforeEach(function () {
       // create test xml
