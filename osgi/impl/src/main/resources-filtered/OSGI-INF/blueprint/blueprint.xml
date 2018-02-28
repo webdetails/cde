@@ -12,16 +12,17 @@
   <bean id="cdeEnvironment" class="org.pentaho.ctools.cde.environment.CdeEnvironment" scope="singleton">
     <property name="pluginResourceLocationManager" ref="pluginResourceLocationManager"/>
     <property name="dataSourceManager" ref="dataSourceManager"/>
-    <property name="contentAccessFactory" ref="iContentAccessFactory"/>
+    <property name="contentAccessFactory" ref="contentAccessFactory"/>
   </bean>
   <bean id="pluginResourceLocationManager" class="org.pentaho.ctools.cde.plugin.resource.PluginResourceLocationManager"/>
   <bean id="dataSourceManager" class="org.pentaho.ctools.cde.datasources.manager.DataSourceManager"/>
-  <reference id="iContentAccessFactory" interface="pt.webdetails.cpf.repository.api.IContentAccessFactory" />
+  <reference id="contentAccessFactory" interface="pt.webdetails.cpf.repository.api.IContentAccessFactory" />
 
+  <bean id="readAccess" class="org.pentaho.ctools.cpf.repository.bundle.ReadAccess">
+    <property name="bundle" ref="blueprintBundle"/>
+  </bean>
   <service interface="pt.webdetails.cpf.repository.api.IReadAccess">
-    <bean class="org.pentaho.ctools.cpf.repository.bundle.ReadAccess">
-      <property name="bundle" ref="blueprintBundle"/>
-    </bean>
+    <ref component-id="readAccess"/>
   </service>
 
   <jaxrs:server address="/cde" id="cdeService">
@@ -32,7 +33,12 @@
   <bean id="renderApi" class="org.pentaho.ctools.cde.api.RenderApi">
     <property name="dashboardManager" ref="dashboardManager"/>
   </bean>
-  <bean id="dashboardManager" class="pt.webdetails.cdf.dd.DashboardManager" scope="singleton" factory-method="getInstance" init-method="init">
-    <property name="environment" ref="cdeEnvironment"/>
+
+  <bean id="cache" class="org.pentaho.ctools.cde.cache.impl.Cache" scope="singleton">
+    <argument ref="readAccess"/>
   </bean>
+  <bean id="dashboardManager" class="pt.webdetails.cdf.dd.DashboardManager" scope="singleton" factory-method="getInstance" init-method="init">
+    <property name="cache" ref="cache"/>
+  </bean>
+
 </blueprint>

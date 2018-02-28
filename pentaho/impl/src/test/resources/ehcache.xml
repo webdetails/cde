@@ -1,0 +1,168 @@
+<ehcache name="cdeCache">
+
+
+    <!--CDE Cache configuration. 
+
+        The following attributes are required:
+
+        maxElementsInMemory            - Sets the maximum number of objects that will be created in memory
+        eternal                        - Sets whether elements are eternal. If eternal,  timeouts are ignored and the
+                                         element is never expired.
+        overflowToDisk                 - Sets whether elements can overflow to disk when the in-memory cache
+                                         has reached the maxInMemory limit.
+
+        The following attributes are optional:
+
+				eternal 											 - Ignore timeouts, elements never expire.
+        timeToIdleSeconds              - Sets the time to idle for an element before it expires.
+                                         i.e. The maximum amount of time between accesses before an element expires
+                                         Is only used if the element is not eternal.
+                                         Optional attribute. A value of 0 means that an Element can idle for infinity.
+                                         The default value is 0.
+        timeToLiveSeconds              - Sets the time to live for an element before it expires.
+                                         i.e. The maximum time between creation time and when an element expires.
+                                         Is only used if the element is not eternal.
+                                         Optional attribute. A value of 0 means that and Element can live for infinity.
+                                         The default value is 0. (Overriden in .cda files)
+        diskPersistent                 - Whether the disk store persists between restarts of the Virtual Machine.
+                                         The default value is false.
+        diskExpiryThreadIntervalSeconds- The number of seconds between runs of the disk expiry thread. The default value
+                                         is 120 seconds.
+
+        memoryStoreEvictionPolicy      - LRU: Least Recently Used (Default); 
+                                         LFU: Less Frequently Used; 
+                                         FIFO: First In First Out.
+        maxElementsOnDisk              - Sets the maximum number of objects that will be kept on disk. Evictions from
+                                         disk will always use the LFU algorithm.
+        diskSpoolBufferSizeMB          - This is the size to allocate the DiskStore for a spool buffer. Writes are made
+                                         to this area and then asynchronously written to disk. The default size is 30MB.
+																					
+        -->	
+    <diskStore path="java.io.tmpdir/_pentaho-cde"/>
+    
+	<defaultCache
+        maxElementsInMemory="1000"
+        eternal="false"
+        overflowToDisk="false"
+        timeToIdleSeconds="0"
+        timeToLiveSeconds="0"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="120"
+     />       
+        
+	<cache name="pentaho-cde"
+        maxElementsInMemory="50"
+				maxElementsOnDisk="500"
+        eternal="false"
+        overflowToDisk="true"
+        timeToIdleSeconds="0"
+        timeToLiveSeconds="0"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="360"
+        memoryStoreEvictionPolicy="LFU"
+				diskSpoolBufferSizeMB="50"
+		/>
+
+    <!--
+    Cache configuration
+    ===================
+
+    The following attributes are required.
+
+    name:
+    Sets the name of the cache. This is used to identify the cache. It must be unique.
+
+    maxElementsInMemory:
+    Sets the maximum number of objects that will be created in memory.  0 == no limit.
+
+    maxElementsOnDisk:
+    Sets the maximum number of objects that will be maintained in the DiskStore
+    The default value is zero, meaning unlimited.
+
+    eternal:
+    Sets whether elements are eternal. If eternal,  timeouts are ignored and the
+    element is never expired.
+
+    overflowToDisk:
+    Sets whether elements can overflow to disk when the memory store
+    has reached the maxInMemory limit.
+
+    The following attributes and elements are optional.
+
+    timeToIdleSeconds:
+    Sets the time to idle for an element before it expires.
+    i.e. The maximum amount of time between accesses before an element expires
+    Is only used if the element is not eternal.
+    Optional attribute. A value of 0 means that an Element can idle for infinity.
+    The default value is 0.
+
+    timeToLiveSeconds:
+    Sets the time to live for an element before it expires.
+    i.e. The maximum time between creation time and when an element expires.
+    Is only used if the element is not eternal.
+    Optional attribute. A value of 0 means that and Element can live for infinity.
+    The default value is 0.
+
+    diskPersistent:
+    Whether the disk store persists between restarts of the Virtual Machine.
+    The default value is false.
+
+    diskExpiryThreadIntervalSeconds:
+    The number of seconds between runs of the disk expiry thread. The default value
+    is 120 seconds.
+
+    diskSpoolBufferSizeMB:
+    This is the size to allocate the DiskStore for a spool buffer. Writes are made
+    to this area and then asynchronously written to disk. The default size is 30MB.
+    Each spool buffer is used only by its cache. If you get OutOfMemory errors consider
+    lowering this value. To improve DiskStore performance consider increasing it. Trace level
+    logging in the DiskStore will show if put back ups are occurring.
+
+    clearOnFlush:
+    whether the MemoryStore should be cleared when flush() is called on the cache.
+    By default, this is true i.e. the MemoryStore is cleared.
+
+    statistics:
+    Whether to collect statistics. Ehcache runs twice as slow with statistics turned on.
+    By default they are off. To enable set statistics="true"
+
+    memoryStoreEvictionPolicy:
+    Policy would be enforced upon reaching the maxElementsInMemory limit. Default
+    policy is Least Recently Used (specified as LRU). Other policies available -
+    First In First Out (specified as FIFO) and Less Frequently Used
+    (specified as LFU)
+
+    copyOnRead:
+    Whether an Element is copied when being added to the cache.
+    By default this is false.
+
+    copyOnWrite:
+    Whether an Element is copied when being read from a cache.
+    By default this is false.
+
+    Cache elements can also contain sub elements which take the same format of a factory class
+    and properties. Defined sub-elements are:
+
+    * cacheEventListenerFactory - Enables registration of listeners for cache events, such as
+      put, remove, update, and expire.
+
+    * bootstrapCacheLoaderFactory - Specifies a BootstrapCacheLoader, which is called by a
+      cache on initialisation to prepopulate itself.
+
+    * cacheExtensionFactory - Specifies a CacheExtension, a generic mechanism to tie a class
+      which holds a reference to a cache to the cache lifecycle.
+
+    * cacheExceptionHandlerFactory - Specifies a CacheExceptionHandler, which is called when
+      cache exceptions occur.
+
+    * cacheLoaderFactory - Specifies a CacheLoader, which can be used both asynchronously and
+      synchronously to load objects into a cache. More than one cacheLoaderFactory element
+      can be added, in which case the loaders form a chain which are executed in order. If a
+      loader returns null, the next in chain is called.
+
+    * copyStrategy - Specifies a fully qualified class which implements
+      net.sf.ehcache.store.compound.CopyStrategy. This strategy will be used for copyOnRead
+      and copyOnWrite in place of the default which is serialization.
+		-->
+
+</ehcache>
