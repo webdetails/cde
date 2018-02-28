@@ -40,7 +40,7 @@ public final class Cache implements ICache {
   public Cache( IReadAccess readAccess ) throws InitializationException {
     CacheManager cacheManager;
     try {
-      cacheManager = new CacheManager( readAccess.getFileInputStream( CACHE_CFG_FILE ) );
+      cacheManager = CacheManager.create( readAccess.getFileInputStream( CACHE_CFG_FILE ) );
     } catch ( IOException e ) {
       throw new InitializationException( "Failed to load the cache configuration file: " + CACHE_CFG_FILE, e );
     } catch ( CacheException e ) {

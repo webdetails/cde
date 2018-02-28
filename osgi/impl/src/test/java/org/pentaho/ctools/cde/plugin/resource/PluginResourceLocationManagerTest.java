@@ -21,13 +21,9 @@ import org.junit.Test;
 import pt.webdetails.cpf.packager.origin.PathOrigin;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class PluginResourceLocationManagerTest {
-  private final String DEFAULT_STYLE_PATH = "styles/";
-  private final String DEFAULT_STYLE = "Clean";
-  private final String DEFAULT_STYLE_EXTENSION= ".html";
-  private final String DEFAULT_STYLE_FULL_PATH = DEFAULT_STYLE_PATH + DEFAULT_STYLE + DEFAULT_STYLE_EXTENSION;
-  private final String DEFAULT_MESSAGES_LOCATION = "lang/messages.properties";
   private PluginResourceLocationManager pluginResourceLocationManager;
 
   @Before
@@ -42,17 +38,17 @@ public class PluginResourceLocationManagerTest {
 
   @Test
   public void testGetMessagePropertiesResourceLocation() {
-    assertEquals( DEFAULT_MESSAGES_LOCATION, pluginResourceLocationManager.getMessagePropertiesResourceLocation() );
+    assertNull( pluginResourceLocationManager.getMessagePropertiesResourceLocation() );
   }
 
   @Test
-  public void getStyleResourceLocation() {
-    assertEquals( DEFAULT_STYLE_FULL_PATH, pluginResourceLocationManager.getStyleResourceLocation( null ) );
-    assertEquals( DEFAULT_STYLE_FULL_PATH, pluginResourceLocationManager.getStyleResourceLocation( "" ) );
-    final String styleName = "aStyle";
-    assertEquals(
-      DEFAULT_STYLE_PATH + styleName + DEFAULT_STYLE_EXTENSION,
-      pluginResourceLocationManager.getStyleResourceLocation( styleName ) );
+  public void getStyleResourceLocationNullStyleName() {
+    assertNull( pluginResourceLocationManager.getStyleResourceLocation( null ) );
+  }
+
+  @Test
+  public void getStyleResourceLocationEmptyStyleName() {
+    assertNull( pluginResourceLocationManager.getStyleResourceLocation( "" ) );
   }
 
   @Test

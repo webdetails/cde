@@ -20,10 +20,10 @@ import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 import pt.webdetails.cdf.dd.DashboardCacheKey;
-import pt.webdetails.cdf.dd.ICdeEnvironment;
 import pt.webdetails.cdf.dd.cache.api.ICache;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cpf.exceptions.InitializationException;
+import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 
 /**
  * Allows caching {@code CdfRunJsDashboardWriteResult} objects referenced by {@code DashboardCacheKey}.
@@ -37,11 +37,11 @@ public final class Cache implements ICache {
   private static final String CACHE_NAME = "pentaho-cde";
   private Ehcache ehcache;
 
-  public Cache( ICdeEnvironment environment ) throws InitializationException {
+  public Cache( IContentAccessFactory contentAccessFactory ) throws InitializationException {
 
     CacheManager cacheManager;
     try {
-      cacheManager = CacheManager.create( environment.getContentAccessFactory().getPluginSystemReader( null )
+      cacheManager = CacheManager.create( contentAccessFactory.getPluginSystemReader( null )
         .getFileInputStream( CACHE_CFG_FILE ) );
     } catch ( IOException e ) {
       throw new InitializationException( "Failed to load the cache configuration file: " + CACHE_CFG_FILE, e );

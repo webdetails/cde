@@ -26,6 +26,7 @@ import pt.webdetails.cdf.dd.CdeEnvironmentForTests;
 import pt.webdetails.cdf.dd.DashboardCacheKey;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cpf.exceptions.InitializationException;
+import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
@@ -37,29 +38,27 @@ import static org.mockito.Mockito.when;
 
 public class CacheTest {
   private static final String EHCACHE_FILE_PATH = "src/test/resources/ehcache.xml";
-  private static CdeEnvironmentForTests cdeEnvironmentForTests;
   private static IReadAccess mockedReadAccess;
+  private static IContentAccessFactory contentAccessFactory;
   private static Cache cache;
   private DashboardCacheKey key;
   private CdfRunJsDashboardWriteResult value;
 
   @BeforeClass
   public static void beforeAll() throws Exception {
-    cdeEnvironmentForTests = new CdeEnvironmentForTests();
     mockedReadAccess = mock( IReadAccess.class );
     when( mockedReadAccess.getFileInputStream( any() ) )
       .thenReturn( new FileInputStream( new File( EHCACHE_FILE_PATH.replace( "/", File.separator ) ) ) );
-    cdeEnvironmentForTests.setMockedReadAccess( mockedReadAccess );
-    IUserContentAccess mockedContentAccess = mock( IUserContentAccess.class );
-    cdeEnvironmentForTests.setMockedContentAccess( mockedContentAccess );
-    cache = new Cache( cdeEnvironmentForTests );
+    contentAccessFactory = mock( IContentAccessFactory.class );
+    when( contentAccessFactory.getPluginSystemReader( anyString() ) ).thenReturn( mockedReadAccess );
+    cache = new Cache( contentAccessFactory );
   }
 
   @AfterClass
   public static void afterAll() {
     cache = null;
+    contentAccessFactory = null;
     mockedReadAccess = null;
-    cdeEnvironmentForTests = null;
   }
 
   @Before
@@ -75,19 +74,18 @@ public class CacheTest {
     key = null;
   }
 
-  @Test
-  public void testInitializationFailLoadConfiguration() {
-    try{
+  @Test(expected = InitializationException.class)
+  public void testInitializationFailLoadConfiguration() throws InitializationException, IOException {
+    //try{
       when( mockedReadAccess.getFileInputStream( any() ) )
         .thenThrow( new IOException( "mocked IOException" ) );
-      cdeEnvironmentForTests.setMockedReadAccess( mockedReadAccess );
-      new Cache( cdeEnvironmentForTests );
-      Assert.fail( "InitializationException not thrown" );
+      new Cache( contentAccessFactory );
+      Assert.fail( "InitializationException not thrown" );/*
     } catch ( InitializationException e ) {
       Assert.assertEquals( "Failed to load the cache configuration file: ehcache.xml", e.getMessage() );
     } catch ( Exception e ) {
       Assert.fail( "InitializationException not thrown" );
-    }
+    }*/
   }
 
   @Test
@@ -95,8 +93,7 @@ public class CacheTest {
     try {
       when( mockedReadAccess.getFileInputStream( anyString() ) )
         .thenReturn( null );
-      cdeEnvironmentForTests.setMockedReadAccess( mockedReadAccess );
-      new Cache( cdeEnvironmentForTests );
+      new Cache( contentAccessFactory );
       Assert.fail( "InitializationException not thrown" );
     } catch ( InitializationException e ) {
       Assert.assertEquals( "Failed to create the cache manager.", e.getMessage() );

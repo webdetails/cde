@@ -23,22 +23,15 @@ import pt.webdetails.cpf.packager.origin.PathOrigin;
  * {@code IReadAccess} resource services. This is a dummy class that is currently required by CDE core.
  */
 public class PluginResourceLocationManager implements IPluginResourceLocationManager {
-  private static final String STYLES_RESOURCE_PATH = "styles/";
-  private static final String DEFAULT_STYLE = "Clean";
-  private static final String STYLE_FILE_EXTENSION = ".html";
 
   @Override
   public String getMessagePropertiesResourceLocation() {
-    return "lang/messages.properties";
+    return null;
   }
 
   @Override
   public String getStyleResourceLocation( String styleName ) {
-    if ( styleName == null || styleName.length() == 0 ) {
-      return STYLES_RESOURCE_PATH + DEFAULT_STYLE + STYLE_FILE_EXTENSION;
-    } else {
-      return STYLES_RESOURCE_PATH + styleName + STYLE_FILE_EXTENSION;
-    }
+    return null;
   }
 
   @Override

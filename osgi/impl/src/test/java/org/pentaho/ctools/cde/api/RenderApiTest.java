@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import pt.webdetails.cdf.dd.DashboardManager;
+import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 
@@ -60,14 +61,14 @@ public class RenderApiTest {
     renderApi = new RenderApi();
     renderApi.setDashboardManager( dashboardManager );
 
-    path = "";
+    path = StringUtils.EMPTY;
     inferScheme = false;
-    root = "";
+    root = StringUtils.EMPTY;
     absolute = true;
     bypassCache = false;
     debug = false;
-    style = "";
-    alias = "";
+    style = StringUtils.EMPTY;
+    alias = StringUtils.EMPTY;
 
     request = Mockito.mock( HttpServletRequest.class );
     when( request.getScheme() ).thenReturn( DEFAULT_SCHEME );
@@ -87,48 +88,42 @@ public class RenderApiTest {
   }
 
   @Test
-  public void testGetDashboard() throws Exception {
+  public void testGetDashboard() throws ThingWriteException {
     when( dashboardManager.getDashboardCdfRunJs( anyString(), anyObject(), anyBoolean(), anyString() ) ).thenReturn(
       cdfRunJsDashboardWriteResult );
 
-    String expected;
-    // empty dashboard path
-    expected = "No path provided.";
-    assertEquals( expected, renderApi.getDashboard(
+    assertEquals( StringUtils.EMPTY, renderApi.getDashboard(
+      DASHBOARD_FILE_NAME, inferScheme, root, absolute, bypassCache, debug, DEFAULT_SCHEME, style, alias, request ) );
+  }
+
+  @Test
+  public void testGetDashboardEmptyPath() throws ThingWriteException {
+    when( dashboardManager.getDashboardCdfRunJs( anyString(), anyObject(), anyBoolean(), anyString() ) ).thenReturn(
+      cdfRunJsDashboardWriteResult );
+
+    assertEquals( "No path provided.", renderApi.getDashboard(
       StringUtils.EMPTY, inferScheme, root, absolute, bypassCache, debug, DEFAULT_SCHEME, style, alias, request ) );
+  }
 
-    //custom alias
+  @Test
+  public void testGetDashboardCustomAlias() throws ThingWriteException {
+    when( dashboardManager.getDashboardCdfRunJs( anyString(), anyObject(), anyBoolean(), anyString() ) ).thenReturn(
+      cdfRunJsDashboardWriteResult );
+
     alias = "alias";
-    expected = StringUtils.EMPTY;
-    assertEquals( expected, renderApi.getDashboard(
+    assertEquals( StringUtils.EMPTY, renderApi.getDashboard(
       DASHBOARD_FILE_NAME, inferScheme, root, absolute, bypassCache, debug, DEFAULT_SCHEME, style, alias, request ) );
+  }
 
-    alias = StringUtils.EMPTY;
-
-    //root path
-    expected = StringUtils.EMPTY;
-    assertEquals( expected, renderApi.getDashboard(
-      DASHBOARD_FILE_NAME, inferScheme, root, absolute, bypassCache, debug, DEFAULT_SCHEME, style, alias, request ) );
-
-    //sample dashboard
-    expected = StringUtils.EMPTY;
-    assertEquals( expected, renderApi.getDashboard(
-      DASHBOARD_WCDF_PATH, inferScheme, root, absolute, bypassCache, debug, DEFAULT_SCHEME, style, alias, request ) );
-
-    //infer schema
-    inferScheme = true;
-    expected = StringUtils.EMPTY;
-    assertEquals( expected, renderApi.getDashboard(
-      DASHBOARD_WCDF_PATH, inferScheme, root, absolute, bypassCache, debug, DEFAULT_SCHEME, style, alias, request ) );
-
-    //test error message
+  @Test
+  public void testGetDashboardErrorMessage() throws ThingWriteException {
     when( dashboardManager.getDashboardCdfRunJs( anyString(), anyObject(), anyBoolean(), anyString() ) ).thenThrow(
       Exception.class );
-    expected = "Could not load dashboard: ";
+
     try {
       assertTrue( renderApi.getDashboard(
         DASHBOARD_WCDF_PATH, inferScheme, root, absolute, bypassCache, debug, DEFAULT_SCHEME, style, alias, request  )
-          .startsWith( expected ) );
+          .startsWith( "Could not load dashboard: " ) );
     } catch( Exception e ) {
       fail( "No exception should be thrown" );
     }
@@ -139,20 +134,25 @@ public class RenderApiTest {
     when( dashboardManager.getDashboardParameters( anyString(), anyBoolean(), anyBoolean() ) ).thenReturn(
       StringUtils.EMPTY );
 
-    String expected;
-    // empty dashboard path
-    expected = "No path provided.";
-    assertEquals( expected, renderApi.getDashboardParameters( path, bypassCache, all ) );
+    assertEquals( StringUtils.EMPTY, renderApi.getDashboardParameters( DASHBOARD_WCDF_PATH, bypassCache, all ) );
+  }
 
-    //sample dashboard
-    expected = StringUtils.EMPTY;
-    assertEquals( expected, renderApi.getDashboardParameters( DASHBOARD_WCDF_PATH, bypassCache, all ) );
+  @Test
+  public void testGetDashboardParametersEmptyPath() throws Exception {
+    when( dashboardManager.getDashboardParameters( anyString(), anyBoolean(), anyBoolean() ) ).thenReturn(
+      StringUtils.EMPTY );
 
+    assertEquals( "No path provided.", renderApi.getDashboardParameters( path, bypassCache, all ) );
+  }
+
+  @Test
+  public void testGetDashboardParametersErrorMessage() throws Exception {
     //test error message
     when( dashboardManager.getDashboardParameters( anyString(), anyBoolean(), anyBoolean() ) ).thenThrow( Exception.class );
-    expected = "Could not load dashboard parameters: ";
+
     try {
-      assertTrue( renderApi.getDashboardParameters( DASHBOARD_WCDF_PATH, bypassCache, all ).startsWith( expected ) );
+      assertTrue( renderApi.getDashboardParameters( DASHBOARD_WCDF_PATH, bypassCache, all )
+        .startsWith( "Could not load dashboard parameters: " ) );
     } catch( Exception e ) {
       fail( "No exception should be thrown" );
     }

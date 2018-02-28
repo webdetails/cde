@@ -13,7 +13,6 @@
 
 package org.pentaho.ctools.cde.datasources.manager;
 
-import org.json.JSONException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,23 +37,42 @@ public class DataSourceManagerTest {
   }
 
   @Test
-  public void testGetJsDefinition() throws JSONException {
-    assertNull( dataSourceManager.getJsDefinition() );
+  public void testGetProviderJsDefinitionEmptyProviderId() {
+    assertNull( dataSourceManager.getProviderJsDefinition( "" ) );
   }
 
   @Test
-  public void testGetProviderJsDefinition() {
-    assertNull( dataSourceManager.getProviderJsDefinition( null ) );
-    assertNull( dataSourceManager.getProviderJsDefinition( "" ) );
-    assertNull( dataSourceManager.getProviderJsDefinition( null, true ) );
-    assertNull( dataSourceManager.getProviderJsDefinition( null, false ) );
+  public void testGetProviderJsDefinitionEmptyProviderIdBypassCache() {
     assertNull( dataSourceManager.getProviderJsDefinition( "", true ) );
+  }
+
+  @Test
+  public void testGetProviderJsDefinitionEmptyProviderIdBypassCacheFalse() {
     assertNull( dataSourceManager.getProviderJsDefinition( "", false ) );
   }
 
   @Test
-  public void testGetProvider() {
+  public void testGetProviderJsDefinitionNullProviderId() {
+    assertNull( dataSourceManager.getProviderJsDefinition( null ) );
+  }
+
+  @Test
+  public void testGetProviderJsDefinitionNullProviderIdBypassCache() {
+    assertNull( dataSourceManager.getProviderJsDefinition( null, true ) );
+  }
+
+  @Test
+  public void testGetProviderJsDefinitionNullProviderIdBypassCacheFalse() {
+    assertNull( dataSourceManager.getProviderJsDefinition( null, false ) );
+  }
+
+  @Test
+  public void testGetProviderNullId() {
     assertNull( dataSourceManager.getProvider( null ) );
+  }
+
+  @Test
+  public void testGetProviderEmptyId() {
     assertNull( dataSourceManager.getProvider( "" ) );
   }
 

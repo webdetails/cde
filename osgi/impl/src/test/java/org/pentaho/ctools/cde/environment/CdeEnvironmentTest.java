@@ -96,11 +96,6 @@ public class CdeEnvironmentTest {
   }
 
   @Test
-  public void testRefresh() {
-    cdeEnvironment.refresh();
-  }
-
-  @Test
   public void testGetApplicationBaseUrl() {
     assertEquals( StringUtils.EMPTY, cdeEnvironment.getApplicationBaseUrl() );
   }
@@ -165,20 +160,10 @@ public class CdeEnvironmentTest {
   @Test
   public void testGetCdfRunJsDashboardWriteContext() {
     final DashboardWcdfDescriptor dashboardWcdfDescriptor = Mockito.mock( DashboardWcdfDescriptor.class );
+    when( dashboardWcdfDescriptor.isRequire() ).thenReturn( true );
     final Dashboard dash = Mockito.mock( Dashboard.class );
     when( dash.getWcdf() ).thenReturn( dashboardWcdfDescriptor );
     final IThingWriterFactory factory = Mockito.mock( CdfRunJsThingWriterFactory.class );
-    final CdfRunJsDashboardWriteOptions options = Mockito.mock( CdfRunJsDashboardWriteOptions.class );
-
-    when( dashboardWcdfDescriptor.isRequire() ).thenReturn( true );
-    assertThat(
-      cdeEnvironment.getCdfRunJsDashboardWriteContext( factory, "", false, dash, options ),
-      instanceOf( pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd.PentahoCdfRunJsDashboardWriteContext.class ) );
-
-    when( dashboardWcdfDescriptor.isRequire() ).thenReturn( false );
-    assertThat(
-      cdeEnvironment.getCdfRunJsDashboardWriteContext( factory, "", false, dash, options ),
-      instanceOf( pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.PentahoCdfRunJsDashboardWriteContext.class ) );
 
     final CdfRunJsDashboardWriteContext cdfRunJsDashboardWriteContext = Mockito.mock( CdfRunJsDashboardWriteContext.class );
     when( cdfRunJsDashboardWriteContext.getFactory() ).thenReturn( factory );
@@ -188,7 +173,35 @@ public class CdeEnvironmentTest {
   }
 
   @Test
-  public void testGetCdeXml() throws Exception {
+  public void testGetCdfRunJsDashboardWriteContextAMD() {
+    final DashboardWcdfDescriptor dashboardWcdfDescriptor = Mockito.mock( DashboardWcdfDescriptor.class );
+    when( dashboardWcdfDescriptor.isRequire() ).thenReturn( true );
+    final Dashboard dash = Mockito.mock( Dashboard.class );
+    when( dash.getWcdf() ).thenReturn( dashboardWcdfDescriptor );
+    final IThingWriterFactory factory = Mockito.mock( CdfRunJsThingWriterFactory.class );
+    final CdfRunJsDashboardWriteOptions options = Mockito.mock( CdfRunJsDashboardWriteOptions.class );
+
+    assertThat(
+      cdeEnvironment.getCdfRunJsDashboardWriteContext( factory, "", false, dash, options ),
+      instanceOf( pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd.PentahoCdfRunJsDashboardWriteContext.class ) );
+  }
+
+  @Test
+  public void testGetCdfRunJsDashboardWriteContextLegacy() {
+    final DashboardWcdfDescriptor dashboardWcdfDescriptor = Mockito.mock( DashboardWcdfDescriptor.class );
+    when( dashboardWcdfDescriptor.isRequire() ).thenReturn( false );
+    final Dashboard dash = Mockito.mock( Dashboard.class );
+    when( dash.getWcdf() ).thenReturn( dashboardWcdfDescriptor );
+    final IThingWriterFactory factory = Mockito.mock( CdfRunJsThingWriterFactory.class );
+    final CdfRunJsDashboardWriteOptions options = Mockito.mock( CdfRunJsDashboardWriteOptions.class );
+
+    assertThat(
+      cdeEnvironment.getCdfRunJsDashboardWriteContext( factory, "", false, dash, options ),
+      instanceOf( pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.PentahoCdfRunJsDashboardWriteContext.class ) );
+  }
+
+  @Test
+  public void testGetCdeXml() {
     final IBasicFile file = Mockito.mock( IBasicFile.class );
     final IUserContentAccess userContentAccess = Mockito.mock( IUserContentAccess.class );
     when( userContentAccess.fileExists( anyString() ) ).thenReturn( true );
@@ -206,6 +219,49 @@ public class CdeEnvironmentTest {
     assertEquals( file, cdeEnvironment.getCdeXml() );
 
     when( readAccess.fileExists( anyString() ) ).thenReturn( false );
+    assertNull( cdeEnvironment.getCdeXml() );
+  }
+
+  @Test
+  public void testGetCdeXmlViaUserContentAccess() {
+    final IBasicFile file = Mockito.mock( IBasicFile.class );
+    final IUserContentAccess userContentAccess = Mockito.mock( IUserContentAccess.class );
+    when( userContentAccess.fileExists( anyString() ) ).thenReturn( true );
+    when( userContentAccess.fetchFile( anyString() ) ).thenReturn( file );
+    final IContentAccessFactory contentAccessFactory = Mockito.mock( IContentAccessFactory.class );
+    when( contentAccessFactory.getUserContentAccess( anyString()) ).thenReturn( userContentAccess );
+    cdeEnvironment.setContentAccessFactory( contentAccessFactory );
+
+    assertEquals( file, cdeEnvironment.getCdeXml() );
+  }
+
+  @Test
+  public void testGetCdeXmlViaReadAccess() {
+    final IBasicFile file = Mockito.mock( IBasicFile.class );
+    final IUserContentAccess userContentAccess = Mockito.mock( IUserContentAccess.class );
+    when( userContentAccess.fileExists( anyString() ) ).thenReturn( false );
+    final IReadAccess readAccess = Mockito.mock( IReadAccess.class );
+    when( readAccess.fileExists( anyString() ) ).thenReturn( true );
+    when( readAccess.fetchFile( anyString() ) ).thenReturn( file );
+    final IContentAccessFactory contentAccessFactory = Mockito.mock( IContentAccessFactory.class );
+    when( contentAccessFactory.getUserContentAccess( anyString()) ).thenReturn( userContentAccess );
+    when( contentAccessFactory.getPluginSystemReader( anyObject() ) ).thenReturn( readAccess );
+    cdeEnvironment.setContentAccessFactory( contentAccessFactory );
+
+    assertEquals( file, cdeEnvironment.getCdeXml() );
+  }
+
+  @Test
+  public void testGetCdeXmlNoFileFound() {
+    final IUserContentAccess userContentAccess = Mockito.mock( IUserContentAccess.class );
+    when( userContentAccess.fileExists( anyString() ) ).thenReturn( false );
+    final IReadAccess readAccess = Mockito.mock( IReadAccess.class );
+    when( readAccess.fileExists( anyString() ) ).thenReturn( false );
+    final IContentAccessFactory contentAccessFactory = Mockito.mock( IContentAccessFactory.class );
+    when( contentAccessFactory.getUserContentAccess( anyString()) ).thenReturn( userContentAccess );
+    when( contentAccessFactory.getPluginSystemReader( anyObject() ) ).thenReturn( readAccess );
+    cdeEnvironment.setContentAccessFactory( contentAccessFactory );
+
     assertNull( cdeEnvironment.getCdeXml() );
   }
 
