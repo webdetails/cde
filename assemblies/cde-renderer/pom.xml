@@ -21,9 +21,6 @@
   </modules>
 
   <properties>
-    <karaf-maven-plugin.version>3.0.8</karaf-maven-plugin.version>
-    <karaf-maven-plugin.aggregateFeatures>false</karaf-maven-plugin.aggregateFeatures>
-
     <assembly.tarLongFileMode>posix</assembly.tarLongFileMode>
 
     <pentaho-osgi-bundles.version>${project.version}</pentaho-osgi-bundles.version>

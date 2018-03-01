@@ -14,7 +14,7 @@
   <dependencies>
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
-      <artifactId>pentaho-cpf-plugin-pdi</artifactId>
+      <artifactId>pentaho-cpf</artifactId>
       <version>${project.version}</version>
       <type>xml</type>
       <classifier>features</classifier>

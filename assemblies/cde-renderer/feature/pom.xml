@@ -10,7 +10,6 @@
   </parent>
 
   <artifactId>pentaho-cde-renderer</artifactId>
-
   <packaging>feature</packaging>
 
   <dependencies>
@@ -20,6 +19,38 @@
       <version>${pentaho-osgi-bundles.version}</version>
       <classifier>features</classifier>
       <type>xml</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>cde-core-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!-- Transitive dependency of cde-core-impl/commons-jxpath -->
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+    </dependency>
+
+    <!-- Transitive dependency of cde-core-impl/commons-beanutils -->
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>cde-osgi-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>pentaho-cpf</artifactId>
+      <version>${project.version}</version>
+      <type>xml</type>
+      <classifier>features</classifier>
     </dependency>
   </dependencies>
 </project>

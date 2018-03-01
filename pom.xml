@@ -2,15 +2,18 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.pentaho</groupId>
     <artifactId>pentaho-ce-bundle-parent-pom</artifactId>
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
+
   <groupId>org.pentaho.ctools</groupId>
   <artifactId>cde-plugin</artifactId>
   <packaging>pom</packaging>
   <description>Pentaho Community Dashboard Editor</description>
+
   <modules>
     <module>core</module>
     <module>pentaho</module>
@@ -19,11 +22,13 @@
     <module>webclient</module>
     <module>assemblies</module>
   </modules>
+
   <scm>
     <connection>scm:git:git@github.com:webdetails/${project.artifactId}.git</connection>
     <developerConnection>scm:git:git@github.com:webdetails/${project.artifactId}.git</developerConnection>
     <url>scm:git:git@github.com:webdetails/${project.artifactId}.git</url>
   </scm>
+
   <distributionManagement>
     <site>
       <id>pentaho.public.snapshot.repo</id>
@@ -31,47 +36,56 @@
       <url>dav:${site.publish.url}/${project.groupId}/cde-plugin-${project.version}</url>
     </site>
   </distributionManagement>
+
   <properties>
     <project.stage>master</project.stage>
     <project.github-name>cde</project.github-name>
     <global.require.file>cde-require-js-cfg.js</global.require.file>
     <requirejs.config.files.pattern>**/*-require-js-cfg.js</requirejs.config.files.pattern>
-    <pentaho-cpf-plugin.version>8.1.0.0-SNAPSHOT</pentaho-cpf-plugin.version>
-    <pentaho-cdf-plugin.version>8.1.0.0-SNAPSHOT</pentaho-cdf-plugin.version>
+
+    <cdf.version>8.1.0.0-SNAPSHOT</cdf.version>
+    <cpf.version>8.1.0.0-SNAPSHOT</cpf.version>
+    <json.version>8.1.0.0-SNAPSHOT</json.version>
+    <mondrian.version>8.1.0.0-SNAPSHOT</mondrian.version>
     <platform.version>8.1.0.0-SNAPSHOT</platform.version>
+
     <commons-io.version>1.4</commons-io.version>
-    <commons-lang.version>2.4</commons-lang.version>
+    <commons-lang.version>2.6</commons-lang.version>
     <commons-jxpath.version>1.3</commons-jxpath.version>
-    <jdom.version>1.0</jdom.version>
+    <commons-beanutils.version>1.9.3</commons-beanutils.version>
     <commons-logging.version>1.1.1</commons-logging.version>
+    <commons-collections.version>3.2.2</commons-collections.version>
+
+    <jdom.version>1.0</jdom.version>
     <dom4j.version>1.6.1</dom4j.version>
+    <jaxen.version>1.1.6</jaxen.version>
     <ehcache.version>2.5.1</ehcache.version>
-    <pentaho-json.version>8.1.0.0-SNAPSHOT</pentaho-json.version>
-    <servlet-api.version>3.0.1</servlet-api.version>
-    <jaxen.version>1.1</jaxen.version>
     <ezmorph.version>1.0.6</ezmorph.version>
-    <spring.framework.version>4.3.2.RELEASE</spring.framework.version>
+    <springframework.version>4.3.2.RELEASE</springframework.version>
+    <servlet-api.version>3.0.1</servlet-api.version>
     <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
     <jersey-multipart.version>1.19.1</jersey-multipart.version>
-    <mondrian.version>8.1.0.0-SNAPSHOT</mondrian.version>
     <jackson-mapper-asl.version>1.8.2</jackson-mapper-asl.version>
-    <backport-util-concurrent.version>3.1</backport-util-concurrent.version>
     <jackson-core-asl.version>1.9.3</jackson-core-asl.version>
-    <maven-filtering.version>3.1.1</maven-filtering.version>
+    <backport-util-concurrent.version>3.1</backport-util-concurrent.version>
     <osgi.version>4.3.1</osgi.version>
-    <karaf-maven-plugin.version>3.0.8</karaf-maven-plugin.version>
-    <karaf-maven-plugin.aggregateFeatures>false</karaf-maven-plugin.aggregateFeatures>
-    <cxf.karaf.version>3.0.13</cxf.karaf.version>
-    <mockito-all.version>1.9.5</mockito-all.version>
-    <junit.version>4.12</junit.version>
+    <karaf.version>3.0.8</karaf.version>
     <slf4j.version>1.7.7</slf4j.version>
+
+    <junit.version>4.12</junit.version>
+    <mockito-all.version>1.9.5</mockito-all.version>
+
+    <karaf-maven-plugin.version>${karaf.version}</karaf-maven-plugin.version>
+    <karaf-maven-plugin.aggregateFeatures>false</karaf-maven-plugin.aggregateFeatures>
+    <maven-filtering.version>3.1.1</maven-filtering.version>
   </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>cpf-core</artifactId>
-        <version>${pentaho-cpf-plugin.version}</version>
+        <version>${cpf.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -82,7 +96,7 @@
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>cpf-pentaho</artifactId>
-        <version>${pentaho-cpf-plugin.version}</version>
+        <version>${cpf.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -93,7 +107,29 @@
       <dependency>
         <groupId>org.pentaho.ctools</groupId>
         <artifactId>cpf-osgi</artifactId>
-        <version>${pentaho-cpf-plugin.version}</version>
+        <version>${cpf.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>*</artifactId>
+            <groupId>*</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>${commons-beanutils.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>*</artifactId>
+            <groupId>*</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>${commons-collections.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -181,7 +217,7 @@
       <dependency>
         <groupId>org.pentaho</groupId>
         <artifactId>json</artifactId>
-        <version>${pentaho-json.version}</version>
+        <version>${json.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -322,7 +358,7 @@
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-core</artifactId>
-        <version>${spring.framework.version}</version>
+        <version>${springframework.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -355,7 +391,7 @@
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>pentaho-cdf-js</artifactId>
-        <version>${pentaho-cdf-plugin.version}</version>
+        <version>${cdf.version}</version>
         <type>zip</type>
         <exclusions>
           <exclusion>

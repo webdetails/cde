@@ -1,0 +1,466 @@
+{
+  "components": {
+    "rows": [
+      {
+        "id": "336771a6-136e-548b-3629-4f83bb7c321d",
+        "parent": "STANDARDCOMPONENTS",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "tableComp"
+          },
+          {
+            "name": "expandContainerObject",
+            "type": "HtmlTarget",
+            "value": ""
+          },
+          {
+            "name": "listeners",
+            "type": "Listeners",
+            "value": "[]"
+          },
+          {
+            "name": "oLanguage",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "language",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "colFormats",
+            "type": "ColFormatsArray",
+            "value": "[]"
+          },
+          {
+            "name": "colHeaders",
+            "type": "ColHeadersArray",
+            "value": "[]"
+          },
+          {
+            "name": "colSortable",
+            "type": "ColSortableArray",
+            "value": "[]"
+          },
+          {
+            "name": "colTypes",
+            "type": "colTypesCustom",
+            "value": "[]"
+          },
+          {
+            "name": "colWidths",
+            "type": "ColWidthsArray",
+            "value": "[]"
+          },
+          {
+            "name": "expandParameters",
+            "type": "ExpandParameters",
+            "value": "[]"
+          },
+          {
+            "name": "parameters",
+            "type": "ValuesArray",
+            "value": "[]"
+          },
+          {
+            "name": "displayLength",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "expandOnClick",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "filter",
+            "type": "Boolean",
+            "value": "true"
+          },
+          {
+            "name": "info",
+            "type": "Boolean",
+            "value": "true"
+          },
+          {
+            "name": "lengthChange",
+            "type": "Boolean",
+            "value": "true"
+          },
+          {
+            "name": "paginate",
+            "type": "Boolean",
+            "value": "true"
+          },
+          {
+            "name": "sort",
+            "type": "Boolean",
+            "value": "true"
+          },
+          {
+            "name": "colSearchable",
+            "type": "ColSearchableArray",
+            "value": "[]"
+          },
+          {
+            "name": "drawCallback",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "dataSource",
+            "type": "Datasource",
+            "value": "solr_techproducts"
+          },
+          {
+            "name": "sDom",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "sortBy",
+            "type": "SortByArray",
+            "value": "[]"
+          },
+          {
+            "name": "priority",
+            "type": "Integer",
+            "value": 5
+          },
+          {
+            "name": "refreshPeriod",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "paginationType",
+            "type": "PaginationType",
+            "value": "simple_numbers"
+          },
+          {
+            "name": "tableStyle",
+            "type": "TableStyle",
+            "value": ""
+          },
+          {
+            "name": "htmlObject",
+            "type": "HtmlObject",
+            "value": "${h:placeholder}"
+          },
+          {
+            "name": "executeAtStart",
+            "type": "Boolean",
+            "value": "true"
+          },
+          {
+            "name": "paginateServerside",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "failureCallback",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "preExecution",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "postExecution",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "postFetch",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "preChange",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "postChange",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "extraOptions",
+            "type": "ExtraOptionsArray",
+            "value": "[]"
+          },
+          {
+            "name": "tooltip",
+            "type": "Html",
+            "value": ""
+          },
+          {
+            "name": "clickAction",
+            "type": "JavaScript",
+            "value": ""
+          }
+        ],
+        "rowName": "Table Component",
+        "type": "ComponentsTable",
+        "typeDesc": "Table Component"
+      }
+    ]
+  },
+  
+  "datasources": {
+    "rows": [
+      {
+        "id": "NOSQL",
+        "name": "NoSQL Datasources",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "Group",
+            "type": "Label",
+            "value": "NoSQL Datasources"
+          }
+        ],
+        "type": "Label",
+        "typeDesc": "<i>Group</i>"
+      },
+      {
+        "id": "c046a2cd-8c47-7ceb-292f-841fc3f096c0",
+        "meta": "SOLR",
+        "meta_conntype": "rest",
+        "meta_datype": "solr",
+        "parent": "NOSQL",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "solr_techproducts"
+          },
+          {
+            "name": "endpoint",
+            "type": "String",
+            "value": "http://localhost:8983/solr/"
+          },
+          {
+            "name": "collection",
+            "type": "String",
+            "value": "techproducts"
+          },
+          {
+            "name": "requestHandler",
+            "type": "String",
+            "value": "select"
+          },
+          {
+            "name": "responseType",
+            "type": "String",
+            "value": "json"
+          },
+          {
+            "name": "solrQuery",
+            "type": "String",
+            "value": "*:*"
+          },
+          {
+            "name": "schemaColumnNames",
+            "type": "SchemaColumnNamesArray",
+            "value": "[\"Company\",\"Address\"]"
+          },
+          {
+            "name": "schemaColumnTypes",
+            "type": "schemaColumnTypesCustom",
+            "value": "[\"string\",\"string\"]"
+          },
+          {
+            "name": "schemaColumnPaths",
+            "type": "SchemaColumnPathsArray",
+            "value": "[\"compName_s\",\"address_s\"]"
+          },
+          {
+            "name": "rowsLimit",
+            "type": "Integer",
+            "value": "100"
+          }
+        ],
+        "rowName": "Apache Solr",
+        "type": "DatasourcesApacheSolr",
+        "typeDesc": "Apache Solr Datasource"
+      }
+    ]
+  },
+
+  "layout": {
+    "rows": [
+      {
+        "id": "241c67fd-b5af-e69f-395e-a4d9a992c888",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutRow",
+        "typeDesc": "Row"
+      },
+      {
+        "id": "e8376fda-0713-ad1a-7bad-8c0233a8cea2",
+        "parent": "241c67fd-b5af-e69f-395e-a4d9a992c888",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "placeholder"
+          },
+          {
+            "name": "bootstrapExtraSmall",
+            "type": "String",
+            "value": "12"
+          },
+          {
+            "name": "bootstrapSmall",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "bootstrapMedium",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "bootstrapLarge",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "bootstrapCssClass",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutBootstrapColumn",
+        "typeDesc": "Column"
+      },
+      {
+        "id": "4977b9e4-390b-1ae8-9837-9596c1bb1370",
+        "parent": "241c67fd-b5af-e69f-395e-a4d9a992c888",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "export"
+          },
+          {
+            "name": "bootstrapExtraSmall",
+            "type": "String",
+            "value": "12"
+          },
+          {
+            "name": "bootstrapSmall",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "bootstrapMedium",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "bootstrapLarge",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "bootstrapCssClass",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutBootstrapColumn",
+        "typeDesc": "Column"
+      }
+    ],
+    "title": "CDF - Sample structure"
+  }
+}

@@ -2,13 +2,16 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-pentaho</artifactId>
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
+
   <artifactId>cde-pentaho-impl</artifactId>
   <description>Pentaho Community Dashboard Editor Pentaho Server Implementation</description>
+
   <dependencies>
     <dependency>
       <groupId>pentaho</groupId>
@@ -23,6 +26,7 @@
       <artifactId>cde-core-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
+
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
@@ -55,6 +59,7 @@
       <groupId>com.sun.jersey.contribs</groupId>
       <artifactId>jersey-multipart</artifactId>
     </dependency>
+
     <dependency>
       <groupId>pentaho</groupId>
       <artifactId>pentaho-platform-api</artifactId>
@@ -80,6 +85,7 @@
       <artifactId>commons-jxpath</artifactId>
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>net.sf.ehcache</groupId>
       <artifactId>ehcache-core</artifactId>

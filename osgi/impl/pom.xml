@@ -2,11 +2,13 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-osgi</artifactId>
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
+
   <artifactId>cde-osgi-impl</artifactId>
   <packaging>bundle</packaging>
   <description>Pentaho Community Dashboard Editor OSGi Implementation</description>
@@ -20,6 +22,7 @@
       <groupId>org.pentaho.ctools</groupId>
       <artifactId>cpf-osgi</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
       <artifactId>cde-core-impl</artifactId>
@@ -32,14 +35,20 @@
       <scope>provided</scope>
       <type>zip</type>
     </dependency>
+
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
     </dependency>
     <dependency>
+      <groupId>jaxen</groupId>
+      <artifactId>jaxen</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.pentaho</groupId>
       <artifactId>json</artifactId>
     </dependency>
+
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
@@ -48,6 +57,7 @@
       <groupId>javax.ws.rs</groupId>
       <artifactId>javax.ws.rs-api</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi.core</artifactId>

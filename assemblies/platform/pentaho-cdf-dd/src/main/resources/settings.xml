@@ -51,6 +51,7 @@
 
   <!-- A comma separated list of allowed domains for a cross-origin resource sharing-->
   <cross-domain-resources-whitelist><!--intentionally left blank --></cross-domain-resources-whitelist>
+
   <!-- A flag to disable reflected XSS prevention for the unpredicted cases -->
   <parameter-xss-escaping>true</parameter-xss-escaping>
 </settings>
