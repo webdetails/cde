@@ -43,11 +43,11 @@
     <global.require.file>cde-require-js-cfg.js</global.require.file>
     <requirejs.config.files.pattern>**/*-require-js-cfg.js</requirejs.config.files.pattern>
 
-    <cdf-plugin.version>8.1.0.0-SNAPSHOT</cdf-plugin.version>
-    <cpf-plugin.version>8.1.0.0-SNAPSHOT</cpf-plugin.version>
-    <pentaho-json.version>8.1.0.0-SNAPSHOT</pentaho-json.version>
+    <cdf.version>8.1.0.0-SNAPSHOT</cdf.version>
+    <cpf.version>8.1.0.0-SNAPSHOT</cpf.version>
+    <json.version>8.1.0.0-SNAPSHOT</json.version>
     <mondrian.version>8.1.0.0-SNAPSHOT</mondrian.version>
-    <platform.version>$8.1.0.0-SNAPSHOT</platform.version>
+    <platform.version>8.1.0.0-SNAPSHOT</platform.version>
 
     <commons-io.version>1.4</commons-io.version>
     <commons-lang.version>2.6</commons-lang.version>
@@ -58,12 +58,10 @@
 
     <jdom.version>1.0</jdom.version>
     <dom4j.version>1.6.1</dom4j.version>
-    <ehcache.version>2.5.1</ehcache.version>
-    <servlet-api.version>3.0.1</servlet-api.version>
     <jaxen.version>1.1.6</jaxen.version>
     <ehcache.version>2.5.1</ehcache.version>
     <ezmorph.version>1.0.6</ezmorph.version>
-    <spring.framework.version>4.3.2.RELEASE</spring.framework.version>
+    <springframework.version>4.3.2.RELEASE</springframework.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
     <jersey-multipart.version>1.19.1</jersey-multipart.version>
@@ -87,7 +85,7 @@
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>cpf-core</artifactId>
-        <version>${pentaho-cpf-plugin.version}</version>
+        <version>${cpf.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -98,7 +96,7 @@
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>cpf-pentaho</artifactId>
-        <version>${pentaho-cpf-plugin.version}</version>
+        <version>${cpf.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -109,7 +107,7 @@
       <dependency>
         <groupId>org.pentaho.ctools</groupId>
         <artifactId>cpf-osgi</artifactId>
-        <version>${pentaho-cpf-plugin.version}</version>
+        <version>${cpf.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -219,7 +217,7 @@
       <dependency>
         <groupId>org.pentaho</groupId>
         <artifactId>json</artifactId>
-        <version>${pentaho-json.version}</version>
+        <version>${json.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -360,7 +358,7 @@
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-core</artifactId>
-        <version>${spring.framework.version}</version>
+        <version>${springframework.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -393,7 +391,7 @@
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>pentaho-cdf-js</artifactId>
-        <version>${pentaho-cdf-plugin.version}</version>
+        <version>${cdf.version}</version>
         <type>zip</type>
         <exclusions>
           <exclusion>
