@@ -89,7 +89,7 @@ define([
           $.ajax({
             dataType: "script",
             data: params,
-            url: "http://maps.googleapis.com/maps/api/js"
+            url: "//maps.googleapis.com/maps/api/js"
           });
 
         }
