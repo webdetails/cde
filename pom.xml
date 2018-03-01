@@ -36,8 +36,8 @@
     <project.github-name>cde</project.github-name>
     <global.require.file>cde-require-js-cfg.js</global.require.file>
     <requirejs.config.files.pattern>**/*-require-js-cfg.js</requirejs.config.files.pattern>
-    <cpf-plugin.version>8.1.0.0-SNAPSHOT</cpf-plugin.version>
-    <cdf-plugin.version>8.1.0.0-SNAPSHOT</cdf-plugin.version>
+    <pentaho-cpf-plugin.version>8.1.0.0-SNAPSHOT</pentaho-cpf-plugin.version>
+    <pentaho-cdf-plugin.version>8.1.0.0-SNAPSHOT</pentaho-cdf-plugin.version>
     <platform.version>8.1.0.0-SNAPSHOT</platform.version>
     <commons-io.version>1.4</commons-io.version>
     <commons-lang.version>2.4</commons-lang.version>
@@ -46,7 +46,7 @@
     <commons-logging.version>1.1.1</commons-logging.version>
     <dom4j.version>1.6.1</dom4j.version>
     <ehcache.version>2.5.1</ehcache.version>
-    <json.version>8.1.0.0-SNAPSHOT</json.version>
+    <pentaho-json.version>8.1.0.0-SNAPSHOT</pentaho-json.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <jaxen.version>1.1</jaxen.version>
     <ezmorph.version>1.0.6</ezmorph.version>
@@ -71,7 +71,7 @@
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>cpf-core</artifactId>
-        <version>${cpf-plugin.version}</version>
+        <version>${pentaho-cpf-plugin.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -82,7 +82,7 @@
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>cpf-pentaho</artifactId>
-        <version>${cpf-plugin.version}</version>
+        <version>${pentaho-cpf-plugin.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -93,7 +93,7 @@
       <dependency>
         <groupId>org.pentaho.ctools</groupId>
         <artifactId>cpf-osgi</artifactId>
-        <version>${cpf-plugin.version}</version>
+        <version>${pentaho-cpf-plugin.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -181,7 +181,7 @@
       <dependency>
         <groupId>org.pentaho</groupId>
         <artifactId>json</artifactId>
-        <version>${json.version}</version>
+        <version>${pentaho-json.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -355,7 +355,7 @@
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>pentaho-cdf-js</artifactId>
-        <version>${cdf-plugin.version}</version>
+        <version>${pentaho-cdf-plugin.version}</version>
         <type>zip</type>
         <exclusions>
           <exclusion>
