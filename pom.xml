@@ -43,9 +43,9 @@
     <global.require.file>cde-require-js-cfg.js</global.require.file>
     <requirejs.config.files.pattern>**/*-require-js-cfg.js</requirejs.config.files.pattern>
 
-    <cdf.version>8.1.0.0-SNAPSHOT</cdf.version>
-    <cpf.version>8.1.0.0-SNAPSHOT</cpf.version>
-    <json.version>8.1.0.0-SNAPSHOT</json.version>
+    <pentaho-cdf-plugin.version>8.1.0.0-SNAPSHOT</pentaho-cdf-plugin.version>
+    <pentaho-cpf-plugin.version>8.1.0.0-SNAPSHOT</pentaho-cpf-plugin.version>
+    <pentaho-json.version>8.1.0.0-SNAPSHOT</pentaho-json.version>
     <mondrian.version>8.1.0.0-SNAPSHOT</mondrian.version>
     <platform.version>8.1.0.0-SNAPSHOT</platform.version>
 
@@ -85,7 +85,7 @@
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>cpf-core</artifactId>
-        <version>${cpf.version}</version>
+        <version>${pentaho-cpf-plugin.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -96,7 +96,7 @@
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>cpf-pentaho</artifactId>
-        <version>${cpf.version}</version>
+        <version>${pentaho-cpf-plugin.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -107,7 +107,7 @@
       <dependency>
         <groupId>org.pentaho.ctools</groupId>
         <artifactId>cpf-osgi</artifactId>
-        <version>${cpf.version}</version>
+        <version>${pentaho-cpf-plugin.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -217,7 +217,7 @@
       <dependency>
         <groupId>org.pentaho</groupId>
         <artifactId>json</artifactId>
-        <version>${json.version}</version>
+        <version>${pentaho-json.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -391,7 +391,7 @@
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>pentaho-cdf-js</artifactId>
-        <version>${cdf.version}</version>
+        <version>${pentaho-cdf-plugin.version}</version>
         <type>zip</type>
         <exclusions>
           <exclusion>
