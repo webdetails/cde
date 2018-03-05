@@ -77,7 +77,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function () {\n    this.dashboard.setParameter(\"columnsParam\", {attributes: [\"Product\"]});\n    this.dashboard.setParameter(\"measureParam\", {attributes: [\"Sales\"]});\n} "
+      "value": "function () {\n    this.dashboard.setParameter(\"columnsParam\", {fields: [\"Product\"]});\n    this.dashboard.setParameter(\"measureParam\", {fields: [\"Sales\"]});\n} "
      },
      {
       "name": "postExecution",
