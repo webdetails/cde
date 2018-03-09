@@ -1,0 +1,78 @@
+{
+  "name": "@pentaho/cde-components",
+  "version": "${project.version}",
+
+  "dependencies": {
+    "@pentaho/cdf": "${project.version}"
+  },
+
+  "paths": {
+    "cde/components": "/components"
+  },
+
+  "packages": [
+    {
+      "name": "cde/components/PopupComponent",
+      "location": "/components/PopupComponent/amd",
+      "main": "PopupComponent"
+    }, {
+      "name": "cde/components/ExportPopupComponent",
+      "location": "/components/PopupComponent/amd",
+      "main": "ExportPopupComponent"
+    }, {
+      "name": "cde/components/ExportButtonComponent",
+      "location": "/components/ExportButtonComponent/amd",
+      "main": "ExportButtonComponent"
+    }, {
+      "name": "cde/components/AjaxRequestComponent",
+      "location": "/components/AjaxRequestComponent/amd",
+      "main": "AjaxRequestComponent"
+    }, {
+      "name": "cde/components/CggComponent",
+      "location": "/components/CggComponent/amd",
+      "main": "CggComponent"
+    }, {
+      "name": "cde/components/CggDialComponent",
+      "location": "/components/CggComponent/amd",
+      "main": "CggDialComponent"
+    }, {
+      "name": "cde/components/DuplicateComponent",
+      "location": "/components/DuplicateComponent/amd",
+      "main": "DuplicateComponent"
+    }, {
+      "name": "cde/components/NewSelectorComponent",
+      "location": "/components/NewSelectorComponent/amd",
+      "main": "NewSelectorComponent"
+    }, {
+      "name": "cde/components/RaphaelComponent",
+      "location": "/components/RaphaelComponent/amd",
+      "main": "RaphaelComponent"
+    }, {
+      "name": "cde/components/RelatedContentComponent",
+      "location": "/components/RelatedContentComponent/amd",
+      "main": "RelatedContentComponent"
+    }, {
+      "name": "cde/components/SiteMapComponent",
+      "location": "/components/SiteMapComponent/amd",
+      "main": "SiteMapComponent"
+    }, {
+      "name": "cde/components/ViewManagerComponent",
+      "location": "/components/ViewManagerComponent/amd",
+      "main": "ViewManagerComponent"
+    }, {
+      "name": "cde/components/GoogleAnalyticsComponent",
+      "location": "/components/GoogleAnalyticsComponent/amd",
+      "main": "GoogleAnalyticsComponent"
+    }, {
+      "name": "cde/components/DashboardComponent",
+      "location": "/components/DashboardComponent/amd",
+      "main": "DashboardComponent"
+    }
+  ],
+
+  "config": {
+    "dash": {
+      "endpoint": "/cxf/cde/renderer/getDashboard?path="
+    }
+  }
+}

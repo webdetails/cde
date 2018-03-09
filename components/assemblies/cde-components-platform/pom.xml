@@ -2,14 +2,17 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-components-assemblies</artifactId>
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
+
   <artifactId>cde-components-platform</artifactId>
   <description>Pentaho Community Dashboard Editor Components for the Pentaho platform server</description>
   <packaging>pom</packaging>
+
   <properties>
     <js.project.list>pentaho-cdf-js,cde-components-impls-core,cde-components-impls-pentaho</js.project.list>
   </properties>

@@ -13,5 +13,6 @@
   <modules>
     <module>cde-components-platform</module>
     <module>cde-components-pdi</module>
+    <module>cde-components-webpackage</module>
   </modules>
 </project>

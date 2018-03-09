@@ -1,0 +1,173 @@
+{
+  "components": {
+    "rows": [
+      {
+        "id": "STANDARDCOMPONENTS",
+        "name": "Standard",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "Group",
+            "type": "Label",
+            "value": "Standard"
+          }
+        ],
+        "type": "Label",
+        "typeDesc": "<i>Group</i>"
+      },
+      {
+        "id": "ec04e1eb-6976-d0cd-f77c-c3219b220c19",
+        "parent": "STANDARDCOMPONENTS",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "Dash_export_comp"
+          },
+          {
+            "name": "listeners",
+            "type": "Listeners",
+            "value": "[]"
+          },
+          {
+            "name": "dashboardPath",
+            "type": "String",
+            "value": "/samples/karaf-dashboard/resources/export-popup-component/dash.wcdf"
+          },
+          {
+            "name": "dataSourceMapping",
+            "type": "DataSourceMapping",
+            "value": "[]"
+          },
+          {
+            "name": "oneWayMap",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "parameterMapping",
+            "type": "ParameterMapping",
+            "value": "[]"
+          },
+          {
+            "name": "priority",
+            "type": "Integer",
+            "value": 5
+          },
+          {
+            "name": "refreshPeriod",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "htmlObject",
+            "type": "HtmlObject",
+            "value": "${h:export_comp_dash}"
+          },
+          {
+            "name": "executeAtStart",
+            "type": "Boolean",
+            "value": "true"
+          },
+          {
+            "name": "preExecution",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "postExecution",
+            "type": "JavaScript",
+            "value": ""
+          }
+        ],
+        "rowName": "Dashboard Component",
+        "type": "ComponentsDashboardComponent",
+        "typeDesc": "Dashboard Component"
+      }
+    ]
+  },
+  "datasources": {
+    "rows": []
+  },
+  "layout": {
+    "rows": [
+      {
+        "id": "fd92d6cf-6500-2338-b5c6-fe7fae50c294",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutRow",
+        "typeDesc": "Row"
+      },
+      {
+        "id": "3500779c-77bc-0fcb-4788-30cf57ac7c73",
+        "type": "LayoutRow",
+        "typeDesc": "Row",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "name",
+            "value": "export_comp_dash",
+            "type": "Id"
+          },
+          {
+            "name": "height",
+            "value": "",
+            "type": "Integer"
+          },
+          {
+            "name": "backgroundColor",
+            "value": "",
+            "type": "Color"
+          },
+          {
+            "name": "roundCorners",
+            "value": "",
+            "type": "RoundCorners"
+          },
+          {
+            "name": "textAlign",
+            "value": "",
+            "type": "TextAlign"
+          },
+          {
+            "name": "cssClass",
+            "value": "",
+            "type": "String"
+          }
+        ]
+      }
+    ],
+    "title": "CDF - Sample structure"
+  }
+}

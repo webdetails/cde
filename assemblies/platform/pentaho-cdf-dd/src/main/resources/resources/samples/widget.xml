@@ -38,7 +38,7 @@
     </Implementation>
   </Contents>
   <Metadata>
-    <meta name="wcdf">/public/cde/widgets/sample.wcdf</meta>
+    <meta name="wcdf">/public/cde/widgets/samples.wcdf</meta>
     <meta name="widget">true</meta>
   </Metadata>
 </DesignerComponent>

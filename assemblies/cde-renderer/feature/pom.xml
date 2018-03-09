@@ -52,6 +52,5 @@
       <artifactId>cde-osgi-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
-
   </dependencies>
 </project>
