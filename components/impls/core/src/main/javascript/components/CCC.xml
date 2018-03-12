@@ -33,6 +33,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -347,6 +349,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -651,6 +655,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -896,6 +902,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -994,6 +1002,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -1308,6 +1318,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -1501,6 +1513,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -1815,6 +1829,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -2073,6 +2089,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -2331,6 +2349,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -2633,6 +2653,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -2796,6 +2818,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -3110,6 +3134,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -3424,6 +3450,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -3738,6 +3766,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -3883,6 +3913,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -4043,6 +4075,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -4277,6 +4311,8 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
         <Property>refreshPeriod</Property>
+        <Property>hideOverlay</Property>
+        <Property>cleanElementBeforeRender</Property>
       </Model>
     </Contents>
   </DesignerComponent>

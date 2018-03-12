@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cleanElementBeforeRender</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>"true"</DefaultValue>
+    <Description>Clean Element Before Render</Description>
+    <Tooltip>If false, the HTML element won't be cleared befored rendering it again after a refresh.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>52</Order>
+    <Advanced>true</Advanced>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>
