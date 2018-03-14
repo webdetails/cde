@@ -14,11 +14,12 @@
   <dependencies>
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
-      <artifactId>pentaho-cpf</artifactId>
+      <artifactId>pentaho-cpf-pdi</artifactId>
       <version>${project.version}</version>
       <type>xml</type>
       <classifier>features</classifier>
     </dependency>
+
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
       <artifactId>cde-core-impl</artifactId>
