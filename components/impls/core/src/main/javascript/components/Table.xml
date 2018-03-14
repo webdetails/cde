@@ -46,6 +46,8 @@
       <Property>postExecution</Property>
       <Property>failureCallback</Property>
       <Property>refreshPeriod</Property>
+      <Property>hideOverlay</Property>
+      <Property>cleanElementBeforeRender</Property>
       <Property>tooltip</Property>
       <Property>extraOptions</Property>
       <Property>expandParameters</Property>
