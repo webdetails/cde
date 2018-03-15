@@ -30,6 +30,7 @@
       <Property>tooltip</Property>
       <Property>listeners</Property>
       <Property>refreshPeriod</Property>
+      <Property>hideOverlay</Property>
     </Model>
     <Implementation />
   </Contents>
