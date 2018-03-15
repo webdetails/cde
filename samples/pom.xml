@@ -22,8 +22,8 @@
 
   <build>
     <plugins>
-
       <plugin>
+
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
 
@@ -34,8 +34,8 @@
             </Provide-Capability>
           </instructions>
         </configuration>
-      </plugin>
 
+      </plugin>
     </plugins>
   </build>
 

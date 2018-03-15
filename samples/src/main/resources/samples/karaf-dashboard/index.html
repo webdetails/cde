@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="./resources/style/cde-reference.css">
     <link rel="stylesheet" href="./resources/style/cde-template.css">
 
-
-    <script src="/requirejs-manager/js/require-init.js?useFullyQualifiedUrl=false"></script>
+    <script src="/pentaho/webcontext.js"></script>
   </head>
 
   <body>
@@ -49,16 +48,14 @@
       </div>
 
       <div class="webdetailsFooter">
-        <div class="webdetailsFooterCtools"><a href="http://community.hds.com/community/products-and-solutions/pentaho/pages/ctools"></a></div>
+        <div class="webdetailsFooterCtools">
+          <a href="http://community.hds.com/community/products-and-solutions/pentaho/pages/ctools"></a>
+        </div>
       </div>
     </div>
-
-    <!-- <div id=""></div> -->
     <!-- End; CDE Docs template -->
 
     <script type="text/javascript">
-      SESSION_LOCALE = "en_US";
-
       require([
         'dash!/samples/karaf-dashboard/resources/dashboard-component/dash.wcdf'
       ], function(SampleDash) {

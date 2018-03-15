@@ -64,6 +64,8 @@
     'requireLib': 'require',
     'common-ui/util/URLEncoder': 'empty:', // NewMapComponent
 
+    'pentaho/environment': 'empty:',
+
     // map cdf dependencies to empty files, skipping these
     'cdf/components/BaseComponent': 'empty:',
     'cdf/components/UnmanagedComponent': 'empty:',

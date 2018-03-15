@@ -21,6 +21,8 @@
   <bean id="readAccess" class="org.pentaho.ctools.cpf.repository.bundle.ReadAccess">
     <property name="bundle" ref="blueprintBundle"/>
   </bean>
+
+  <!-- Gain access to files available in bundles through CPF IReadAccess -->
   <service interface="pt.webdetails.cpf.repository.api.IReadAccess">
     <ref component-id="readAccess"/>
   </service>
