@@ -1,0 +1,13 @@
+<DesignerProperty>
+  <Header>
+    <Name>componentRefreshPeriod</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>10</DefaultValue>
+    <Description>Component Refresh Period</Description>
+    <Tooltip>Component refresh period in seconds. If greater that 0 the component Refresh Period where this datasource is used is override with this value.</Tooltip>
+    <InputType>Integer</InputType>
+    <OutputType>Number</OutputType>
+    <Order>28</Order>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>
