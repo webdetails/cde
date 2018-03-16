@@ -38,6 +38,9 @@
         <Property name="oLanguage">oLanguage</Property>
         <Property name="language">dtLanguage</Property>
       </Definition>
+      <Definition name="lifecycle">
+        <Property>silent</Property>
+      </Definition>
       <Property>executeAtStart</Property>
       <Property>preChange</Property>
       <Property>postChange</Property>
@@ -46,8 +49,7 @@
       <Property>postExecution</Property>
       <Property>failureCallback</Property>
       <Property>refreshPeriod</Property>
-      <Property>hideOverlay</Property>
-      <Property>cleanElementBeforeRender</Property>
+      <Property>clearsBeforePreExecution</Property>
       <Property>tooltip</Property>
       <Property>extraOptions</Property>
       <Property>expandParameters</Property>
