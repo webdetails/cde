@@ -1,10 +1,10 @@
 <DesignerProperty>
   <Header>
-    <Name>hideOverlay</Name>
+    <Name>silent</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>"false"</DefaultValue>
-    <Description>Disable Blocking Overlay</Description>
-    <Tooltip>If true, the blocking overlay when the component is loading won't be triggered.</Tooltip>
+    <Description>Don't Block the UI While Executing</Description>
+    <Tooltip>If true, the UI is not blocked while executing.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
     <Order>51</Order>
