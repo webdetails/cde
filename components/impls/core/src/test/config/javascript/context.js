@@ -11,8 +11,6 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-var KARMA_RUN = true;
-
 var requireCfg = {
   waitSeconds: 30,
   paths: {},
@@ -27,6 +25,9 @@ var requireCfg = {
   packages: []
 };
 
+var KARMA_RUN = true;
+
+// Configure require paths for CDF resources.
 var ENVIRONMENT_CONFIG = {
   paths: {
     "cdf": "target/dependency/cdf/js"

@@ -17,6 +17,8 @@
 
 (function() {
 
+  /* globals KARMA_RUN, CONTEXT_PATH, FULL_QUALIFIED_URL, */
+
   requireCfg.map = requireCfg.map || {};
   requireCfg.map['*'] = requireCfg.map['*'] || {};
   requireCfg.packages = requireCfg.packages || [];
@@ -24,97 +26,54 @@
   var isDebug = typeof document === "undefined" || document.location.href.indexOf("debug=true") > 0;
 
   var componentsPath;
-
-  if(typeof KARMA_RUN !== "undefined") { // unit tests
+  if (typeof KARMA_RUN !== "undefined") { // unit tests
     requireCfg.paths['cde'] = 'src/main/javascript';
     componentsPath = 'src/main/javascript/components';
 
-  } else if(typeof CONTEXT_PATH !== "undefined") { // production
+  } else {
+    var cdeResources = 'plugin/pentaho-cdf-dd/api/resources';
+    var cdeRepo = cdeResources + '/public/cde';
+    var cdeComponents = cdeResources + (isDebug ? '/components' : '/components-compressed');
 
-    requireCfg.paths['cde/components'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/resources/'
-      + (isDebug ? 'components' : 'components-compressed');
+    if (typeof CONTEXT_PATH !== "undefined") { // production
 
-    componentsPath = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/resources/' + (isDebug ? 'components' : 'components-compressed');
+      componentsPath = requireCfg.paths['cde/components'] = CONTEXT_PATH + cdeComponents;
 
-    requireCfg.paths['cde/repo'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/public/cde';
+      requireCfg.paths['cde/resources'] = CONTEXT_PATH + cdeResources;
+      requireCfg.paths['cde/repo'] = CONTEXT_PATH + cdeRepo;
 
-    requireCfg.paths['cde/resources'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources';
+    } else if (typeof FULL_QUALIFIED_URL !== "undefined") { // embedded
 
-  } else if(typeof FULL_QUALIFIED_URL !== "undefined") { // embedded
+      componentsPath = requireCfg.paths['cde/components'] = FULL_QUALIFIED_URL + cdeComponents;
 
-    requireCfg.paths['cde/components'] = FULL_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources/resources/'
-      + (isDebug ? 'components' : 'components-compressed');
+      requireCfg.paths['cde/resources'] = FULL_QUALIFIED_URL + cdeResources;
+      requireCfg.paths['cde/repo'] = FULL_QUALIFIED_URL + cdeRepo;
 
-    componentsPath = FULL_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources/resources/' + (isDebug ? 'components' : 'components-compressed');
-
-    requireCfg.paths['cde/repo'] = FULL_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources/public/cde';
-
-    requireCfg.paths['cde/resources'] = FULL_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources';
-
-  } else { // build
-    requireCfg.paths['cde'] = 'cde';
-    componentsPath = 'cde/components';
+    } else { // build
+      requireCfg.paths['cde'] = 'cde';
+      componentsPath = 'cde/components';
+    }
   }
 
-  requireCfg.packages.push({
-    name: 'cde/components/PopupComponent',
-    location: componentsPath + '/PopupComponent/amd',
-    main: 'PopupComponent'
-  },
-  {
-    name: 'cde/components/ExportButtonComponent',
-    location: componentsPath + '/ExportButtonComponent/amd',
-    main: 'ExportButtonComponent'
-  },
-  {
-    name: 'cde/components/AjaxRequestComponent',
-    location: componentsPath + '/AjaxRequestComponent/amd',
-    main: 'AjaxRequestComponent'
-  },
-  {
-    name: 'cde/components/CggComponent',
-    location: componentsPath + '/CggComponent/amd',
-    main: 'CggComponent'
-  },
-  {
-    name: 'cde/components/DuplicateComponent',
-    location: componentsPath + '/DuplicateComponent/amd',
-    main: 'DuplicateComponent'
-  },
-  {
-    name: 'cde/components/NewSelectorComponent',
-    location: componentsPath + '/NewSelectorComponent/amd',
-    main: 'NewSelectorComponent'
-  },
-  {
-    name: 'cde/components/RaphaelComponent',
-    location: componentsPath + '/RaphaelComponent/amd',
-    main: 'RaphaelComponent'
-  },
-  {
-    name: 'cde/components/RelatedContentComponent',
-    location: componentsPath + '/RelatedContentComponent/amd',
-    main: 'RelatedContentComponent'
-  },
-  {
-    name: 'cde/components/SiteMapComponent',
-    location: componentsPath + '/SiteMapComponent/amd',
-    main: 'SiteMapComponent'
-  },
-  {
-    name: 'cde/components/ViewManagerComponent',
-    location: componentsPath + '/ViewManagerComponent/amd',
-    main: 'ViewManagerComponent'
-  },
-  {
-    name: 'cde/components/GoogleAnalyticsComponent',
-    location: componentsPath + '/GoogleAnalyticsComponent/amd',
-    main: 'GoogleAnalyticsComponent'
-  },
-  {
-    name: 'cde/components/DashboardComponent',
-    location: componentsPath + '/DashboardComponent/amd',
-    main: 'DashboardComponent'
+  [
+    'PopupComponent',
+    'ExportButtonComponent',
+    'AjaxRequestComponent',
+    'CggComponent',
+    'DuplicateComponent',
+    'NewSelectorComponent',
+    'RaphaelComponent',
+    'RelatedContentComponent',
+    'SiteMapComponent',
+    'ViewManagerComponent',
+    'GoogleAnalyticsComponent',
+    'DashboardComponent'
+  ].forEach(function(component) {
+    requireCfg.packages.push({
+      name: 'cde/components/' + component,
+      location: componentsPath + '/' + component + '/amd',
+      main: component
+    })
   });
 
   // components that share a common package location are mapped to the appropriate subfolder
