@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -11,7 +11,10 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-requireCfg = {
+var KARMA_RUN = true;
+
+var requireCfg = {
+  waitSeconds: 30,
   paths: {},
   shim: {},
   map: {
@@ -19,7 +22,7 @@ requireCfg = {
   },
   bundles: {},
   config: {
-    service: {}
+    "pentaho/service": {}
   },
   packages: []
 };
@@ -29,9 +32,3 @@ var ENVIRONMENT_CONFIG = {
     "cdf": "target/dependency/cdf/js"
   }
 };
-
-var KARMA_RUN = true;
-
-var SESSION_NAME = "dummy";
-var SESSION_LOCALE = "en-US";
-var CONTEXT_PATH = "/pentaho/";

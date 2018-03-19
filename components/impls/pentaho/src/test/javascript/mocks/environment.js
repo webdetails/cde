@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -11,29 +11,12 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define([
-  'pentaho/environment'
-], function(environment) {
+define('pentaho/environment', [], function() {
 
   return {
-    getServiceUrl: function() {
-      return environment.server.root + "plugin/pentaho-cdf-dd/api/olap/";
-    },
-
-    getCubesUrl: function() {
-      return "getCubes";
-    },
-
-    getCubeStructureUrl: function() {
-      return "getCubeStructure";
-    },
-
-    getPaginatedLevelMembersUrl: function() {
-      return "getPaginatedLevelMembers";
-    },
-
-    getLevelMembersStructureUrl: function() {
-      return "getLevelMembersStructure";
+    locale: "en-US",
+    server: {
+      root: "/pentaho/"
     }
   };
 
