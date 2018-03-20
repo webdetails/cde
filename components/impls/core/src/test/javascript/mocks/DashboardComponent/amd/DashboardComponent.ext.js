@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define('cde/components/DashboardComponent/DashboardComponent.ext', [], function() {
+define('cde/components/DashboardComponent/DashboardComponent.ext', ['pentaho/environment'], function(env) {
 
   return {
     getDashboardUrl: function(path) {
@@ -19,7 +19,7 @@ define('cde/components/DashboardComponent/DashboardComponent.ext', [], function(
     },
 
     getDashboardParametersEndpoint: function() {
-      return CONTEXT_PATH + "plugin/pentaho-cdf-dd/api/renderer/getDashboardParameters?path=";
+      return env.server.root + "plugin/pentaho-cdf-dd/api/renderer/getDashboardParameters?path=";
     }
   };
 

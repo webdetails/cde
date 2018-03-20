@@ -1,0 +1,9 @@
+{
+  "name": "@pentaho/dashboard-samples",
+  "version": "${project.version}",
+
+  "dependencies": {
+  	"@pentaho/cdf": "${project.version}",
+  	"@pentaho/cde-components": "${project.version}"
+  }
+}

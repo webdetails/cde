@@ -13,6 +13,8 @@
   <packaging>feature</packaging>
 
   <dependencies>
+
+    <!-- Feature Dependencies -->
     <dependency>
       <groupId>org.pentaho.webpackage</groupId>
       <artifactId>pentaho-webpackage</artifactId>
@@ -20,7 +22,6 @@
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
-
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
       <artifactId>pentaho-cpf</artifactId>
@@ -34,13 +35,11 @@
       <artifactId>cde-core-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
-
     <!-- Transitive dependency of cde-core-impl/commons-jxpath -->
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
     </dependency>
-
     <!-- Transitive dependency of cde-core-impl/commons-beanutils -->
     <dependency>
       <groupId>commons-collections</groupId>
@@ -53,5 +52,11 @@
       <version>${project.version}</version>
     </dependency>
 
+    <!-- Webpackages -->
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>cde-samples-webpackage</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>

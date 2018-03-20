@@ -13,6 +13,8 @@
 
 (function() {
 
+  /* globals requireCfg */
+
   requireCfg.config = requireCfg.config || {};
 
   // configure the CDE endpoint to be used by the dash! loader plugin

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    
+    <title>CDE Embedded Dashboard on Karaf</title>
+
+    <link rel="stylesheet" href="./resources/style/cde-reference.css">
+    <link rel="stylesheet" href="./resources/style/cde-template.css">
+
+    <script src="/pentaho/webcontext.js"></script>
+  </head>
+
+  <body>
+    
+    <!-- Start; CDE Docs template -->
+    <div class="webdetailsWrapper">
+      <div class="webdetailsHead">
+        <div class="buttoncontact ">
+          <a href="mailto:portugal.leads@pentaho.com" title="Contact Hitachi Vantara directly here.">Get in Touch</a>
+        </div>
+      </div>
+
+      <div class="webdetailsPanelsContainerWrapper">
+
+        <div class="webdetailsPanelsContainer">
+          <div class="panelContainer selectedPanel">
+            <div class="webdetailsPanelContainerLeft"></div>
+            
+            <div class="webdetailsPanelContainerCenter">
+
+              <div class="panelTitle">
+                <div class="container">
+                  <span class="span-3">&nbsp;</span>
+                    <div class="span-13 panelTitleText">&nbsp;</div>
+                    <div class="span-8 last panelTitleImages"></div>
+                    <div class="span-17">&nbsp;</div>
+                </div>
+              </div>
+
+              <div id="content" class="webdetailsMainContent">
+                <h2>CDE Embedded Dashboard on Karaf Example</h2>
+              </div>
+
+              <div class="webdetailsPanelContainerRight"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="webdetailsFooter">
+        <div class="webdetailsFooterCtools">
+          <a href="http://community.hds.com/community/products-and-solutions/pentaho/pages/ctools"></a>
+        </div>
+      </div>
+    </div>
+    <!-- End; CDE Docs template -->
+
+    <script type="text/javascript">
+      require([
+        'dash!/samples/karaf-dashboard/resources/dashboard-component/dash.wcdf'
+      ], function(SampleDash) {
+        var sampleDash = new SampleDash("content");
+        
+        sampleDash.render();
+      });
+    </script>
+  </body>
+</html>

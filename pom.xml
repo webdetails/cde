@@ -18,6 +18,7 @@
     <module>core</module>
     <module>pentaho</module>
     <module>osgi</module>
+    <module>samples</module>
     <module>components</module>
     <module>webclient</module>
     <module>assemblies</module>

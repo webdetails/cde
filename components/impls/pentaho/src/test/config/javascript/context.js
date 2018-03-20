@@ -11,7 +11,8 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-requireCfg = {
+var requireCfg = {
+  waitSeconds: 30,
   paths: {},
   shim: {},
   map: {
@@ -19,19 +20,16 @@ requireCfg = {
   },
   bundles: {},
   config: {
-    service: {}
+    "pentaho/service": {}
   },
   packages: []
 };
 
+var KARMA_RUN = true;
+
+// Configure require paths for CDF resources.
 var ENVIRONMENT_CONFIG = {
   paths: {
     "cdf": "target/dependency/cdf/js"
   }
 };
-
-var KARMA_RUN = true;
-
-var SESSION_NAME = "dummy";
-var SESSION_LOCALE = "en-US";
-var CONTEXT_PATH = "/pentaho/";

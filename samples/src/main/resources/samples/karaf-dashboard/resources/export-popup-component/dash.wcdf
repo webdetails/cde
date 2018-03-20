@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+	<title>Export Popup Component</title>
+	<description>A sample of ExportPopup Component</description>
+	<author>Hitachi Vantara</author>
+	<style>CleanRequire</style>
+	<rendererType>blueprint</rendererType>
+	<require>true</require>
+	<widget>false</widget>
+</cdf>

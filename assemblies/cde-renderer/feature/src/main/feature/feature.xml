@@ -3,9 +3,11 @@
   <repository>mvn:org.apache.cxf.karaf/apache-cxf/${karaf.version}/xml/features</repository>
 
   <feature name="pentaho-cde-renderer" version="${project.version}">
+
     <feature version="${karaf.version}">cxf-jaxrs</feature>
 
     <feature version="${pentaho-osgi-bundles.version}">pentaho-requirejs-osgi-manager</feature>
+
   </feature>
 
   <!-- feature copied from pentaho-karaf-assembly: pentaho-karaf-features-standard.xml -->
