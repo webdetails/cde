@@ -16,23 +16,9 @@
 
     <!-- Feature Dependencies -->
     <dependency>
-      <groupId>org.pentaho</groupId>
-      <artifactId>pentaho-requirejs-osgi-manager</artifactId>
-      <version>${pentaho-osgi-bundles.version}</version>
-      <classifier>features</classifier>
-      <type>xml</type>
-    </dependency>
-    <dependency>
       <groupId>org.pentaho.webpackage</groupId>
       <artifactId>pentaho-webpackage</artifactId>
       <version>${pentaho-osgi-bundles.version}</version>
-      <classifier>features</classifier>
-      <type>xml</type>
-    </dependency>
-    <dependency>
-      <groupId>org.pentaho.webcontext</groupId>
-      <artifactId>pentaho-webcontext</artifactId>
-      <version>${project.version}</version>
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
@@ -68,44 +54,8 @@
 
     <!-- Webpackages -->
     <dependency>
-      <groupId>pentaho</groupId>
-      <artifactId>pentaho-cdf-webpackage</artifactId>
-      <version>${project.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>org.pentaho</groupId>
-      <artifactId>common-ui-webpackage</artifactId>
-      <version>${project.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
       <groupId>org.pentaho.ctools</groupId>
-      <artifactId>pentaho-cde-components-webpackage</artifactId>
-      <version>${project.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>org.pentaho.ctools</groupId>
-      <artifactId>dashboard-samples-webpackage</artifactId>
+      <artifactId>cde-samples-webpackage</artifactId>
       <version>${project.version}</version>
       <exclusions>
         <exclusion>

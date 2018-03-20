@@ -9,9 +9,9 @@
     <version>8.1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>dashboard-samples-webpackage</artifactId>
+  <artifactId>cde-samples-webpackage</artifactId>
   <packaging>bundle</packaging>
-  <description>Pentaho Community Dashboard Editor OSGi Implementation</description>
+  <description>Pentaho Community Dashboard Editor samples webpackage</description>
 
   <dependencies>
     <dependency>
@@ -23,7 +23,6 @@
   <build>
     <plugins>
       <plugin>
-
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
 
@@ -34,7 +33,6 @@
             </Provide-Capability>
           </instructions>
         </configuration>
-
       </plugin>
     </plugins>
   </build>
