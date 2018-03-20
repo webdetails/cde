@@ -1,13 +1,13 @@
 <DesignerProperty>
   <Header>
-    <Name>windowRate</Name>
+    <Name>windowLimit</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0</DefaultValue>
-    <Description>Window Rate</Description>
-    <Tooltip>Window Rate</Tooltip>
+    <Description>Window Limit</Description>
+    <Tooltip>Window Limit</Tooltip>
     <InputType>Integer</InputType>
     <OutputType>Number</OutputType>
-    <Order>26</Order>
+    <Order>28</Order>
     <Version>1.0</Version>
   </Header>
 </DesignerProperty>

@@ -1,0 +1,13 @@
+<DesignerProperty>
+  <Header>
+    <Name>windowMode</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>TIME_BASED</DefaultValue>
+    <Description>Window Mode</Description>
+    <Tooltip>Window Mode</Tooltip>
+    <InputType>WindowMode</InputType>
+    <OutputType>String</OutputType>
+    <Order>25</Order>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>
