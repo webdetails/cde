@@ -15,8 +15,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>pentaho</groupId>
-      <artifactId>cpf-core</artifactId>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>cpf-osgi</artifactId>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 

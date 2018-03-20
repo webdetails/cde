@@ -10,7 +10,6 @@
   </parent>
 
   <artifactId>cde-components-webpackage</artifactId>
-  <version>8.1.0.0-SNAPSHOT</version>
 
   <packaging>bundle</packaging>
 
@@ -27,27 +26,16 @@
       <version>${project.version}</version>
       <type>zip</type>
     </dependency>
+
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>cpf-osgi</artifactId>
+      <scope>runtime</scope>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
-      <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-
-        <executions>
-          <execution>
-            <id>unpack-cde-components-pdi-pkg</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>unpack-dependencies</goal>
-            </goals>
-            <configuration>
-              <includeArtifactIds>cde-components-pdi</includeArtifactIds>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
@@ -87,10 +75,6 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.karaf.tooling</groupId>
-        <artifactId>karaf-maven-plugin</artifactId>
-      </plugin>
     </plugins>
   </build>
 </project>
