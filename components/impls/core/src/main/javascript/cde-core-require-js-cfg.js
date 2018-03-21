@@ -33,7 +33,7 @@
   } else {
     var cdeResources = 'plugin/pentaho-cdf-dd/api/resources';
     var cdeRepo = cdeResources + '/public/cde';
-    var cdeComponents = cdeResources + (isDebug ? '/components' : '/components-compressed');
+    var cdeComponents = cdeResources + '/resources' + (isDebug ? '/components' : '/components-compressed');
 
     if (typeof CONTEXT_PATH !== "undefined") { // production
 
