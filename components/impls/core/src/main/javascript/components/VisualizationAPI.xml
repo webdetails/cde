@@ -15,6 +15,9 @@
       <Definition name="queryDefinition">
         <Property>dataSource</Property>
       </Definition>
+      <Definition name="lifecycle">
+        <Property>silent</Property>
+      </Definition>
       <Property name="parameters">xActionArrayParameter</Property>
       <Property name="vizId">visualizationId</Property>
       <Property name="vizOptions">visualizationOptions</Property>
@@ -30,7 +33,6 @@
       <Property>tooltip</Property>
       <Property>listeners</Property>
       <Property>refreshPeriod</Property>
-      <Property>hideOverlay</Property>
     </Model>
     <Implementation />
   </Contents>
