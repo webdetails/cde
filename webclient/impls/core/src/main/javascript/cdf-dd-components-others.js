@@ -125,6 +125,14 @@ var TopBottomRenderer = SelectRenderer.extend({
   }
 });
 
+var WindowModeRenderer = SelectRenderer.extend({
+
+    selectData: {
+        'TIME_BASED': 'Time Based',
+        'ROW_BASED': 'Row Based'
+    }
+});
+
 var DataServiceNameRenderer = SelectRenderer.extend({
   selectData: {},
   streaming: false,

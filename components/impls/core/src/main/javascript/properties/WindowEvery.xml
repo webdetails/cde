@@ -1,10 +1,10 @@
 <DesignerProperty>
   <Header>
-    <Name>windowMillisSize</Name>
+    <Name>windowEvery</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>0</DefaultValue>
-    <Description>Window Milliseconds Size</Description>
-    <Tooltip>Window Milliseconds Size</Tooltip>
+    <Description>Window Every</Description>
+    <Tooltip>Window Every</Tooltip>
     <InputType>Integer</InputType>
     <OutputType>Number</OutputType>
     <Order>27</Order>
