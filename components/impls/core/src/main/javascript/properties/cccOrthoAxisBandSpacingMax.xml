@@ -7,7 +7,7 @@
     <Tooltip>The maximum space, in pixels, separating/surrounding bands (applies to discrete axes).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>404</Order>
+    <Order>406</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
