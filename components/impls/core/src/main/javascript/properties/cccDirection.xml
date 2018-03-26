@@ -7,7 +7,7 @@
     <Tooltip>The direction of the waterfall.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>309</Order>
+    <Order>310</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

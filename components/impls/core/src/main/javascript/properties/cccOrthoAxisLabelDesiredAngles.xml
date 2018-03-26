@@ -7,7 +7,7 @@
     <Tooltip>List of angles to try when overlappedLabelsMode is 'rotate' or 'rotatethenhide' (applies to normal discrete axes).</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>
-    <Order>418</Order>
+    <Order>420</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

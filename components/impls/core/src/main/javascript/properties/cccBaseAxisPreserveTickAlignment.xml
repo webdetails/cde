@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBaseAxisPreserveTickAlignment</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>Base Axis Preserve Tick Alignment</Description>
+    <Tooltip>When using a sliding window for real time applications, the ticks alignment is used to guarantee that the ticks keep the same regularity from one rendering to the next (applies to continuous axes).</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>237</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

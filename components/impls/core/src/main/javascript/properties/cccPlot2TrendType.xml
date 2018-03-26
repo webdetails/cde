@@ -7,7 +7,7 @@
     <Tooltip>The type of trend to perform on the data of the associated plot.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>465</Order>
+    <Order>468</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

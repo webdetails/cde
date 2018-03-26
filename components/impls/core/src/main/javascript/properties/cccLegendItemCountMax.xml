@@ -7,7 +7,7 @@
     <Tooltip>The maximum positive number of legend items that can fit in the legend panel.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>329</Order>
+    <Order>330</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

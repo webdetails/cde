@@ -7,7 +7,7 @@
     <Tooltip>The opacity level of the tooltip box (range from 0, completely transparent, to 1).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>533</Order>
+    <Order>536</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
