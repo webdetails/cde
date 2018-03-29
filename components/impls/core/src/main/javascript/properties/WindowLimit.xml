@@ -7,7 +7,7 @@
     <Tooltip>Window Limit</Tooltip>
     <InputType>Integer</InputType>
     <OutputType>Number</OutputType>
-    <Order>28</Order>
+    <Order>27</Order>
     <Version>1.0</Version>
   </Header>
 </DesignerProperty>

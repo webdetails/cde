@@ -7,7 +7,7 @@
     <Tooltip>Window Every</Tooltip>
     <InputType>Integer</InputType>
     <OutputType>Number</OutputType>
-    <Order>27</Order>
+    <Order>26</Order>
     <Version>1.0</Version>
   </Header>
 </DesignerProperty>

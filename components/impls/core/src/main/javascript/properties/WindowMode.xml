@@ -7,7 +7,7 @@
     <Tooltip>Window Mode</Tooltip>
     <InputType>WindowMode</InputType>
     <OutputType>String</OutputType>
-    <Order>25</Order>
+    <Order>24</Order>
     <Version>1.0</Version>
   </Header>
 </DesignerProperty>

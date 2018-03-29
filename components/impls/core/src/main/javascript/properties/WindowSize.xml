@@ -7,7 +7,7 @@
     <Tooltip>Window Size</Tooltip>
     <InputType>Integer</InputType>
     <OutputType>Number</OutputType>
-    <Order>26</Order>
+    <Order>25</Order>
     <Version>1.0</Version>
   </Header>
 </DesignerProperty>
