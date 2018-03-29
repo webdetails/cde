@@ -68,6 +68,7 @@
     <jersey-multipart.version>1.19.1</jersey-multipart.version>
     <jackson-mapper-asl.version>1.8.2</jackson-mapper-asl.version>
     <jackson-core-asl.version>1.9.3</jackson-core-asl.version>
+    <fasterxml.jackson.core.version>2.9.4</fasterxml.jackson.core.version>
     <backport-util-concurrent.version>3.1</backport-util-concurrent.version>
     <osgi.version>4.3.1</osgi.version>
     <karaf.version>3.0.8</karaf.version>
@@ -432,6 +433,33 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-log4j12</artifactId>
         <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${fasterxml.jackson.core.version}</version>       
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${fasterxml.jackson.core.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>*</artifactId>
+            <groupId>*</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${fasterxml.jackson.core.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>*</artifactId>
+            <groupId>*</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
     </dependencies>
   </dependencyManagement>
