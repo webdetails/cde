@@ -16,13 +16,18 @@ package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
+import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
-
 import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.meta.DataSourceComponentType;
+import pt.webdetails.cdf.dd.model.meta.MetaModel;
+import pt.webdetails.cdf.dd.model.meta.PropertyType;
+import pt.webdetails.cdf.dd.model.meta.PropertyTypeUsage;
 import pt.webdetails.cdf.dd.model.meta.writer.cderunjs.amd.CdeRunJsThingWriterFactory;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
@@ -37,10 +42,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyName;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyValue;
-import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.INDENT1;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.INDENT2;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.NEWLINE;
@@ -48,6 +52,7 @@ import static pt.webdetails.cdf.dd.CdeConstants.Writer.NEWLINE;
 public class CdfRunJsDataSourceComponentWriterTest {
 
   private static final String DATASOURCE_COMPONENT_NAME = "dsName";
+  private static final String DATASOURCE_COMPONENT_REFRESH_PERIOD = "componentRefreshPeriod";
 
   private Dashboard dash;
   private CdeRunJsThingWriterFactory factory;
@@ -108,12 +113,14 @@ public class CdfRunJsDataSourceComponentWriterTest {
   }
 
   @Test
-  public void testBuiltInCdaDataSourceComponentWriter() throws ThingWriteException {
-    Map<String, String> properties = new LinkedHashMap<>( 2 );
+  public void testBuiltInCdaDataSourceComponentWriter() throws ThingWriteException, ValidationException {
+    Map<String, String> properties = new LinkedHashMap<>( 3 );
     properties.put( DATASOURCE_COMPONENT_NAME, "fakeDataAccessId" );
+    properties.put( DATASOURCE_COMPONENT_REFRESH_PERIOD, "10" );
     properties.put( PropertyName.PATH, "" );
 
     when( dataSourceComponent.getName() ).thenReturn( properties.get( DATASOURCE_COMPONENT_NAME ) );
+    when( dataSourceComponent.tryGetPropertyBindingByName( PropertyValue.COMPONENT_REFRESH_RATE ) ).thenReturn( getPropertyBinding( "10" ) );
 
     assertDataSourceComponentWriterOutput( DataSource.META_TYPE_CDA, properties, true );
   }
@@ -189,5 +196,47 @@ public class CdfRunJsDataSourceComponentWriterTest {
     String suffix = NEWLINE + INDENT1 + "}";
 
     return new StringJoiner( delimiter, prefix, suffix );
+  }
+
+  private PropertyBinding getPropertyBinding( String value ) throws ValidationException {
+    PropertyBinding.Builder builder = getBuilder();
+    builder.setValue( value );
+    Component component = Mockito.mock( Component.class );
+    MetaModel metaModel = Mockito.mock( MetaModel.class );
+    return new PropertyBinding( builder, component, metaModel ) {
+      @Override
+      public PropertyTypeUsage getPropertyUsage() {
+        return null;
+      }
+
+      @Override
+      public String getAlias() {
+        return null;
+      }
+
+      @Override
+      public String getInputType() {
+        return null;
+      }
+
+      @Override
+      public PropertyType getProperty() {
+        return null;
+      }
+    };
+  }
+
+  private PropertyBinding.Builder getBuilder() {
+    return new PropertyBinding.Builder() {
+      @Override
+      public String getAlias() {
+        return null;
+      }
+
+      @Override
+      public PropertyBinding build( Component owner, MetaModel metaModel ) throws ValidationException {
+        return null;
+      }
+    };
   }
 }
