@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>dataAdditiveMode</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>New data adds to existing data</Description>
+    <Tooltip>Indicates if data is added or replaces the existing data.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>101</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>
