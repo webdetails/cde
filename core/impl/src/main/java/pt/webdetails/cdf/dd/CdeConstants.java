@@ -279,6 +279,8 @@ public class CdeConstants {
        * rendered to Javascript.
        */
       public static class PropertyName {
+        public static final String COMPONENT_DATASOURCE_ID_PROP = "datasource";
+
         // Datasource
         public static final String QUERY_TYPE = "queryType";
         public static final String QUERY = "query";
@@ -290,7 +292,6 @@ public class CdeConstants {
 
         // CPK DataSource
         public static final String DATA_ACCESS_ID = "dataAccessId";
-        public static final String DATA_ACCESS_STREAM_REFRESH_PERIOD = "componentRefreshPeriod";
         public static final String ENDPOINT = "endpoint";
         public static final String COLLECTION = "collection";
         public static final String PLUGIN_ID = "pluginId";
@@ -298,7 +299,9 @@ public class CdeConstants {
         public static final String KETTLE_OUTPUT_STEP_NAME = "stepName";
 
         // CDA DataSource
+        public static final String DATA_ACCESS_LEGACY = "datasourceProperties";
         public static final String OUTPUT_INDEX_ID = "outputIndexId";
+        public static final String DATA_ACCESS_STREAM_REFRESH_PERIOD = "componentRefreshPeriod";
         public static final String SOLUTION = "solution";
         public static final String PATH = "path";
         public static final String CDA_PATH = "cdaPath";
