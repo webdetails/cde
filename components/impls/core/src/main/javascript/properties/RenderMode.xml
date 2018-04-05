@@ -1,0 +1,20 @@
+<DesignerProperty>
+  <Header>
+    <Name>renderMode</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>total</DefaultValue>
+    <Description>Render mode</Description>
+    <Tooltip>Indicates the type of render to use when updating the component.</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>100</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="Total">total</Value>
+    <Value display="Partial - Same Metadata">partialSameMetadata</Value>
+    <Value display="Partial - Same Data">partialSameData</Value>
+    <Value display="Partial - Same Layout">partialSameLayout</Value>
+  </Values>
+</DesignerProperty>
