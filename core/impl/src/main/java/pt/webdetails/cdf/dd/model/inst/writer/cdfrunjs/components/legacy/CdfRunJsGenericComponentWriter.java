@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,7 +13,6 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy;
 
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
@@ -22,14 +21,22 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
+import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.ExtensionPropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.meta.GenericComponentType;
 import pt.webdetails.cdf.dd.model.meta.PropertyTypeUsage;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
-import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyName.COMPONENT_DATASOURCE_ID_PROP;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyName.DATA_ACCESS_LEGACY;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyName.DATA_ACCESS_STREAM_REFRESH_PERIOD;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.INDENT1;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.INDENT2;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.NEWLINE;
 
 public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements IThingWriter {
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
@@ -52,7 +59,34 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
       this.writeDefinition( definitionName, out, context, comp, compType );
     }
 
+    addCommaAndLineSep( out );
+    //Render data source specific properties
+    this.writeDataSourceDefinitionProperties( out, context, comp );
+
     out.append( NEWLINE ).append( "};" ).append( NEWLINE );
+  }
+
+  private void writeDataSourceDefinitionProperties( StringBuilder out, CdfRunJsDashboardWriteContext context, GenericComponent comp ) throws ThingWriteException {
+    if ( context != null && context.getDashboard() != null ) {
+      Dashboard dash = context.getDashboard();
+      String datasourcePropValue = comp.tryGetPropertyValue( COMPONENT_DATASOURCE_ID_PROP, null );
+      if ( datasourcePropValue != null ) {
+        DataSourceComponent datasource = context.getDashboard().getDataSource( datasourcePropValue );
+
+        if ( datasource != null ) {
+          addJsProperty( out, DATA_ACCESS_LEGACY, " {", INDENT1, true );
+          out.append( NEWLINE );
+
+          //Datasource component refresh period
+          String cdaComponentRefreshPeriod = datasource.tryGetPropertyValue( DATA_ACCESS_STREAM_REFRESH_PERIOD, null );
+          if ( cdaComponentRefreshPeriod != null ) {
+            addJsProperty( out, DATA_ACCESS_STREAM_REFRESH_PERIOD, JsonUtils.toJsString( cdaComponentRefreshPeriod ), INDENT2, true );
+          }
+
+          out.append( NEWLINE ).append( INDENT1 ).append( "}" );
+        }
+      }
+    }
   }
 
   private void writeDefinition(

@@ -165,7 +165,7 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
     String dsName = dataSourceComp.getName();
     addFirstJsProperty( out, PropertyName.DATA_ACCESS_ID, buildJsStringValue( dsName ), Writer.INDENT2 );
 
-    String refreshPeriod = dataSourceComp.tryGetPropertyBindingByName( PropertyValue.COMPONENT_REFRESH_RATE ) != null ? dataSourceComp.tryGetPropertyBindingByName( PropertyValue.COMPONENT_REFRESH_RATE ).getValue() : "10";
+    String refreshPeriod = dataSourceComp.tryGetPropertyBindingByName( PropertyValue.COMPONENT_REFRESH_RATE ) != null ? dataSourceComp.tryGetPropertyBindingByName( PropertyValue.COMPONENT_REFRESH_RATE ).getValue() : "";
     addJsProperty( out, PropertyName.DATA_ACCESS_STREAM_REFRESH_PERIOD, buildJsStringValue( refreshPeriod ), Writer.INDENT2 );
 
     String cdeFilePath = context.getDashboard().getSourcePath();
