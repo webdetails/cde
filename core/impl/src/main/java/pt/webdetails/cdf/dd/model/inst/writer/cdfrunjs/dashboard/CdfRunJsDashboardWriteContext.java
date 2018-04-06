@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -199,5 +199,26 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
     return ( this._options.isAbsolute() && !StringUtils.isEmpty( this._options.getAbsRoot() ) )
       ? ( this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
       : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
+  }
+
+  protected String getDashboardPath( String path ) {
+    return replaceWhiteSpaces( path.replaceAll( "(^/.*/$)", "$1" ) );
+  }
+
+  protected String getResourceReplacement( String token, String path, Long timestamp ) {
+    final String timestampParam = timestamp != null ? "?v=" + timestamp : "";
+
+    return replaceWhiteSpaces( path + token + timestampParam );
+  }
+
+  protected String getSystemResourceReplacement( String token, String root, String pluginId ) {
+    final boolean isValidPluginId = StringUtils.isNotEmpty( pluginId );
+    final String path = root + "/" + getSystemDir() + ( isValidPluginId ? "/" + pluginId : "" );
+
+    return getResourceReplacement( token, path, null );
+  }
+
+  private String replaceWhiteSpaces( String value ) {
+    return value.replaceAll( " ", "%20" );
   }
 }
