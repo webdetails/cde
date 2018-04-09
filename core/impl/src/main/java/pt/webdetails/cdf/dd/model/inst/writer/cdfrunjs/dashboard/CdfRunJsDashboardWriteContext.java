@@ -52,7 +52,7 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
   // ------------
 
   // Endpoints
-  protected static final String RESOURCE_API_GET = "api/resources";
+  public static final String RESOURCE_API_GET = "api/resources";
 
   protected boolean _isFirstInList = true;
   protected final Date _writeDate;
