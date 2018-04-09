@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -526,31 +526,39 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     // unnamed file resource
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "", "a/path/../file2.js", "jsFileRsrc2" );
     // named file resource
-    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc1", "jsFileRsrcPath1", "jsFileRsrc1" );
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc1", "/jsFileRsrcPath1", "jsFileRsrc1" );
+    // file resource not normalized with white spaces
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc3White", "a/path/../white space/file3White.js", "jsFileRsrc3White" );
     // file resource not normalized
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc3", "a/path/../file3.js", "jsFileRsrc3" );
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.CODE, "jsCodeRsrc1", "jsCodeRsrcrPath1", "jsCodeRsrc1" );
     // absolute file resource
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc4", "http://dummy/jsFileRsrcPath4.js",
       "jsFileRsrc4" );
+    // absolute file resource with white spaces
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc4White", "http://dummy/white space/jsFileRsrcPath4White.js",
+      "jsFileRsrc4White" );
     // absolute unnamed file resource
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "", "http://dummy/jsFileRsrcPath5.js",
       "jsFileRsrc5" );
-    testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc1", "cssFileRsrcPath1", "cssFileRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc1", "/cssFileRsrcPath1", "cssFileRsrc1" );
     testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc2", "cssFileRsrcPath2.css", "cssFileRsrc2" );
     testResources.add( ResourceKind.CSS, ResourceType.CODE, "cssCodeRsrc1", "cssCodeRsrcPath1", "cssCodeRsrc1" );
     testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc3", "http://dummy/cssFileRsrcPath3.css",
       "cssFileRsrc3" );
 
     // context
-    doReturn( "jsFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "jsFileRsrcPath1" );
+    doReturn( "/jsFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "/jsFileRsrcPath1" );
     doReturn( "a/path/../file2.js" ).when( context ).replaceTokensAndAlias( "a/path/../file2.js" );
+    doReturn( "a/path/../white space/file3White.js" ).when( context ).replaceTokensAndAlias( "a/path/../white space/file3White.js" );
     doReturn( "a/path/../file3.js" ).when( context ).replaceTokensAndAlias( "a/path/../file3.js" );
     doReturn( "http://dummy/jsFileRsrcPath4.js" )
       .when( context ).replaceTokensAndAlias( "http://dummy/jsFileRsrcPath4.js" );
+    doReturn( "http://dummy/white space/jsFileRsrcPath4White.js" )
+      .when( context ).replaceTokensAndAlias( "http://dummy/white space/jsFileRsrcPath4White.js" );
     doReturn( "http://dummy/jsFileRsrcPath5.js" )
       .when( context ).replaceTokensAndAlias( "http://dummy/jsFileRsrcPath5.js" );
-    doReturn( "cssFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "cssFileRsrcPath1" );
+    doReturn( "/cssFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "/cssFileRsrcPath1" );
     doReturn( "cssFileRsrcPath2.css" ).when( context ).replaceTokensAndAlias( "cssFileRsrcPath2.css" );
     doReturn( "http://dummy/cssFileRsrcPath3.css" )
       .when( context ).replaceTokensAndAlias( "http://dummy/cssFileRsrcPath3.css" );
@@ -559,26 +567,31 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       dashboardWriterSpy.writeFileResourcesRequireJSPathConfig( out, testResources, context );
     assertEquals( "jsFileRsrc1", resourceModules.get( "cde/resources/jsFileRsrcPath1" ) );
     assertEquals( "", resourceModules.get( "cde/resources/a/file2" ) );
+    assertEquals( "jsFileRsrc3White", resourceModules.get( "cde/resources/a/white%20space/file3White" ) );
     assertEquals( "jsFileRsrc3", resourceModules.get( "cde/resources/a/file3" ) );
     assertEquals( "jsFileRsrc4", resourceModules.get( "cde/resources/jsFileRsrc4" ) );
+    assertEquals( "jsFileRsrc4White", resourceModules.get( "cde/resources/jsFileRsrc4White" ) );
     assertEquals( "", resourceModules.get( "cde/resources/1234" ) ); // random UUID mocked value
     assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrcPath1" ) );
     assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrcPath2" ) );
     assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrc3" ) );
 
     assertEquals( "requireCfg['paths']['cde/resources/jsFileRsrc4'] = 'http://dummy/jsFileRsrcPath4';"  + NEWLINE
+      + "requireCfg['paths']['cde/resources/jsFileRsrc4White'] = 'http://dummy/white%20space/jsFileRsrcPath4White';"  + NEWLINE
       + "requireCfg['paths']['cde/resources/1234'] = 'http://dummy/jsFileRsrcPath5';" + NEWLINE
       + "requireCfg['paths']['cde/resources/cssFileRsrc3'] = 'http://dummy/cssFileRsrcPath3';" + NEWLINE
       + "require.config(requireCfg);", out.toString().trim() );
 
     Map<String, String> expectedResourceModules = new LinkedHashMap<String, String>();
     expectedResourceModules.put( "cde/resources/jsFileRsrcPath1", "jsFileRsrc1" );
-    expectedResourceModules.put( "cde/resources/a/file2", "" );
+    expectedResourceModules.put( "cde/resources/a/white%20space/file3White", "jsFileRsrc3White" );
     expectedResourceModules.put( "cde/resources/a/file3", "jsFileRsrc3" );
     expectedResourceModules.put( "cde/resources/jsFileRsrc4", "jsFileRsrc4" );
+    expectedResourceModules.put( "cde/resources/jsFileRsrc4White", "jsFileRsrc4White" );
     expectedResourceModules.put( "css!cde/resources/cssFileRsrcPath1", "" );
     expectedResourceModules.put( "css!cde/resources/cssFileRsrcPath2", "" );
     expectedResourceModules.put( "css!cde/resources/cssFileRsrc3", "" );
+    expectedResourceModules.put( "cde/resources/a/file2", "" );
     // unnamed file resource from full URI (UUID) will come last
     expectedResourceModules.put( "cde/resources/1234", "" );
 

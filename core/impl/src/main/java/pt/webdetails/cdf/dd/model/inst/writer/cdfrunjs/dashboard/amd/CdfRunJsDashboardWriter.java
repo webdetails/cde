@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,15 +13,37 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
+import static pt.webdetails.cdf.dd.CdeConstants.AmdModule;
+import static pt.webdetails.cdf.dd.CdeConstants.RequireJSPlugin;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.CDE_AMD_BASE_COMPONENT_PATH;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.CDE_AMD_REPO_COMPONENT_PATH;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.CDF_AMD_BASE_COMPONENT_PATH;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_ADD_COMPONENTS;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_ADD_DATA_SOURCE_END;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_ADD_DATA_SOURCE_INIT;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_DECLARATION;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_DECLARATION_DEBUG;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_INIT;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.GET_WCDF_SETTINGS_FUNCTION;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.INDENT1;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.NEWLINE;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.PLUGIN_COMPONENT_FOLDER;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.REQUIRE_CONFIG;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.REQUIRE_PATH_CONFIG_FULL_URI;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.REQUIRE_START;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.REQUIRE_STOP;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.RESOURCE_AMD_NAMESPACE;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.SCHEME_PATTERN;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.SCRIPT;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.TITLE;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.WEBCONTEXT;
+
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import pt.webdetails.cdf.dd.CdeConstants;
-import static pt.webdetails.cdf.dd.CdeConstants.AmdModule;
-import static pt.webdetails.cdf.dd.CdeConstants.RequireJSPlugin;
-import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriteContext;
@@ -629,6 +651,9 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
 
         // replace tokens and alias
         path = ctx.replaceTokensAndAlias( resource.getResourcePath() );
+        // replace white spaces and remove file extension
+        path = path.replaceAll( " ", "%20" ).replaceFirst( "(?i).js$", "" );
+
         // reset
         id.setLength( 0 );
 
@@ -646,19 +671,17 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
           }
 
           // output RequireJS path configuration
-          out.append( MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path.replaceFirst( "(?i).js$", "" ) ) )
-            .append( NEWLINE );
+          out.append( MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path ) ).append( NEWLINE );
 
         } else {
 
           // normalize the path
-          path = Util.normalizeUri( path );
+          path = Util.normalizeUri( path ).replaceAll( " ", "%20" );
           if ( path.startsWith( "/" ) ) {
-            path =  path.replaceFirst( "/", "" );
+            path = path.replaceFirst( "/", "" );
           }
 
-          // remove file extension
-          id.append( RESOURCE_AMD_NAMESPACE ).append( "/" ).append( path.replaceFirst( "(?i).js$", "" ) );
+          id.append( RESOURCE_AMD_NAMESPACE ).append( "/" ).append( path );
 
           if ( StringUtils.isEmpty( resource.getResourceName() ) ) {
             // store the generated module id and class name to be added at the end of the dependency array
@@ -679,6 +702,9 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
 
         // replace tokens and alias
         path = ctx.replaceTokensAndAlias( resource.getResourcePath() );
+        // replace white spaces and remove file extension
+        path = path.replaceAll( " ", "%20" ).replaceFirst( "(?i).css$", "" );
+
         // reset
         id.setLength( 0 );
 
@@ -688,22 +714,20 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
           id.append( RESOURCE_AMD_NAMESPACE )
             .append( "/" )
             .append( ( StringUtils.isEmpty( resource.getResourceName() ) ? getRandomUUID() : resource.getResourceName() ) );
+
           // output RequireJS path configuration
-          out.append( MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path.replaceFirst( "(?i).css$", "" ) ) )
+          out.append( MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path ) )
             .append( NEWLINE );
 
         } else {
 
           // normalize the path
-          path = Util.normalizeUri( path );
+          path = Util.normalizeUri( path ).replaceAll( " ", "%20" );
           if ( path.startsWith( "/" ) ) {
             path = path.replaceFirst( "/", "" );
           }
 
-          // remove file extension
-          id.append( RESOURCE_AMD_NAMESPACE )
-            .append( "/" )
-            .append( path.replaceFirst( "(?i).css$", "" ) );
+          id.append( RESOURCE_AMD_NAMESPACE ).append( "/" ).append( path );
           // no need for RequireJS path configuration (built based on cde-require-js-cfg.js cde/resources/)
 
         }
