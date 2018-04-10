@@ -76,7 +76,8 @@ public class RenderApi {
   @Produces( JAVASCRIPT )
   public String getComponentDefinitions(
     @QueryParam( MethodParams.SUPPORTS ) @DefaultValue( DashboardSupportedTypes.LEGACY ) String supports,
-    @Context HttpServletResponse response ) throws IOException {
+    @Context HttpServletResponse response ) {
+
     // Get and output the definitions
     if ( !StringUtils.isEmpty( supports ) && supports.equals( DashboardSupportedTypes.AMD ) ) {
       return MetaModelManager.getInstance().getAmdJsDefinition();
@@ -98,21 +99,23 @@ public class RenderApi {
                             @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
                             @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
                             @Context HttpServletRequest request,
-                            @Context HttpServletResponse response ) throws IOException, ThingWriteException {
+                            @Context HttpServletResponse response ) throws ThingWriteException {
 
-    solution = XSSHelper.getInstance().escape( solution );
-    path = XSSHelper.getInstance().escape( path );
-    file = XSSHelper.getInstance().escape( file );
-    scheme = XSSHelper.getInstance().escape( scheme );
+    solution = decodeAndEscape( solution );
+    path = decodeAndEscape( path );
+    file = decodeAndEscape( file );
+    scheme = decodeAndEscape( scheme );
 
     String schemeToUse = "";
     if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
     }
+
     String filePath = getWcdfRelativePath( solution, path, file );
 
-    CdfRunJsDashboardWriteResult dashboardWrite =
-      this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
+    CdfRunJsDashboardWriteResult dashboardWrite = this.loadDashboard(
+      filePath, schemeToUse, root, absolute, bypassCache, debug, null );
+
     return dashboardWrite.getContent();
   }
 
@@ -129,21 +132,23 @@ public class RenderApi {
                             @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
                             @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
                             @Context HttpServletRequest request,
-                            @Context HttpServletResponse response ) throws IOException, ThingWriteException {
+                            @Context HttpServletResponse response ) throws ThingWriteException {
 
-    solution = XSSHelper.getInstance().escape( solution );
-    path = XSSHelper.getInstance().escape( path );
-    file = XSSHelper.getInstance().escape( file );
-    scheme = XSSHelper.getInstance().escape( scheme );
+    solution = decodeAndEscape( solution );
+    path = decodeAndEscape( path );
+    file = decodeAndEscape( file );
+    scheme = decodeAndEscape( scheme );
 
     String schemeToUse = "";
     if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
     }
+
     String filePath = getWcdfRelativePath( solution, path, file );
 
-    CdfRunJsDashboardWriteResult dashboardWrite =
-      this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
+    CdfRunJsDashboardWriteResult dashboardWrite = this.loadDashboard(
+      filePath, schemeToUse, root, absolute, bypassCache, debug, null );
+
     return dashboardWrite.getHeader();
   }
 
@@ -161,14 +166,14 @@ public class RenderApi {
                         @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
                         @QueryParam( MethodParams.VIEW ) @DefaultValue( "" ) String view,
                         @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
-                        @Context HttpServletRequest request ) throws IOException {
+                        @Context HttpServletRequest request ) {
 
-    solution = XSSHelper.getInstance().escape( solution );
-    path = XSSHelper.getInstance().escape( path );
-    file = XSSHelper.getInstance().escape( file );
-    scheme = XSSHelper.getInstance().escape( scheme );
-    view = XSSHelper.getInstance().escape( view );
-    style = XSSHelper.getInstance().escape( style );
+    solution = decodeAndEscape( solution );
+    path = decodeAndEscape( path );
+    file = decodeAndEscape( file );
+    scheme = decodeAndEscape( scheme );
+    view = decodeAndEscape( view );
+    style = decodeAndEscape( style );
 
     String schemeToUse = "";
     if ( !inferScheme ) {
@@ -190,8 +195,8 @@ public class RenderApi {
     ILogger iLogger = getAuditLogger();
     IParameterProvider requestParams = getParameterProvider( request.getParameterMap() );
 
-    UUID uuid = CpfAuditHelper.startAudit( getPluginName(), filePath, getObjectName(), this.getPentahoSession(),
-      iLogger, requestParams );
+    UUID uuid = CpfAuditHelper.startAudit(
+      getPluginName(), filePath, getObjectName(), this.getPentahoSession(), iLogger, requestParams );
 
     try {
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
@@ -202,6 +207,7 @@ public class RenderApi {
       String context = dashboardWcdf.isRequire()
         ? getCdfRequireContext( filePath, requestParams )
         : getCdfContext( filePath, "", view, requestParams );
+
       String result = dashboard.render( context, getCdfRequireConfig( filePath, requestParams ) );
 
       //i18n token replacement
@@ -221,8 +227,8 @@ public class RenderApi {
       logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( start ) + "s" );
 
       end = System.currentTimeMillis();
-      CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(),
-        this.getPentahoSession(), iLogger, start, uuid, end );
+      CpfAuditHelper.endAudit(
+        getPluginName(), filePath, getObjectName(), this.getPentahoSession(), iLogger, start, uuid, end );
 
       return result;
     } catch ( Exception ex ) { //TODO: better error handling?
@@ -250,14 +256,13 @@ public class RenderApi {
                               @QueryParam( MethodParams.VIEW ) @DefaultValue( "" ) String view,
                               @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                               @QueryParam( MethodParams.ALIAS ) @DefaultValue( "" ) String alias,
-                              @Context HttpServletRequest request ) throws IOException {
+                              @Context HttpServletRequest request ) {
 
 
-    path = XSSHelper.getInstance().escape( path );
-    scheme = XSSHelper.getInstance().escape( scheme );
-    view = XSSHelper.getInstance().escape( view );
-    style = XSSHelper.getInstance().escape( style );
-    alias = XSSHelper.getInstance().escape( alias );
+    path = decodeAndEscape( path );
+    scheme = decodeAndEscape( scheme );
+    style = decodeAndEscape( style );
+    alias = decodeAndEscape( alias );
 
     final String schemeToUse;
     if ( !inferScheme ) {
@@ -282,21 +287,14 @@ public class RenderApi {
     ILogger iLogger = getAuditLogger();
     IParameterProvider requestParams = getParameterProvider( request.getParameterMap() );
 
-    UUID uuid = CpfAuditHelper.startAudit( getPluginName(), path, getObjectName(), this.getPentahoSession(),
-      iLogger, requestParams );
+    UUID uuid = CpfAuditHelper.startAudit(
+      getPluginName(), path, getObjectName(), this.getPentahoSession(), iLogger, requestParams );
 
     try {
       logger.info( "[Timing] CDE Starting To Generate Dashboard AMD Module" );
       String config = getCdfRequireConfig( path, requestParams );
       CdfRunJsDashboardWriteResult dashboard = getDashboardModule(
-        path,
-        schemeToUse,
-        root,
-        absolute,
-        bypassCache,
-        debug,
-        style,
-        alias );
+        path, schemeToUse, root, absolute, bypassCache, debug, style, alias );
 
       //TODO: how to process i18n for a required dashboard
       //i18n token replacement
@@ -328,10 +326,10 @@ public class RenderApi {
     @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
     @QueryParam( MethodParams.ALLPARAMS ) @DefaultValue( "false" ) boolean all,
     @Context HttpServletRequest servletRequest,
-    @Context HttpServletResponse servletResponse ) throws IOException {
+    @Context HttpServletResponse servletResponse ) {
 
 
-    path = XSSHelper.getInstance().escape( path );
+    path = decodeAndEscape( path );
 
     servletResponse.setContentType( APPLICATION_JSON );
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
@@ -363,9 +361,9 @@ public class RenderApi {
     @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
     @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
     @Context HttpServletRequest servletRequest,
-    @Context HttpServletResponse servletResponse ) throws IOException, JSONException {
+    @Context HttpServletResponse servletResponse ) throws JSONException {
 
-    path = XSSHelper.getInstance().escape( path );
+    path = decodeAndEscape( path );
 
     servletResponse.setContentType( APPLICATION_JSON );
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
@@ -386,6 +384,7 @@ public class RenderApi {
     } catch ( Exception ex ) { //TODO: better error handling?
       String msg = "Could not load dashboard datasources: " + ex.getMessage();
       logger.error( msg, ex );
+
       return JsonUtils.getJsonResult( false, msg );
     }
   }
@@ -402,9 +401,9 @@ public class RenderApi {
     @Context HttpServletRequest request,
     @Context HttpServletResponse response ) throws Exception {
 
-    solution = XSSHelper.getInstance().escape( solution );
-    path = XSSHelper.getInstance().escape( path );
-    file = XSSHelper.getInstance().escape( file );
+    solution = decodeAndEscape( solution );
+    path = decodeAndEscape( path );
+    file = decodeAndEscape( file );
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
 
@@ -414,13 +413,9 @@ public class RenderApi {
       return "Access Denied or file not found - " + wcdfPath; //TODO: keep html?
     }
 
-    return getEditor(
-      wcdfPath,
-      debug,
-      request.getScheme(),
-      isDefault,
-      response,
-      DashboardWcdfDescriptor.load( wcdfPath ).isRequire() );
+    DashboardWcdfDescriptor descriptor = DashboardWcdfDescriptor.load( wcdfPath );
+
+    return getEditor( wcdfPath, debug, request.getScheme(), isDefault, response, descriptor.isRequire() );
   }
 
   @GET
@@ -435,11 +430,12 @@ public class RenderApi {
                               @Context HttpServletRequest request,
                               @Context HttpServletResponse response ) throws Exception {
 
-    path = XSSHelper.getInstance().escape( path );
+    path = decodeAndEscape( path );
 
     if ( !CdeEnvironment.canCreateContent() ) {
       return "This functionality is limited to users with permission 'Create Content'";
     }
+
     return getEditor( path, debug, request.getScheme(), isDefault, response, true );
   }
 
@@ -489,29 +485,29 @@ public class RenderApi {
                                                       boolean bypassCache, boolean debug, String style )
     throws ThingWriteException {
 
-    CdfRunJsDashboardWriteOptions options =
-      new CdfRunJsDashboardWriteOptions( "", false, absolute, debug, root, scheme );
+    CdfRunJsDashboardWriteOptions options = new CdfRunJsDashboardWriteOptions(
+      "", false, absolute, debug, root, scheme );
+
     return getDashboardManager().getDashboardCdfRunJs( filePath, options, bypassCache, style );
   }
 
   private CdfRunJsDashboardWriteResult getDashboardModule( String path, String scheme, String root,
                                                            boolean absolute, boolean bypassCache, boolean debug,
                                                            String style, String alias )
-    throws ThingWriteException, UnsupportedEncodingException {
+    throws ThingWriteException {
 
     final String dashboardAlias;
     if ( StringUtils.isEmpty( alias ) ) {
-      dashboardAlias =
-        FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + CdeConstants.DASHBOARD_ALIAS_TAG;
+      dashboardAlias = FilenameUtils
+        .removeExtension( FilenameUtils.getName( path ) ) + "_" + CdeConstants.DASHBOARD_ALIAS_TAG;
     } else {
       dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + alias;
-
     }
+
     CdfRunJsDashboardWriteOptions options =
       new CdfRunJsDashboardWriteOptions( dashboardAlias, true, absolute, debug, root, scheme );
 
     return getDashboardManager().getDashboardCdfRunJs( path, options, bypassCache, style );
-
   }
 
   public DashboardManager getDashboardManager() {
@@ -598,5 +594,11 @@ public class RenderApi {
   protected String getCdfContext( String filePath, String action, String view, IParameterProvider requestParams )
     throws Exception {
     return InterPluginBroker.getCdfContext( filePath, action, view, requestParams );
+  }
+
+  private String decodeAndEscape( String path ) {
+    final XSSHelper helper = XSSHelper.getInstance();
+
+    return helper.escape( Utils.getURLDecoded( path ) );
   }
 }

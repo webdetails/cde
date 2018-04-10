@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -53,7 +53,6 @@ import pt.webdetails.cdf.dd.reader.factory.ResourceLoaderFactory;
 import pt.webdetails.cdf.dd.util.GenericFileAndDirectoryFilter;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.MimeTypeHandler;
-import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
@@ -77,7 +76,7 @@ public class ResourcesApi {
   public void getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                            @Context HttpServletResponse response ) throws IOException {
 
-    resource = XSSHelper.getInstance().escape( resource );
+    resource = decodeAndEscape( resource );
 
     try {
       String extension = resource.replaceAll( ".*\\.(.*)", "$1" );
@@ -94,6 +93,7 @@ public class ResourcesApi {
         response.sendError( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
         return;
       }
+
       IPluginResourceLoader resLoader = PentahoSystem.get( IPluginResourceLoader.class, null );
       String maxAge = resLoader.getPluginSetting( this.getClass(), "max-age" );
 
@@ -127,8 +127,7 @@ public class ResourcesApi {
                               @Context HttpServletResponse response )
     throws IOException {
 
-    path = XSSHelper.getInstance().escape( path );
-    resource = XSSHelper.getInstance().escape( resource );
+    resource = decodeAndEscape( resource );
 
     getResource( resource, response );
   }
@@ -141,8 +140,7 @@ public class ResourcesApi {
                              @Context HttpServletResponse response )
     throws IOException {
 
-    path = XSSHelper.getInstance().escape( path );
-    resource = XSSHelper.getInstance().escape( resource );
+    resource = decodeAndEscape( resource );
 
     getResource( resource, response );
   }
@@ -155,8 +153,7 @@ public class ResourcesApi {
                                   @Context HttpServletResponse response )
     throws IOException {
 
-    path = XSSHelper.getInstance().escape( path );
-    resource = XSSHelper.getInstance().escape( resource );
+    resource = decodeAndEscape( resource );
 
     response.setHeader( "content-disposition", "inline" );
 
@@ -171,8 +168,7 @@ public class ResourcesApi {
                         @Context HttpServletResponse response )
     throws IOException {
 
-    path = XSSHelper.getInstance().escape( path );
-    resource = XSSHelper.getInstance().escape( resource );
+    resource = decodeAndEscape( resource );
 
     getResource( resource, response );
   }
@@ -185,8 +181,7 @@ public class ResourcesApi {
                    @Context HttpServletResponse response )
     throws Exception {
 
-    path = XSSHelper.getInstance().escape( path );
-    resource = XSSHelper.getInstance().escape( resource );
+    resource = decodeAndEscape( resource );
 
     getResource( resource, response );
   }
@@ -199,36 +194,32 @@ public class ResourcesApi {
                                @QueryParam( "dashboardPath" ) @DefaultValue( "" ) String dashboardPath,
                                @QueryParam( "fileExtensions" ) String fileExtensions,
                                @QueryParam( "access" ) String access,
-                               @QueryParam( "showHiddenFiles" ) @DefaultValue( "false" ) boolean showHiddenFiles )
-    throws IOException {
+                               @QueryParam( "showHiddenFiles" ) @DefaultValue( "false" ) boolean showHiddenFiles ) {
 
-    folder = XSSHelper.getInstance().escape( folder );
-    outputType = XSSHelper.getInstance().escape( outputType );
-    dashboardPath = XSSHelper.getInstance().escape( dashboardPath );
-    fileExtensions = XSSHelper.getInstance().escape( fileExtensions );
-    access = XSSHelper.getInstance().escape( access );
+    folder = decodeAndEscape( folder );
+    outputType = decodeAndEscape( outputType );
+    dashboardPath = decodeAndEscape( dashboardPath );
+    fileExtensions = decodeAndEscape( fileExtensions );
 
     if ( !StringUtils.isEmpty( outputType ) && outputType.equals( "json" ) ) {
       try {
-        return RepositoryHelper
-          .toJSON( folder, getFileList( folder, dashboardPath, fileExtensions, access, showHiddenFiles ) );
+        IBasicFile[] files = getFileList( folder, dashboardPath, fileExtensions, showHiddenFiles );
+        return RepositoryHelper.toJSON( folder, files );
       } catch ( JSONException e ) {
         logger.error( "exploreFolder" + folder, e );
         return "Error getting files in folder " + folder;
       }
     } else {
-      return RepositoryHelper
-        .toJQueryFileTree( folder, getFileList( folder, dashboardPath, fileExtensions, access, showHiddenFiles ) );
+      IBasicFile[] files = getFileList( folder, dashboardPath, fileExtensions, showHiddenFiles );
+      return RepositoryHelper.toJQueryFileTree( folder, files );
     }
   }
 
-  private IBasicFile[] getFileList( String dir, String dashboardPath, final String fileExtensions, String permission,
+  private IBasicFile[] getFileList( String dir, String dashboardPath, final String fileExtensions,
                                     boolean showHiddenFiles ) {
 
-    ArrayList<String> extensionsList = new ArrayList<String>();
+    ArrayList<String> extensionsList = new ArrayList<>();
     String[] extensions = StringUtils.split( fileExtensions, "." );
-    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( dashboardPath );
-
     if ( extensions != null ) {
       for ( String extension : extensions ) {
         // For some reason, in 4.5 file-based rep started to report a leading dot in extensions
@@ -238,13 +229,8 @@ public class ResourcesApi {
       }
     }
 
-    FileAccess fileAccess = FileAccess.parse( permission );
-    if ( fileAccess == null ) {
-      fileAccess = FileAccess.READ;
-    }
-
-    GenericBasicFileFilter fileFilter =
-        new GenericBasicFileFilter( null, extensionsList.toArray( new String[ extensionsList.size() ] ), true );
+    GenericBasicFileFilter fileFilter = new GenericBasicFileFilter(
+      null, extensionsList.toArray( new String[ extensionsList.size() ] ), true );
 
     //check if it is a system dashboard
     List<IBasicFile> fileList;
@@ -256,6 +242,7 @@ public class ResourcesApi {
       }
     }
 
+    IResourceLoader loader = getResourceLoader( dashboardPath );
     IReadAccess access = loader.getReader();
 
     GenericFileAndDirectoryFilter fileAndDirFilter = new GenericFileAndDirectoryFilter( fileFilter );
@@ -290,7 +277,7 @@ public class ResourcesApi {
   public Response getSystemResource( @PathParam( "path" ) String path, @Context HttpServletResponse response )
     throws IOException {
 
-    path = XSSHelper.getInstance().escape( path );
+    path = decodeAndEscape( path );
 
     String extension = path.replaceAll( ".*\\.(.*)", "$1" );
     if ( allowedExtensions.indexOf( extension ) < 0 ) {
@@ -299,19 +286,18 @@ public class ResourcesApi {
       throw new SecurityException( "Not allowed" );
     }
 
-
     String[] splitPath = path.split( "/" );
     String pluginId = splitPath[ 0 ];
-    String resource = "";
+
+    StringBuilder resource = new StringBuilder();
     for ( int i = 1; i < splitPath.length; i++ ) {
-      resource += "/" + splitPath[ i ];
+      resource.append( "/" ).append( splitPath[i] );
     }
 
     IPluginManager pluginManager = PentahoSystem.get( IPluginManager.class );
 
-    if ( !StringUtils.isEmpty( path ) && pluginManager.isPublic( pluginId, resource ) ) {
-
-      Response readFileResponse = new PluginResource( response ).readFile( pluginId, resource );
+    if ( !StringUtils.isEmpty( path ) && pluginManager.isPublic( pluginId, resource.toString() ) ) {
+      Response readFileResponse = new PluginResource( response ).readFile( pluginId, resource.toString() );
 
       if ( readFileResponse.getStatus() != Status.NOT_FOUND.getStatusCode() ) {
         return readFileResponse;
@@ -327,7 +313,7 @@ public class ResourcesApi {
   public void resource( @PathParam( "resource" ) String resource, @Context HttpServletResponse response )
     throws Exception {
 
-    resource = XSSHelper.getInstance().escape( resource );
+    resource = decodeAndEscape( resource );
 
     getResource( resource, response );
   }
@@ -341,5 +327,14 @@ public class ResourcesApi {
     return SecurityHelper.getInstance().isPentahoAdministrator( PentahoSessionHolder.getSession() );
   }
 
+  private IResourceLoader getResourceLoader( String path ) {
+    return new ResourceLoaderFactory().getResourceLoader( path );
+  }
+
+  private String decodeAndEscape( String path ) {
+    final XSSHelper helper = XSSHelper.getInstance();
+
+    return helper.escape( Utils.getURLDecoded( path ) );
+  }
 
 }
