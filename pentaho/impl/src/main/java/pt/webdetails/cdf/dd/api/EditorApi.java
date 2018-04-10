@@ -169,21 +169,25 @@ public class EditorApi {
       if ( reader.fileExists( path ) ) {
         message = "already exists: " + path;
 
+        logger.debug( message );
       } else {
         final IRWAccess writer = loader.getWriter();
 
         if ( writer.createFolder( path ) ) {
           message = path + "created ok";
+          logger.debug( message );
         } else {
           message = "error creating folder " + path;
+          logger.debug( message );
         }
       }
 
     } else {
       message = "no permissions to create folder " + path;
+      logger.error( message );
     }
 
-    logger.error( message );
+
     return message;
   }
 
@@ -246,14 +250,19 @@ public class EditorApi {
       final IRWAccess writer = loader.getWriter();
 
       InputStream content = new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) );
-      boolean saveSuccessful = writer.saveFile( path, content );
+      if ( writer.saveFile( path, content ) ) {
+        message = "file '" + path + "' saved ok";
+        logger.debug( message );
+      } else {
+        message = "error saving file " + path;
+        logger.error( message );
+      }
 
-      message = saveSuccessful ? "file '" + path + "' saved ok" : "error saving file " + path;
     } else {
       message = "no permissions to write file " + path;
+      logger.error( message );
     }
 
-    logger.error( message );
     return message;
   }
 
