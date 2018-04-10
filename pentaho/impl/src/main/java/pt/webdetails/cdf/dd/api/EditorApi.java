@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -22,6 +22,7 @@ import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -42,6 +43,7 @@ import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
 import pt.webdetails.cdf.dd.reader.factory.ResourceLoaderFactory;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IACAccess;
 import pt.webdetails.cpf.repository.api.IRWAccess;
@@ -63,19 +65,22 @@ public class EditorApi {
                          @Context HttpServletResponse response )
     throws IOException {
 
-    path = XSSHelper.getInstance().escape( path );
+    path = decodeAndEscape( path );
 
-    IResourceLoader loader = getResourceLoader( path );
-    IReadAccess reader = loader.getReader();
+    final IResourceLoader loader = getResourceLoader( path );
+    final IACAccess contentAccess = loader.getAccessControl();
+    final IReadAccess reader = loader.getReader();
 
-    if ( reader.fileExists( path ) && loader.getAccessControl().hasAccess( path, FileAccess.READ ) ) {
-      response.setHeader( "Cache-Control", "max-age=" + NO_CACHE_DURATION );
-      return IOUtils.toString( reader.getFileInputStream( path ) );
-    } else {
-      String msg = "File: " + path + " does not exist, or you do not have permissions to access it";
-      logger.error( msg );
-      return msg;
+    final boolean canGetFile = reader.fileExists( path ) && contentAccess.hasAccess( path, FileAccess.READ );
+    if ( !canGetFile ) {
+      String errorMessage = "File: " + path + " does not exist, or you do not have permissions to access it";
+
+      logger.error( errorMessage );
+      return errorMessage;
     }
+
+    response.setHeader( "Cache-Control", "max-age=" + NO_CACHE_DURATION );
+    return IOUtils.toString( reader.getFileInputStream( path ) );
   }
 
   @POST
@@ -85,17 +90,18 @@ public class EditorApi {
   public void deleteFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                           @Context HttpServletResponse response ) throws IOException, JSONException {
 
-    IResourceLoader loader = getResourceLoader( path );
-    IACAccess access = loader.getAccessControl();
-    IRWAccess writer = loader.getWriter();
+    path = decodeAndEscape( path );
 
-    if ( access.hasAccess( path, FileAccess.DELETE ) && writer.deleteFile( path ) ) {
-      logger.debug( "File: " + path + " removed" );
-      JsonUtils.buildJsonResult( response.getOutputStream(), true, null );
-    } else {
-      logger.debug( "File: " + path + "not removed" );
-      JsonUtils.buildJsonResult( response.getOutputStream(), false, null );
-    }
+    final IResourceLoader loader = getResourceLoader( path );
+    final IACAccess access = loader.getAccessControl();
+    final IRWAccess writer = loader.getWriter();
+
+    final boolean fileDeleted = access.hasAccess( path, FileAccess.DELETE ) && writer.deleteFile( path );
+
+    final String message = "File: " + path + ( fileDeleted ? "" : "not" ) + " removed";
+
+    logger.debug( message );
+    JsonUtils.buildJsonResult( response.getOutputStream(), fileDeleted, null );
   }
 
   @POST
@@ -106,28 +112,14 @@ public class EditorApi {
                            @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
                            @Context HttpServletResponse response ) throws IOException {
 
-    path = XSSHelper.getInstance().escape( path );
+    path = decodeAndEscape( path );
 
-    IResourceLoader loader = getResourceLoader( path );
-    IACAccess access = loader.getAccessControl();
-    IRWAccess writer = loader.getWriter();
+    final IResourceLoader loader = getResourceLoader( path );
 
-    String msg;
-    if ( access.hasAccess( path, FileAccess.WRITE ) ) {
-      if ( writer.saveFile( path, new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) ) ) ) {
-        msg = "file '" + path + "' saved ok";
-        logger.debug( msg );
-      } else {
-        msg = "error saving file " + path;
-        logger.error( msg );
-      }
-    } else {
-      msg = "no permissions to write file " + path;
-      logger.error( msg );
-    }
-
-    return msg;
+    return writeFile( path, loader, data );
   }
+
+
 
   @PUT
   @Path( "/file/write" )
@@ -137,26 +129,11 @@ public class EditorApi {
                             @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
                             @Context HttpServletResponse response ) throws IOException {
 
-    path = XSSHelper.getInstance().escape( path );
+    path = decodeAndEscape( path );
 
-    IResourceLoader loader = getResourceLoader( path );
-    IACAccess access = loader.getAccessControl();
-    IRWAccess writer = loader.getWriter();
+    final IResourceLoader loader = getResourceLoader( path );
 
-    String msg;
-    if ( access.hasAccess( FilenameUtils.getFullPath( path ), FileAccess.WRITE ) ) {
-      if ( writer.saveFile( path, new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) ) ) ) {
-        msg = "file '" + path + "' saved ok";
-        logger.debug( msg );
-      } else {
-        msg = "error saving file " + path;
-        logger.error( msg );
-      }
-    } else {
-      msg = "no permissions to write file " + path;
-      logger.error( msg );
-    }
-    return msg;
+    return writeFile( path, FilenameUtils.getFullPath( path ), loader, data );
   }
 
 
@@ -165,8 +142,12 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   @Produces( TEXT_PLAIN )
   public String canEdit( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
-    IResourceLoader loader = getResourceLoader( path );
-    IACAccess contentAccess = loader.getAccessControl();
+
+    path = decodeAndEscape( path );
+
+    final IResourceLoader loader = getResourceLoader( path );
+    final IACAccess contentAccess = loader.getAccessControl();
+
     return String.valueOf( contentAccess.hasAccess( path, FileAccess.WRITE ) );
   }
 
@@ -174,36 +155,40 @@ public class EditorApi {
   @Path( "/createFolder" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String createFolder( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                              @Context HttpServletResponse response ) throws IOException {
+                              @Context HttpServletResponse response ) {
 
-    path = XSSHelper.getInstance().escape( path );
+    path = decodeAndEscape( path );
 
-    IResourceLoader loader = getResourceLoader( path );
-    IReadAccess reader = loader.getReader();
-    IRWAccess writer = loader.getWriter();
-    IACAccess access = loader.getAccessControl();
+    final IResourceLoader loader = getResourceLoader( path );
+    final IACAccess access = loader.getAccessControl();
 
-
-    String msg;
+    String message;
     if ( access.hasAccess( path, FileAccess.WRITE ) ) {
+      final IReadAccess reader = loader.getReader();
+
       if ( reader.fileExists( path ) ) {
-        msg = "already exists: " + path;
-        logger.debug( msg );
+        message = "already exists: " + path;
+
+        logger.debug( message );
       } else {
+        final IRWAccess writer = loader.getWriter();
+
         if ( writer.createFolder( path ) ) {
-          msg = path + "created ok";
-          logger.debug( msg );
+          message = path + "created ok";
+          logger.debug( message );
         } else {
-          msg = "error creating folder " + path;
-          logger.debug( msg );
+          message = "error creating folder " + path;
+          logger.debug( message );
         }
       }
+
     } else {
-      msg = "no permissions to create folder " + path;
-      logger.error( msg );
+      message = "no permissions to create folder " + path;
+      logger.error( message );
     }
 
-    return msg;
+
+    return message;
   }
 
 
@@ -212,15 +197,17 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   @Produces( TEXT_HTML )
   public String externalEditor() throws IOException {
-    IReadAccess access = CdeEnvironment.getPluginSystemReader();
-    if ( access.fileExists( EXTERNAL_EDITOR_PAGE ) ) {
-      return IOUtils.toString( access.getFileInputStream( EXTERNAL_EDITOR_PAGE ) );
-    } else {
-      String msg = "External editor not found: " + EXTERNAL_EDITOR_PAGE;
-      logger.error( msg );
-      return msg;
+    final IReadAccess access = CdeEnvironment.getPluginSystemReader();
+
+    final boolean externalEditorExists = access.fileExists( EXTERNAL_EDITOR_PAGE );
+    if ( !externalEditorExists ) {
+      final String errorMessage = "External editor not found: " + EXTERNAL_EDITOR_PAGE;
+
+      logger.error( errorMessage );
+      return errorMessage;
     }
 
+    return IOUtils.toString( access.getFileInputStream( EXTERNAL_EDITOR_PAGE ) );
   }
 
   @GET
@@ -228,14 +215,17 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   @Produces( TEXT_HTML )
   public String componentEditor() throws IOException {
-    IReadAccess access = CdeEnvironment.getPluginSystemReader();
-    if ( access.fileExists( COMPONENT_EDITOR_PAGE ) ) {
-      return IOUtils.toString( access.getFileInputStream( COMPONENT_EDITOR_PAGE ) );
-    } else {
-      String msg = "no external editor found: " + COMPONENT_EDITOR_PAGE;
-      logger.error( msg );
-      return msg;
+    final IReadAccess access = CdeEnvironment.getPluginSystemReader();
+
+    final boolean componentEditorExists = access.fileExists( COMPONENT_EDITOR_PAGE );
+    if ( !componentEditorExists ) {
+      final String errorMessage = "no external editor found: " + COMPONENT_EDITOR_PAGE;
+
+      logger.error( errorMessage );
+      return errorMessage;
     }
+
+    return IOUtils.toString( access.getFileInputStream( COMPONENT_EDITOR_PAGE ) );
   }
 
   private class MethodParams {
@@ -243,8 +233,44 @@ public class EditorApi {
     public static final String DATA = "data";
   }
 
+  // region private/package aux methods
   protected IResourceLoader getResourceLoader( String path ) {
     return new ResourceLoaderFactory().getResourceLoader( path );
   }
+
+  private String writeFile( String path, IResourceLoader loader, String data ) throws IOException {
+    return writeFile( path, path, loader, data );
+  }
+
+  private String writeFile( String path, String fullPath, IResourceLoader loader, String data ) throws IOException {
+    final IACAccess access = loader.getAccessControl();
+
+    String message;
+    if ( access.hasAccess( fullPath, FileAccess.WRITE ) ) {
+      final IRWAccess writer = loader.getWriter();
+
+      InputStream content = new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) );
+      if ( writer.saveFile( path, content ) ) {
+        message = "file '" + path + "' saved ok";
+        logger.debug( message );
+      } else {
+        message = "error saving file " + path;
+        logger.error( message );
+      }
+
+    } else {
+      message = "no permissions to write file " + path;
+      logger.error( message );
+    }
+
+    return message;
+  }
+
+  private String decodeAndEscape( String path ) {
+    final XSSHelper helper = XSSHelper.getInstance();
+
+    return helper.escape( Utils.getURLDecoded( path ) );
+  }
+  // endregion
 
 }

@@ -18,6 +18,7 @@ import static javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA;
 
 import com.sun.jersey.multipart.FormDataParam;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +88,6 @@ public class SyncronizerApi { //TODO: synchronizer?
                             @Context HttpServletResponse servletResponse ) throws Exception {
 
     file = XSSHelper.getInstance().escape( file );
-    path = XSSHelper.getInstance().escape( path );
     title = XSSHelper.getInstance().escape( title );
     author = XSSHelper.getInstance().escape( author );
     description = XSSHelper.getInstance().escape( description );
@@ -108,91 +108,101 @@ public class SyncronizerApi { //TODO: synchronizer?
     boolean isPreview = false;
 
     if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
-
       file = Utils.getURLDecoded( file, CharsetHelper.getEncoding() );
-
-      // check access to path folder
-      String fileDir =
-          file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
 
       isPreview = ( file.contains( "_tmp.cdfde" ) || file.contains( "_tmp.wcdf" ) );
 
       IReadAccess rwAccess = Utils.getSystemOrUserRWAccess( file );
-
       if ( rwAccess == null ) {
         String msg = "Access denied for the synchronize method syncronizeDashboard." + operation + " : " + file;
         logger.warn( msg );
+
         return JsonUtils.getJsonResult( false, msg );
       }
     }
 
     try {
-      final DashboardStructure dashboardStructure = new DashboardStructure();
-      Object result = null;
-      HashMap<String, Object> params = new HashMap<String, Object>();
+      HashMap<String, Object> params = new HashMap<>();
       params.put( MethodParams.FILE, file );
       params.put( MethodParams.WIDGET, String.valueOf( widget ) );
       params.put( MethodParams.REQUIRE, String.valueOf( require ) );
+
       if ( !author.isEmpty() ) {
         params.put( MethodParams.AUTHOR, author );
       }
+
       if ( !style.isEmpty() ) {
         params.put( MethodParams.STYLE, style );
       }
+
       if ( !widgetName.isEmpty() ) {
         params.put( MethodParams.WIDGET_NAME, widgetName );
       }
+
       if ( !rendererType.isEmpty() ) {
         params.put( MethodParams.RENDERER_TYPE, rendererType );
       }
+
       if ( !title.isEmpty() ) {
         params.put( MethodParams.TITLE, title );
       }
+
       if ( !description.isEmpty() ) {
         params.put( MethodParams.DESCRIPTION, description );
       }
+
       String[] widgetParameters = widgetParams.toArray( new String[ 0 ] );
       if ( widgetParameters.length > 0 ) {
         params.put( MethodParams.WIDGET_PARAMETERS, widgetParameters );
       }
 
-      String wcdfdeFile = file.replace( ".wcdf", ".cdfde" );
+      final String wcdfdeFile = file.replace( ".wcdf", ".cdfde" );
+      final DashboardStructure dashboardStructure = new DashboardStructure();
 
+      Object result = null;
       if ( OPERATION_LOAD.equalsIgnoreCase( operation ) ) {
         return dashboardStructure.load( wcdfdeFile );
-      } else if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
+      }
+
+      if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.delete( params );
+
       } else if ( OPERATION_DELETE_PREVIEW.equalsIgnoreCase( operation ) ) {
         dashboardStructure.deletePreviewFiles( wcdfdeFile );
+
       } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
         result = dashboardStructure.save( file, cdfStructure );
+
       } else if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
         if ( StringUtils.isEmpty( title ) ) {
           title = FilenameUtils.getBaseName( file );
         }
+
         result = dashboardStructure.saveAs( file, title, description, cdfStructure, isPreview );
+
       } else if ( OPERATION_NEW_FILE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.newfile( params );
-      } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {
 
+      } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {
         // check if user is attempting to save settings over a new (non yet saved) dashboard/widget/template
         if ( StringUtils.isEmpty( file ) || file.equals( UNSAVED_FILE_PATH ) ) {
           logger.warn( getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
           return JsonUtils.getJsonResult( false, getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
         }
+
         result = dashboardStructure.saveSettingsToWcdf( params );
+
       } else {
         logger.error( "Unknown operation: " + operation );
       }
+
       return JsonUtils.getJsonResult( true, result );
+
     } catch ( Exception e ) {
       if ( e.getCause() != null ) {
-        if ( e.getCause() instanceof DashboardStructureException ) {
-          JsonUtils.buildJsonResult( servletResponse.getOutputStream(), false, e.getCause().getMessage() );
-        } else if ( e instanceof InvocationTargetException ) {
-          throw (Exception) e.getCause();
-        }
+        handleDashboardStructureException( e, servletResponse.getOutputStream() );
       }
+
       throw e;
     }
   }
@@ -216,12 +226,13 @@ public class SyncronizerApi { //TODO: synchronizer?
     servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
 
     Object result = null;
-
     if ( OPERATION_LOAD.equalsIgnoreCase( operation ) ) {
       result = ( new CdfTemplates( GET_RESOURCE ) ).load( rendererType );
+
     } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
       ( new CdfTemplates( GET_RESOURCE ) ).save( file, cdfStructure, rendererType );
     }
+
     JsonUtils.buildJsonResult( servletResponse.getOutputStream(), true, result );
   }
 
@@ -319,12 +330,9 @@ public class SyncronizerApi { //TODO: synchronizer?
       return JsonUtils.getJsonResult( true, result );
     } catch ( Exception e ) {
       if ( e.getCause() != null ) {
-        if ( e.getCause() instanceof DashboardStructureException ) {
-          JsonUtils.buildJsonResult( response.getOutputStream(), false, e.getCause().getMessage() );
-        } else if ( e instanceof InvocationTargetException ) {
-          throw (Exception) e.getCause();
-        }
+        handleDashboardStructureException( e, response.getOutputStream() );
       }
+
       throw e;
     }
   }
@@ -339,6 +347,16 @@ public class SyncronizerApi { //TODO: synchronizer?
 
     final CdfStyles cdfStyles = new CdfStyles();
     JsonUtils.buildJsonResult( servletResponse.getOutputStream(), true, cdfStyles.liststyles() );
+  }
+
+  private void handleDashboardStructureException( Exception e, OutputStream out ) throws Exception {
+    Throwable cause = e.getCause();
+    if ( cause instanceof DashboardStructureException ) {
+      JsonUtils.buildJsonResult( out, false, cause.getMessage() );
+
+    } else if ( e instanceof InvocationTargetException ) {
+      throw (Exception) cause;
+    }
   }
 
 }
