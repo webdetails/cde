@@ -17,8 +17,6 @@ import static javax.ws.rs.core.MediaType.TEXT_HTML;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;

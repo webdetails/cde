@@ -98,7 +98,7 @@ public class EditorApi {
 
     final boolean fileDeleted = access.hasAccess( path, FileAccess.DELETE ) && writer.deleteFile( path );
 
-    final String message = "File: " + path + ( fileDeleted ? "" : "not" ) +" removed";
+    final String message = "File: " + path + ( fileDeleted ? "" : "not" ) + " removed";
 
     logger.debug( message );
     JsonUtils.buildJsonResult( response.getOutputStream(), fileDeleted, null );

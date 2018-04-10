@@ -65,8 +65,9 @@ public class ResourcesApi {
   private static final List<String> allowedExtensions;
 
   static {
-    String formats = PentahoSystem.get( IPluginResourceLoader.class, null ).getPluginSetting( ResourcesApi.class,
-            CdeConstants.PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS );
+    String formats = PentahoSystem.get( IPluginResourceLoader.class, null )
+      .getPluginSetting( ResourcesApi.class, CdeConstants.PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS );
+
     allowedExtensions =  Arrays.asList( StringUtils.split( formats, ',' ) );
   }
 
