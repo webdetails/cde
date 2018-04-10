@@ -10,6 +10,19 @@
 
   <!-- AMD Custom Components RequireJS configuration file -->
   <files>
+    <!--
+      We need to keep including the two separated files, in order to support the upgrade
+      of Pentaho Servers from previous versions. See https://jira.pentaho.com/browse/BACKLOG-22798
+    -->
+    <file>
+      <source>${project.build.directory}/${global.require.file}</source>
+      <destName>cde/cde-core-require-js-cfg.js</destName>
+    </file>
+    <file>
+      <source>${project.build.directory}/${global.require.file}</source>
+      <destName>cde/cde-pentaho-require-js-cfg.js</destName>
+    </file>
+
     <file>
       <source>${project.build.directory}/${global.require.file}</source>
       <destName>cde/${global.require.file}</destName>
