@@ -19,8 +19,21 @@
     </fileSet>
   </fileSets>
 
-  <!-- XML resources that set the plugin disabled by default -->
   <files>
+    <!--
+      We need to keep including the two separated files, in order to support the upgrade
+      of Pentaho Servers from previous versions. See https://jira.pentaho.com/browse/BACKLOG-22798
+    -->
+    <file>
+      <source>${project.build.directory}/dependency/cde/${global.require.file}</source>
+      <destName>pentaho-cdf-dd/js/cde-core-require-js-cfg.js</destName>
+    </file>
+    <file>
+      <source>${project.build.directory}/dependency/cde/${global.require.file}</source>
+      <destName>pentaho-cdf-dd/js/cde-pentaho-require-js-cfg.js</destName>
+    </file>
+
+    <!-- XML resources that set the plugin disabled by default -->
     <file>
       <source>${basedir}/src/main/resources/plugin.xml.disabled</source>
       <destName>pentaho-cdf-dd/plugin.xml</destName>
