@@ -80,7 +80,7 @@ public final class CdfRunJsDashboardWriteResult implements Serializable {
   }
 
   public String render( String dashboardContext, String contextConfiguration ) {
-    return this._template.replaceAll(
+    return this.getTemplate().replaceAll(
       CdeConstants.DASHBOARD_HEADER_TAG, Matcher.quoteReplacement( dashboardContext ) ).replaceFirst(
       CdeConstants.DASHBOARD_CONTEXT_CONFIGURATION_TAG, StringUtils.defaultIfEmpty(
         Matcher.quoteReplacement( contextConfiguration ), "{}" ) );

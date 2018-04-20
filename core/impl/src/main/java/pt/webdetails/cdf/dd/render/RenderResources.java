@@ -37,7 +37,7 @@ public class RenderResources extends Renderer {
   }
 
   @Override
-  public String render( final String alias ) throws Exception {
+  public String render( final String alias ) {
     return "";
   }
 
@@ -76,7 +76,9 @@ public class RenderResources extends Renderer {
     Render renderer = (Render) getRender( context );
     renderer.processProperties();
     renderer.aliasId( alias );
+
     buffer.append( NEWLINE ).append( getIndent( indent ) );
+
     if ( getContext().getDashboard().getWcdf().isRequire() ) {
       String resourceType = getResourceType( context );
       if ( renderer instanceof ResourceCodeRender && resourceType.equals( CdeConstants.JAVASCRIPT ) ) {
@@ -84,26 +86,27 @@ public class RenderResources extends Renderer {
       } else {
         buffer.append( renderer.renderStart() );
       }
-      return buffer.toString();
+
     } else {
       buffer.append( renderer.renderStart() );
-      return buffer.toString();
     }
+
+    return buffer.toString();
   }
 
-  protected String getResourceName( JXPathContext context ) throws Exception {
+  protected String getResourceName( JXPathContext context ) {
     return XPathUtils.getStringValue( context, PROPERTY_RESOURCE_NAME );
   }
 
-  protected String getResourcePath( JXPathContext context ) throws Exception {
+  protected String getResourcePath( JXPathContext context ) {
     return XPathUtils.getStringValue( context, PROPERTY_RESOURCE_PATH );
   }
 
-  protected String getResourceType( JXPathContext context ) throws Exception {
+  protected String getResourceType( JXPathContext context ) {
     return XPathUtils.getStringValue( context, PROPERTY_RESOURCE_TYPE );
   }
 
-  protected String getResourceCodeContent( JXPathContext context ) throws Exception {
+  protected String getResourceCodeContent( JXPathContext context ) {
     return XPathUtils.getStringValue( context, PROPERTY_RESOURCE_CODE_CONTENT );
   }
 

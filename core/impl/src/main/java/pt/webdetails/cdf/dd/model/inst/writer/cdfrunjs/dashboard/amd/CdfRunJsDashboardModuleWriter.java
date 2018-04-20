@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -62,27 +62,29 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     } catch ( Exception ex ) {
       throw new ThingWriteException( "Error rendering resources.", ex );
     }
+
     // content layout, prepend the CSS code snippets
     final String layout;
     try {
-      layout = ctx.replaceTokensAndAlias( this.writeCssCodeResources( resources ) + this.writeLayout( ctx, dash ) );
+      layout = ctx.replaceTokensAndAlias(
+        this.writeCssCodeResources( resources ) + this.writeLayout( ctx, dash )
+      );
     } catch ( Exception ex ) {
       throw new ThingWriteException( "Error rendering layout", ex );
     }
 
     StringBuilder out = new StringBuilder();
+
     // content wcdf settings, write WCDF settings
     final String wcdfSettings = writeWcdfSettings( dash );
+
     // content components, get component AMD modules and write the components to the StringBuilder
     final Map<String, String> componentModules = this.writeComponents( ctx, dash, out );
     final String components = replaceAliasTagWithAlias( ctx.replaceHtmlAlias( ctx.replaceTokens( out.toString() ) ) );
+
     // content
-    final String content = wrapRequireModuleDefinitions(
-        layout,
-        resources,
-        componentModules,
-        wcdfSettings + components,
-        ctx );
+    final String content = wrapRequireModuleDefinitions( layout, resources, componentModules,
+      wcdfSettings + components, ctx );
 
     // Export
     builder
@@ -115,12 +117,9 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
    * @param ctx the dashboard context
    * @return the string containing the dashboard module definition.
    */
-  protected String wrapRequireModuleDefinitions(
-      String layout,
-      ResourceMap resources,
-      Map<String, String> componentModules,
-      String content,
-      CdfRunJsDashboardWriteContext ctx ) {
+  protected String wrapRequireModuleDefinitions( String layout, ResourceMap resources,
+                                                 Map<String, String> componentModules, String content,
+                                                 CdfRunJsDashboardWriteContext ctx ) {
 
     StringBuilder out = new StringBuilder();
 
@@ -193,13 +192,8 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
   @Override
   protected void writeRequireJsExecutionFunction( StringBuilder out, List<String> ids, List<String> classNames ) {
     // remove empty external resource module class names from the list
-    Iterator<String> i = classNames.iterator();
-    while ( i.hasNext() ) {
-      String className = i.next();
-      if ( StringUtils.isEmpty( className ) ) {
-        i.remove();
-      }
-    }
+    classNames.removeIf( StringUtils::isEmpty );
+
     // Output module paths and module class names
     out.append( MessageFormat.format( DEFINE_START,
         StringUtils.join( ids, "', '" ),

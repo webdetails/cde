@@ -149,15 +149,16 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
   public void testReplaceCdfdeExtension() {
     String[] paths = new String[] { "/path/to/file.wcdf", ":path:to:file",
       ":path.cdfde:to.wcdf:file", ":path.cdfde/to.wcdf:file" };
-    for ( int i = 0; i < paths.length; i++ ) {
+    for ( String path1 : paths ) {
       // everything that ends in .cdfde will now end in .wcdf
       Assert.assertEquals(
-        dashboardWriterSpy.replaceCdfdeExtension( paths[ i ] + ".cdfde" ), paths[ i ] + ".wcdf" );
+        dashboardWriterSpy.replaceCdfdeExtension(path1 + ".cdfde"), path1 + ".wcdf");
     }
-    for ( int i = 0; i < paths.length; i++ ) {
+
+    for ( String path : paths ) {
       // if it doesn't end in .cdfde, it will just be returned the same
       Assert.assertEquals(
-        dashboardWriterSpy.replaceCdfdeExtension( paths[ i ] ), paths[ i ] );
+        dashboardWriterSpy.replaceCdfdeExtension(path), path);
     }
   }
 }

@@ -18,19 +18,25 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 
 import pt.webdetails.cdf.dd.CdeEngine;
+import pt.webdetails.cdf.dd.ICdeEnvironment;
 import pt.webdetails.cdf.dd.model.core.writer.DefaultThingWriteContext;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 
 public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext {
   protected static final String DASHBOARD_PATH_TAG = "\\$\\{dashboardPath\\}";
 
-  protected static final String ABS_DIR_RES_TAG = "\\$\\{(res|solution):(/.+/)\\}";
-  protected static final String REL_DIR_RES_TAG = "\\$\\{(res|solution):(.+/)\\}";
+  protected static final String ABS_DIR_RES_TAG = "\\$\\{(?:res|solution):(/.+/)\\}";
+  protected static final String REL_DIR_RES_TAG = "\\$\\{(?:res|solution):(.+/)\\}";
 
-  protected static final String ABS_RES_TAG = "\\$\\{(res|solution):(/.+)\\}";
-  protected static final String REL_RES_TAG = "\\$\\{(res|solution):(.+)\\}";
+  protected static final String ABS_RES_TAG = "\\$\\{(?:res|solution):(/.+)\\}";
+  protected static final String REL_RES_TAG = "\\$\\{(?:res|solution):(.+)\\}";
+
+  public static final String OSGI_TAG = "osgi:";
+  protected static final String ABS_OSGI_RES_TAG = "\\$\\{" + OSGI_TAG + "(/.+)\\}";
+  protected static final String REL_OSGI_RES_TAG = "\\$\\{" + OSGI_TAG + "(.+)\\}";
 
   protected static final String ABS_IMG_TAG = "\\$\\{img:(/.+)\\}";
   protected static final String REL_IMG_TAG = "\\$\\{img:(.+)\\}";
@@ -53,26 +59,25 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
 
   // Endpoints
   public static final String RESOURCE_API_GET = "api/resources";
+  public static final String OSGI_RESOURCE_API_GET = "/cxf/cde/resources";
 
-  protected boolean _isFirstInList = true;
-  protected final Date _writeDate;
-  protected final String _indent;
-  protected final Dashboard _dash;
-  protected final boolean _bypassCacheRead;
+  private boolean _isFirstInList = true;
+  private final Date _writeDate;
+  private final String _indent;
+  private final Dashboard _dash;
+  private final boolean _bypassCacheRead;
 
-  protected final CdfRunJsDashboardWriteOptions _options;
+  private final CdfRunJsDashboardWriteOptions _options;
 
-  public CdfRunJsDashboardWriteContext(
-      IThingWriterFactory factory,
-      String indent,
-      boolean bypassCacheRead,
-      Dashboard dash, // Current Dashboard/Widget
-      CdfRunJsDashboardWriteOptions options ) {
+  public CdfRunJsDashboardWriteContext( IThingWriterFactory factory, String indent, boolean bypassCacheRead,
+                                        Dashboard dash, // Current Dashboard/Widget
+                                        CdfRunJsDashboardWriteOptions options ) {
     super( factory, true );
 
     if ( dash == null ) {
       throw new IllegalArgumentException( "dash" );
     }
+
     if ( options == null ) {
       throw new IllegalArgumentException( "options" );
     }
@@ -84,9 +89,7 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
     this._writeDate = new Date();
   }
 
-  protected CdfRunJsDashboardWriteContext(
-      CdfRunJsDashboardWriteContext other,
-      String indent ) {
+  protected CdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext other, String indent ) {
     super( other.getFactory(), other.getBreakOnError() );
 
     this._indent = StringUtils.defaultIfEmpty( indent, "" );
@@ -143,6 +146,8 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
 
   public abstract String replaceTokens( String content );
 
+  protected abstract String getResourceReplacement( String path );
+
   public String replaceAlias( String content ) {
     if ( content == null ) {
       return "";
@@ -196,29 +201,42 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
   }
 
   protected String getRoot() {
-    return ( this._options.isAbsolute() && !StringUtils.isEmpty( this._options.getAbsRoot() ) )
-      ? ( this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
-      : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
+    final CdfRunJsDashboardWriteOptions options = this.getOptions();
+
+    final String schemeRoot = options.isAbsolute() && StringUtils.isNotEmpty( options.getAbsRoot() )
+      ? options.getSchemedRoot() : "";
+
+    return schemeRoot + getCdeEnvironment().getApplicationBaseContentUrl();
   }
 
   protected String getDashboardPath( String path ) {
     return replaceWhiteSpaces( path.replaceAll( "(^/.*/$)", "$1" ) );
   }
 
-  protected String getResourceReplacement( String token, String path, Long timestamp ) {
-    final String timestampParam = timestamp != null ? "?v=" + timestamp : "";
+  protected String getImageResourceReplacement( String path ) {
+    final String timestampParam = "?v=" + this.getWriteDate().getTime();
 
-    return replaceWhiteSpaces( path + token + timestampParam );
+    return replaceWhiteSpaces( getRoot() + RESOURCE_API_GET + path + "$1" + timestampParam );
   }
 
-  protected String getSystemResourceReplacement( String token, String root, String pluginId ) {
+  protected String getSystemResourceReplacement( String pluginId ) {
+    return getSystemResourceReplacement( pluginId, false );
+  }
+
+  protected String getSystemResourceReplacement( String pluginId, boolean relative ) {
+    final String root = getRoot() + RESOURCE_API_GET;
+
     final boolean isValidPluginId = StringUtils.isNotEmpty( pluginId );
     final String path = root + "/" + getSystemDir() + ( isValidPluginId ? "/" + pluginId : "" );
 
-    return getResourceReplacement( token, path, null );
+    return replaceWhiteSpaces( path + ( relative ? "/$1" : "$1" ) );
   }
 
   private String replaceWhiteSpaces( String value ) {
     return value.replaceAll( " ", "%20" );
+  }
+
+  private ICdeEnvironment getCdeEnvironment() {
+    return CdeEngine.getInstance().getEnvironment();
   }
 }

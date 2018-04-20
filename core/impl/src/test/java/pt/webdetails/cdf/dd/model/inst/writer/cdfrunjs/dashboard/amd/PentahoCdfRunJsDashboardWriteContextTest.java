@@ -13,23 +13,13 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.junit.Test;
 
-import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContextForTesting;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.amd.CdfRunJsThingWriterFactory;
-import pt.webdetails.cdf.dd.model.meta.DashboardType;
-import pt.webdetails.cdf.dd.model.meta.MetaModel;
-import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
-import pt.webdetails.cdf.dd.util.Utils;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import static org.junit.Assert.assertEquals;
 import static pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext.RESOURCE_API_GET;
@@ -283,52 +273,6 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
   }
 
   // region unit test aux methods
-  private static Dashboard getDashboard( String path, boolean isSystem ) {
-    Document wcdfDoc = null;
-
-    try {
-      wcdfDoc = Utils.getDocument( new FileInputStream( new File( path ) ) );
-    } catch ( DocumentException e ) {
-      e.printStackTrace();
-    } catch ( FileNotFoundException e ) {
-      e.printStackTrace();
-    }
-
-    DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.fromXml( wcdfDoc );
-    Dashboard.Builder builder = new Dashboard.Builder();
-
-    DashboardType dashboardType = null;
-    try {
-      dashboardType = new DashboardType.Builder().build();
-    } catch ( ValidationException e ) {
-      e.printStackTrace();
-    }
-
-    if ( !isSystem ) {
-      builder.setSourcePath( path );
-    } else {
-      // this is needed because we need to remove the src/test/resources path used to get the file
-      // this is secure because there are no folder before the system while getting files from the server
-      builder.setSourcePath( path.replace( ROOT + "/", "" ) );
-    }
-
-    builder.setWcdf( wcdf );
-    builder.setMeta( dashboardType );
-    MetaModel.Builder metaBuilder = new MetaModel.Builder();
-    MetaModel model;
-    Dashboard dashboard = null;
-
-    try {
-      model = metaBuilder.build();
-      dashboard = builder.build( model );
-
-    } catch ( ValidationException e ) {
-      e.printStackTrace();
-    }
-
-    return dashboard;
-  }
-
   private String getDashboardPath() {
     return joinPaths( ROOT, TEST_FOLDER, DASHBOARD ).substring( 1 );
   }
@@ -362,7 +306,7 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     final String indent = "";
     final boolean bypassCacheRead = true;
 
-    final Dashboard dashboard = getDashboard( dashboardPath, isSystem );
+    final Dashboard dashboard = CdfRunJsDashboardWriteContextForTesting.getDashboard( dashboardPath, isSystem );
 
     final CdfRunJsDashboardWriteOptions options = getCdfRunJsDashboardWriteOptions( isAbsoluteWrite );
     final IThingWriterFactory factory = new CdfRunJsThingWriterFactory();

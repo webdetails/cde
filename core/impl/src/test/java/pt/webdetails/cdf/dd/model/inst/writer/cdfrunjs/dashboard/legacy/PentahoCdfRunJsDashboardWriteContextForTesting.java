@@ -19,18 +19,20 @@ import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 
 public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRunJsDashboardWriteContext {
-  public PentahoCdfRunJsDashboardWriteContextForTesting(
-      IThingWriterFactory factory,
-      String indent, boolean bypassCacheRead, Dashboard dash,
-      CdfRunJsDashboardWriteOptions options ) {
+  public PentahoCdfRunJsDashboardWriteContextForTesting( IThingWriterFactory factory, String indent,
+                                                         boolean bypassCacheRead, Dashboard dash,
+                                                         CdfRunJsDashboardWriteOptions options ) {
     super( factory, indent, bypassCacheRead, dash, options );
   }
 
   @Override
   protected String getRoot() {
-    return ( this._options.isAbsolute() && !StringUtils.isEmpty( this._options.getAbsRoot() ) )
-      ? ( this._options.getSchemedRoot() + "/pentaho/plugin/pentaho-cdf-dd/" )
-      : "/pentaho/plugin/pentaho-cdf-dd/";
+    final CdfRunJsDashboardWriteOptions options = this.getOptions();
+
+    final String schemeRoot = options.isAbsolute() && StringUtils.isNotEmpty( options.getAbsRoot() )
+      ? options.getSchemedRoot() : "";
+
+    return schemeRoot + "/pentaho/plugin/pentaho-cdf-dd/";
   }
 
   @Override

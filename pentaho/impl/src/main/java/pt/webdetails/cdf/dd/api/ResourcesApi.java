@@ -101,9 +101,7 @@ public class ResourcesApi {
       String mimeType;
       try {
         mimeType = MimeTypeHandler.getMimeTypeFromExtension( file.getExtension() );
-      } catch ( java.lang.IllegalArgumentException ex ) {
-        mimeType = "";
-      } catch ( EnumConstantNotPresentException ex ) {
+      } catch ( IllegalArgumentException | EnumConstantNotPresentException ex ) {
         mimeType = "";
       }
 

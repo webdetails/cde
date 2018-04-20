@@ -20,21 +20,18 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 
 public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWriteContext {
 
-  public PentahoCdfRunJsDashboardWriteContext( IThingWriterFactory factory,
-                                               String indent, boolean bypassCacheRead, Dashboard dash,
+  public PentahoCdfRunJsDashboardWriteContext( IThingWriterFactory factory, String indent,
+                                               boolean bypassCacheRead, Dashboard dash,
                                                CdfRunJsDashboardWriteOptions options ) {
     super( factory, indent, bypassCacheRead, dash, options );
   }
 
-  public PentahoCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
-                                               String indent ) {
+  public PentahoCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory, String indent ) {
     super( factory, indent );
   }
 
   @Override
   public String replaceTokens( String content ) {
-    final long timestamp = this.getWriteDate().getTime();
-
     final String path = this.getDashboard().getSourcePath().replaceAll( "(.+/).*", "$1" );
     final String pluginId = getPluginId( path );
 
@@ -46,19 +43,26 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
       .replaceAll( DASHBOARD_PATH_TAG, getDashboardPath( path ) )
 
       // build the image links, with a timestamp for caching purposes
-      .replaceAll( ABS_IMG_TAG, getResourceReplacement( "$1", absoluteResourceRoot, timestamp ) )
-      .replaceAll( REL_IMG_TAG, getResourceReplacement( "$1", relativeResourceRoot, timestamp ) )
+      .replaceAll( ABS_IMG_TAG, getImageResourceReplacement( "" ) )
+      .replaceAll( REL_IMG_TAG, getImageResourceReplacement( path ) )
 
       // Directories don't need the caching timestamp
-      .replaceAll( ABS_DIR_RES_TAG, getResourceReplacement( "$2", absoluteResourceRoot, null ) )
-      .replaceAll( REL_DIR_RES_TAG, getResourceReplacement( "$2", relativeResourceRoot, null ) )
+      .replaceAll( ABS_DIR_RES_TAG, getResourceReplacement( absoluteResourceRoot ) )
+      .replaceAll( REL_DIR_RES_TAG, getResourceReplacement( relativeResourceRoot ) )
 
       // build the resource links, with a timestamp for caching purposes
-      .replaceAll( ABS_RES_TAG, getResourceReplacement( "$2", absoluteResourceRoot, timestamp ) )
-      .replaceAll( REL_RES_TAG, getResourceReplacement( "$2", relativeResourceRoot, timestamp ) )
+      .replaceAll( ABS_RES_TAG, getResourceReplacement( absoluteResourceRoot ) )
+      .replaceAll( REL_RES_TAG, getResourceReplacement( relativeResourceRoot ) )
 
       // build the system resource links, with a timestamp for caching purposes
-      .replaceAll( ABS_SYS_RES_TAG, getSystemResourceReplacement( "$1", absoluteResourceRoot, pluginId ) )
-      .replaceAll( REL_SYS_RES_TAG, getSystemResourceReplacement( "/$1", absoluteResourceRoot, pluginId ) );
+      .replaceAll( ABS_SYS_RES_TAG, getSystemResourceReplacement( pluginId ) )
+      .replaceAll( REL_SYS_RES_TAG, getSystemResourceReplacement( pluginId, true ) );
+  }
+
+  @Override
+  protected String getResourceReplacement( String path ) {
+    final String timestampParam = "?v=" + this.getWriteDate().getTime();
+
+    return path + "$1" + timestampParam;
   }
 }

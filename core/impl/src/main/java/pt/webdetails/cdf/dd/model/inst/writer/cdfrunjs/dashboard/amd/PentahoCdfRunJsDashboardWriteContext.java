@@ -26,39 +26,46 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
     super( factory, indent, bypassCacheRead, dash, options );
   }
 
-  public PentahoCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
-                                               String indent ) {
+  public PentahoCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory, String indent ) {
     super( factory, indent );
   }
 
   @Override
   public String replaceTokens( String content ) {
-    final long timestamp = this.getWriteDate().getTime();
-
     final String path = this.getDashboard().getSourcePath().replaceAll( "(.+/).*", "$1" );
     final String pluginId = getPluginId( path );
-
-    final String absoluteResourceRoot = getRoot() + RESOURCE_API_GET;
-    final String relativeResourceRoot = absoluteResourceRoot + path;
 
     return content
       // replace the dashboard path token
       .replaceAll( DASHBOARD_PATH_TAG, getDashboardPath( path ) )
 
-      // build the image links
-      .replaceAll( ABS_IMG_TAG, getResourceReplacement( "$1", absoluteResourceRoot, timestamp ) )
-      .replaceAll( REL_IMG_TAG, getResourceReplacement( "$1", relativeResourceRoot, timestamp ) )
-
       // build the directory links
-      .replaceAll( ABS_DIR_RES_TAG, getResourceReplacement( "$2", "", null ) )
-      .replaceAll( REL_DIR_RES_TAG, getResourceReplacement( "$2", path, null ) )
+      .replaceAll( ABS_DIR_RES_TAG, getResourceReplacement( "" ) )
+      .replaceAll( REL_DIR_RES_TAG, getResourceReplacement( path ) )
 
       // build the resource links
-      .replaceAll( ABS_RES_TAG, getResourceReplacement( "$2", "", null ) )
-      .replaceAll( REL_RES_TAG, getResourceReplacement( "$2", path, null ) )
+      .replaceAll( ABS_RES_TAG, getResourceReplacement( "" ) )
+      .replaceAll( REL_RES_TAG, getResourceReplacement( path ) )
+
+      // build foundry resources links
+      .replaceAll( ABS_OSGI_RES_TAG, getOsgiResourceReplacement( "" ) )
+      .replaceAll( REL_OSGI_RES_TAG, getOsgiResourceReplacement( path ) )
+
+      // build the image links
+      .replaceAll( ABS_IMG_TAG, getImageResourceReplacement( "" ) )
+      .replaceAll( REL_IMG_TAG, getImageResourceReplacement( path ) )
 
       //build the system resource links
-      .replaceAll( ABS_SYS_RES_TAG, getSystemResourceReplacement( "$1", absoluteResourceRoot, pluginId ) )
-      .replaceAll( REL_SYS_RES_TAG, getSystemResourceReplacement( "/$1", absoluteResourceRoot, pluginId ) );
+      .replaceAll( ABS_SYS_RES_TAG, getSystemResourceReplacement( pluginId ) )
+      .replaceAll( REL_SYS_RES_TAG, getSystemResourceReplacement( pluginId, true ) );
+  }
+
+  @Override
+  protected String getResourceReplacement( String path ) {
+    return path + "$1";
+  }
+
+  private String getOsgiResourceReplacement( String path ) {
+    return OSGI_RESOURCE_API_GET + path + "$1";
   }
 }

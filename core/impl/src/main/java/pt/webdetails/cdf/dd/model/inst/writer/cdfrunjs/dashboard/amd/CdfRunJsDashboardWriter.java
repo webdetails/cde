@@ -38,6 +38,7 @@ import static pt.webdetails.cdf.dd.CdeConstants.Writer.SCRIPT;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.TITLE;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.WEBCONTEXT;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -60,6 +61,7 @@ import pt.webdetails.cdf.dd.render.RenderLayout;
 import pt.webdetails.cdf.dd.render.RenderResources;
 import pt.webdetails.cdf.dd.render.Renderer;
 import pt.webdetails.cdf.dd.render.ResourceMap;
+import pt.webdetails.cdf.dd.render.ResourceMap.Resource;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
@@ -209,11 +211,10 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
    * @return the string containing the CSS code snippet resources
    */
   protected String writeCssCodeResources( ResourceMap resources ) {
-
     StringBuilder out = new StringBuilder();
-    //CSS
-    for ( ResourceMap.Resource resource : resources.getCssResources() ) {
-      if ( resource.getResourceType().equals( ResourceMap.ResourceType.CODE ) ) {
+
+    for ( Resource resource : resources.getCssResources() ) {
+      if ( isCodeResource( resource ) ) {
         out.append( resource.getProcessedResource() ).append( NEWLINE );
       }
     }
@@ -228,10 +229,10 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
    * @return the string containing the processed JavaScript code snippet resources
    */
   protected String writeJsCodeResources( ResourceMap resources ) {
-    //JS
     StringBuilder sb = new StringBuilder();
-    for ( ResourceMap.Resource resource : resources.getJavascriptResources() ) {
-      if ( resource.getResourceType().equals( ResourceMap.ResourceType.CODE ) ) {
+
+    for ( Resource resource : resources.getJavascriptResources() ) {
+      if ( isCodeResource( resource ) ) {
         sb.append( resource.getProcessedResource() ).append( NEWLINE );
       }
     }
@@ -258,8 +259,6 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
    * @throws ThingWriteException
    */
   protected String writeWcdfSettings( Dashboard dash ) throws ThingWriteException {
-
-    StringBuilder wcdfSettings = new StringBuilder();
     DashboardWcdfDescriptor wcdf = dash.getWcdf();
 
     // Output WCDF
@@ -280,10 +279,8 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
    * @return the Map containing the processed component module ids and class names
    * @throws ThingWriteException
    */
-  protected Map<String, String> writeComponents(
-      CdfRunJsDashboardWriteContext context,
-      Dashboard dash,
-      StringBuilder out ) throws ThingWriteException {
+  protected Map<String, String> writeComponents( CdfRunJsDashboardWriteContext context, Dashboard dash,
+                                                 StringBuilder out ) throws ThingWriteException {
 
 
     IThingWriterFactory factory = context.getFactory();
@@ -458,14 +455,11 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
    * @param componentModules the dashboard components' AMD modules
    * @param components the dashboard's components
    * @param ctx the dashboard context
+   *
    * @return the string containing the dashboard's generated JavaScript sourcecode
    */
-  protected String writeContent(
-      ResourceMap resources,
-      String layout,
-      Map<String, String> componentModules,
-      String components,
-      CdfRunJsDashboardWriteContext ctx ) {
+  protected String writeContent( ResourceMap resources, String layout, Map<String, String> componentModules,
+                                 String components, CdfRunJsDashboardWriteContext ctx ) {
 
     StringBuilder out = new StringBuilder();
 
@@ -487,16 +481,13 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
    * @param ctx the dashboard context
    * @return the dashboard's JavaScript sourcecode
    */
-  protected String wrapRequireDefinitions(
-      ResourceMap resources,
-      Map<String, String> componentModules,
-      String content,
-      CdfRunJsDashboardWriteContext ctx ) {
+  protected String wrapRequireDefinitions( ResourceMap resources, Map<String, String> componentModules,
+                                           String content, CdfRunJsDashboardWriteContext ctx ) {
 
     StringBuilder out = new StringBuilder();
 
-    ArrayList<String> moduleIds = new ArrayList<String>(),
-        moduleClassNames = new ArrayList<String>();
+    ArrayList<String> moduleIds = new ArrayList<>(),
+        moduleClassNames = new ArrayList<>();
 
     // Add default dashboard module ids and class names
     addDefaultDashboardModules( moduleIds, moduleClassNames );
@@ -562,6 +553,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     moduleIds.add( AmdModule.CCC_PV.getId() );
     moduleIds.add( AmdModule.CCC_PVC.getId() );
     moduleIds.add( AmdModule.UTILS.getId() );
+
     // Add default module class names
     moduleClassNames.add( dashboardModule.getClassName() );
     moduleClassNames.add( AmdModule.LOGGER.getClassName() );
@@ -634,107 +626,37 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
    * @param ctx the dashboard context
    * @return the Map containing the dashboard resource modules ids and class names
    */
-  protected Map<String, String> writeFileResourcesRequireJSPathConfig(
-      StringBuilder out,
-      ResourceMap resources,
-      CdfRunJsDashboardWriteContext ctx ) {
+  protected Map<String, String> writeFileResourcesRequireJSPathConfig( StringBuilder out, ResourceMap resources,
+                                                                       CdfRunJsDashboardWriteContext context ) {
 
-    Map<String, String> resourceModules = new LinkedHashMap<String, String>();
+    Map<String, String> resourceModules = new LinkedHashMap<>();
+
     // File Resources with empty names should be placed last in the array dependency list
-    Map<String, String> unnamedResourceModules = new LinkedHashMap<String, String>();
-    String path;
-    StringBuilder id = new StringBuilder();
+    Map<String, String> unnamedResourceModules = new LinkedHashMap<>();
 
-    // JS
-    for ( ResourceMap.Resource resource : resources.getJavascriptResources() ) {
-      if ( resource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
+    String resourceID;
 
-        // replace tokens and alias
-        path = ctx.replaceTokensAndAlias( resource.getResourcePath() );
-        // replace white spaces and remove file extension
-        path = path.replaceAll( " ", "%20" ).replaceFirst( "(?i).js$", "" );
+    for ( Resource resource : resources.getJavascriptResources() ) { // JS
+      if ( isFileResource( resource ) ) {
+        resourceID = writeResource( out, context, resource );
 
-        // reset
-        id.setLength( 0 );
-
-        // full URI
-        if ( SCHEME_PATTERN.matcher( path ).find() ) {
-
-          if ( StringUtils.isEmpty( resource.getResourceName() ) ) {
-            id.append( RESOURCE_AMD_NAMESPACE ).append( "/" ).append( getRandomUUID() );
-            // store the generated module id and class name to be added at the end of the dependency array
-            unnamedResourceModules.put( id.toString(), resource.getResourceName() );
-          } else {
-            id.append( RESOURCE_AMD_NAMESPACE ).append( "/" ).append( resource.getResourceName() );
-            // store the generated module id and class name
-            resourceModules.put( id.toString(), resource.getResourceName() );
-          }
-
-          // output RequireJS path configuration
-          out.append( MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path ) ).append( NEWLINE );
-
+        String name = resource.getResourceName();
+        if ( StringUtils.isEmpty( name ) ) {
+          // store the generated module id and class name to be added at the end of the dependency array
+          unnamedResourceModules.put( resourceID, name );
         } else {
-
-          // normalize the path
-          path = Util.normalizeUri( path ).replaceAll( " ", "%20" );
-          if ( path.startsWith( "/" ) ) {
-            path = path.replaceFirst( "/", "" );
-          }
-
-          id.append( RESOURCE_AMD_NAMESPACE ).append( "/" ).append( path );
-
-          if ( StringUtils.isEmpty( resource.getResourceName() ) ) {
-            // store the generated module id and class name to be added at the end of the dependency array
-            unnamedResourceModules.put( id.toString(), resource.getResourceName() );
-          } else {
-            // store the generated module id and class name, maintain order
-            resourceModules.put( id.toString(), resource.getResourceName() );
-          }
-
-          // no need for RequireJS path configuration (built based on cde-require-js-cfg.js cde/resources/)
+          // store the generated module id and class name
+          resourceModules.put( resourceID, name );
         }
       }
     }
 
-    // CSS
-    for ( ResourceMap.Resource resource : resources.getCssResources() ) {
-      if ( resource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
-
-        // replace tokens and alias
-        path = ctx.replaceTokensAndAlias( resource.getResourcePath() );
-        // replace white spaces and remove file extension
-        path = path.replaceAll( " ", "%20" ).replaceFirst( "(?i).css$", "" );
-
-        // reset
-        id.setLength( 0 );
-
-        // full URI
-        if ( SCHEME_PATTERN.matcher( path ).find() ) {
-
-          id.append( RESOURCE_AMD_NAMESPACE )
-            .append( "/" )
-            .append( ( StringUtils.isEmpty( resource.getResourceName() ) ? getRandomUUID() : resource.getResourceName() ) );
-
-          // output RequireJS path configuration
-          out.append( MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path ) )
-            .append( NEWLINE );
-
-        } else {
-
-          // normalize the path
-          path = Util.normalizeUri( path ).replaceAll( " ", "%20" );
-          if ( path.startsWith( "/" ) ) {
-            path = path.replaceFirst( "/", "" );
-          }
-
-          id.append( RESOURCE_AMD_NAMESPACE ).append( "/" ).append( path );
-          // no need for RequireJS path configuration (built based on cde-require-js-cfg.js cde/resources/)
-
-        }
+    for ( Resource resource : resources.getCssResources() ) { // CSS
+      if ( isFileResource( resource ) ) {
+        resourceID = writeResource( out, context, resource );
 
         // prepend css! RequireJS loader plugin and don't provide a class name for CSS resources
-        resourceModules.put( RequireJSPlugin.CSS + id.toString(), "" );
-
+        resourceModules.put( RequireJSPlugin.CSS + resourceID, "" );
       }
     }
 
@@ -767,15 +689,17 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
    * @return the list of the JavaScript file resource modules
    */
   protected ArrayList<String> getJsModuleClassNames( ResourceMap resources ) {
-    ArrayList<String> classNames = new ArrayList<String>();
-    String className;
+    ArrayList<String> classNames = new ArrayList<>();
+
     // Filter and remove known RequireJS Loader plugin from class names
-    // JS
-    for ( ResourceMap.Resource resource : resources.getJavascriptResources() ) {
-      if ( resource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
-        if ( StringUtils.isEmpty( className = getModuleClassName( resource.getResourceName() ) ) ) {
+    for ( Resource resource : resources.getJavascriptResources() ) {
+      if ( isFileResource( resource ) ) {
+        String className = getModuleClassName( resource.getResourceName() );
+
+        if ( StringUtils.isEmpty( className ) ) {
           continue;
         }
+
         classNames.add( className );
       }
     }
@@ -791,15 +715,62 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
    * @param className the unfiltered module class name
    * @return the string containing the filtered module class name
    */
-  protected String getModuleClassName( String className ) {
+  private String getModuleClassName( String className ) {
     if ( StringUtils.isEmpty( className ) ) {
       return "";
     }
+
     // remove prepended requireJS loader plugins and resource namespace from class name
     for ( RequireJSPlugin plugin : RequireJSPlugin.values() ) {
-      className = className.replace( plugin.toString(), "" ).replace( RESOURCE_AMD_NAMESPACE + "/", "" );
+      className = className
+        .replace( plugin.toString(), "" )
+        .replace( RESOURCE_AMD_NAMESPACE + "/", "" );
     }
 
     return className;
+  }
+
+  private String writeResource( StringBuilder out, CdfRunJsDashboardWriteContext context, Resource resource ) {
+    StringBuilder id;
+
+    String path = context.replaceTokensAndAlias( resource.getResourcePath() );
+
+    path = FilenameUtils.removeExtension( path );
+
+    if ( SCHEME_PATTERN.matcher( path ).find() ) { // full URI
+      id = getResourceId( resource.getResourceName() );
+
+      final String requireJSConfig = MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path );
+
+      // output RequireJS path configuration
+      out.append( requireJSConfig ).append( NEWLINE );
+
+    } else {
+      path = Util.normalizeUri( path );
+      if ( path.startsWith( "/" ) ) {
+        path = path.replaceFirst( "/", "" );
+      }
+
+      id = getResourceId( path );
+
+      // no need for RequireJS path configuration (built based on cde-require-js-cfg.js cde/resources/)
+    }
+
+    return id.toString();
+  }
+
+  private StringBuilder getResourceId( String name ) {
+    StringBuilder id = new StringBuilder( RESOURCE_AMD_NAMESPACE );
+
+    name = StringUtils.isEmpty( name ) ? getRandomUUID() : name.replaceAll( " ", "%20" );
+    return id.append( "/" ).append( name );
+  }
+
+  private boolean isFileResource( Resource resource ) {
+    return resource.getResourceType().equals( ResourceMap.ResourceType.FILE );
+  }
+
+  private boolean isCodeResource( Resource resource ) {
+    return resource.getResourceType().equals( ResourceMap.ResourceType.CODE );
   }
 }

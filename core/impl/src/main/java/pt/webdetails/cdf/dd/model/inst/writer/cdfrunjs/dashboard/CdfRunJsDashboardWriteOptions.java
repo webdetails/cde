@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -30,30 +30,17 @@ public class CdfRunJsDashboardWriteOptions implements Serializable {
   private static final Pattern SPECIAL_CHARACTERS_PATTERN =
     Pattern.compile( "[\\Q" + SPECIAL_CHARACTERS + "\\E]" );
 
-  public CdfRunJsDashboardWriteOptions(
-    boolean absolute,
-    boolean debug,
-    String absRoot,
-    String scheme ) {
+  public CdfRunJsDashboardWriteOptions( boolean absolute, boolean debug, String absRoot, String scheme ) {
     this( "", false, absolute, debug, absRoot, scheme );
   }
 
-  public CdfRunJsDashboardWriteOptions(
-    boolean amdModule,
-    boolean absolute,
-    boolean debug,
-    String absRoot,
-    String scheme ) {
+  public CdfRunJsDashboardWriteOptions( boolean amdModule, boolean absolute, boolean debug,
+                                        String absRoot, String scheme ) {
     this( "", amdModule, absolute, debug, absRoot, scheme );
   }
 
-  public CdfRunJsDashboardWriteOptions(
-    String aliasPrefix,
-    boolean amdModule,
-    boolean absolute,
-    boolean debug,
-    String absRoot,
-    String scheme ) {
+  public CdfRunJsDashboardWriteOptions( String aliasPrefix, boolean amdModule, boolean absolute,
+                                        boolean debug, String absRoot, String scheme ) {
     this._aliasPrefix = escapeAlias( aliasPrefix );
     this._amdModule = amdModule;
     this._absolute = absolute;
@@ -67,15 +54,9 @@ public class CdfRunJsDashboardWriteOptions implements Serializable {
       throw new IllegalArgumentException( "aliasPrefix" );
     }
 
-    aliasPrefix = escapeAlias( aliasPrefix );
+    aliasPrefix = ( StringUtils.isEmpty( this._aliasPrefix ) ? "" : this._aliasPrefix ) + escapeAlias( aliasPrefix );
 
-    return new CdfRunJsDashboardWriteOptions(
-      StringUtils.isEmpty( this._aliasPrefix ) ? aliasPrefix : ( this._aliasPrefix + "_" + aliasPrefix ),
-      _amdModule,
-      _absolute,
-      _debug,
-      _absRoot,
-      _scheme );
+    return new CdfRunJsDashboardWriteOptions( aliasPrefix, _amdModule, _absolute, _debug, _absRoot, _scheme );
   }
 
   public String getAliasPrefix() {
@@ -132,8 +113,8 @@ public class CdfRunJsDashboardWriteOptions implements Serializable {
     // Theoretically, a dashboard could be named "I-[~!@#$%^&*(){}|.,]-=_+|;'"?<>~`"
     // to prevent going against id naming rules in HTML4, we'll convert the string to a java identifier
     if ( StringUtils.isNotEmpty( str ) && SPECIAL_CHARACTERS_PATTERN.matcher( str ).find() ) {
-      StringBuffer sb = new StringBuffer();
-      sb.append( "id_" );
+      StringBuilder sb = new StringBuilder( "id_" );
+
       for ( int i = 0; i < str.length(); i++ ) {
         if ( SPECIAL_CHARACTERS.indexOf( str.charAt( i ) ) >= 0 ) {
           sb.append( (int) str.charAt( i ) );
@@ -141,8 +122,10 @@ public class CdfRunJsDashboardWriteOptions implements Serializable {
           sb.append( str.charAt( i ) );
         }
       }
+
       return sb.toString();
     }
+
     return str;
   }
 
