@@ -46,11 +46,6 @@ public class CdfRunJsDashboardWriteContextForTesting extends CdfRunJsDashboardWr
   }
 
   @Override
-  protected String getResourceReplacement( String path ) {
-    return "$1";
-  }
-
-  @Override
   protected String getSystemDir() {
     return "system";
   }

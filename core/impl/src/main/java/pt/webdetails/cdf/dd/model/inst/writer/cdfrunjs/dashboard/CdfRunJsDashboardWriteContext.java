@@ -10,11 +10,9 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
 
 import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 
 import pt.webdetails.cdf.dd.CdeEngine;
@@ -23,43 +21,26 @@ import pt.webdetails.cdf.dd.model.core.writer.DefaultThingWriteContext;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
-import pt.webdetails.cdf.dd.util.CdeEnvironment;
 
 public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext {
   protected static final String DASHBOARD_PATH_TAG = "\\$\\{dashboardPath\\}";
 
-  protected static final String ABS_DIR_RES_TAG = "\\$\\{(?:res|solution):(/.+/)\\}";
-  protected static final String REL_DIR_RES_TAG = "\\$\\{(?:res|solution):(.+/)\\}";
+  protected static final String SLASH = "/";
 
-  protected static final String ABS_RES_TAG = "\\$\\{(?:res|solution):(/.+)\\}";
-  protected static final String REL_RES_TAG = "\\$\\{(?:res|solution):(.+)\\}";
+  private static final String COMPONENT_PREFIX = "render_";
 
-  public static final String OSGI_TAG = "osgi:";
-  protected static final String ABS_OSGI_RES_TAG = "\\$\\{" + OSGI_TAG + "(/.+)\\}";
-  protected static final String REL_OSGI_RES_TAG = "\\$\\{" + OSGI_TAG + "(.+)\\}";
+  private static final String SHORT_H_TAG = "\\$\\{h:(.+?)\\}";
+  private static final String SHORT_C_TAG = "\\$\\{c:(.+?)\\}";
+  private static final String SHORT_P_TAG = "\\$\\{p:(.+?)\\}";
 
-  protected static final String ABS_IMG_TAG = "\\$\\{img:(/.+)\\}";
-  protected static final String REL_IMG_TAG = "\\$\\{img:(.+)\\}";
-
-  protected static final String ABS_SYS_RES_TAG = "\\$\\{system:(/.+)\\}";
-  protected static final String REL_SYS_RES_TAG = "\\$\\{system:(.+)\\}";
-
-  // ------------
-
-  protected static final String COMPONENT_PREFIX = "render_";
-
-  protected static final String SHORT_H_TAG = "\\$\\{h:(.+?)\\}";
-  protected static final String SHORT_C_TAG = "\\$\\{c:(.+?)\\}";
-  protected static final String SHORT_P_TAG = "\\$\\{p:(.+?)\\}";
-  protected static final String LONG_H_TAG = "\\$\\{htmlObject:(.+?)\\}";
-  protected static final String LONG_C_TAG = "\\$\\{component:(.+?)\\}";
-  protected static final String LONG_P_TAG = "\\$\\{parameter:(.+?)\\}";
+  private static final String LONG_H_TAG = "\\$\\{htmlObject:(.+?)\\}";
+  private static final String LONG_C_TAG = "\\$\\{component:(.+?)\\}";
+  private static final String LONG_P_TAG = "\\$\\{parameter:(.+?)\\}";
 
   // ------------
 
   // Endpoints
   public static final String RESOURCE_API_GET = "api/resources";
-  public static final String OSGI_RESOURCE_API_GET = "/cxf/cde/resources";
 
   private boolean _isFirstInList = true;
   private final Date _writeDate;
@@ -146,8 +127,6 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
 
   public abstract String replaceTokens( String content );
 
-  protected abstract String getResourceReplacement( String path );
-
   public String replaceAlias( String content ) {
     if ( content == null ) {
       return "";
@@ -184,10 +163,6 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
       .replaceAll( LONG_P_TAG, "$1" );
   }
 
-  protected String getSystemDir() {
-    return CdeEngine.getEnv().getSystemDir();
-  }
-
   protected String getPluginId( String path ) {
     if ( path.startsWith( "/" ) ) {
       path = path.replaceFirst( "/", "" );
@@ -200,6 +175,23 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
     }
   }
 
+  // region private/protected aux methods
+  protected String replaceWhiteSpaces( String value ) {
+    return value.replaceAll( " ", "%20" );
+  }
+
+  protected String getDashboardSourcePath() {
+    String path = this.getDashboard().getSourcePath().replaceAll( "(.+/).*", "$1" );
+
+    return replaceWhiteSpaces( path );
+  }
+
+  protected String getPentahoResourceEndpoint() {
+    String endpoint = getRoot() + RESOURCE_API_GET;
+
+    return replaceWhiteSpaces( endpoint );
+  }
+
   protected String getRoot() {
     final CdfRunJsDashboardWriteOptions options = this.getOptions();
 
@@ -209,34 +201,12 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
     return schemeRoot + getCdeEnvironment().getApplicationBaseContentUrl();
   }
 
-  protected String getDashboardPath( String path ) {
-    return replaceWhiteSpaces( path.replaceAll( "(^/.*/$)", "$1" ) );
-  }
-
-  protected String getImageResourceReplacement( String path ) {
-    final String timestampParam = "?v=" + this.getWriteDate().getTime();
-
-    return replaceWhiteSpaces( getRoot() + RESOURCE_API_GET + path + "$1" + timestampParam );
-  }
-
-  protected String getSystemResourceReplacement( String pluginId ) {
-    return getSystemResourceReplacement( pluginId, false );
-  }
-
-  protected String getSystemResourceReplacement( String pluginId, boolean relative ) {
-    final String root = getRoot() + RESOURCE_API_GET;
-
-    final boolean isValidPluginId = StringUtils.isNotEmpty( pluginId );
-    final String path = root + "/" + getSystemDir() + ( isValidPluginId ? "/" + pluginId : "" );
-
-    return replaceWhiteSpaces( path + ( relative ? "/$1" : "$1" ) );
-  }
-
-  private String replaceWhiteSpaces( String value ) {
-    return value.replaceAll( " ", "%20" );
-  }
-
   private ICdeEnvironment getCdeEnvironment() {
-    return CdeEngine.getInstance().getEnvironment();
+    return CdeEngine.getEnv();
   }
+
+  protected String getSystemDir() {
+    return getCdeEnvironment().getSystemDir();
+  }
+  // endregion
 }

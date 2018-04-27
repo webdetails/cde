@@ -92,6 +92,52 @@
   "layout": {
     "rows": [
       {
+        "id": "dd0254a2-3d01-7bfa-60bc-edcd10a553d3",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "cde_reference"
+          },
+          {
+            "name": "resourceFile",
+            "type": "ResourceFile",
+            "value": "${osgi:/samples/karaf-dashboard/resources/style/cde-reference.css}"
+          },
+          {
+            "name": "resourceType",
+            "type": "Label",
+            "value": "Css"
+          }
+        ],
+        "type": "LayoutResourceFile",
+        "typeDesc": "Resource"
+      },
+      {
+        "id": "322bfe82-8b3e-3b74-d9c7-c5fa9672d665",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "cde_template"
+          },
+          {
+            "name": "resourceFile",
+            "type": "ResourceFile",
+            "value": "${osgi:../style/cde-template.css}"
+          },
+          {
+            "name": "resourceType",
+            "type": "Label",
+            "value": "Css"
+          }
+        ],
+        "type": "LayoutResourceFile",
+        "typeDesc": "Resource"
+      },
+      {
         "id": "fd92d6cf-6500-2338-b5c6-fe7fae50c294",
         "parent": "UnIqEiD",
         "properties": [

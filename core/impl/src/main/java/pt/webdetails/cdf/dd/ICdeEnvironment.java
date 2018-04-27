@@ -71,8 +71,8 @@ public interface ICdeEnvironment {
 
   IUrlProvider getUrlProvider();
 
-  String getCdfIncludes( String dashboard, String type, boolean debug, boolean absolute, String absRoot, String scheme )
-    throws Exception;
+  String getCdfIncludes( String dashboard, String type, boolean debug, boolean absolute,
+                         String absRoot, String scheme ) throws Exception;
 
   IFileHandler getFileHandler();
 
@@ -81,7 +81,7 @@ public interface ICdeEnvironment {
                                                                   CdfRunJsDashboardWriteOptions options );
 
   CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
-                                                                         String indent );
+                                                                  String indent );
 
   IBasicFile getCdeXml();
 

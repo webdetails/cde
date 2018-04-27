@@ -10,7 +10,6 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
 import junit.framework.Assert;
@@ -149,16 +148,16 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
   public void testReplaceCdfdeExtension() {
     String[] paths = new String[] { "/path/to/file.wcdf", ":path:to:file",
       ":path.cdfde:to.wcdf:file", ":path.cdfde/to.wcdf:file" };
-    for ( String path1 : paths ) {
+    for ( int i = 0; i < paths.length; i++ ) {
       // everything that ends in .cdfde will now end in .wcdf
       Assert.assertEquals(
-        dashboardWriterSpy.replaceCdfdeExtension(path1 + ".cdfde"), path1 + ".wcdf");
+        dashboardWriterSpy.replaceCdfdeExtension( paths[ i ] + ".cdfde" ), paths[ i ] + ".wcdf" );
     }
 
-    for ( String path : paths ) {
+    for ( int i = 0; i < paths.length; i++ ) {
       // if it doesn't end in .cdfde, it will just be returned the same
       Assert.assertEquals(
-        dashboardWriterSpy.replaceCdfdeExtension(path), path);
+        dashboardWriterSpy.replaceCdfdeExtension( paths[ i ] ), paths[ i ] );
     }
   }
 }

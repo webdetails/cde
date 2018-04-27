@@ -34,6 +34,7 @@ import static pt.webdetails.cdf.dd.CdeConstants.Writer.REQUIRE_START;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.REQUIRE_STOP;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.RESOURCE_AMD_NAMESPACE;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.SCHEME_PATTERN;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.CXF_PATTERN;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.SCRIPT;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.TITLE;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.WEBCONTEXT;
@@ -735,9 +736,12 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
 
     String path = context.replaceTokensAndAlias( resource.getResourcePath() );
 
-    path = FilenameUtils.removeExtension( path );
+    path = FilenameUtils.removeExtension( path ).replaceAll( " ", "%20" );
 
-    if ( SCHEME_PATTERN.matcher( path ).find() ) { // full URI
+    final boolean isFullUriPath = SCHEME_PATTERN.matcher( path ).find();
+    final boolean isCxfPath = CXF_PATTERN.matcher( path ).find();
+
+    if ( isFullUriPath || isCxfPath ) {
       id = getResourceId( resource.getResourceName() );
 
       final String requireJSConfig = MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path );

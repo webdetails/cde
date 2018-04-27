@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
            xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
-                               http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd">
+                               http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0
+                               http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
+                               http://cxf.apache.org/blueprint/jaxrs
+                               http://cxf.apache.org/schemas/blueprint/jaxrs.xsd">
+
+  <cm:property-placeholder persistent-id="org.pentaho.ctools.cde" update-strategy="reload"
+                           placeholder-prefix="cde(" placeholder-suffix=")">
+    <cm:default-properties>
+      <cm:property name="resource.cache.max.age" value="2628000"/>
+    </cm:default-properties>
+  </cm:property-placeholder>
 
   <bean id="cdeEngine" class="pt.webdetails.cdf.dd.CdeEngine" scope="singleton" factory-method="getInstance">
     <property name="environment" ref="cdeEnvironment"/>
@@ -30,10 +41,15 @@
   <jaxrs:server address="/cde" id="cdeService">
     <jaxrs:serviceBeans>
       <ref component-id="renderApi"/>
+      <ref component-id="resourcesApi"/>
     </jaxrs:serviceBeans>
   </jaxrs:server>
+
   <bean id="renderApi" class="org.pentaho.ctools.cde.api.RenderApi">
     <property name="dashboardManager" ref="dashboardManager"/>
+  </bean>
+  <bean id="resourcesApi" class="org.pentaho.ctools.cde.api.ResourcesApi">
+    <property name="resourceMaxAge" value="cde(resource.cache.max.age)"/>
   </bean>
 
   <bean id="cache" class="org.pentaho.ctools.cde.cache.impl.Cache" scope="singleton">

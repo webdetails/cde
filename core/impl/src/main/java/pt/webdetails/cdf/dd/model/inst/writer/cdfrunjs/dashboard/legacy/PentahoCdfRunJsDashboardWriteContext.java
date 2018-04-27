@@ -10,15 +10,26 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy;
 
+import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 
 public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWriteContext {
+  private static final String ABS_DIR_RES_TAG = "\\$\\{(?:res|solution):(/.+/)\\}";
+  private static final String REL_DIR_RES_TAG = "\\$\\{(?:res|solution):(.+/)\\}";
+
+  private static final String ABS_RES_TAG = "\\$\\{(?:res|solution):(/.+)\\}";
+  private static final String REL_RES_TAG = "\\$\\{(?:res|solution):(.+)\\}";
+
+  private static final String ABS_IMG_TAG = "\\$\\{img:(/.+)\\}";
+  private static final String REL_IMG_TAG = "\\$\\{img:(.+)\\}";
+
+  private static final String ABS_SYS_RES_TAG = "\\$\\{system:(/.+)\\}";
+  private static final String REL_SYS_RES_TAG = "\\$\\{system:(.+)\\}";
 
   public PentahoCdfRunJsDashboardWriteContext( IThingWriterFactory factory, String indent,
                                                boolean bypassCacheRead, Dashboard dash,
@@ -32,37 +43,59 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
 
   @Override
   public String replaceTokens( String content ) {
-    final String path = this.getDashboard().getSourcePath().replaceAll( "(.+/).*", "$1" );
-    final String pluginId = getPluginId( path );
-
-    final String absoluteResourceRoot = getRoot() + RESOURCE_API_GET;
-    final String relativeResourceRoot = absoluteResourceRoot + path;
+    final long timestamp = this.getWriteDate().getTime();
 
     return content
       // replace the dashboard path token
-      .replaceAll( DASHBOARD_PATH_TAG, getDashboardPath( path ) )
+      .replaceAll( DASHBOARD_PATH_TAG, getDashPathReplacement() )
 
       // build the image links, with a timestamp for caching purposes
-      .replaceAll( ABS_IMG_TAG, getImageResourceReplacement( "" ) )
-      .replaceAll( REL_IMG_TAG, getImageResourceReplacement( path ) )
+      .replaceAll( ABS_IMG_TAG, getAbsResourceReplacement( timestamp ) )
+      .replaceAll( REL_IMG_TAG, getRelResourceReplacement( timestamp ) )
 
       // Directories don't need the caching timestamp
-      .replaceAll( ABS_DIR_RES_TAG, getResourceReplacement( absoluteResourceRoot ) )
-      .replaceAll( REL_DIR_RES_TAG, getResourceReplacement( relativeResourceRoot ) )
+      .replaceAll( ABS_DIR_RES_TAG, getAbsResourceReplacement( null ) )
+      .replaceAll( REL_DIR_RES_TAG, getRelResourceReplacement( null ) )
 
       // build the resource links, with a timestamp for caching purposes
-      .replaceAll( ABS_RES_TAG, getResourceReplacement( absoluteResourceRoot ) )
-      .replaceAll( REL_RES_TAG, getResourceReplacement( relativeResourceRoot ) )
+      .replaceAll( ABS_RES_TAG, getAbsResourceReplacement( timestamp ) )
+      .replaceAll( REL_RES_TAG, getRelResourceReplacement( timestamp ) )
 
       // build the system resource links, with a timestamp for caching purposes
-      .replaceAll( ABS_SYS_RES_TAG, getSystemResourceReplacement( pluginId ) )
-      .replaceAll( REL_SYS_RES_TAG, getSystemResourceReplacement( pluginId, true ) );
+      .replaceAll( ABS_SYS_RES_TAG, getSystemResourceReplacement( true ) )
+      .replaceAll( REL_SYS_RES_TAG, getSystemResourceReplacement( false ) );
   }
 
-  @Override
-  protected String getResourceReplacement( String path ) {
-    final String timestampParam = "?v=" + this.getWriteDate().getTime();
+  private String getDashPathReplacement() {
+    String path = getDashboardSourcePath();
 
-    return path + "$1" + timestampParam;
+    return replaceWhiteSpaces( path.replaceAll( "(^/.*/$)", "$1" ) );
+  }
+
+  private String getAbsResourceReplacement( Long timestamp ) {
+    final String resourceEndpoint = getPentahoResourceEndpoint();
+
+    return getResourceReplacement( resourceEndpoint, timestamp );
+  }
+
+  private String getRelResourceReplacement( Long timestamp ) {
+    final String resourceEndpoint = getPentahoResourceEndpoint();
+    final String path = getDashboardSourcePath();
+
+    return getResourceReplacement( resourceEndpoint + path, timestamp );
+  }
+
+  private String getSystemResourceReplacement( boolean isAbsolute ) {
+    final String resourceEndpoint = getPentahoResourceEndpoint();
+
+    final String token = isAbsolute ? "$1" : "/$1";
+    final String pluginId = getPluginId( getDashboardSourcePath() );
+
+    return replaceWhiteSpaces( resourceEndpoint + SLASH + getSystemDir()
+      + ( StringUtils.isEmpty( pluginId ) ? token : "/" + pluginId + token ) );
+  }
+
+  private String getResourceReplacement( String path, Long timestamp ) {
+    return replaceWhiteSpaces( path + "$1" + ( timestamp != null ? "?v=" + timestamp : "" ) );
   }
 }

@@ -156,6 +156,7 @@ public class CdeConstants {
   public static class Writer {
     public static final String WEBCONTEXT = "webcontext.js?context={0}&amp;requireJsOnly={1}";
     public static final Pattern SCHEME_PATTERN = Pattern.compile( "^(ht|f)tps?\\:\\/\\/" );
+    public static final Pattern CXF_PATTERN = Pattern.compile( "^/cxf" );
 
     public static final String NEWLINE = System.getProperty( "line.separator" );
     public static final String INDENT1 = "  ";

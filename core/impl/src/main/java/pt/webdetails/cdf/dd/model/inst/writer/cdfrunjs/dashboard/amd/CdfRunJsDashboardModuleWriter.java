@@ -32,7 +32,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.NEWLINE;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DEFINE_START;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_START_EMPTY_ALIAS;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_NORMALIZE_ALIAS;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_GET_MESSAGES_PATH;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_START;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_LAYOUT;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_RENDERER;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_SETUP_DOM;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_PROCESS_COMPONENTS;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_STOP;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DEFINE_STOP;
 
 public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
   protected static Log logger = LogFactory.getLog( CdfRunJsDashboardModuleWriter.class );
@@ -200,17 +211,19 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
         StringUtils.join( classNames, ", " ) ) );
   }
 
-  protected String getWcdfReposPath( String path ) {
+  String getWcdfReposPath( String path ) {
     if ( StringUtils.isEmpty( path ) ) {
       return "undefined";
     }
+
     return "\"" + replaceCdfdeExtension( Utils.getWcdfReposPath( path ) ) + "/\"";
   }
 
-  protected String replaceCdfdeExtension( String path ) {
+  String replaceCdfdeExtension( String path ) {
     if ( path.endsWith( ".cdfde" ) ) {
       return path.substring( 0, path.lastIndexOf( ".cdfde" )  ) + ".wcdf";
     }
+
     return path;
   }
 
