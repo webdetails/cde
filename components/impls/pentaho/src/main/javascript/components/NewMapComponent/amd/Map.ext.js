@@ -17,7 +17,7 @@ define([
 
   return {
     getMarkerImgPath: function() {
-      return environment.server.root + 'api/repos/pentaho-cdf-dd/resources/components/Map/amd/images/';
+      return environment.server.root + 'api/repos/pentaho-cdf-dd/resources/components/NewMapComponent/amd/images/';
     }
   };
 
