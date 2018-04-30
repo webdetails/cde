@@ -511,7 +511,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
 }), define("cde/components/Map/Map.ext", [], function() {
   return {
     getMarkerImgPath: function() {
-      return CONTEXT_PATH + "api/repos/pentaho-cdf-dd/resources/custom/amd-components/Map/images/";
+      return CONTEXT_PATH + "api/repos/pentaho-cdf-dd/resources/components/NewMapComponent/legacy/images/";
     }
   };
 }), define("cde/components/Map/Map.featureStyles", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "./Map.ext", "cdf/Logger"], function($, _, MapExt, Logger) {
