@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -10,7 +10,6 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy;
 
 import org.apache.commons.lang.StringUtils;
@@ -41,7 +40,7 @@ public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRu
   }
 
   @Override
-  protected String getPluginId( String path ) {
+  protected String getSystemPluginId() {
     return "mockPlugin";
   }
 }

@@ -10,6 +10,7 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
+
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
 import junit.framework.Assert;
@@ -153,7 +154,6 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
       Assert.assertEquals(
         dashboardWriterSpy.replaceCdfdeExtension( paths[ i ] + ".cdfde" ), paths[ i ] + ".wcdf" );
     }
-
     for ( int i = 0; i < paths.length; i++ ) {
       // if it doesn't end in .cdfde, it will just be returned the same
       Assert.assertEquals(

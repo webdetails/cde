@@ -18,7 +18,11 @@ import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.SLASH;
+
 public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWriteContext {
+  private static final String DASHBOARD_PATH_TAG = "\\$\\{dashboardPath\\}";
+
   private static final String ABS_DIR_RES_TAG = "\\$\\{(?:res|solution):(/.+/)\\}";
   private static final String REL_DIR_RES_TAG = "\\$\\{(?:res|solution):(.+/)\\}";
 
@@ -89,7 +93,7 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
     final String resourceEndpoint = getPentahoResourceEndpoint();
 
     final String token = isAbsolute ? "$1" : "/$1";
-    final String pluginId = getPluginId( getDashboardSourcePath() );
+    final String pluginId = getSystemPluginId();
 
     return replaceWhiteSpaces( resourceEndpoint + SLASH + getSystemDir()
       + ( StringUtils.isEmpty( pluginId ) ? token : "/" + pluginId + token ) );

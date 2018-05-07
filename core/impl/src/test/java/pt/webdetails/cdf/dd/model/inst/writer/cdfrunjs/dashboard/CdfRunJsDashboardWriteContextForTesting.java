@@ -51,7 +51,7 @@ public class CdfRunJsDashboardWriteContextForTesting extends CdfRunJsDashboardWr
   }
 
   @Override
-  protected String getPluginId( String path ) {
+  protected String getSystemPluginId() {
     return "test-plugin";
   }
 

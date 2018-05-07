@@ -21,16 +21,17 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.SLASH;
+
 public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWriteContext {
-  private static final String RESOURCE_TAG = "\\$\\{(\\w+):((/?)(.+?)(/?))\\}";
+  private static final String SIMPLE_TOKEN = "\\$\\{(\\w+)\\}";
+  private static final String RESOURCE_TOKEN = "\\$\\{(\\w+):((/?)(.+?)(/?))\\}";
 
   // ------------
 
-  private static final String CXF_RESOURCE_API_GET = "/cxf/cde/resources";
-
-  private static final String SYSTEM_RESOURCE = "system";
-  private static final String OSGI_RESOURCE = "osgi";
-  private static final String IMAGE_RESOURCE = "img";
+  static final String DASH_PATH_TAG = "dashboardPath";
+  static final String SYSTEM_TAG = "system";
+  static final String IMAGE_TAG = "img";
 
   public PentahoCdfRunJsDashboardWriteContext( IThingWriterFactory factory,
                                                String indent, boolean bypassCacheRead, Dashboard dash,
@@ -44,108 +45,101 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
 
   @Override
   public String replaceTokens( String content ) {
-    // replace the dashboard path token
-    if ( content.matches( DASHBOARD_PATH_TAG ) ) {
-      return replaceDashboardPathTag();
+    final Matcher simpleMatch = Pattern.compile( SIMPLE_TOKEN ).matcher( content );
+    while ( simpleMatch.find() ) {
+      content = content.replaceFirst( SIMPLE_TOKEN, getSimpleTokenReplacement( simpleMatch ) );
     }
 
-    if ( content.matches( RESOURCE_TAG ) ) {
-      return replaceTagAmd( content );
+    final Matcher resourceMatch = Pattern.compile( RESOURCE_TOKEN ).matcher( content );
+    while ( resourceMatch.find() ) {
+      content = content.replaceFirst( RESOURCE_TOKEN, getResourceTokenReplacement( resourceMatch ) );
     }
 
     return content;
   }
 
-  private String replaceTagAmd( String content ) {
+  // region Simple Token
+  private String getSimpleTokenReplacement( Matcher token ) {
+    if ( isDashboardPathTag( token ) ) {
+      return getDashboardPathReplacement();
+    }
+
+    // Only "dashboardPath" has a replacement
+    return token.group();
+  }
+
+  private String getDashboardPathReplacement() {
+    String dashboardPath = getDashboardSourcePath().replaceAll( "(^/.*/$)", "$1" );
+
+    return replaceWhiteSpaces( dashboardPath );
+  }
+
+  private boolean isDashboardPathTag( Matcher token ) {
+    return DASH_PATH_TAG.equals( token.group( 1 ) );
+  }
+  // endregion
+
+  // region Resource Token
+  private String getResourceTokenReplacement( Matcher resource ) {
     // build system resource links
-    if ( isSystemResource( content ) ) {
-      return replaceTag( content, getSystemRoot() );
+    if ( isSystemTag( resource ) ) {
+      return getResourceReplacement( resource, getSystemRoot() );
     }
 
     // build image links, with a timestamp for caching purposes
-    if ( isImageResource( content ) ) {
-      return replaceTag( content, getPentahoResourceEndpoint() ) + "?v=" + getWriteDate().getTime();
-    }
-
-    // build osgi resource links
-    if ( isOsgiResource( content ) ) {
-      return replaceTag( content, getOsgiResourceEndpoint() );
+    if ( isImageTag( resource ) ) {
+      return getResourceReplacement( resource, getPentahoResourceEndpoint() ) + "?v=" + getWriteDate().getTime();
     }
 
     // build directory links
     // build resource links
     // build foundry resources links
     // build system resource links
-    return replaceTag( content, "" );
+    // build osgi resource links
+    return getResourceReplacement( resource, "" );
   }
 
-  // region replaceTag
-  private String replaceDashboardPathTag() {
-    String dashboardPath = getDashboardSourcePath().replaceAll( "(^/.*/$)", "$1" );
-
-    return replaceWhiteSpaces( dashboardPath );
-  }
-
-  private String replaceTag( String content, String absoluteRoot ) {
-    final Matcher tagMatcher = Pattern.compile( RESOURCE_TAG ).matcher( content );
-
+  private String getResourceReplacement( Matcher tagMatcher, String absoluteRoot ) {
     StringBuilder replacedContent = new StringBuilder( absoluteRoot );
 
-    final boolean isSystemResource = isSystemResource( content );
-    if ( !isSystemResource ) {
-      replacedContent.append( !isAbsoluteResource( tagMatcher ) ? getDashboardSourcePath() : "" );
+    if ( !isSystemTag( tagMatcher ) ) {
+      replacedContent.append( isRelativeResource( tagMatcher ) ? getDashboardSourcePath() : "" );
     }
 
-    replacedContent.append( getResourcePath( tagMatcher, isSystemResource ) );
+    replacedContent.append( getResourcePath( tagMatcher ) );
 
     return replaceWhiteSpaces( replacedContent.toString() );
   }
-  // endregion
 
-  // region Resource Regx
-  private String getResourcePath( Matcher resource, boolean isSystem ) {
-    String path = resource.replaceAll( "$2" );
+  private String getResourcePath( Matcher resource ) {
+    String path = resource.group( 2 );
 
-    if ( isSystem ) {
+    if ( isSystemTag( resource ) ) {
       path = path.replaceFirst( "^/", "" );
     }
 
     return path;
   }
 
-  private boolean isImageResource( String content ) {
-    final Matcher resource = Pattern.compile( RESOURCE_TAG ).matcher( content );
-
-    return IMAGE_RESOURCE.equals( resource.replaceAll( "$1" ) );
+  private boolean isImageTag( Matcher resource ) {
+    return IMAGE_TAG.equals( resource.group( 1 ) );
   }
 
-  private boolean isOsgiResource( String content ) {
-    final Matcher resource = Pattern.compile( RESOURCE_TAG ).matcher( content );
-
-    return OSGI_RESOURCE.equals( resource.replaceAll( "$1" ) );
+  private boolean isSystemTag( Matcher resource ) {
+    return SYSTEM_TAG.equals( resource.group( 1 ) );
   }
 
-  private boolean isSystemResource( String content ) {
-    final Matcher resource = Pattern.compile( RESOURCE_TAG ).matcher( content );
-
-    return SYSTEM_RESOURCE.equals( resource.replaceAll( "$1" ) );
-  }
-
-  private boolean isAbsoluteResource( Matcher resource ) {
-    return SLASH.equals( resource.replaceAll( "$3" ) );
+  private boolean isRelativeResource( Matcher resource ) {
+    return !SLASH.equals( resource.group( 3 ) );
   }
   // endregion
 
   private String getSystemRoot() {
-    String pluginId = getPluginId( getDashboardSourcePath() );
+    String pluginId = getSystemPluginId();
     if ( StringUtils.isEmpty( pluginId ) ) {
       pluginId = "";
     }
 
     return getPentahoResourceEndpoint() + SLASH + getSystemDir() + SLASH + pluginId + SLASH;
-  }
-
-  private String getOsgiResourceEndpoint() {
-    return CXF_RESOURCE_API_GET;
   }
 }

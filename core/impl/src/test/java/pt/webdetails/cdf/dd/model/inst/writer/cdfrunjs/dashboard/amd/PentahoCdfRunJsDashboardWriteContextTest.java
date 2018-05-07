@@ -22,7 +22,11 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.amd.CdfRunJsThingWriterFactory;
 
 import static org.junit.Assert.assertEquals;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.SLASH;
 import static pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext.RESOURCE_API_GET;
+import static pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd.PentahoCdfRunJsDashboardWriteContext.DASH_PATH_TAG;
+import static pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd.PentahoCdfRunJsDashboardWriteContext.SYSTEM_TAG;
+import static pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd.PentahoCdfRunJsDashboardWriteContext.IMAGE_TAG;
 import static pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd.PentahoCdfRunJsDashboardWriteContextForTesting.PLUGIN_ID;
 import static pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd.PentahoCdfRunJsDashboardWriteContextForTesting.SYSTEM_DIR;
 import static pt.webdetails.cpf.repository.util.RepositoryHelper.joinPaths;
@@ -50,14 +54,14 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
 
   private PentahoCdfRunJsDashboardWriteContext context;
 
-  // region Replace dashboard path token
+  // region Replace Dashboard Path Token
   //   DASHBOARD_PATH_TAG = "\\$\\{dashboardPath\\}";
   @Test
   public void testReplaceTokensDashboardPath() {
     this.context = createDashboardContext();
 
-    String expected = joinPaths( ROOT, TEST_FOLDER, "/" );
-    assertReplaceTokens( expected, "${dashboardPath}" );
+    String expected = joinPaths( ROOT, TEST_FOLDER, SLASH );
+    assertReplaceTokens( expected, "${" + DASH_PATH_TAG + "}" );
   }
 
   @Test
@@ -65,22 +69,21 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String dashboardPath = joinPaths( ROOT, TEST_SPACED_FOLDER, DASHBOARD ).substring( 1 );
     this.context = createDashboardContext( dashboardPath );
 
-    String expected = joinPaths( ROOT, TEST_SPACED_FOLDER.replace( " ", "%20") , "/" );
-    assertReplaceTokens( expected, "${dashboardPath}" );
+    String expected = joinPaths( ROOT, TEST_SPACED_FOLDER.replace( " ", "%20") , SLASH );
+    assertReplaceTokens( expected, "${" + DASH_PATH_TAG + "}" );
   }
   // endregion
 
-  // region Build the resource links
-  //   ABS_RES_TAG = "\\$\\{(res|solution):(/.+)\\}";
-  //   REL_RES_TAG = "\\$\\{(res|solution):(.+)\\}";
+  // region Replace Resource Token
+  //   RESOURCE_TOKEN = "\\$\\{(res|solution):((/?)(.+?)(/?))\\}"
   @Test
   public void testReplaceTokensRelativeResourceLink() {
     this.context = createDashboardContext();
 
     String expected = joinPaths( ROOT, TEST_FOLDER, JS_RESOURCE );
 
-    assertReplaceTokens( expected, "${solution:" + JS_RESOURCE + "}" );
-    assertReplaceTokens( expected, "${res:" + JS_RESOURCE + "}" );
+    assertReplaceTokens( expected, getContent( "solution", JS_RESOURCE ) );
+    assertReplaceTokens( expected, getContent( "res", JS_RESOURCE ) );
   }
 
   @Test
@@ -89,36 +92,35 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
 
     String expected = joinPaths( ROOT, TEST_FOLDER, JS_RESOURCE );
 
-    assertReplaceTokens( expected, "${solution:" + JS_RESOURCE + "}" );
-    assertReplaceTokens( expected, "${res:" + JS_RESOURCE + "}" );
+    assertReplaceTokens( expected, getContent( "solution", JS_RESOURCE ) );
+    assertReplaceTokens( expected, getContent( "res", JS_RESOURCE ) );
   }
 
   @Test
   public void testReplaceTokensAbsoluteResourceLink() {
     this.context = createDashboardContext();
 
-    String absoluteResourcePath = joinPaths( "/", TEST_FOLDER, JS_RESOURCE );
-    String expected = joinPaths( "/", TEST_FOLDER, JS_RESOURCE );
+    String absoluteResourcePath = joinPaths( SLASH, TEST_FOLDER, JS_RESOURCE );
+    String expected = joinPaths( SLASH, TEST_FOLDER, JS_RESOURCE );
 
-    assertReplaceTokens( expected, "${solution:" + absoluteResourcePath + "}" );
-    assertReplaceTokens( expected, "${res:" + absoluteResourcePath + "}" );
+    assertReplaceTokens( expected, getContent( "solution", absoluteResourcePath ) );
+    assertReplaceTokens( expected, getContent( "res", absoluteResourcePath ) );
   }
 
   @Test
   public void testReplaceTokensAbsoluteResourceLink_absoluteWriteOptions() {
     this.context = createDashboardContext( true, false );
 
-    String absoluteResourcePath = joinPaths( "/", TEST_FOLDER, JS_RESOURCE );
-    String expected = joinPaths( "/", TEST_FOLDER, JS_RESOURCE );
+    String absoluteResourcePath = joinPaths( SLASH, TEST_FOLDER, JS_RESOURCE );
+    String expected = joinPaths( SLASH, TEST_FOLDER, JS_RESOURCE );
 
-    assertReplaceTokens( expected, "${solution:" + absoluteResourcePath + "}" );
-    assertReplaceTokens( expected, "${res:" + absoluteResourcePath + "}" );
+    assertReplaceTokens( expected, getContent( "solution", absoluteResourcePath ) );
+    assertReplaceTokens( expected, getContent( "res", absoluteResourcePath ) );
   }
   // endregion
 
-  // region Build image links
-  //   ABS_IMG_TAG = "\\$\\{img:(/.+)\\}";
-  //   REL_IMG_TAG = "\\$\\{img:(.+)\\}";
+  // region Replace Image Resource Token
+  //   RESOURCE_TOKEN = "\\$\\{(image):((/?)(.+?)(/?))\\}"
   @Test
   public void testReplaceTokensRelativeImageLink() {
     this.context = createDashboardContext();
@@ -128,7 +130,7 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
       CDE_PLUGIN_URL, RESOURCE_API_GET, ROOT, TEST_FOLDER, IMG_RESOURCE + "?v=" + timestamp
     );
 
-    assertReplaceTokens( expected, "${img:" + IMG_RESOURCE + "}" );
+    assertReplaceTokens( expected, getContent( IMAGE_TAG, IMG_RESOURCE ) );
   }
 
   @Test
@@ -140,7 +142,7 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
       CDE_PLUGIN_URL, RESOURCE_API_GET, ROOT, TEST_FOLDER, IMG_RESOURCE + "?v=" + timestamp
     );
 
-    assertReplaceTokens( expected, "${img:" + IMG_RESOURCE + "}" );
+    assertReplaceTokens( expected, getContent( IMAGE_TAG, IMG_RESOURCE ) );
   }
 
   @Test
@@ -153,7 +155,7 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     );
 
     String resourcePath = joinPaths( "/", TEST_FOLDER, IMG_RESOURCE );
-    assertReplaceTokens( expected, "${img:" + resourcePath + "}" );
+    assertReplaceTokens( expected, getContent( IMAGE_TAG, resourcePath ) );
   }
 
   @Test
@@ -166,13 +168,12 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     );
 
     String resourcePath = joinPaths( "/", TEST_FOLDER, IMG_RESOURCE );
-    assertReplaceTokens( expected, "${img:" + resourcePath + "}" );
+    assertReplaceTokens( expected, getContent( IMAGE_TAG, resourcePath ) );
   }
   // endregion
 
-  // region Build system resource links
-  //   ABS_SYS_RES_TAG = "\\$\\{system:(/.+)\\}";
-  //   REL_SYS_RES_TAG = "\\$\\{system:(.+)\\}";
+  // region Replace System Resource Token
+  //   RESOURCE_TOKEN = "\\$\\{(system):((/?)(.+?)(/?))\\}"
   @Test
   public void testReplaceTokensRelativeSystemResource() {
     this.context = createDashboardContext( false, true );
@@ -181,7 +182,7 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
       CDE_PLUGIN_URL, RESOURCE_API_GET, SYSTEM_DIR, PLUGIN_ID, CSS_RESOURCE
     );
 
-    assertReplaceTokens( expected, "${system:" + CSS_RESOURCE + "}" );
+    assertReplaceTokens( expected, getContent( SYSTEM_TAG, CSS_RESOURCE ) );
   }
 
   @Test
@@ -192,7 +193,7 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
       CDE_PLUGIN_URL, RESOURCE_API_GET, SYSTEM_DIR, PLUGIN_ID, CSS_RESOURCE
     );
 
-    assertReplaceTokens( expected, "${system:" + CSS_RESOURCE + "}" );
+    assertReplaceTokens( expected, getContent( SYSTEM_TAG, CSS_RESOURCE ) );
   }
 
   @Test
@@ -200,11 +201,11 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     this.context = createDashboardContext( false, true );
 
     String expected = joinPaths(
-      "/", CDE_PLUGIN_URL, RESOURCE_API_GET, SYSTEM_DIR, PLUGIN_ID, CSS_RESOURCE
+      SLASH, CDE_PLUGIN_URL, RESOURCE_API_GET, SYSTEM_DIR, PLUGIN_ID, CSS_RESOURCE
     );
 
-    String resourcePath = joinPaths( "/", CSS_RESOURCE );
-    assertReplaceTokens( expected, "${system:" + resourcePath + "}" );
+    String resourcePath = joinPaths( SLASH, CSS_RESOURCE );
+    assertReplaceTokens( expected, getContent( SYSTEM_TAG, resourcePath ) );
   }
 
   @Test
@@ -212,17 +213,16 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     this.context = createDashboardContext( true, true );
 
     String expected = SERVER_SCHEME + "://" + SERVER_HOST + joinPaths(
-      "/", CDE_PLUGIN_URL, RESOURCE_API_GET, SYSTEM_DIR, PLUGIN_ID, CSS_RESOURCE
+      SLASH, CDE_PLUGIN_URL, RESOURCE_API_GET, SYSTEM_DIR, PLUGIN_ID, CSS_RESOURCE
     );
 
-    String resourcePath = joinPaths( "/", CSS_RESOURCE );
-    assertReplaceTokens( expected, "${system:" + resourcePath + "}" );
+    String resourcePath = joinPaths( SLASH, CSS_RESOURCE );
+    assertReplaceTokens( expected, getContent( SYSTEM_TAG, resourcePath ) );
   }
   // endregion
 
-  // region Build directory links
-  //   ABS_DIR_RES_TAG = "\\$\\{(res|solution):(/.+/)\\}";
-  //   REL_DIR_RES_TAG = "\\$\\{(res|solution):(.+/)\\}";
+  // region Replace Directory Resource Token
+  //   RESOURCE_TOKEN = "\\$\\{(res|solution):((/?)(.+?)(/))\\}"
   @Test
   public void testReplaceTokensRelativeDirectoryLink() {
     this.context = createDashboardContext();
@@ -230,8 +230,8 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String relativeResourcePath = DIR_RESOURCE;
     String expected = joinPaths( ROOT, TEST_FOLDER, DIR_RESOURCE );
 
-    assertReplaceTokens( expected, "${solution:" + relativeResourcePath + "}" );
-    assertReplaceTokens( expected, "${res:" + relativeResourcePath + "}" );
+    assertReplaceTokens( expected, getContent( "solution", relativeResourcePath ) );
+    assertReplaceTokens( expected, getContent( "res", relativeResourcePath ) );
   }
 
   @Test
@@ -241,8 +241,8 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String relativeResourcePath = DIR_RESOURCE;
     String expected = joinPaths( ROOT, TEST_FOLDER, DIR_RESOURCE );
 
-    assertReplaceTokens( expected, "${solution:" + relativeResourcePath + "}" );
-    assertReplaceTokens( expected, "${res:" + relativeResourcePath + "}" );
+    assertReplaceTokens( expected, getContent( "solution", relativeResourcePath ) );
+    assertReplaceTokens( expected, getContent( "res", relativeResourcePath ) );
   }
 
   @Test
@@ -252,8 +252,8 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String absoluteResourcePath = joinPaths( "/", TEST_FOLDER, DIR_RESOURCE );
     String expected = joinPaths( TEST_FOLDER, DIR_RESOURCE );
 
-    assertReplaceTokens( expected, "${solution:" + absoluteResourcePath + "}" );
-    assertReplaceTokens( expected, "${res:" + absoluteResourcePath + "}" );
+    assertReplaceTokens( expected, getContent( "solution", absoluteResourcePath ) );
+    assertReplaceTokens( expected, getContent( "res", absoluteResourcePath ) );
   }
 
   @Test
@@ -263,8 +263,8 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String absoluteResourcePath = joinPaths( "/", TEST_FOLDER, DIR_RESOURCE );
     String expected = joinPaths( TEST_FOLDER, DIR_RESOURCE );
 
-    assertReplaceTokens( expected, "${solution:" + absoluteResourcePath + "}" );
-    assertReplaceTokens( expected, "${res:" + absoluteResourcePath + "}" );
+    assertReplaceTokens( expected, getContent( "solution", absoluteResourcePath ) );
+    assertReplaceTokens( expected, getContent( "res", absoluteResourcePath ) );
   }
   // endregion
 
@@ -273,6 +273,10 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
   }
 
   // region unit test aux methods
+  private String getContent( String tag, String path ) {
+    return "${" + tag + ":" + path + "}";
+  }
+
   private String getDashboardPath() {
     return joinPaths( ROOT, TEST_FOLDER, DASHBOARD ).substring( 1 );
   }

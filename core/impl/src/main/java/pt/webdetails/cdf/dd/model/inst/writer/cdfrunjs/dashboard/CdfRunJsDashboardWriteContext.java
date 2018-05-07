@@ -23,10 +23,6 @@ import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 
 public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext {
-  protected static final String DASHBOARD_PATH_TAG = "\\$\\{dashboardPath\\}";
-
-  protected static final String SLASH = "/";
-
   private static final String COMPONENT_PREFIX = "render_";
 
   private static final String SHORT_H_TAG = "\\$\\{h:(.+?)\\}";
@@ -81,10 +77,11 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
   }
 
   public CdfRunJsDashboardWriteContext withIndent( String indent ) {
-    return CdeEngine.getInstance().getEnvironment()
-      .getCdfRunJsDashboardWriteContext( getFactory(), indent, _bypassCacheRead, _dash, _options );
+    return getCdeEnvironment()
+      .getCdfRunJsDashboardWriteContext( getFactory(), indent, isBypassCacheRead(), getDashboard(), getOptions() );
   }
 
+  // region Getters
   public String getIndent() {
     return this._indent;
   }
@@ -113,11 +110,10 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
     return this._options;
   }
 
-  // --------------
-
   public String getId( Component<?> comp ) {
-    return comp.buildId( this._options.getAliasPrefix() );
+    return comp.buildId( this.getOptions().getAliasPrefix() );
   }
+  // endregion
 
   // --------------
 
@@ -127,12 +123,12 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
 
   public abstract String replaceTokens( String content );
 
-  public String replaceAlias( String content ) {
+  private String replaceAlias( String content ) {
     if ( content == null ) {
       return "";
     }
 
-    String alias = this._options.getAliasPrefix();
+    String alias = this.getOptions().getAliasPrefix();
 
     String aliasAndName = ( StringUtils.isNotEmpty( alias ) ? ( alias + "_" ) : "" ) + "$1";
 
@@ -150,7 +146,7 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
       return "";
     }
 
-    String alias = this._options.getAliasPrefix();
+    String alias = this.getOptions().getAliasPrefix();
 
     String aliasAndName = ( StringUtils.isNotEmpty( alias ) ? ( alias + "_" ) : "" ) + "$1";
 
@@ -163,7 +159,9 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
       .replaceAll( LONG_P_TAG, "$1" );
   }
 
-  protected String getPluginId( String path ) {
+  protected String getSystemPluginId() {
+    String path =  getDashboardSourcePath();
+
     if ( path.startsWith( "/" ) ) {
       path = path.replaceFirst( "/", "" );
     }

@@ -34,7 +34,6 @@ import static pt.webdetails.cdf.dd.CdeConstants.Writer.REQUIRE_START;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.REQUIRE_STOP;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.RESOURCE_AMD_NAMESPACE;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.SCHEME_PATTERN;
-import static pt.webdetails.cdf.dd.CdeConstants.Writer.CXF_PATTERN;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.SCRIPT;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.TITLE;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.WEBCONTEXT;
@@ -631,33 +630,32 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
                                                                        CdfRunJsDashboardWriteContext context ) {
 
     Map<String, String> resourceModules = new LinkedHashMap<>();
-
     // File Resources with empty names should be placed last in the array dependency list
     Map<String, String> unnamedResourceModules = new LinkedHashMap<>();
 
-    String resourceID;
+    String resourceId;
 
     for ( Resource resource : resources.getJavascriptResources() ) { // JS
       if ( isFileResource( resource ) ) {
-        resourceID = writeResource( out, context, resource );
+        resourceId = writeResource( out, context, resource );
 
         String name = resource.getResourceName();
         if ( StringUtils.isEmpty( name ) ) {
           // store the generated module id and class name to be added at the end of the dependency array
-          unnamedResourceModules.put( resourceID, name );
+          unnamedResourceModules.put( resourceId, name );
         } else {
           // store the generated module id and class name
-          resourceModules.put( resourceID, name );
+          resourceModules.put( resourceId, name );
         }
       }
     }
 
     for ( Resource resource : resources.getCssResources() ) { // CSS
       if ( isFileResource( resource ) ) {
-        resourceID = writeResource( out, context, resource );
+        resourceId = writeResource( out, context, resource );
 
         // prepend css! RequireJS loader plugin and don't provide a class name for CSS resources
-        resourceModules.put( RequireJSPlugin.CSS + resourceID, "" );
+        resourceModules.put( RequireJSPlugin.CSS + resourceId, "" );
       }
     }
 
@@ -738,10 +736,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
 
     path = FilenameUtils.removeExtension( path ).replaceAll( " ", "%20" );
 
-    final boolean isFullUriPath = SCHEME_PATTERN.matcher( path ).find();
-    final boolean isCxfPath = CXF_PATTERN.matcher( path ).find();
-
-    if ( isFullUriPath || isCxfPath ) {
+    if ( SCHEME_PATTERN.matcher( path ).find() ) {
       id = getResourceId( resource.getResourceName() );
 
       final String requireJSConfig = MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path );

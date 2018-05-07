@@ -10,7 +10,6 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
 import org.apache.commons.lang.StringUtils;
@@ -44,7 +43,7 @@ public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRu
   }
 
   @Override
-  protected String getPluginId( String path ) {
+  protected String getSystemPluginId() {
     return PLUGIN_ID;
   }
 }

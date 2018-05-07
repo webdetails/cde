@@ -7,12 +7,10 @@ requireCfg.map[mappedModuleId] = requireCfg.map[mappedModuleId] || {};
 requireCfg.map['*'] = requireCfg.map['*'] || {};
 requireCfg.packages = requireCfg.packages || [];
 
-var moduleMap = requireCfg.map[mappedModuleId];
+// In 'cde-core-impl' CdfRunJsDashboardWriter.java assumes this path exists
+// and that it points to ResourceApi's resource endpoint.
+requireCfg.paths['cde/resources'] = "/cxf/cde/resources";
 
 // TODO is this needed?
-// requireCfg.paths['cde/resources'] = resourcesPath;
 // requireCfg.paths['cde/repo'] = resourcesPath + '/public/cde';
 
-Object.keys(moduleMap).forEach(function(key) {
-  requireCfg.map['*'][key] = moduleMap[key];
-});

@@ -17,13 +17,11 @@ import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.utils.MimeTypes;
-import pt.webdetails.cpf.utils.PluginIOUtils;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 
 import java.io.IOException;
 
@@ -43,36 +41,33 @@ public class ResourcesApi {
 
   @GET
   @Path( "/{resource: [^?]+ }" )
-  public void resource( @PathParam( "resource" ) String resource,
-                        @Context HttpServletResponse response ) throws IOException {
-    getResource( resource, response );
-  }
+  public Response resource( @PathParam( "resource" ) String resource ) throws IOException {
+    IBasicFile file = getFile( resource );
+    if ( file == null ) {
+      logger.error( "resource not found:" + resource );
 
-  private void getResource( String resource, HttpServletResponse response ) throws IOException {
-    try {
-      IBasicFile file = Utils.getFileViaAppropriateReadAccess( resource );
-
-      if ( file == null ) {
-        logger.error( "resource not found:" + resource );
-        response.sendError( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-        return;
-      }
-
-      response.setHeader( "Content-Type", getResourceMimeType( file ) );
-      response.setHeader( "content-disposition", "inline; filename=\"" + file.getName() + "\"" );
-
-      String maxAge = getResourceMaxAge();
-      if ( maxAge != null ) {
-        response.setHeader( "Cache-Control", "max-age=" + maxAge );
-      }
-
-      PluginIOUtils.writeOutAndFlush( response.getOutputStream(), file.getContents() );
-    } catch ( SecurityException e ) {
-      response.sendError( HttpServletResponse.SC_FORBIDDEN );
+      return Response.serverError().build();
     }
+
+    Response.ResponseBuilder response = Response.ok( file.getContents() );
+
+    response
+      .header( "Content-Type", getResourceMimeType( file ) )
+      .header( "content-disposition", "inline; filename=\"" + file.getName() + "\"" );
+
+    String maxAge = getResourceMaxAge();
+    if ( maxAge != null ) {
+      response.header( "Cache-Control", "max-age=" + maxAge );
+    }
+
+    return response.build();
   }
 
   private String getResourceMimeType( IBasicFile file ) {
     return MimeTypes.getMimeType( file.getName() );
+  }
+
+  private IBasicFile getFile( String path ) {
+    return Utils.getFileViaAppropriateReadAccess( path );
   }
 }

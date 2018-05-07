@@ -13,6 +13,7 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -56,20 +57,23 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
    * Writes the dashboard module to a provided builder object.
    *
    * @param builder the builder object to where the processed dashboard will be stored
-   * @param ctx the dashboard context.
-   * @param dash the dashboard to write.
+   * @param context the dashboard context.
+   * @param dashboard the dashboard to write.
    * @throws ThingWriteException
    */
   @Override
-  public void write( CdfRunJsDashboardWriteResult.Builder builder, CdfRunJsDashboardWriteContext ctx, Dashboard dash )
-    throws ThingWriteException {
-    assert dash == ctx.getDashboard();
+  public void write( CdfRunJsDashboardWriteResult.Builder builder, CdfRunJsDashboardWriteContext context,
+                     Dashboard dashboard ) throws ThingWriteException {
+
+    assert dashboard == context.getDashboard();
 
     // content resources
     ResourceMap resources;
     try {
-      resources = getResourceRenderer( dash.getLayout( "TODO" ).getLayoutXPContext(), ctx )
-        .renderResources( ctx.getOptions().getAliasPrefix() );
+      final JXPathContext layoutJXPContext = dashboard.getLayout( "TODO" ).getLayoutXPContext();
+      final String aliasPrefix = context.getOptions().getAliasPrefix();
+
+      resources = getResourceRenderer( layoutJXPContext, context ).renderResources( aliasPrefix );
     } catch ( Exception ex ) {
       throw new ThingWriteException( "Error rendering resources.", ex );
     }
@@ -77,9 +81,10 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     // content layout, prepend the CSS code snippets
     final String layout;
     try {
-      layout = ctx.replaceTokensAndAlias(
-        this.writeCssCodeResources( resources ) + this.writeLayout( ctx, dash )
-      );
+      final String cssResourcesContent = this.writeCssCodeResources( resources );
+      final String layoutContent = this.writeLayout( context, dashboard );
+
+      layout = context.replaceTokensAndAlias( cssResourcesContent + layoutContent );
     } catch ( Exception ex ) {
       throw new ThingWriteException( "Error rendering layout", ex );
     }
@@ -87,15 +92,18 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     StringBuilder out = new StringBuilder();
 
     // content wcdf settings, write WCDF settings
-    final String wcdfSettings = writeWcdfSettings( dash );
+    final String wcdfSettings = writeWcdfSettings( dashboard );
 
     // content components, get component AMD modules and write the components to the StringBuilder
-    final Map<String, String> componentModules = this.writeComponents( ctx, dash, out );
-    final String components = replaceAliasTagWithAlias( ctx.replaceHtmlAlias( ctx.replaceTokens( out.toString() ) ) );
+    final Map<String, String> componentModules = this.writeComponents( context, dashboard, out );
+    final String components = replaceAliasTagWithAlias(
+      context.replaceHtmlAlias( context.replaceTokens( out.toString() ) )
+    );
 
     // content
-    final String content = wrapRequireModuleDefinitions( layout, resources, componentModules,
-      wcdfSettings + components, ctx );
+    final String content = wrapRequireModuleDefinitions(
+      layout, resources, componentModules, wcdfSettings + components, context
+    );
 
     // Export
     builder
@@ -105,9 +113,8 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
       .setComponents( components )
       .setContent( content )
       .setFooter( "" )
-      .setLoadedDate( ctx.getDashboard().getSourceDate() );
+      .setLoadedDate( context.getDashboard().getSourceDate() );
   }
-
   /**
    * Replaces all alias tags contained in the provided content string.
    *
@@ -125,17 +132,18 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
    * @param resources the dashboard's resources
    * @param componentModules the dashboard component modules
    * @param content the dashboard generated JavaScript sourcecode to be wrapped
-   * @param ctx the dashboard context
+   * @param context the dashboard context
+   *
    * @return the string containing the dashboard module definition.
    */
   protected String wrapRequireModuleDefinitions( String layout, ResourceMap resources,
-                                                 Map<String, String> componentModules, String content,
-                                                 CdfRunJsDashboardWriteContext ctx ) {
+                                               Map<String, String> componentModules, String content,
+                                               CdfRunJsDashboardWriteContext context ) {
 
-    StringBuilder out = new StringBuilder();
+    StringBuilder output = new StringBuilder();
 
-    ArrayList<String> moduleIds = new ArrayList<String>(), // AMD module paths
-        moduleClassNames = new ArrayList<String>(); // AMD module class names
+    ArrayList<String> moduleIds = new ArrayList<>();        // AMD module paths
+    ArrayList<String> moduleClassNames = new ArrayList<>(); // AMD module class names
 
     // Add default dashboard module ids and class names
     addDefaultDashboardModules( moduleIds, moduleClassNames );
@@ -154,7 +162,7 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     }
 
     // write RequireJS module path configurations for external JS and CSS resources
-    Map<String, String> fileResourceModules = writeFileResourcesRequireJSPathConfig( out, resources, ctx );
+    Map<String, String> fileResourceModules = writeFileResourcesRequireJSPathConfig( output, resources, context );
 
     // Add external resource module ids to the list
     moduleIds.addAll( fileResourceModules.keySet() );
@@ -162,35 +170,38 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     moduleClassNames.addAll( fileResourceModules.values() );
 
     // Output module paths and module class names
-    writeRequireJsExecutionFunction( out, moduleIds, moduleClassNames );
+    writeRequireJsExecutionFunction( output, moduleIds, moduleClassNames );
 
-    if ( ctx.getOptions().getAliasPrefix().contains( CdeConstants.DASHBOARD_ALIAS_TAG ) ) {
-      out.append( MessageFormat.format(
-          DASHBOARD_MODULE_START_EMPTY_ALIAS,
-          StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) )
-          .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS,
-            ctx.getOptions().getAliasPrefix().replace( CdeConstants.DASHBOARD_ALIAS_TAG, "\" + this._alias + \"" ) ) )
-          .append( MessageFormat.format( DASHBOARD_MODULE_GET_MESSAGES_PATH,
-            getWcdfReposPath( ctx.getDashboard().getSourcePath() ) ) );
+    final String dashSourcePath = context.getDashboard().getSourcePath();
+    final String noNewlinesLayout = StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) );
+
+    String aliasPrefix = context.getOptions().getAliasPrefix();
+    if ( aliasPrefix.contains( CdeConstants.DASHBOARD_ALIAS_TAG ) ) {
+      aliasPrefix = aliasPrefix.replace( CdeConstants.DASHBOARD_ALIAS_TAG, "\" + this._alias + \"" );
+      output
+        .append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, noNewlinesLayout ) )
+        .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, aliasPrefix ) )
+        .append( MessageFormat.format( DASHBOARD_MODULE_GET_MESSAGES_PATH,  getWcdfReposPath( dashSourcePath ) ) );
     } else {
-      out.append( DASHBOARD_MODULE_START )
-          .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
-            StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) )
-          .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, ctx.getOptions().getAliasPrefix() ) )
-          .append( MessageFormat.format( DASHBOARD_MODULE_GET_MESSAGES_PATH,
-            getWcdfReposPath( ctx.getDashboard().getSourcePath() ) ) );
+      output
+        .append( DASHBOARD_MODULE_START )
+        .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, noNewlinesLayout ) )
+        .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, aliasPrefix ) )
+        .append( MessageFormat.format( DASHBOARD_MODULE_GET_MESSAGES_PATH, getWcdfReposPath( dashSourcePath ) ) );
     }
 
     final String jsCodeSnippets = writeJsCodeResources( resources );
 
-    out.append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
+    content = jsCodeSnippets.length() > 0 ? jsCodeSnippets + NEWLINE + content : content;
+
+    output
+      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
       .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS,
-        jsCodeSnippets.length() > 0 ? jsCodeSnippets + NEWLINE + content : content ) )
+      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, content ) )
       .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
       .append( DEFINE_STOP );
 
-    return out.toString();
+    return output.toString();
   }
 
   /**
@@ -226,5 +237,4 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
 
     return path;
   }
-
 }
