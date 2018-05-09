@@ -49,11 +49,13 @@ public class ResourcesApi {
       return Response.serverError().build();
     }
 
+    final String filename = file.getName();
+
     Response.ResponseBuilder response = Response.ok( file.getContents() );
 
     response
-      .header( "Content-Type", getResourceMimeType( file ) )
-      .header( "content-disposition", "inline; filename=\"" + file.getName() + "\"" );
+      .header( "Content-Type", getResourceMimeType( filename ) )
+      .header( "content-disposition", "inline; filename=\"" + filename + "\"" );
 
     String maxAge = getResourceMaxAge();
     if ( maxAge != null ) {
@@ -63,11 +65,12 @@ public class ResourcesApi {
     return response.build();
   }
 
-  private String getResourceMimeType( IBasicFile file ) {
-    return MimeTypes.getMimeType( file.getName() );
-  }
-
-  private IBasicFile getFile( String path ) {
+  IBasicFile getFile( String path ) {
     return Utils.getFileViaAppropriateReadAccess( path );
   }
+
+  private String getResourceMimeType( String filename ) {
+    return MimeTypes.getMimeType( filename );
+  }
+
 }

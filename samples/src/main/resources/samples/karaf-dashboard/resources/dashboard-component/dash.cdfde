@@ -103,7 +103,7 @@
           {
             "name": "resourceFile",
             "type": "ResourceFile",
-            "value": "${osgi:/samples/karaf-dashboard/resources/style/cde-reference.css}"
+            "value": "${res:/samples/karaf-dashboard/resources/style/cde-reference.css}"
           },
           {
             "name": "resourceType",
@@ -126,7 +126,7 @@
           {
             "name": "resourceFile",
             "type": "ResourceFile",
-            "value": "${osgi:../style/cde-template.css}"
+            "value": "${res:../style/cde-template.css}"
           },
           {
             "name": "resourceType",

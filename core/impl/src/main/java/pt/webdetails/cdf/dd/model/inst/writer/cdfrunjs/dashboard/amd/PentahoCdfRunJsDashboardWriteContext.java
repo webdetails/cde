@@ -30,8 +30,12 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   // ------------
 
   static final String DASH_PATH_TAG = "dashboardPath";
+
   static final String SYSTEM_TAG = "system";
   static final String IMAGE_TAG = "img";
+
+  static final String RES_TAG = "res";
+  static final String SOLUTION_TAG = "solution";
 
   public PentahoCdfRunJsDashboardWriteContext( IThingWriterFactory factory,
                                                String indent, boolean bypassCacheRead, Dashboard dash,
@@ -47,25 +51,34 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   public String replaceTokens( String content ) {
     final Matcher simpleMatch = Pattern.compile( SIMPLE_TOKEN ).matcher( content );
     while ( simpleMatch.find() ) {
-      content = content.replaceFirst( SIMPLE_TOKEN, getSimpleTokenReplacement( simpleMatch ) );
+      content = replaceSimpleToken( content, simpleMatch );
     }
 
     final Matcher resourceMatch = Pattern.compile( RESOURCE_TOKEN ).matcher( content );
     while ( resourceMatch.find() ) {
-      content = content.replaceFirst( RESOURCE_TOKEN, getResourceTokenReplacement( resourceMatch ) );
+      content = replaceResourceToken( content, resourceMatch );
     }
 
     return content;
   }
 
   // region Simple Token
+  private String replaceSimpleToken( String content, Matcher match ) {
+    String simpleReplacement = getSimpleTokenReplacement( match );
+    if ( simpleReplacement != null ) {
+      content = content.replaceFirst( SIMPLE_TOKEN, simpleReplacement );
+    }
+
+    return content;
+  }
+
   private String getSimpleTokenReplacement( Matcher token ) {
     if ( isDashboardPathTag( token ) ) {
       return getDashboardPathReplacement();
     }
 
-    // Only "dashboardPath" has a replacement
-    return token.group();
+    // Only "dashboardPath" has a replacement for now
+    return null;
   }
 
   private String getDashboardPathReplacement() {
@@ -80,6 +93,15 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   // endregion
 
   // region Resource Token
+  private String replaceResourceToken( String content, Matcher match ) {
+    String resourceReplacement = getResourceTokenReplacement( match );
+    if ( resourceReplacement != null ) {
+      content = content.replaceFirst( RESOURCE_TOKEN, resourceReplacement );
+    }
+
+    return content;
+  }
+
   private String getResourceTokenReplacement( Matcher resource ) {
     // build system resource links
     if ( isSystemTag( resource ) ) {
@@ -91,12 +113,12 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
       return getResourceReplacement( resource, getPentahoResourceEndpoint() ) + "?v=" + getWriteDate().getTime();
     }
 
-    // build directory links
     // build resource links
-    // build foundry resources links
-    // build system resource links
-    // build osgi resource links
-    return getResourceReplacement( resource, "" );
+    if ( isResourceTag( resource ) ) {
+      return getResourceReplacement( resource, "" );
+    }
+
+    return null;
   }
 
   private String getResourceReplacement( Matcher tagMatcher, String absoluteRoot ) {
@@ -127,6 +149,12 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
 
   private boolean isSystemTag( Matcher resource ) {
     return SYSTEM_TAG.equals( resource.group( 1 ) );
+  }
+
+  private boolean isResourceTag( Matcher resource ) {
+    final String tag = resource.group( 1 );
+
+    return SOLUTION_TAG.equals( tag ) || RES_TAG.equals( tag );
   }
 
   private boolean isRelativeResource( Matcher resource ) {

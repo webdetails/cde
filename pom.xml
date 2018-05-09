@@ -66,6 +66,7 @@
     <servlet-api.version>3.0.1</servlet-api.version>
     <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
     <jersey-multipart.version>1.19.1</jersey-multipart.version>
+    <jersey-common.version>2.5.1</jersey-common.version>
     <jackson-mapper-asl.version>1.8.2</jackson-mapper-asl.version>
     <jackson-core-asl.version>1.9.3</jackson-core-asl.version>
     <fasterxml.jackson.core.version>2.9.4</fasterxml.jackson.core.version>
@@ -413,6 +414,11 @@
             <groupId>*</groupId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.core</groupId>
+        <artifactId>jersey-common</artifactId>
+        <version>${jersey-common.version}</version>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
