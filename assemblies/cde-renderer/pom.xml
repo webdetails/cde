@@ -24,6 +24,9 @@
     <assembly.tarLongFileMode>posix</assembly.tarLongFileMode>
 
     <pentaho-osgi-bundles.version>8.2.0.0-SNAPSHOT</pentaho-osgi-bundles.version>
+    <pentaho-webpackage.version>8.2.0.0-SNAPSHOT</pentaho-webpackage.version>
+    <pentaho-webcontext.version>8.2.0.0-SNAPSHOT</pentaho-webcontext.version>
+    <common-ui.version>8.2.0.0-SNAPSHOT</common-ui.version>
   </properties>
 
 </project>
