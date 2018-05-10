@@ -51,27 +51,18 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   public String replaceTokens( String content ) {
     final Matcher simpleMatch = Pattern.compile( SIMPLE_TOKEN ).matcher( content );
     while ( simpleMatch.find() ) {
-      content = replaceSimpleToken( content, simpleMatch );
+      content = replaceToken( content, simpleMatch, getSimpleTokenReplacement( simpleMatch ) );
     }
 
     final Matcher resourceMatch = Pattern.compile( RESOURCE_TOKEN ).matcher( content );
     while ( resourceMatch.find() ) {
-      content = replaceResourceToken( content, resourceMatch );
+      content = replaceToken( content, resourceMatch, getResourceTokenReplacement( resourceMatch ) );
     }
 
     return content;
   }
 
   // region Simple Token
-  private String replaceSimpleToken( String content, Matcher match ) {
-    String simpleReplacement = getSimpleTokenReplacement( match );
-    if ( simpleReplacement != null ) {
-      content = content.replaceFirst( SIMPLE_TOKEN, simpleReplacement );
-    }
-
-    return content;
-  }
-
   private String getSimpleTokenReplacement( Matcher token ) {
     if ( isDashboardPathTag( token ) ) {
       return getDashboardPathReplacement();
@@ -93,15 +84,6 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   // endregion
 
   // region Resource Token
-  private String replaceResourceToken( String content, Matcher match ) {
-    String resourceReplacement = getResourceTokenReplacement( match );
-    if ( resourceReplacement != null ) {
-      content = content.replaceFirst( RESOURCE_TOKEN, resourceReplacement );
-    }
-
-    return content;
-  }
-
   private String getResourceTokenReplacement( Matcher resource ) {
     // build system resource links
     if ( isSystemTag( resource ) ) {
@@ -161,6 +143,14 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
     return !SLASH.equals( resource.group( 3 ) );
   }
   // endregion
+
+  private String replaceToken( String content, Matcher match, String replacement ) {
+    if ( replacement != null ) {
+      content = content.substring( 0, match.start() ) + replacement + content.substring( match.end() );
+    }
+
+    return content;
+  }
 
   private String getSystemRoot() {
     String pluginId = getSystemPluginId();
