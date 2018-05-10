@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -33,15 +33,9 @@ public class CdfRunJsDashboardWriteContextForTesting extends CdfRunJsDashboardWr
   private static final String TEST_FOLDER = "test";
   private static final String DASHBOARD = "testDashboard.wcdf";
 
-  public CdfRunJsDashboardWriteContextForTesting(
-      IThingWriterFactory factory,
-      String indent,
-      boolean bypassCacheRead,
-      CdfRunJsDashboardWriteOptions options ) {
-    super(
-      factory,
-      indent,
-      bypassCacheRead,
+  public CdfRunJsDashboardWriteContextForTesting( IThingWriterFactory factory, String indent,
+                                                  boolean bypassCacheRead, CdfRunJsDashboardWriteOptions options ) {
+    super( factory, indent, bypassCacheRead,
       getDashboard( RepositoryHelper.joinPaths( ROOT, TEST_FOLDER, DASHBOARD ).substring( 1 ), false ),
       options );
   }
@@ -57,21 +51,21 @@ public class CdfRunJsDashboardWriteContextForTesting extends CdfRunJsDashboardWr
   }
 
   @Override
-  protected String getPluginId( String path ) {
+  protected String getSystemPluginId() {
     return "test-plugin";
   }
 
-  private static Dashboard getDashboard( String path, boolean isSystem ) {
+  public static Dashboard getDashboard( String path, boolean isSystem ) {
     Document wcdfDoc = null;
     try {
       wcdfDoc = Utils.getDocument( new FileInputStream( new File( path ) ) );
-    } catch ( DocumentException e ) {
-      e.printStackTrace();
-    } catch ( FileNotFoundException e ) {
+    } catch ( DocumentException | FileNotFoundException e ) {
       e.printStackTrace();
     }
+
     DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.fromXml( wcdfDoc );
     Dashboard.Builder builder = new Dashboard.Builder();
+
     DashboardType dashboardType = null;
     try {
       dashboardType = new DashboardType.Builder().build();
@@ -90,6 +84,7 @@ public class CdfRunJsDashboardWriteContextForTesting extends CdfRunJsDashboardWr
     builder.setWcdf( wcdf );
     builder.setMeta( dashboardType );
     MetaModel.Builder metaBuilder = new MetaModel.Builder();
+
     MetaModel model;
     Dashboard dashboard = null;
     try {
@@ -99,6 +94,7 @@ public class CdfRunJsDashboardWriteContextForTesting extends CdfRunJsDashboardWr
     } catch ( ValidationException e ) {
       e.printStackTrace();
     }
+
     return dashboard;
   }
 }

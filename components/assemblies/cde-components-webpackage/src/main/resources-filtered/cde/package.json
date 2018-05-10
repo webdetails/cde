@@ -6,6 +6,10 @@
     "@pentaho/cdf": "${project.version}"
   },
 
+  "scripts": {
+    "preconfig": "preconfig.js"
+  },
+
   "paths": {
     "cde/components": "/components"
   },

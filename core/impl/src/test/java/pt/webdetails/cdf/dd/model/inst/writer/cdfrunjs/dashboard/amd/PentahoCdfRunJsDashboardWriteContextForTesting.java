@@ -10,7 +10,6 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
 import org.apache.commons.lang.StringUtils;
@@ -22,18 +21,20 @@ public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRu
   static final String SYSTEM_DIR = "system";
   static final String PLUGIN_ID = "mockP";
 
-  public PentahoCdfRunJsDashboardWriteContextForTesting(
-    IThingWriterFactory factory,
-    String indent, boolean bypassCacheRead, Dashboard dash,
-    CdfRunJsDashboardWriteOptions options ) {
+  public PentahoCdfRunJsDashboardWriteContextForTesting( IThingWriterFactory factory, String indent,
+                                                         boolean bypassCacheRead, Dashboard dash,
+                                                         CdfRunJsDashboardWriteOptions options ) {
     super( factory, indent, bypassCacheRead, dash, options );
   }
 
   @Override
   protected String getRoot() {
-    return ( this._options.isAbsolute() && !StringUtils.isEmpty( this._options.getAbsRoot() ) )
-      ? ( this._options.getSchemedRoot() + "/pentaho/plugin/pentaho-cdf-dd/" )
-      : "/pentaho/plugin/pentaho-cdf-dd/";
+    final CdfRunJsDashboardWriteOptions options = this.getOptions();
+
+    final String schemeRoot = options.isAbsolute() && StringUtils.isNotEmpty( options.getAbsRoot() )
+      ? options.getSchemedRoot() : "";
+
+    return schemeRoot + "/pentaho/plugin/pentaho-cdf-dd/";
   }
 
   @Override
@@ -42,7 +43,7 @@ public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRu
   }
 
   @Override
-  protected String getPluginId( String path ) {
+  protected String getSystemPluginId() {
     return PLUGIN_ID;
   }
 }

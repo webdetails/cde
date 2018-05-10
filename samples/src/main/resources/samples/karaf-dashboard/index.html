@@ -5,9 +5,6 @@
     
     <title>CDE Embedded Dashboard on Karaf</title>
 
-    <link rel="stylesheet" href="./resources/style/cde-reference.css">
-    <link rel="stylesheet" href="./resources/style/cde-template.css">
-
     <script src="/pentaho/webcontext.js"></script>
   </head>
 
@@ -57,7 +54,7 @@
 
     <script type="text/javascript">
       require([
-        'dash!/samples/karaf-dashboard/resources/dashboard-component/dash.wcdf'
+        'dash!/samples/karaf-dashboard/resources/dashboard-component/dash.wcdf&debug=true&bypassCache=true'
       ], function(SampleDash) {
         var sampleDash = new SampleDash("content");
         

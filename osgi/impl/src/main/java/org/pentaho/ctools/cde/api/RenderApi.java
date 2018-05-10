@@ -65,14 +65,7 @@ public class RenderApi {
 
     try {
       CdfRunJsDashboardWriteResult dashboard = getDashboardModule(
-        path,
-        schemeToUse,
-        root,
-        absolute,
-        bypassCache,
-        debug,
-        style,
-        alias );
+        path, schemeToUse, root, absolute, bypassCache, debug, style, alias );
 
       // TODO: i18n for a required dashboard
       // TODO: get dashboard initial context and storage from CDF plugin

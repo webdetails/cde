@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -30,68 +30,63 @@ import pt.webdetails.cpf.resources.IResourceLoader;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.session.IUserSession;
 
-
 public interface ICdeEnvironment {
 
-  public void init( IBeanFactory factory ) throws InitializationException;
+  void init( IBeanFactory factory ) throws InitializationException;
 
-  public void refresh();
+  void refresh();
 
-  public String getApplicationBaseUrl();
+  String getApplicationBaseUrl();
 
-  public Locale getLocale();
+  Locale getLocale();
 
-  // public IPluginCall getInterPluginCall();
+  IResourceLoader getResourceLoader();
 
-  public IResourceLoader getResourceLoader();
+  IDataSourceManager getDataSourceManager();
 
-  public IDataSourceManager getDataSourceManager();
+  IPluginResourceLocationManager getPluginResourceLocationManager();
 
-  public IPluginResourceLocationManager getPluginResourceLocationManager();
+  IContentAccessFactory getContentAccessFactory();
 
-  public IContentAccessFactory getContentAccessFactory();
+  String getPluginRepositoryDir();
 
-  public String getPluginRepositoryDir();
+  String getSystemDir();
 
-  public String getSystemDir();
-
-  public String getPluginId();
+  String getPluginId();
 
   PluginEnvironment getPluginEnv();
 
-  public ICdeApiPathProvider getExtApi();
+  ICdeApiPathProvider getExtApi();
 
   /**
    * TODO: replace with urlprovider
    *
    * @return Base content URL <u>for this plugin</u>
    */
-  public String getApplicationBaseContentUrl();
+  String getApplicationBaseContentUrl();
 
-  public String getApplicationReposUrl();
+  String getApplicationReposUrl();
 
-  public String getRepositoryBaseContentUrl();
+  String getRepositoryBaseContentUrl();
 
-  public IUrlProvider getUrlProvider();
+  IUrlProvider getUrlProvider();
 
-  String getCdfIncludes( String dashboard, String type, boolean debug, boolean absolute, String absRoot, String scheme )
-    throws Exception;
+  String getCdfIncludes( String dashboard, String type, boolean debug, boolean absolute,
+                         String absRoot, String scheme ) throws Exception;
 
-  //String getCdfContext( String dashboard, String action, String view ) throws Exception;
+  IFileHandler getFileHandler();
 
-  public IFileHandler getFileHandler();
+  CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( IThingWriterFactory factory, String indent,
+                                                                  boolean bypassCacheRead, Dashboard dash,
+                                                                  CdfRunJsDashboardWriteOptions options );
 
-  public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( IThingWriterFactory factory, String indent,
-                                                                         boolean bypassCacheRead, Dashboard dash,
-                                                                         CdfRunJsDashboardWriteOptions options );
+  CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
+                                                                  String indent );
 
-  public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
-                                                                         String indent );
+  IBasicFile getCdeXml();
 
-  public IBasicFile getCdeXml();
+  IUserSession getUserSession();
 
-  public IUserSession getUserSession();
-
-  public boolean canCreateContent();
+  boolean canCreateContent();
 
 }

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -14,24 +14,13 @@
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy;
 
 import junit.framework.Assert;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.junit.Test;
 import org.junit.BeforeClass;
-import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContextForTesting;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.legacy.CdfRunJsThingWriterFactory;
-import pt.webdetails.cdf.dd.model.meta.DashboardType;
-import pt.webdetails.cdf.dd.model.meta.MetaModel;
-import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
-import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
 
 public class PentahoCdfRunJsDashboardWriteContextTest {
 
@@ -52,7 +41,7 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
   private static PentahoCdfRunJsDashboardWriteContext context;
 
   @BeforeClass
-  public static void setUp() throws Exception {
+  public static void setUp() {
     factory = new CdfRunJsThingWriterFactory();
     options = getCdfRunJsDashboardWriteOptions();
   }
@@ -61,8 +50,8 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
   public void testReplaceTokensForSolutionDashboard() {
     //setup context
     String dashboardPath = RepositoryHelper.joinPaths( ROOT, TEST_FOLDER, DASHBOARD ).substring( 1 );
-    context = new PentahoCdfRunJsDashboardWriteContextForTesting( factory,
-      indent, bypassCacheRead, getDashboard( dashboardPath, false ), options );
+
+    context = this.getContext( dashboardPath, false );
 
     String jsResource = "${res:script.js}";
     String cssResource = "${res:style.css}";
@@ -103,10 +92,10 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
   @Test
   public void testReplaceTokensForSystemDashboard() {
     //setup context
-    final String dashboardPath =
-        RepositoryHelper.joinPaths( ROOT, SYSTEM, TEST_PLUGIN, TEST_FOLDER, DASHBOARD ).substring( 1 );
-    context = new PentahoCdfRunJsDashboardWriteContextForTesting( factory,
-        indent, bypassCacheRead, getDashboard( dashboardPath, true ), options );
+    final String dashboardPath = RepositoryHelper
+      .joinPaths( ROOT, SYSTEM, TEST_PLUGIN, TEST_FOLDER, DASHBOARD ).substring( 1 );
+
+    context = this.getContext( dashboardPath, true );
 
     // Absolute paths
     String filePath = "/pentaho-cdf-dd/css/master.css";
@@ -154,8 +143,7 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String dashboardPath = RepositoryHelper.joinPaths( ROOT, TEST_FOLDER, DASHBOARD ).substring( 1 );
 
     options = new CdfRunJsDashboardWriteOptions( false, false, "", "" );
-    context = new PentahoCdfRunJsDashboardWriteContextForTesting( factory,
-      indent, bypassCacheRead, getDashboard( dashboardPath, false ), options );
+    context = this.getContext( dashboardPath, false );
 
     String jsResource = "${res:script.js}";
 
@@ -168,15 +156,13 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     Assert.assertEquals( "${res:script.js} replacement failed", jsResourceExpected, jsResourceReplaced );
 
     options = new CdfRunJsDashboardWriteOptions( true, false, "localhost:8080", "http" );
-    context = new PentahoCdfRunJsDashboardWriteContextForTesting( factory,
-      indent, bypassCacheRead, getDashboard( dashboardPath, false ), options );
+    context = this.getContext( dashboardPath, false );
 
     jsResourceReplaced = removeParams( context.replaceTokens( jsResource ) );
     Assert.assertEquals( "${res:script.js} replacement failed", jsResourceAbsoluteExpected, jsResourceReplaced );
 
     options = new CdfRunJsDashboardWriteOptions( false, false, "localhost:8080", "http" );
-    context = new PentahoCdfRunJsDashboardWriteContextForTesting( factory,
-      indent, bypassCacheRead, getDashboard( dashboardPath, false ), options );
+    context = this.getContext( dashboardPath, false );
 
     jsResourceReplaced = removeParams( context.replaceTokens( jsResource ) );
     Assert.assertEquals( "${res:script.js} replacement failed", jsResourceExpected, jsResourceReplaced );
@@ -184,46 +170,10 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
 
   }
 
+  private PentahoCdfRunJsDashboardWriteContext getContext( String dashboardPath, boolean isSystem ) {
+    Dashboard dashboard = CdfRunJsDashboardWriteContextForTesting.getDashboard( dashboardPath, isSystem );
 
-  private static Dashboard getDashboard( String path, boolean isSystem ) {
-    Document wcdfDoc = null;
-    try {
-      wcdfDoc = Utils.getDocument( new FileInputStream( new File( path ) ) );
-    } catch ( DocumentException e ) {
-      e.printStackTrace();
-    } catch ( FileNotFoundException e ) {
-      e.printStackTrace();
-    }
-    DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.fromXml( wcdfDoc );
-    Dashboard.Builder builder = new Dashboard.Builder();
-    DashboardType dashboardType = null;
-    try {
-      dashboardType = new DashboardType.Builder().build();
-    } catch ( ValidationException e ) {
-      e.printStackTrace();
-    }
-
-    if ( !isSystem ) {
-      builder.setSourcePath( path );
-    } else {
-      // this is needed because we need to remove the src/test/resources path used to get the file
-      // this is secure because there are no folder before the system while getting files from the server
-      builder.setSourcePath( path.replace( ROOT + "/", "" ) );
-    }
-
-    builder.setWcdf( wcdf );
-    builder.setMeta( dashboardType );
-    MetaModel.Builder metaBuilder = new MetaModel.Builder();
-    MetaModel model;
-    Dashboard dashboard = null;
-    try {
-      model = metaBuilder.build();
-      dashboard = builder.build( model );
-
-    } catch ( ValidationException e ) {
-      e.printStackTrace();
-    }
-    return dashboard;
+    return new PentahoCdfRunJsDashboardWriteContextForTesting( factory, indent, bypassCacheRead, dashboard, options );
   }
 
   private static CdfRunJsDashboardWriteOptions getCdfRunJsDashboardWriteOptions() {

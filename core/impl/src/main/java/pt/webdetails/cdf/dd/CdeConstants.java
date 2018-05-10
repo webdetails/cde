@@ -155,7 +155,7 @@ public class CdeConstants {
 
   public static class Writer {
     public static final String WEBCONTEXT = "webcontext.js?context={0}&amp;requireJsOnly={1}";
-    public static final Pattern SCHEME_PATTERN = Pattern.compile( "^(ht|f)tps?\\:\\/\\/" );
+    public static final Pattern SCHEME_PATTERN = Pattern.compile( "^[^:]+\\:\\/\\/" );
 
     public static final String NEWLINE = System.getProperty( "line.separator" );
     public static final String INDENT1 = "  ";
@@ -164,6 +164,8 @@ public class CdeConstants {
     public static final String INDENT4 = "        ";
     public static final String INDENT5 = "          ";
     public static final String INDENT6 = "            ";
+
+    public static final String SLASH = "/";
 
     public static final String TITLE = INDENT1 + "<title>{0}</title>";
     public static final String SCRIPT =
