@@ -137,8 +137,8 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
    * @return the string containing the dashboard module definition.
    */
   protected String wrapRequireModuleDefinitions( String layout, ResourceMap resources,
-                                               Map<String, String> componentModules, String content,
-                                               CdfRunJsDashboardWriteContext context ) {
+                                                 Map<String, String> componentModules, String content,
+                                                 CdfRunJsDashboardWriteContext context ) {
 
     StringBuilder output = new StringBuilder();
 
