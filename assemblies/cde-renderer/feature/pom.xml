@@ -25,14 +25,14 @@
     <dependency>
       <groupId>org.pentaho.webpackage</groupId>
       <artifactId>pentaho-webpackage</artifactId>
-      <version>${pentaho-webpackage.version}</version>
+      <version>${pentaho-osgi-bundles.version}</version>
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
     <dependency>
       <groupId>org.pentaho.webcontext</groupId>
       <artifactId>pentaho-webcontext</artifactId>
-      <version>${pentaho-webcontext.version}</version>
+      <version>${pentaho-osgi-bundles.version}</version>
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
