@@ -1,0 +1,108 @@
+/*!
+ * Copyright 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
+
+.ccc-ext-tooltip-categorical.tipsy {
+  width: auto;
+  opacity: 1;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  letter-spacing: 0.05em
+}
+
+.ccc-ext-tooltip-categorical.tipsy .tipsy-arrow {
+  display: none;
+  visibility: hidden;
+}
+
+/* Container */
+.ccc-ext-tooltip-categorical.tipsy .tipsy-inner {
+  opacity: 1;
+  background: white;
+  color: #888888;
+  border: 1px solid #C6C6C6;
+  border-radius: 0px;
+  -moz-border-radius: 0px;
+  -webkit-border-radius: 0px;
+  box-shadow: 0px 1px 5px #cccccc;
+  padding: 0;
+  padding-bottom: 3px;
+  width: auto;
+  height: auto;
+}
+
+/* .ccc-ext-tooltip-categorical */
+.ccc-ext-tooltip-categorical hr {
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-top: 1px solid #C6C6C6;
+  margin-bottom: 5px;
+}
+
+/* div.category <text> */
+.ccc-ext-tooltip-categorical .category {
+  text-align: left;
+  padding: 3px 15px;
+  font-size: 10px;
+  color: #888888;
+  background-color: #f9f9f9;
+}
+
+/* table.series-detail */
+.ccc-ext-tooltip-categorical .series-detail {
+  border-spacing: 0px;
+  border-collapse: separate;
+  border: 0px;
+  margin: 0px 15px;
+}
+
+.ccc-ext-tooltip-categorical .series-detail td {
+  position: relative;
+  vertical-align: baseline;
+  padding: 10px 0 8px 0;
+  border: 0px;
+  border-bottom: 1px;
+  border-style: solid;
+  border-color: #f3f3f3;
+}
+
+.ccc-ext-tooltip-categorical .series-detail tr.series-_total_ td {
+  font-weight: bold;
+}
+
+.ccc-ext-tooltip-categorical .series-detail tr:nth-last-child(1) td {
+  border: 0px;
+}
+
+/* table.series-detail td div.color - has a predefined bg color set */
+.ccc-ext-tooltip-categorical .series-detail .color {
+  position: absolute;
+  top: 8px;
+  height: 2px;
+  width: 25px;
+}
+
+/* table.series-detail td div.series <text> */
+.ccc-ext-tooltip-categorical .series-detail .series {
+  text-align: left;
+  font-size: 12px;
+  color: #777777;
+}
+
+/* table.series-detail td div.value <text> */
+.ccc-ext-tooltip-categorical .series-detail .value {
+  text-align: right;
+  padding-left: 30px;
+  font-size: 16px;
+  color: #777777;
+  line-height: 1em;
+}
