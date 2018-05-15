@@ -133,7 +133,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     final String layout;
     try {
       final String cssCodeResourcesContent = this.writeCssCodeResources( resources );
-      final String layoutContent = this.writeCssCodeResources( resources );
+      final String layoutContent = this.writeLayout( context, dashboard );
 
       layout = context.replaceTokensAndAlias( cssCodeResourcesContent + layoutContent );
     } catch ( Exception ex ) {
