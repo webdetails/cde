@@ -25,7 +25,7 @@ define(['cdf/lib/jquery',
 
   $(document).ready(function () {
     $('body').addClass('dashboard-example');
-    $(document).prop('title', 'Real Time Data');
+    $(document).prop('title', 'Real Time Dashboard');
   });
 
 });
