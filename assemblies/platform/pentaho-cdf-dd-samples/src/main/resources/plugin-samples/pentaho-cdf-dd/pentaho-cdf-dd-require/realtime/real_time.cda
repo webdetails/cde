@@ -16,7 +16,7 @@ FROM "plugin_sample_real_time_require"</DataServiceQuery>
       <WindowEvery>1</WindowEvery>
       <WindowLimit>0</WindowLimit>
       <WindowMode>ROW_BASED</WindowMode>
-      <WindowSize>10</WindowSize>
+      <WindowSize>18</WindowSize>
    </DataAccess>
    <DataAccess access="public" connection="realtime_chart" id="realtime_chart"
                type="streaming">
