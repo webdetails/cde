@@ -12,7 +12,11 @@
  */
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  document.body.classList.add('dashboard-example')
+  document.body.classList.add('dashboard-example');
+  link=document.createElement('link');
+  link.href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700';
+  link.rel='stylesheet';
+  document.getElementsByTagName('head')[0].appendChild( link );
 });
 
 var dashboard_example = {};
