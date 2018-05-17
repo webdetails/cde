@@ -26,6 +26,7 @@ define(['cdf/lib/jquery',
   $(document).ready(function () {
     $('body').addClass('dashboard-example');
     $(document).prop('title', 'Real Time Dashboard');
+    $("head").append("<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>");
   });
 
 });

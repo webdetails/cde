@@ -215,6 +215,7 @@ body.dashboard-example {
   border: 1px solid #999999;
   border-radius: 2px;
   white-space: nowrap;
+  overflow: hidden;
 }
 
 .dashboard-example .table > tbody > tr > td {
@@ -235,7 +236,7 @@ body.dashboard-example {
 }
 
 .dashboard-example table.dataTable thead > tr > th.column8 {
-  padding-right: 40px;
+  padding-right: 20px;
 }
 
 .dashboard-example table.dataTable tbody > tr > td.column8 {
@@ -256,7 +257,7 @@ body.dashboard-example {
 .dashboard-example table.dataTable thead .sorting:after {
   content: "";
   position: absolute;
-  right: 18px;
+  right: 8px;
   top: 14px;
   width: 7px;
   height: 10px;
@@ -266,7 +267,7 @@ body.dashboard-example {
 .dashboard-example table.dataTable thead .sorting_desc:after {
   content: "";
   position: absolute;
-  right: 18px;
+  right: 8px;
   top: 14px;
   width: 7px;
   height: 10px;
@@ -276,7 +277,7 @@ body.dashboard-example {
 .dashboard-example table.dataTable thead .sorting_asc:after {
   content: "";
   position: absolute;
-  right: 18px;
+  right: 8px;
   top: 14px;
   width: 7px;
   height: 10px;
@@ -286,7 +287,7 @@ body.dashboard-example {
 .dashboard-example table.dataTable thead > tr > th.column8.sorting:after,
 .dashboard-example table.dataTable thead > tr > th.column8.sorting_desc:after,
 .dashboard-example table.dataTable thead > tr > th.column8.sorting_asc:after {
-  right: 28px;
+  right: 8px;
 }
 
 .dashboard-example table th.formattedText,
