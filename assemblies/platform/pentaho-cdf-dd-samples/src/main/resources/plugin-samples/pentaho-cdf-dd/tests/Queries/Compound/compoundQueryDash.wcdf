@@ -3,9 +3,9 @@
   <title>compoundQueryDash</title>
   <description>compoundQueryDash</description>
   <author></author>
-  <style>WDDocs</style>
+  <style>WDDocsRequire</style>
   <rendererType>blueprint</rendererType>
-  <require>false</require>
+  <require>true</require>
   <widget>false</widget>
   <widgetName></widgetName>
   <widgetParameters></widgetParameters>

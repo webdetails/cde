@@ -861,6 +861,11 @@
       "value": "[]"
      },
      {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
       "name": "API_KEY",
       "type": "String",
       "value": "0"
@@ -934,11 +939,6 @@
       "name": "markerWidth",
       "type": "Integer",
       "value": 25
-     },
-     {
-      "name": "parameters",
-      "type": "CdaParameters",
-      "value": "[]"
      },
      {
       "name": "popupContentsDiv",
@@ -1069,6 +1069,11 @@
       "value": "[]"
      },
      {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
       "name": "API_KEY",
       "type": "String",
       "value": "0"
@@ -1144,11 +1149,6 @@
       "value": 25
      },
      {
-      "name": "parameters",
-      "type": "CdaParameters",
-      "value": "[]"
-     },
-     {
       "name": "popupContentsDiv",
       "type": "String",
       "value": ""
@@ -1211,7 +1211,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function(){\n    var getResource = ''; //this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n\n    this.shapeResolver = 'geoJSON';\n    this.setAddInOptions('ShapeResolver', 'geoJSON', {\n        url: getResource + '${solution:countries.js}', //BA server does not recognize the .geojson extension\n        idPropertyName: 'NAME' //GeoJSON feature property that will be used to index the feature\n    });\n\n} \n "
+      "value": "function(){\n    var getResource = this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n\n    this.shapeResolver = 'geoJSON';\n    this.setAddInOptions('ShapeResolver', 'geoJSON', {\n        url: getResource + '${solution:countries.js}', //BA server does not recognize the .geojson extension\n        idPropertyName: 'NAME' //GeoJSON feature property that will be used to index the feature\n    });\n\n} \n "
      },
      {
       "name": "postExecution",
@@ -1277,6 +1277,11 @@
       "value": "[]"
      },
      {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
       "name": "API_KEY",
       "type": "String",
       "value": ""
@@ -1352,11 +1357,6 @@
       "value": ""
      },
      {
-      "name": "parameters",
-      "type": "CdaParameters",
-      "value": "[]"
-     },
-     {
       "name": "popupContentsDiv",
       "type": "String",
       "value": ""
@@ -1419,7 +1419,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function(){\n    var getResource = ''; //this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n    \n    this.shapeResolver = 'kml';\n    this.setAddInOptions('ShapeResolver', 'kml', {\n        idSelector: 'NAME', //selector within \"<Placemark>\" that will be used to index the feature\n        url: getResource + '${solution:countries.kml.html}'\n        //url: '/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/Map/maps/countries.kml'\n    });\n\n\n} \n "
+      "value": "function(){\n    var getResource = this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n    \n    this.shapeResolver = 'kml';\n    this.setAddInOptions('ShapeResolver', 'kml', {\n        idSelector: 'NAME', //selector within \"<Placemark>\" that will be used to index the feature\n        url: getResource + '${solution:countries.kml.html}'\n        //url: '/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/Map/maps/countries.kml'\n    });\n\n\n} \n "
      },
      {
       "name": "postExecution",
@@ -1482,6 +1482,11 @@
      {
       "name": "listeners",
       "type": "Listeners",
+      "value": "[]"
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
       "value": "[]"
      },
      {
@@ -1560,11 +1565,6 @@
       "value": 25
      },
      {
-      "name": "parameters",
-      "type": "CdaParameters",
-      "value": "[]"
-     },
-     {
       "name": "popupContentsDiv",
       "type": "String",
       "value": ""
@@ -1627,7 +1627,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function(){\n    var getResource = ''; //this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n    this.shapeResolver = 'simpleJSON';\n    this.setAddInOptions('ShapeResolver', 'simpleJSON', {\n        url: getResource + '${solution:countries-legacy.js}'\n    });\n\n} \n "
+      "value": "function(){\n    var getResource = this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n    this.shapeResolver = 'simpleJSON';\n    this.setAddInOptions('ShapeResolver', 'simpleJSON', {\n        url: getResource + '${solution:countries-legacy.js}'\n    });\n\n} \n "
      },
      {
       "name": "postExecution",
@@ -1845,7 +1845,7 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/NewMapComponent/maps_addins_reference.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewMapComponent/maps_addins_reference.cdfde",
  "layout": {
   "rows": [
    {

@@ -3,7 +3,7 @@
   <title>Export Button</title>
   <description>Export Button sample</description>
   <author></author>
-  <style>WDDocs</style>
+  <style>WDDocsRequire</style>
   <rendererType>blueprint</rendererType>
-  <require>false</require>
+  <require>true</require>
 </cdf>

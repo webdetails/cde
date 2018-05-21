@@ -7,6 +7,7 @@
   <widgetName></widgetName>
   <widgetParameters>
   </widgetParameters>
-  <style>WDDocs</style>
+  <style>WDDocsRequire</style>
   <rendererType>blueprint</rendererType>
+  <require>true</require>
 </cdf>

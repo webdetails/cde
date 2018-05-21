@@ -40,7 +40,7 @@ body.dashboard-example {
   background: transparent;
 }
 
-.dashboard-example .header:after {
+.dashboard-example .panel-heading:after {
   background-color: white;
   position: absolute;
   top: 0px;
@@ -147,13 +147,10 @@ body.dashboard-example {
 
 .dashboard-example .graphicRowTitle {
   font-size: 18px;
-  padding-left: 20px;
-  margin-bottom: 10px;
 }
 
 .dashboard-example .graphicColumn {
-  margin-top: 5px;
-  margin-bottom: 20px;
+
 }
 
 .dashboard-example p + p {
@@ -178,8 +175,7 @@ body.dashboard-example {
 }
 
 .dashboard-example .dataTables_wrapper {
-  margin-left: 20px;
-  width: calc(100% - 20px);
+
 }
 
 .dashboard-example .table-striped > tbody > tr:nth-child(odd) > td,
@@ -234,7 +230,7 @@ body.dashboard-example {
 }
 
 .dashboard-example table.dataTable thead > tr > th {
-  padding-right: 20px;
+  padding-right: 30px;
   text-align: right;
   position: relative;
 }

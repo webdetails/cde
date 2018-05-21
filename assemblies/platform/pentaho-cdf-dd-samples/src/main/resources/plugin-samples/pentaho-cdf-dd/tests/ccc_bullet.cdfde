@@ -697,11 +697,6 @@
       "type": "Integer"
      },
      {
-      "name": "width",
-      "value": "400",
-      "type": "Integer"
-     },
-     {
       "name": "priority",
       "value": 5,
       "type": "Integer"
@@ -712,13 +707,18 @@
       "type": "Integer"
      },
      {
+      "name": "width",
+      "value": "400",
+      "type": "Integer"
+     },
+     {
       "name": "colors",
       "value": "[]",
       "type": "Array"
      },
      {
       "name": "htmlObject",
-      "value": "obj1",
+      "value": "${h:obj1}",
       "type": "HtmlObject"
      },
      {
@@ -752,14 +752,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
       "name": "extensionPoints",
       "value": "[]",
       "type": "ValuesArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
      },
      {
       "name": "axisDoubleClickAction",
@@ -1086,11 +1086,6 @@
       "type": "Integer"
      },
      {
-      "name": "width",
-      "value": "400",
-      "type": "Integer"
-     },
-     {
       "name": "priority",
       "value": 5,
       "type": "Integer"
@@ -1101,13 +1096,18 @@
       "type": "Integer"
      },
      {
+      "name": "width",
+      "value": "400",
+      "type": "Integer"
+     },
+     {
       "name": "colors",
       "value": "[]",
       "type": "Array"
      },
      {
       "name": "htmlObject",
-      "value": "obj2",
+      "value": "${h:obj2}",
       "type": "HtmlObject"
      },
      {
@@ -1141,14 +1141,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
       "name": "extensionPoints",
       "value": "[[\"bulletRuleLabel_font\",\"8pt serif italic\"],[\"bulletMarker_shape\",\"triangle\"]]",
       "type": "ValuesArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
      },
      {
       "name": "axisDoubleClickAction",
@@ -1475,11 +1475,6 @@
       "type": "Integer"
      },
      {
-      "name": "width",
-      "value": "950",
-      "type": "Integer"
-     },
-     {
       "name": "priority",
       "value": 5,
       "type": "Integer"
@@ -1487,6 +1482,11 @@
      {
       "name": "refreshPeriod",
       "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "width",
+      "value": "950",
       "type": "Integer"
      },
      {
@@ -1530,14 +1530,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
       "name": "extensionPoints",
       "value": "[[\"bulletRuleLabel_font\",\"7pt sans\"]]",
       "type": "ValuesArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
      },
      {
       "name": "axisDoubleClickAction",
@@ -1751,7 +1751,7 @@
      },
      {
       "name": "titleSize",
-      "value": "25",
+      "value": 25,
       "type": "Integer"
      },
      {
@@ -1864,11 +1864,6 @@
       "type": "Integer"
      },
      {
-      "name": "width",
-      "value": "600",
-      "type": "Integer"
-     },
-     {
       "name": "priority",
       "value": 5,
       "type": "Integer"
@@ -1879,13 +1874,18 @@
       "type": "Integer"
      },
      {
+      "name": "width",
+      "value": "600",
+      "type": "Integer"
+     },
+     {
       "name": "colors",
       "value": "[]",
       "type": "Array"
      },
      {
       "name": "htmlObject",
-      "value": "obj4",
+      "value": "${h:obj4}",
       "type": "HtmlObject"
      },
      {
@@ -1919,14 +1919,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
       "name": "extensionPoints",
       "value": "[]",
       "type": "ValuesArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
      },
      {
       "name": "axisDoubleClickAction",
@@ -2253,11 +2253,6 @@
       "type": "Integer"
      },
      {
-      "name": "width",
-      "value": "600",
-      "type": "Integer"
-     },
-     {
       "name": "priority",
       "value": 5,
       "type": "Integer"
@@ -2268,13 +2263,18 @@
       "type": "Integer"
      },
      {
+      "name": "width",
+      "value": "600",
+      "type": "Integer"
+     },
+     {
       "name": "colors",
       "value": "[]",
       "type": "Array"
      },
      {
       "name": "htmlObject",
-      "value": "obj5",
+      "value": "${h:obj5}",
       "type": "HtmlObject"
      },
      {
@@ -2308,14 +2308,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
       "name": "extensionPoints",
       "value": "[]",
       "type": "ValuesArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
      },
      {
       "name": "axisDoubleClickAction",
@@ -2657,9 +2657,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
      },
      {
       "name": "cdacolumns",
@@ -2667,14 +2667,14 @@
       "type": "CdaColumnsArray"
      },
      {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
      },
      {
       "name": "cacheKeys",
@@ -2728,9 +2728,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
      },
      {
       "name": "cdacolumns",
@@ -2738,14 +2738,14 @@
       "type": "CdaColumnsArray"
      },
      {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
      },
      {
       "name": "cacheKeys",
@@ -2799,9 +2799,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
      },
      {
       "name": "cdacolumns",
@@ -2809,14 +2809,14 @@
       "type": "CdaColumnsArray"
      },
      {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
      },
      {
       "name": "cacheKeys",
@@ -2870,9 +2870,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
      },
      {
       "name": "cdacolumns",
@@ -2880,14 +2880,14 @@
       "type": "CdaColumnsArray"
      },
      {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
      },
      {
       "name": "cacheKeys",
@@ -2908,5 +2908,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/ccc_bullet.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/ccc_bullet.cdfde"
 }

@@ -6,11 +6,11 @@ var render_BarChart = {
   priority: 5,
   parameters: [],
   executeAtStart: true,
-  htmlObject: "${p:TheChart}",
+  htmlObject: "${h:TheChart}",
   listeners: [],
   chartDefinition:  {
     dataAccessId: "ThreeColumns",
-    path: "/public/plugin-samples/pentaho-cdf-dd/tests/ExportPopup/ExportPopupComponent.cda",
+    path: "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/ExportPopup/ExportPopupComponent.cda",
     width: 350,
     height: 200,
     extensionPoints: [],

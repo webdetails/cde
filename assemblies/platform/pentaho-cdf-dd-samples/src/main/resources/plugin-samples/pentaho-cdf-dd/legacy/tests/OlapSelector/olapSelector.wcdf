@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+  <title>olapSelector</title>
+  <description>Olap Selector Component sample</description>
+  <author></author>
+  <widget>false</widget>
+  <widgetName></widgetName>
+  <widgetParameters></widgetParameters>
+  <style>WDDocs</style>
+  <rendererType>blueprint</rendererType>
+  <require>false</require>
+</cdf>

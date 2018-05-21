@@ -1,0 +1,1506 @@
+{
+ "layout": {
+  "title": "CDF - Sample structure",
+  "rows": [
+   {
+    "id": "6b92846b-526c-cb97-0949-4551f920ae12",
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "template",
+      "type": "Id"
+     },
+     {
+      "name": "resourceFile",
+      "value": "${res:../template.css}",
+      "type": "ResourceFile"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "55291303-7ccc-8404-9694-82a427f612a8",
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "AddInDefaults",
+      "type": "Id"
+     },
+     {
+      "name": "resourceType",
+      "value": "Javascript",
+      "type": "Label"
+     },
+     {
+      "name": "resourceCode",
+      "value": "Dashboards.setAddInDefaults(\"Table\",\"colType\",\"sparkline\",\n{\n    fillColor:\"#aaaaaa\",\n    width: \"150\"\n}\n); ",
+      "type": "Resource"
+     }
+    ]
+   },
+   {
+    "id": "03a83220-159d-d841-c40d-0a04044f3e51",
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "css",
+      "type": "Id"
+     },
+     {
+      "name": "resourceFile",
+      "value": "${res:../../../../public/plugin-samples/pentaho-cdf-dd/cdeReference.css}",
+      "type": "ResourceFile"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "7746f3c7-ccfb-9cba-b7cd-f5dae17d6a63",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "Spacer",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "20",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "23974863-0f28-ff9c-62f8-30c632ba973d",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "Title",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDheader",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "9e153dff-b071-01a0-54dd-3666a857debe",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "23974863-0f28-ff9c-62f8-30c632ba973d",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Widget reference ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "18",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "2d99f333-9735-6b03-85d5-93d4a0142d07",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "DescriptionBody",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "46e27ef7-a339-d5fb-0d0f-728bdaec0476",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "2d99f333-9735-6b03-85d5-93d4a0142d07",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<p>Widgets are a way to turn complex component and layout setups into reusable components.\nWidgets are developed as if they were dashboards and used as if they were components in\nclient dashboards.\n\n<div class=\"WDh2\">Using Widgets</div>\n\n<p>Using a widget created with CDE is quite simple: the widget will show up in the components\npanel under the Widgets header. You just need to associate a layout element as usual, and map\nthe widget parameters to your dashboards parameters. The widget layout will be rendered inside\nthe declared htmlObject much as if it were a standard component, and its components will be\nadded directly to the Dashboard lifecycle, as if they were components of the containing\ndashboard.\n\n<p>Widgets would be a bit uninteresting if they were completely isolated from the containing\ndashboard, so they can publish a list of parameters that should be understood as their public\ninterface with the containing dashboard. In the Widget component, you'll find a listing of those\nparameters, that you should map to the dashboard parameters they should sync with (think of it as\na two-way version of the way you'd map a query's parameters to the dashboard parameters).\nThrough this mechanism, selector components in the widget can publish changes to visualisation\ncomponents in the containing dashboard, and vice-versa.\n\n<div class=\"WDh2\">Widget Implementation</div>\n\n<p>Fundamentally, creating a widget is as simple as expanding the pulldown in Save As, and\nchoosing \"Save As Widget\". This will save the widget as a regular dashboard in the solution,\ninside thecde/widgets folder, and will add a CDE component for the widget. Once you've saved\nthe widget, you can use the settings menu to configure which parameters will show up in its\ncorresponding widget component.\n\n<p>When developing widgets, you need to keep some key issues in mind. First, remember that\nthe widget is not a full fledged dashboard, and will be used as a component, which implies\ncertain layout design constraints. You'll need to ensure the widget is sized appropriately\nto the space available to the dashboards it'll be used in.\n\n<p>Also, as all DOM ids share the same namespace, and since CDF dashboards use the global\nobject as the container for all parameters and components, there is a large potential for\nname collisions, both between widgets and between a widget and its containing dashboard.\nTo avoid this issue, we alias the names of components, parameters, and html ids of all the\nlayout and component definitions in the widget. If you add a widget to a dashboard, and name\nit myWidget, then a parameter declared inside the widget named myParam would instead be named\nmyWidget_myParam when rendered into the containing dashboard.\n\n<p>Since you cannot know what names will be given to those objects when developing the widget,\nCDE now provides a reference mechanism for those cases. Anywhere you'd use a parameter\n<code>parameterName</code>, you should instead use the form <code>&#36;{p:parameterName}</code>.\nSimilarly you should reference components as <code>&#36;{c:componentName}</code>, and htmlObjects\nas <code>&#36;{h:htmlObject}</code>. Be mindful that this mechanism also obviates the need to use\n<code>render_componentName</code> everywhere you want to reference a component. The\n<code>render_</code> prefix is an implementation detail, and shouldn't be relied upon. Since\nall dashboards (not just widgets) can use the <code>${p/c/h:}</code> references, it's a best\npractice to just use that syntax in all contexts.\n ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "b9afdccd-d812-3d05-e922-8d96f0f39411",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "SampleTitle",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "b3705ed9-c519-d1f9-8a37-b520af3742ca",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "b9afdccd-d812-3d05-e922-8d96f0f39411",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Sample Widget ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "c2b51a60-0d9d-491d-e46f-2a2bf806920e",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "SampleBody",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "100379ee-749c-6807-e780-83f2aa5d6a79",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "c2b51a60-0d9d-491d-e46f-2a2bf806920e",
+    "properties": [
+     {
+      "name": "name",
+      "value": "SampleDesc",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "22",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "1",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "1",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "beb3d1ff-2ad9-4492-c12c-076fd30efc24",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "100379ee-749c-6807-e780-83f2aa5d6a79",
+    "properties": [
+     {
+      "name": "name",
+      "value": "SampleDescHtml",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "93803b56-0c3f-b074-276c-8852b2c2086a",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "beb3d1ff-2ad9-4492-c12c-076fd30efc24",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<p>This is a simple sample Widget. The widget contains only a single bar chart and a\nyear parameter, and the parameter is linked to the documentation dashboard's year\nparameter, which is exposed in the pulldown. ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "6ea7df09-6670-8567-4e86-76be97bcd846",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "100379ee-749c-6807-e780-83f2aa5d6a79",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "1ada712e-ef03-0067-8f9b-69efd7b18e03",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "6ea7df09-6670-8567-4e86-76be97bcd846",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "2",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "29",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "4dde1b55-f842-accc-aed6-3d989d8141c5",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "1ada712e-ef03-0067-8f9b-69efd7b18e03",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<b>Year:</b> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "bffbe085-6aef-d256-b4df-69b32758149a",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "6ea7df09-6670-8567-4e86-76be97bcd846",
+    "properties": [
+     {
+      "name": "name",
+      "value": "yearSelector",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "6f234863-6533-d299-394c-986b3dcf478f",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "100379ee-749c-6807-e780-83f2aa5d6a79",
+    "properties": [
+     {
+      "name": "name",
+      "value": "sampleObj",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   }
+  ]
+ },
+ "components": {
+  "rows": [
+   {
+    "id": "WIDGETS",
+    "name": "Widgets",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "Widgets",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "e2479a2f-c8d8-612b-15b1-ff193ceb2ff3",
+    "type": "ComponentswidgetSampleWidget",
+    "typeDesc": "SampleWidget Widget",
+    "meta_wcdf": "/public/cde/widgets/sample.wcdf",
+    "meta_widget": "true",
+    "parent": "WIDGETS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "widgetSample",
+      "type": "Id"
+     },
+     {
+      "name": "year",
+      "value": "${p:year}",
+      "type": "Parameter"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${p:sampleObj}",
+      "type": "HtmlObject"
+     }
+    ]
+   },
+   {
+    "id": "GENERIC",
+    "name": "Generic",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "Generic",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "7334d694-ae8a-e2ea-d46d-0837e6a18803",
+    "type": "ComponentsParameter",
+    "typeDesc": "Simple parameter",
+    "parent": "GENERIC",
+    "properties": [
+     {
+      "name": "name",
+      "value": "year",
+      "type": "Id"
+     },
+     {
+      "name": "propertyValue",
+      "value": "2005",
+      "type": "String"
+     },
+     {
+      "name": "parameterViewRole",
+      "value": "unused",
+      "type": "parameterViewRoleCustom"
+     },
+     {
+      "name": "bookmarkable",
+      "value": "false",
+      "type": "Boolean"
+     }
+    ]
+   },
+   {
+    "id": "SELECTORS",
+    "name": "Selects",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "Selects",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "601c1625-6899-4865-bfae-fa36441615f9",
+    "type": "ComponentsSelect",
+    "typeDesc": "Select Component",
+    "parent": "SELECTORS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "yearSelector",
+      "type": "Id"
+     },
+     {
+      "name": "parameter",
+      "value": "${p:year}",
+      "type": "Parameter"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "externalPlugin",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "valueAsId",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "Years"
+     },
+     {
+      "name": "valuesArray",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${p:yearSelector}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "extraOptions",
+      "value": "[]",
+      "type": "OptionArray"
+     }
+    ]
+   }
+  ]
+ },
+ "datasources": {
+  "rows": [
+   {
+    "id": "SCRIPTING",
+    "name": "SCRIPTING Queries",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "SCRIPTING Queries",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "a4bca940-80a0-7286-2b65-08a976ff06f6",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "groupHeadersQuery",
+      "type": "Id"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Group1\",\n\"Group2\",\n\"Data Column 1\",\n\"Data Column 2\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,String.class\n,Float.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"AAA\"), new String(\"aaa\")\n,new Float(\"-26\") ,new Float(\"50\")\n});\nmodel.addRow(new Object[]{ new String(\"AAA\"), new String(\"ccc\")\n,new Float(\"6\") ,new Float(\"-32\")\n});\nmodel.addRow(new Object[]{ new String(\"BBB\"), new String(\"aaa\")\n,new Float(\"2\") ,new Float(\"23\")\n});\nmodel.addRow(new Object[]{ new String(\"BBB\"), new String(\"bbb\")\n,new Float(\"34\") ,new Float(\"91\")\n});\nmodel.addRow(new Object[]{ new String(\"AAA\"), new String(\"aaa\")\n,new Float(\"14\") ,new Float(\"14\")\n});\nmodel.addRow(new Object[]{ new String(\"AAA\"), new String(\"aaa\")\n,new Float(\"90\") ,new Float(\"-50\")\n});\nmodel.addRow(new Object[]{ new String(\"AAA\"), new String(\"bbb\")\n,new Float(\"5\") ,new Float(\"50\")\n});\nmodel.addRow(new Object[]{ new String(\"BBB\"), new String(\"ccc\")\n,new Float(\"-46\") ,new Float(\"10\")\n});\nmodel.addRow(new Object[]{ new String(\"BBB\"), new String(\"aaa\")\n,new Float(\"26\") ,new Float(\"5\")\n});\n\n\n\n\nreturn model;\n",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     }
+    ]
+   },
+   {
+    "id": "f6c26306-390c-560f-81d5-7c3b776b5c68",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "trendArrowQuery",
+      "type": "Id"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default trendArrow\",\n\"Custom trendArrow\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new Float(\"26\") ,new Float(\"50\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 2\")\n,new Float(\"-30\") ,new Float(\"77\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 3\")\n,new Float(\"-14.5\") ,new Float(\"-65\")\n});\n\n\nreturn model;\n\n",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     }
+    ]
+   },
+   {
+    "id": "9eafca94-5c8a-1d20-d12f-3824def5d116",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "hyperlinkQuery",
+      "type": "Id"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default hyperlink\",\n\"Custom hyperlink\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,String.class\n,String.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new String(\"www.webdetails.org\") ,new String(\"www.webdetails.pt\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 2\")\n,new String(\"ctools.webdetails.org\") ,new String(\"http://ctools.webdetails.org\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 3\")\n,new String(\"cdf.webdetails.org\") ,new String(\"cde.webdetails.org\")\n});\n\n\nreturn model;\n\n",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     }
+    ]
+   },
+   {
+    "id": "0f6de80f-4f50-087a-2259-382d981aa33b",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "circleQuery",
+      "type": "Id"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default circle\",\n\"Custom circle\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new Float(\"1.26\") ,new Float(\"0\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 2\")\n,new Float(\"33.0\") ,new Float(\"30\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 3\")\n,new Float(\"14.5\") ,new Float(\"50.49\")\n});\n\nmodel.addRow(new Object[]{ new String(\"Row 4\")\n,new Float(\"14.5\") ,new Float(\"70\")\n});\n\nmodel.addRow(new Object[]{ new String(\"Row 5\")\n,new Float(\"14.5\") ,new Float(\"100\")\n});\n\nreturn model;\n\n",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     }
+    ]
+   },
+   {
+    "id": "93c2b4e6-5dbe-f3e7-3511-87b2b6a7fcc2",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "formattedTextQuery",
+      "type": "Id"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default format\",\n\"Custom custom\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new Float(\"1.26\") ,new Float(\"0.21\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 2\")\n,new Float(\"33.0\") ,new Float(\"30.25\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 3\")\n,new Float(\"14.5\") ,new Float(\"50.49\")\n});\n\nreturn model;\n\n",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     }
+    ]
+   },
+   {
+    "id": "a5aeedfb-2574-69c6-c878-5397c0d35d82",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "bulletChartQuery",
+      "type": "Id"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default bulletChart\",\n\"Custom bulletChart\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,String.class\n,String.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new String(\"'',30,50\") ,new String(\"'','',40,30,20,40,100\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 2\")\n,new String(\"'',60,40\") ,new String(\"'','',30,40,30,35,50\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 3\")\n,new String(\"'',70,35\") ,new String(\"'','',100,110,50,150,200\")\n});\n\nreturn model;\n\n",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     }
+    ]
+   },
+   {
+    "id": "MDX",
+    "name": "MDX Queries",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "MDX Queries",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "9cc37276-bd09-e305-3c01-c5c354a191a3",
+    "type": "Componentsmdx_mondrianJndi",
+    "typeDesc": "mdx over mondrianJndi",
+    "meta": "CDA",
+    "meta_conntype": "mondrian.jndi",
+    "meta_datype": "mdx",
+    "parent": "MDX",
+    "properties": [
+     {
+      "name": "name",
+      "value": "Years",
+      "type": "Id"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "jndi",
+      "value": "SampleData",
+      "type": "Jndi"
+     },
+     {
+      "name": "catalog",
+      "value": "mondrian:/SteelWheels",
+      "type": "MondrianCatalog"
+     },
+     {
+      "name": "query",
+      "value": "with member [Measures].[Year Name] as [Time].CurrentMember.Name\nselect NON EMPTY {[Measures].[Year Name]} ON COLUMNS,\n  NON EMPTY {[Time].Children} ON ROWS\nfrom [SteelWheelsSales]\n",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "bandedMode",
+      "value": "compact",
+      "type": "BandedMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     }
+    ]
+   }
+  ]
+ },
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/widgets.cdfde"
+}

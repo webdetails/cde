@@ -3,9 +3,10 @@
   <title>Export Popup Component</title>
   <description>A sample with all functionalities of ExportPopup Component</description>
   <author></author>
-  <style>WDDocs</style>
-  <rendererType>blueprint</rendererType>
   <widget>false</widget>
   <widgetName></widgetName>
   <widgetParameters></widgetParameters>
+  <style>WDDocsRequire</style>
+  <rendererType>blueprint</rendererType>
+  <require>true</require>
 </cdf>

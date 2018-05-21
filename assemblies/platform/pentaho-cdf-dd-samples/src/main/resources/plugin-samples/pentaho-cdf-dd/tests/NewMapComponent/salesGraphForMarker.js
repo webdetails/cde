@@ -9,12 +9,12 @@ var render_salesGraphForMarker = {
   preExecution: function f(){
     this.lifecycle = {
         silent: true
-    }
+    };
 } ,
   listeners: [],
   chartDefinition:  {
     dataAccessId: "salesGraphQuery",
-    path: "/public/plugin-samples/pentaho-cdf-dd/tests/NewMapComponent/FullMapTest.cda",
+    path: "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewMapComponent/FullMapTest.cda",
     width: 75,
     height: 75,
     extensionPoints: [],

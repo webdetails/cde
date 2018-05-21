@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cdf>
-    <title>Bullet chart testcase</title>
-    <description></description>
-    <author></author>
-    <style>WDDocs</style>
-    <rendererType>blueprint</rendererType>
-    <require>false</require>
-    <widget>false</widget>
+  <title>Bullet chart testcase</title>
+  <author></author>
+  <description></description>
+  <icon/>
+  <style>WDDocsRequire</style>
+  <rendererType>blueprint</rendererType>
+  <require>true</require>
 </cdf>
