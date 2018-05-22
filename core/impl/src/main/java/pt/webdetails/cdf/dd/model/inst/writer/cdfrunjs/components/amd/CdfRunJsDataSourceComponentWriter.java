@@ -105,7 +105,7 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
     addFirstJsProperty( out, PropertyName.QUERY_TYPE, buildJsStringValue( queryType ), Writer.INDENT2 );
 
     dataSourceComp.getPropertyBindings().forEach( binding -> {
-      String name = binding.getName();
+      String name = binding.getAlias();
       String value = binding.getValue();
 
       PropertyType.ValueType valueType = binding.getProperty().getValueType();
