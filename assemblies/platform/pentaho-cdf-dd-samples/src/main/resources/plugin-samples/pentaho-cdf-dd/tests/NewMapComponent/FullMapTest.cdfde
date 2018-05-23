@@ -92,7 +92,7 @@
      {
       "name": "markerCggGraph",
       "type": "String",
-      "value": "/public/plugin-samples/pentaho-cdf-dd/tests/NewMapComponent/salesGraphForMarker.js"
+      "value": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewMapComponent/salesGraphForMarker.js"
      },
      {
       "name": "markerClickFunction",
@@ -353,7 +353,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function f(){\n    this.lifecycle = {\n        silent: true\n    }\n} "
+      "value": "function f(){\n    this.lifecycle = {\n        silent: true\n    };\n} "
      },
      {
       "name": "postExecution",
@@ -1028,7 +1028,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function f(){\n    this.lifecycle = {\n        silent: true\n    }\n} "
+      "value": "function f(){\n    this.lifecycle = {\n        silent: true\n    };\n} "
      },
      {
       "name": "postExecution",
@@ -1901,7 +1901,7 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/NewMapComponent/FullMapTest.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewMapComponent/FullMapTest.cdfde",
  "layout": {
   "rows": [
    {
@@ -1962,7 +1962,7 @@
      {
       "name": "resourceCode",
       "type": "Resource",
-      "value": "var API_KEY = API_KEY || '<GoogleApiKey>'; "
+      "value": "var API_KEY = '<GoogleApiKey>'; "
      },
      {
       "name": "resourceType",

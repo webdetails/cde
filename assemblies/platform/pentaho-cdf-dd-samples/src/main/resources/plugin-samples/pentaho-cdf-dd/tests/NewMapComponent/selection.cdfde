@@ -177,7 +177,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function(){\n\n    this.visualRoles = {\n        id: 2\n    };\n    this.mapEngineType = this.dashboard.getParameterValue('${p:paramMapEngine}')[0];\n\n    \n} "
+      "value": "function(){\n\n    this.visualRoles = {\n        id: 2\n    };\n    this.mapEngineType = this.dashboard.getParameterValue('${p:paramMapEngine}')[0];\n} "
      },
      {
       "name": "postExecution",
@@ -385,7 +385,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function(){\n    var getResource = ''; //this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n    \n    this.shapeResolver = 'geoJSON';\n    this.setAddInOptions('ShapeResolver', 'geoJSON', {\n        url: getResource + '${solution:countries.js}', //BA server does not recognize the .geojson extension\n        idPropertyName: 'NAME' //GeoJSON feature property that will be used to index the feature\n    });\n\n    this.mapEngineType = this.dashboard.getParameterValue('${p:paramMapEngine}')[0];\n} \n "
+      "value": "function(){\n    var getResource = this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n\n    this.shapeResolver = 'geoJSON';\n    this.setAddInOptions('ShapeResolver', 'geoJSON', {\n        url: getResource + '${solution:countries.js}', //BA server does not recognize the .geojson extension\n        idPropertyName: 'NAME' //GeoJSON feature property that will be used to index the feature\n    });\n\n    this.mapEngineType = this.dashboard.getParameterValue('${p:paramMapEngine}')[0];\n} \n "
      },
      {
       "name": "postExecution",
@@ -1038,7 +1038,7 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/NewMapComponent/selection.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewMapComponent/selection.cdfde",
  "layout": {
   "rows": [
    {
@@ -1099,7 +1099,7 @@
      {
       "name": "resourceCode",
       "type": "Resource",
-      "value": "window.API_KEY = window.API_KEY || 0;//'<GOOGLE_API_KEY>';\n "
+      "value": "window.API_KEY = window.API_KEY || 0;//'<GOOGLE_API_KEY>'; "
      },
      {
       "name": "resourceType",

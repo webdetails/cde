@@ -10,9 +10,9 @@
       <Columns/>
       <ComponentRefreshPeriod>1</ComponentRefreshPeriod>
       <DataServiceQuery>SELECT increaseDateDate, Lap, latG, longG, Kmh, Gear, Rpm, Accelerator, Brake&#xD;
-FROM "plugin_sample_real_time"</DataServiceQuery>
+FROM "plugin_sample_real_time_require"</DataServiceQuery>
       <Parameters/>
-      <StreamingDataServiceName>plugin_sample_real_time</StreamingDataServiceName>
+      <StreamingDataServiceName>plugin_sample_real_time_require</StreamingDataServiceName>
       <WindowEvery>1</WindowEvery>
       <WindowLimit>0</WindowLimit>
       <WindowMode>ROW_BASED</WindowMode>
@@ -24,9 +24,9 @@ FROM "plugin_sample_real_time"</DataServiceQuery>
       <Columns/>
       <ComponentRefreshPeriod>1</ComponentRefreshPeriod>
       <DataServiceQuery>SELECT increaseDateDate as Date, latG as Lat.G, longG as Long.G&#xD;
-FROM "plugin_sample_real_time"</DataServiceQuery>
+FROM "plugin_sample_real_time_require"</DataServiceQuery>
       <Parameters/>
-      <StreamingDataServiceName>plugin_sample_real_time</StreamingDataServiceName>
+      <StreamingDataServiceName>plugin_sample_real_time_require</StreamingDataServiceName>
       <WindowEvery>1</WindowEvery>
       <WindowLimit>0</WindowLimit>
       <WindowMode>ROW_BASED</WindowMode>

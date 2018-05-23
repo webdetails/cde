@@ -3,11 +3,7 @@
   <title>mqlDash</title>
   <description>MQL Query sample</description>
   <author></author>
-  <style>WDDocs</style>
+  <style>WDDocsRequire</style>
   <rendererType>blueprint</rendererType>
-  <require>false</require>
-  <widget>false</widget>
-  <widgetName></widgetName>
-  <widgetParameters>
-  </widgetParameters>
+  <require>true</require>
 </cdf>

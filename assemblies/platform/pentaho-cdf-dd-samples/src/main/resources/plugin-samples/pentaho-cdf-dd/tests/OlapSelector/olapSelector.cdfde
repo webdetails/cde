@@ -47,7 +47,7 @@
      {
       "name": "htmlObject",
       "type": "HtmlObject",
-      "value": "${p:columnLabel}"
+      "value": "${h:columnLabel}"
      },
      {
       "name": "executeAtStart",
@@ -191,7 +191,7 @@
      {
       "name": "htmlObject",
       "type": "HtmlObject",
-      "value": "${p:column1}"
+      "value": "${h:column1}"
      },
      {
       "name": "executeAtStart",
@@ -237,7 +237,7 @@
  "datasources": {
   "rows": []
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/OlapSelector/olapSelector.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/OlapSelector/olapSelector.cdfde",
  "layout": {
   "rows": [
    {
@@ -298,7 +298,7 @@
      {
       "name": "resourceCode",
       "type": "Resource",
-      "value": ".webdetailsPanelContainerCenter {\n   min-height: 1050px;\n}\n "
+      "value": ".webdetailsPanelContainerCenter {\n    min-height: 1050px;\n}\n "
      },
      {
       "name": "resourceType",

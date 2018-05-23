@@ -11,12 +11,24 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-document.addEventListener("DOMContentLoaded", function(event) {
-  document.body.classList.add('dashboard-example');
-  link=document.createElement('link');
-  link.href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700';
-  link.rel='stylesheet';
-  document.getElementsByTagName('head')[0].appendChild( link );
+define(['cdf/lib/jquery',
+  'amd!cdf/lib/underscore',
+  'cdf/lib/CCC/protovis',
+  'cdf/Dashboard.Clean',
+  'cdf/lib/CCC/pvc',
+  'cdf/dashboard/Utils',
+  'cdf/lib/moment'], function ($, _, pv, Dashboard, pvc, Utils, moment) {
+
+  /*-------------------------------------------------------------------------*
+   *                      MISC functions && settings                         *
+   *-------------------------------------------------------------------------*/
+
+  $(document).ready(function () {
+    $('body').addClass('dashboard-example');
+    $(document).prop('title', 'Real Time Dashboard');
+    $("head").append("<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>");
+  });
+
 });
 
 var dashboard_example = {};

@@ -67,7 +67,7 @@
           {
             "name": "htmlObject",
             "type": "HtmlObject",
-            "value": "${p:column1}"
+            "value": "${h:column1}"
           },
           {
             "name": "executeAtStart",
@@ -166,7 +166,7 @@
           {
             "name": "htmlObject",
             "type": "HtmlObject",
-            "value": "${p:column2}"
+            "value": "${h:column2}"
           },
           {
             "name": "executeAtStart",
@@ -1633,7 +1633,7 @@
       }
     ]
   },
-  "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/ExportButton/exportbutton.cdfde",
+  "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/ExportButton/exportbutton.cdfde",
   "layout": {
     "rows": [
       {

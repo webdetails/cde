@@ -1,0 +1,3025 @@
+{
+ "components": {
+  "rows": [
+   {
+    "id": "GENERIC",
+    "name": "Generic",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "type": "Label",
+      "value": "Generic"
+     }
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
+   },
+   {
+    "id": "70797993-8e1b-930c-9e40-a7f40e61e1e3",
+    "parent": "GENERIC",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "selected"
+     },
+     {
+      "name": "propertyValue",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "parameterViewRole",
+      "type": "parameterViewRoleCustom",
+      "value": "unused"
+     },
+     {
+      "name": "bookmarkable",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "public",
+      "type": "Boolean",
+      "value": "false"
+     }
+    ],
+    "type": "ComponentsParameter",
+    "typeDesc": "Simple parameter"
+   },
+   {
+    "id": "OTHERCOMPONENTS",
+    "name": "Others",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "type": "Label",
+      "value": "Others"
+     }
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
+   },
+   {
+    "id": "b87817f0-1be0-40d6-679f-1228d9b23b7a",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "[]"
+     },
+     {
+      "name": "parameters",
+      "type": "ValuesArray",
+      "value": "[]"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "templateQueryTerritory"
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:template}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": "function f(){\n templates.setSparklineOpts(this);\n templates.setBubbleOpts(this);\n templates.setBulletChartOpts(this);\n templates.setLinkOpts(this);\n templates.setCCCChartOpts(this);\n} "
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     },
+     {
+      "name": "modelHandler",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "template",
+      "type": "JavaScript",
+      "value": "function() {\n    return  '<div class=\"row card\">' +\n            '<% _.each(items, function(elem) { %>' +\n            '  <div class=\"col-xs-12 col-sm-6 col-md-4 col-lg-3 single clickable\" data-category=\"<%=elem[0]%>\"> '+\n            '    <div class=\"category\"> <b> <%= addin(elem[0], \"clippedText\", \"Sales\") %> </b> </div>'+\n            '    <div class=\"value\"> <%= formatter(elem[1], \"sales\") %> </div> '+\n            '    <div class=\"addin\"> <%= addin(elem[4], \"trendArrow\", \"Trends\") %> </div>'+\n            '    <div class=\"addin\"> <%= addin(elem[1], \"formatted\", \"Markets\") %> </div>'+\n            '    <div class=\"addin\"> <%= addin(elem[3], \"sparkline\", \"Sparkline\" ) %> </div>'+\n            '    <div class=\"addin\"> <%= addin(elem[6], \"sparkline\", \"Bullet\" ) %> </div>'+\n            '    <div class=\"addin\"> <%= addin(elem[9], \"hyperlink\", \"Hyperlink\") %> </div>'+\n            '    <div class=\"addin\"> <b>Best month of year:</b><%= addin(elem[8], \"localizedText\", \"Localized\") %> </div>'+\n            '    <div class=\"addin\"> <%= addin(elem[5], \"bubble\", \"Bubble\") %> </div>'+\n            '    <div class=\"addin\"> <%= addin(elem[6], \"cccBulletChart\", \"cccBullet\") %> </div>'+\n            '    <div class=\"addin\"> <%= addin(elem[10], \"cccChart\", \"cccChart\") %> </div>'+\n            '  </div>' +\n            '<% }); %>' +\n            '</div>';\n} "
+     },
+     {
+      "name": "templateType",
+      "type": "templateTypeCustom",
+      "value": "underscore"
+     },
+     {
+      "name": "events",
+      "type": "EditorValuesArray",
+      "value": "[[\"click , .single.clickable \",\"function(event) {\\n    var $elem = $(event.currentTarget);    \\n    var selected = $elem.data('category');\\n    $elem.toggleClass('selected');\\n    this.dashboard.fireChange('selected', selected);\\n    console.log(selected);\\n}\"]]"
+     },
+     {
+      "name": "formatters",
+      "type": "EditorValuesArray",
+      "value": "[[\"sales\",\"function(value) {\\n    return Utils.numberFormat(value, '$0.0A');\\n}\"]]"
+     },
+     {
+      "name": "rootElement",
+      "type": "String",
+      "value": "items"
+     },
+     {
+      "name": "extendableOptions",
+      "type": "JavaScript",
+      "value": ""
+     }
+    ],
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component"
+   },
+   {
+    "id": "99c10c48-213d-f997-9206-a73ef8d0f762",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template_cccChart"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "[]"
+     },
+     {
+      "name": "parameters",
+      "type": "ValuesArray",
+      "value": "[]"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "templateQueryTerritory"
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:template_cccChart}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": "function f(){\n    templates.setCCCChartOpts(this);\n} "
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     },
+     {
+      "name": "modelHandler",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "template",
+      "type": "JavaScript",
+      "value": "function() {\n    return  '<div class=\"row card\">' +\n            '<% _.each(items, function(elem) { %>' +\n            '  <div class=\"col-xs-12 col-sm-6 col-md-4 col-lg-3 single clickable\" data-category=\"<%=elem[0]%>\"> '+\n            '    <div class=\"category\"> <b> <%= addin(elem[0], \"clippedText\", \"Sales\") %> </b> </div>'+\n            '    <div class=\"value\"> <%= formatter(elem[1], \"sales\") %> </div> '+\n            '    <div class=\"addin\"> <%= addin(elem[10], \"cccChart\", \"cccChart\") %> </div>'+\n            '  </div>' +\n            '<% }); %>' +\n            '</div>';\n} "
+     },
+     {
+      "name": "templateType",
+      "type": "templateTypeCustom",
+      "value": "underscore"
+     },
+     {
+      "name": "events",
+      "type": "EditorValuesArray",
+      "value": "[[\"click , .single.clickable \",\"function(event) {\\n    var $elem = $(event.currentTarget);    \\n    var selected = $elem.data('category');\\n    $elem.toggleClass('selected');\\n    this.dashboard.fireChange('selected', selected);\\n    console.log(selected);\\n}\"]]"
+     },
+     {
+      "name": "formatters",
+      "type": "EditorValuesArray",
+      "value": "[[\"sales\",\"function(value) {\\n    return Utils.numberFormat(value, '$0.0A');\\n}\"]]"
+     },
+     {
+      "name": "rootElement",
+      "type": "String",
+      "value": "items"
+     },
+     {
+      "name": "extendableOptions",
+      "type": "JavaScript",
+      "value": ""
+     }
+    ],
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component"
+   },
+   {
+    "id": "b7a6585d-987c-8597-dad5-6a460a48382d",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template_bubble"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "[]"
+     },
+     {
+      "name": "parameters",
+      "type": "ValuesArray",
+      "value": "[]"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "templateQueryProduct"
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:template_bubble}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": "function f() {\n  templates.setBubbleOpts(this);\n} "
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     },
+     {
+      "name": "modelHandler",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "template",
+      "type": "JavaScript",
+      "value": "function() {\n    return  '<div class=\"row card\">' +\n            '<% _.each(items, function(elem) { %>' +\n            '  <div class=\"col-xs-12 col-sm-6 col-md-2 col-lg-2 single clickable\" data-category=\"<%=elem[0]%>\"> '+\n            '    <div class=\"category\"> <b> <%= addin(elem[0], \"clippedText\", \"Sales\") %> </b> </div>'+\n            '    <div class=\"value\"> <%= formatter(elem[1], \"sales\") %> </div> '+\n            '    <div class=\"addin\"> <%= addin(elem[5], \"bubble\", \"Bubble\") %> </div>'+\n            '  </div>' +\n            '<% }); %>' +\n            '</div>';\n} "
+     },
+     {
+      "name": "templateType",
+      "type": "templateTypeCustom",
+      "value": "underscore"
+     },
+     {
+      "name": "events",
+      "type": "EditorValuesArray",
+      "value": "[[\"click , .single.clickable \",\"function(event) {\\n    var $elem = $(event.currentTarget);    \\n    var selected = $elem.data('category');\\n    $elem.toggleClass('selected');\\n    this.dashboard.fireChange('selected', selected);\\n    console.log(selected);\\n}\"]]"
+     },
+     {
+      "name": "formatters",
+      "type": "EditorValuesArray",
+      "value": "[[\"sales\",\"function(value) {\\n    return Utils.numberFormat(value, '$0.0A');\\n}\"]]"
+     },
+     {
+      "name": "rootElement",
+      "type": "String",
+      "value": "items"
+     },
+     {
+      "name": "extendableOptions",
+      "type": "JavaScript",
+      "value": ""
+     }
+    ],
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component"
+   },
+   {
+    "id": "bb6c2d8e-9a94-f020-1846-d4240625fc43",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template_bulletChart"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "[]"
+     },
+     {
+      "name": "parameters",
+      "type": "ValuesArray",
+      "value": "[]"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "templateQueryTerritory"
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:template_bulletChart}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": "function f() {\n  templates.setBulletChartOpts(this);\n} "
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     },
+     {
+      "name": "modelHandler",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "template",
+      "type": "JavaScript",
+      "value": "function() {\n    return  '<div class=\"row card\">' +\n            '<% _.each(items, function(elem) { %>' +\n            '  <div class=\"col-xs-12 col-sm-6 col-md-4 col-lg-3 single clickable\" data-category=\"<%=elem[0]%>\"> '+\n            '    <div class=\"category\"> <b> <%= addin(elem[0], \"clippedText\", \"Sales\") %> </b> </div>'+\n            '    <div class=\"value\"> <%= formatter(elem[1], \"sales\") %> </div> '+\n            '    <div class=\"addin\"> <%= addin(elem[6], \"cccBulletChart\", \"Bullet\") %> </div>'+\n            '  </div>' +\n            '<% }); %>' +\n            '</div>';\n} "
+     },
+     {
+      "name": "templateType",
+      "type": "templateTypeCustom",
+      "value": "underscore"
+     },
+     {
+      "name": "events",
+      "type": "EditorValuesArray",
+      "value": "[[\"click , .single.clickable \",\"function(event) {\\n    var $elem = $(event.currentTarget);    \\n    var selected = $elem.data('category');\\n    $elem.toggleClass('selected');\\n    this.dashboard.fireChange('selected', selected);\\n    console.log(selected);\\n}\"]]"
+     },
+     {
+      "name": "formatters",
+      "type": "EditorValuesArray",
+      "value": "[[\"sales\",\"function(value) {\\n    return Utils.numberFormat(value, '$0.0A');\\n}\"]]"
+     },
+     {
+      "name": "rootElement",
+      "type": "String",
+      "value": "items"
+     },
+     {
+      "name": "extendableOptions",
+      "type": "JavaScript",
+      "value": ""
+     }
+    ],
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component"
+   },
+   {
+    "id": "43e089be-3650-5c45-9297-60441d8c14a4",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template_sparklines"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "[]"
+     },
+     {
+      "name": "parameters",
+      "type": "ValuesArray",
+      "value": "[]"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "templateQueryCountry"
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:template_sparklines}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": "function f() {\n  templates.setSparklineOpts(this, true);\n} "
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     },
+     {
+      "name": "modelHandler",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "template",
+      "type": "JavaScript",
+      "value": "function() {\n    return  '<div class=\"row card\">' +\n            '<% _.each(items, function(elem) { %>' +\n            '  <div class=\"col-xs-6 col-sm-3 col-md-2 col-lg-2 single clickable\" data-category=\"<%=elem[0]%>\"> '+\n            '    <div class=\"category\"> <b> <%= addin(elem[0], \"clippedText\", \"Sales\") %> </b> </div>'+\n            '    <div class=\"value\"> <%= formatter(elem[1], \"sales\") %> </div> '+\n            '    <div class=\"addin\"> <%= addin(elem[6], \"sparkline\", \"Sparkline\" ) %> </div>'+\n            '    <div class=\"addin\"> <b>Best month of year:</b><%= addin(elem[8], \"localizedText\", \"Localized\") %> </div>'+\n            '  </div>' +\n            '<% }); %>' +\n            '</div>';\n} "
+     },
+     {
+      "name": "templateType",
+      "type": "templateTypeCustom",
+      "value": "underscore"
+     },
+     {
+      "name": "events",
+      "type": "EditorValuesArray",
+      "value": "[[\"click , .single.clickable \",\"function(event) {\\n    var $elem = $(event.currentTarget);    \\n    var selected = $elem.data('category');\\n    $elem.toggleClass('selected');\\n    this.dashboard.fireChange('selected', selected);\\n    console.log(selected);\\n}\"]]"
+     },
+     {
+      "name": "formatters",
+      "type": "EditorValuesArray",
+      "value": "[[\"sales\",\"function(value) {\\n    return Utils.numberFormat(value, '$0.0A');\\n}\"]]"
+     },
+     {
+      "name": "rootElement",
+      "type": "String",
+      "value": "items"
+     },
+     {
+      "name": "extendableOptions",
+      "type": "JavaScript",
+      "value": ""
+     }
+    ],
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component"
+   },
+   {
+    "id": "f49b8146-f35f-b062-d910-d566d18b466f",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template_bullet"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "[]"
+     },
+     {
+      "name": "parameters",
+      "type": "ValuesArray",
+      "value": "[]"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "templateQueryProdLine"
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:template_bullet}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": "function f() {\n  templates.setSparklineOpts(this);\n} "
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     },
+     {
+      "name": "modelHandler",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "template",
+      "type": "JavaScript",
+      "value": "function() {\n    return  '<div class=\"row card\">' +\n            '<% _.each(items, function(elem) { %>' +\n            '  <div class=\"col-xs-4 col-sm-3 col-md-2 col-lg-2 single clickable\" data-category=\"<%=elem[0]%>\"> '+\n            '    <div class=\"category\"> <b> <%= addin(elem[0], \"clippedText\", \"Sales\") %> </b> </div>'+\n            '    <div class=\"value\"> <%= formatter(elem[1], \"sales\") %> </div> '+\n            '    <div class=\"addin\"> <%= addin(elem[3], \"sparkline\", \"Sparkline\" ) %> </div>'+\n            '    <div class=\"addin\"> <b>Best month of year:</b><%= addin(elem[8], \"localizedText\", \"Localized\") %> </div>'+\n            '  </div>' +\n            '<% }); %>' +\n            '</div>';\n} "
+     },
+     {
+      "name": "templateType",
+      "type": "templateTypeCustom",
+      "value": "underscore"
+     },
+     {
+      "name": "events",
+      "type": "EditorValuesArray",
+      "value": "[[\"click , .single.clickable \",\"function(event) {\\n    var $elem = $(event.currentTarget);    \\n    var selected = $elem.data('category');\\n    $elem.toggleClass('selected');\\n    this.dashboard.fireChange('selected', selected);\\n    console.log(selected);\\n}\"]]"
+     },
+     {
+      "name": "formatters",
+      "type": "EditorValuesArray",
+      "value": "[[\"sales\",\"function(value) {\\n    return Utils.numberFormat(value, '$0.0A');\\n}\"]]"
+     },
+     {
+      "name": "rootElement",
+      "type": "String",
+      "value": "items"
+     },
+     {
+      "name": "extendableOptions",
+      "type": "JavaScript",
+      "value": ""
+     }
+    ],
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component"
+   },
+   {
+    "id": "65894c86-a183-4d57-31d1-a315debabcc9",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template_trendArrow"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "[]"
+     },
+     {
+      "name": "parameters",
+      "type": "ValuesArray",
+      "value": "[]"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "templateQueryProduct"
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:template_trendArrow}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     },
+     {
+      "name": "modelHandler",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "template",
+      "type": "JavaScript",
+      "value": "function() {\n    return  '<div class=\"row card\">' +\n            '<% _.each(items, function(elem) { %>' +\n            '  <div class=\"col-xs-3 col-sm-2 col-md-2 col-lg-2 single clickable\" data-category=\"<%=elem[0]%>\"> '+\n            '    <div class=\"category\"> <b> <%= addin(elem[0], \"clippedText\", \"Sales\") %> </b> </div>'+\n            '    <div class=\"value\"> <%= formatter(elem[1], \"sales\") %> </div> '+\n            '    <div class=\"addin\"> <%= addin(elem[4], \"trendArrow\", \"Trends\") %> </div>'+\n            '  </div>' +\n            '<% }); %>' +\n            '</div>';\n} "
+     },
+     {
+      "name": "templateType",
+      "type": "templateTypeCustom",
+      "value": "underscore"
+     },
+     {
+      "name": "events",
+      "type": "EditorValuesArray",
+      "value": "[[\"click , .single.clickable \",\"function(event) {\\n    var $elem = $(event.currentTarget);    \\n    var selected = $elem.data('category');\\n    $elem.toggleClass('selected');\\n    this.dashboard.fireChange('selected', selected);\\n    console.log(selected);\\n}\"]]"
+     },
+     {
+      "name": "formatters",
+      "type": "EditorValuesArray",
+      "value": "[[\"sales\",\"function(value) {\\n    return Utils.numberFormat(value, '$0.0A');\\n}\"]]"
+     },
+     {
+      "name": "rootElement",
+      "type": "String",
+      "value": "items"
+     },
+     {
+      "name": "extendableOptions",
+      "type": "JavaScript",
+      "value": ""
+     }
+    ],
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component"
+   }
+  ]
+ },
+ "datasources": {
+  "rows": [
+   {
+    "id": "MDX",
+    "name": "MDX Queries",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "type": "Label",
+      "value": "MDX Queries"
+     }
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
+   },
+   {
+    "id": "001ba9bd-9d3d-6ce8-66f2-85f2d64e8e5d",
+    "meta": "CDA",
+    "meta_conntype": "mondrian.jndi",
+    "meta_datype": "mdx",
+    "parent": "MDX",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "templateQueryTerritory"
+     },
+     {
+      "name": "access",
+      "type": "Access",
+      "value": "public"
+     },
+     {
+      "name": "jndi",
+      "type": "Jndi",
+      "value": "SampleData"
+     },
+     {
+      "name": "catalog",
+      "type": "MondrianCatalog",
+      "value": "mondrian:/SteelWheels"
+     },
+     {
+      "name": "query",
+      "type": "CurrentMdxQuery",
+      "value": "WITH \n  MEMBER [Measures].[Year] AS \"2004\"\n  SET [ROWS] AS FILTER({[Markets].[Territory].Members}, NOT ISEMPTY([Measures].[Sales]))\n  MEMBER [Measures].[Sparkline] AS GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING), ',')\n  MEMBER [Measures].[Trends] AS ([Time].[2004], [Measures].[Sales])-([Time].[2003], [Measures].[Sales])\n  MEMBER [Measures].[Bubble] AS ([Time].[2004], [Measures].[Quantity])+0\n  MEMBER [Measures].[Bullet] AS CAST(([Time].[2003], [Measures].[Quantity])+0 AS STRING) || \",\" || CAST(([Time].[2004], [Measures].[Quantity])+0 AS STRING) || \",\" || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/3 AS STRING) || \",\" || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/2 AS STRING) || \", \" || CAST(([Time].[2004], ([Measures].[Quantity]))+1000 AS STRING)   \n  MEMBER [Measures].[Formatted] AS MAX(DESCENDANTS([Time].[2004], [Time].[Months]), [Measures].[Sales])\n  MEMBER [Measures].[Localized] AS GENERATE(TOPCOUNT(DESCENDANTS([Time].[2004], [Time].[Months]), 1, [Measures].[Sales]), [Time].CURRENTMEMBER.NAME)\n  MEMBER [Measures].[Hyperlink] AS \"[\"||\"Google it ...\"||\"][\"||\"https://www.google.pt/search?q=\"||[Product].CURRENTMEMBER.NAME||\"]\"\n  MEMBER [Measures].[cccChart] AS \"[\" || GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), \"[\"\"\"||[Time].CURRENTMEMBER.NAME ||\"\"\",\"\"\"|| CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING)||\"\"\"]\", ',') || \"]\"\nSELECT\n  NON EMPTY {\n    [Measures].[Sales], \n    [Measures].[Year], \n    [Measures].[Sparkline],  \n    [Measures].[Trends], \n    [Measures].[Bubble], \n    [Measures].[Bullet], \n    [Measures].[Formatted], \n    [Measures].[Localized],\n    [Measures].[Hyperlink],\n    [Measures].[Months],\n    [Measures].[cccChart] } ON COLUMNS,\n  NON EMPTY [ROWS] ON ROWS\nFROM [SteelWheelsSales]"
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
+      "name": "bandedMode",
+      "type": "BandedMode",
+      "value": "compact"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "type": "CdaCalculatedColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "cdacolumns",
+      "type": "CdaColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "output",
+      "type": "IndexArray",
+      "value": "[]"
+     },
+     {
+      "name": "outputMode",
+      "type": "OutputMode",
+      "value": "include"
+     },
+     {
+      "name": "cacheKeys",
+      "type": "CacheKeysValues",
+      "value": "[]"
+     },
+     {
+      "name": "cacheDuration",
+      "type": "Integer",
+      "value": 3600
+     },
+     {
+      "name": "cache",
+      "type": "Boolean",
+      "value": "true"
+     }
+    ],
+    "type": "Componentsmdx_mondrianJndi",
+    "typeDesc": "mdx over mondrianJndi"
+   },
+   {
+    "id": "c8ebb67a-fbb2-04af-2271-b3d8604986d8",
+    "meta": "CDA",
+    "meta_conntype": "mondrian.jndi",
+    "meta_datype": "mdx",
+    "parent": "MDX",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "templateQueryCountry"
+     },
+     {
+      "name": "access",
+      "type": "Access",
+      "value": "public"
+     },
+     {
+      "name": "jndi",
+      "type": "Jndi",
+      "value": "SampleData"
+     },
+     {
+      "name": "catalog",
+      "type": "MondrianCatalog",
+      "value": "mondrian:/SteelWheels"
+     },
+     {
+      "name": "query",
+      "type": "CurrentMdxQuery",
+      "value": "WITH \n  MEMBER [Measures].[Year] AS \"2004\"\n  SET [ROWS] AS FILTER({[Markets].[Country].Members}, NOT ISEMPTY([Measures].[Sales]))\n  MEMBER [Measures].[Sparkline] AS GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING), ',')\n  MEMBER [Measures].[Trends] AS ([Time].[2004], [Measures].[Sales])-([Time].[2003], [Measures].[Sales])\n  MEMBER [Measures].[Bubble] AS ([Time].[2004], [Measures].[Quantity])+0\n  MEMBER [Measures].[Bullet] AS CAST(([Time].[2003], [Measures].[Quantity])+0 AS STRING) || \",\" || CAST(([Time].[2004], [Measures].[Quantity])+0 AS STRING) || \",\" || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/3 AS STRING) || \",\" || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/2 AS STRING) || \", \" || CAST(([Time].[2004], ([Measures].[Quantity]))+1000 AS STRING)   \n  MEMBER [Measures].[Formatted] AS MAX(DESCENDANTS([Time].[2004], [Time].[Months]), [Measures].[Sales])\n  MEMBER [Measures].[Localized] AS GENERATE(TOPCOUNT(DESCENDANTS([Time].[2004], [Time].[Months]), 1, [Measures].[Sales]), [Time].CURRENTMEMBER.NAME)\n  MEMBER [Measures].[Hyperlink] AS \"[\"||\"Google it ...\"||\"][\"||\"https://www.google.pt/search?q=\"||[Product].CURRENTMEMBER.NAME||\"]\"\n  MEMBER [Measures].[cccChart] AS \"[\" || GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), \"[\"\"\"||[Time].CURRENTMEMBER.NAME ||\"\"\",\"\"\"|| CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING)||\"\"\"]\", ',') || \"]\"\nSELECT\n  NON EMPTY {\n    [Measures].[Sales], \n    [Measures].[Year], \n    [Measures].[Sparkline],  \n    [Measures].[Trends], \n    [Measures].[Bubble], \n    [Measures].[Bullet], \n    [Measures].[Formatted], \n    [Measures].[Localized],\n    [Measures].[Hyperlink],\n    [Measures].[Months],\n    [Measures].[cccChart] } ON COLUMNS,\n  NON EMPTY [ROWS] ON ROWS\nFROM [SteelWheelsSales]"
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
+      "name": "bandedMode",
+      "type": "BandedMode",
+      "value": "compact"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "type": "CdaCalculatedColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "cdacolumns",
+      "type": "CdaColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "output",
+      "type": "IndexArray",
+      "value": "[]"
+     },
+     {
+      "name": "outputMode",
+      "type": "OutputMode",
+      "value": "include"
+     },
+     {
+      "name": "cacheKeys",
+      "type": "CacheKeysValues",
+      "value": "[]"
+     },
+     {
+      "name": "cacheDuration",
+      "type": "Integer",
+      "value": 3600
+     },
+     {
+      "name": "cache",
+      "type": "Boolean",
+      "value": "true"
+     }
+    ],
+    "type": "Componentsmdx_mondrianJndi",
+    "typeDesc": "mdx over mondrianJndi"
+   },
+   {
+    "id": "e0a8a915-a2d4-1d9c-8dd4-f13d7d3aed4a",
+    "meta": "CDA",
+    "meta_conntype": "mondrian.jndi",
+    "meta_datype": "mdx",
+    "parent": "MDX",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "templateQueryProdLine"
+     },
+     {
+      "name": "access",
+      "type": "Access",
+      "value": "public"
+     },
+     {
+      "name": "jndi",
+      "type": "Jndi",
+      "value": "SampleData"
+     },
+     {
+      "name": "catalog",
+      "type": "MondrianCatalog",
+      "value": "mondrian:/SteelWheels"
+     },
+     {
+      "name": "query",
+      "type": "CurrentMdxQuery",
+      "value": "WITH \n  MEMBER [Measures].[Year] AS \"2004\"\n  SET [ROWS] AS FILTER({[Product].[Line].Members}, NOT ISEMPTY([Measures].[Sales]))\n  MEMBER [Measures].[Sparkline] AS GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING), ',')\n  MEMBER [Measures].[Trends] AS ([Time].[2004], [Measures].[Sales])-([Time].[2003], [Measures].[Sales])\n  MEMBER [Measures].[Bubble] AS ([Time].[2004], [Measures].[Quantity])+0\n  MEMBER [Measures].[Bullet] AS CAST(([Time].[2003], [Measures].[Quantity])+0 AS STRING) || \",\" || CAST(([Time].[2004], [Measures].[Quantity])+0 AS STRING) || \",\" || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/3 AS STRING) || \",\" || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/2 AS STRING) || \", \" || CAST(([Time].[2004], ([Measures].[Quantity]))+1000 AS STRING)   \n  MEMBER [Measures].[Formatted] AS MAX(DESCENDANTS([Time].[2004], [Time].[Months]), [Measures].[Sales])\n  MEMBER [Measures].[Localized] AS GENERATE(TOPCOUNT(DESCENDANTS([Time].[2004], [Time].[Months]), 1, [Measures].[Sales]), [Time].CURRENTMEMBER.NAME)\n  MEMBER [Measures].[Hyperlink] AS \"[\"||\"Google it ...\"||\"][\"||\"https://www.google.pt/search?q=\"||[Product].CURRENTMEMBER.NAME||\"]\"\n  MEMBER [Measures].[cccChart] AS \"[\" || GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), \"[\"\"\"||[Time].CURRENTMEMBER.NAME ||\"\"\",\"\"\"|| CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING)||\"\"\"]\", ',') || \"]\"\nSELECT\n  NON EMPTY {\n    [Measures].[Sales], \n    [Measures].[Year], \n    [Measures].[Sparkline],  \n    [Measures].[Trends], \n    [Measures].[Bubble], \n    [Measures].[Bullet], \n    [Measures].[Formatted], \n    [Measures].[Localized],\n    [Measures].[Hyperlink],\n    [Measures].[Months],\n    [Measures].[cccChart] } ON COLUMNS,\n  NON EMPTY [ROWS] ON ROWS\nFROM [SteelWheelsSales]"
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
+      "name": "bandedMode",
+      "type": "BandedMode",
+      "value": "compact"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "type": "CdaCalculatedColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "cdacolumns",
+      "type": "CdaColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "output",
+      "type": "IndexArray",
+      "value": "[]"
+     },
+     {
+      "name": "outputMode",
+      "type": "OutputMode",
+      "value": "include"
+     },
+     {
+      "name": "cacheKeys",
+      "type": "CacheKeysValues",
+      "value": "[]"
+     },
+     {
+      "name": "cacheDuration",
+      "type": "Integer",
+      "value": 3600
+     },
+     {
+      "name": "cache",
+      "type": "Boolean",
+      "value": "true"
+     }
+    ],
+    "type": "Componentsmdx_mondrianJndi",
+    "typeDesc": "mdx over mondrianJndi"
+   },
+   {
+    "id": "7f0fd6ad-af4a-c8db-6053-4cecafe81ad9",
+    "meta": "CDA",
+    "meta_conntype": "mondrian.jndi",
+    "meta_datype": "mdx",
+    "parent": "MDX",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "templateQueryProduct"
+     },
+     {
+      "name": "access",
+      "type": "Access",
+      "value": "public"
+     },
+     {
+      "name": "jndi",
+      "type": "Jndi",
+      "value": "SampleData"
+     },
+     {
+      "name": "catalog",
+      "type": "MondrianCatalog",
+      "value": "mondrian:/SteelWheels"
+     },
+     {
+      "name": "query",
+      "type": "CurrentMdxQuery",
+      "value": "WITH \n  MEMBER [Measures].[Year] AS \"2004\"\n  SET [ROWS] AS FILTER({[Product].[Product].Members}, NOT ISEMPTY([Measures].[Sales]))\n  MEMBER [Measures].[Sparkline] AS GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING), ',')\n  MEMBER [Measures].[Trends] AS ([Time].[2004], [Measures].[Sales])-([Time].[2003], [Measures].[Sales])\n  MEMBER [Measures].[Bubble] AS ([Time].[2004], [Measures].[Quantity])+0\n  MEMBER [Measures].[Bullet] AS CAST(([Time].[2003], [Measures].[Quantity])+0 AS STRING) || \",\" || CAST(([Time].[2004], [Measures].[Quantity])+0 AS STRING) || \",\" || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/3 AS STRING) || \",\" || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/2 AS STRING) || \", \" || CAST(([Time].[2004], ([Measures].[Quantity]))+1000 AS STRING)   \n  MEMBER [Measures].[Formatted] AS MAX(DESCENDANTS([Time].[2004], [Time].[Months]), [Measures].[Sales])\n  MEMBER [Measures].[Localized] AS GENERATE(TOPCOUNT(DESCENDANTS([Time].[2004], [Time].[Months]), 1, [Measures].[Sales]), [Time].CURRENTMEMBER.NAME)\n  MEMBER [Measures].[Hyperlink] AS \"[\"||\"Google it ...\"||\"][\"||\"https://www.google.pt/search?q=\"||[Product].CURRENTMEMBER.NAME||\"]\"\n  MEMBER [Measures].[cccChart] AS \"[\" || GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), \"[\"\"\"||[Time].CURRENTMEMBER.NAME ||\"\"\",\"\"\"|| CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING)||\"\"\"]\", ',') || \"]\"\nSELECT\n  NON EMPTY {\n    [Measures].[Sales], \n    [Measures].[Year], \n    [Measures].[Sparkline],  \n    [Measures].[Trends], \n    [Measures].[Bubble], \n    [Measures].[Bullet], \n    [Measures].[Formatted], \n    [Measures].[Localized],\n    [Measures].[Hyperlink],\n    [Measures].[Months],\n    [Measures].[cccChart] } ON COLUMNS,\n  NON EMPTY [ROWS] ON ROWS\nFROM [SteelWheelsSales]"
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
+      "name": "bandedMode",
+      "type": "BandedMode",
+      "value": "compact"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "type": "CdaCalculatedColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "cdacolumns",
+      "type": "CdaColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "output",
+      "type": "IndexArray",
+      "value": "[]"
+     },
+     {
+      "name": "outputMode",
+      "type": "OutputMode",
+      "value": "include"
+     },
+     {
+      "name": "cacheKeys",
+      "type": "CacheKeysValues",
+      "value": "[]"
+     },
+     {
+      "name": "cacheDuration",
+      "type": "Integer",
+      "value": 3600
+     },
+     {
+      "name": "cache",
+      "type": "Boolean",
+      "value": "true"
+     }
+    ],
+    "type": "Componentsmdx_mondrianJndi",
+    "typeDesc": "mdx over mondrianJndi"
+   }
+  ]
+ },
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/AddIns/TemplateTypes/TemplateAddins.cdfde",
+ "layout": {
+  "rows": [
+   {
+    "id": "aef69c02-c4fe-440f-8ea4-3531684ca74a",
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "forceFluid",
+      "type": "Id"
+     },
+     {
+      "name": "resourceCode",
+      "value": "$(document).ready(function() {\n\nvar containers = $(\".container\");\n\n// We want to force .container-fluid on both the header, and the content containers\n// due to the way jQuery traverses the DOM, we know that positions 0 and 1\n// will be the header and the content container respectively\nif(containers.length > 1) {\n  $(containers[0]).removeClass(\"container\").addClass(\"container-fluid\");\n  $(containers[1]).removeClass(\"container\").addClass(\"container-fluid\");\n}\n}); ",
+      "type": "Resource"
+     },
+     {
+      "name": "resourceType",
+      "value": "Javascript",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "4993ed77-a75f-2626-f660-27be4b6cfb57",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "templates"
+     },
+     {
+      "name": "resourceFile",
+      "type": "ResourceFile",
+      "value": "${solution:templates.js}"
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Javascript"
+     }
+    ],
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "5ff56c8f-d9d8-c8ad-c444-246daad5af8b",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "templateCSS"
+     },
+     {
+      "name": "resourceFile",
+      "type": "ResourceFile",
+      "value": "${solution:../../../template.css}"
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Css"
+     }
+    ],
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "e560fcb1-3928-c4b5-137f-50b0d0fd10e8",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "cdeReference"
+     },
+     {
+      "name": "resourceFile",
+      "type": "ResourceFile",
+      "value": "${solution:../../../cdeReference.css}"
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Css"
+     }
+    ],
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "0d3da0bb-35fe-d35c-0862-a042eaaa7d22",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "sampleCss"
+     },
+     {
+      "name": "resourceCode",
+      "type": "Resource",
+      "value": ".sectionTitle {\n    padding: 10px;\n    border: 1px solid #4D658D;\n    background: #4D658D;\n    color: #e5e5e5;\n    font-weight: bold;\n    text-transform: uppercase;\n    border-radius: 4px;\n    margin-top: 40px;\n    margin-bottom: 10px;\n}\n\n.sectionTitle .description {\n    text-transform: none;\n    font-weight: normal;\n    color: white;\n} \n "
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Css"
+     }
+    ],
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "b7749b9b-7112-ac8b-44d5-00fef41458dd",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "CSS"
+     },
+     {
+      "name": "resourceCode",
+      "type": "Resource",
+      "value": ".single {\n    text-align: center;\n    border: 1px solid #eee;\n    cursor: pointer;\n    padding: 10px 0px;\n} \n\n.single:hover, .single.selected:hover {\n    border: 1px solid #49AEC0;\n    background-color: rgba(240, 240, 240, 0.8);\n}\n\n.single.selected {\n    background-color: rgba(240, 240, 240, 0.4);\n}\n\n.single .value {\n    font-size: 18px;\n    color: #888;\n    font-weight: 300;\n    margin: 10px;\n}\n\n\n.sparklineContainer {\n    margin: 10px 0px;\n}\n\n.clippedTextContainer {\n    margin: 0px 20px;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    overflow: hidden;\n    background-color: rgba(220,220,220,0.8);\n    font-size: 26px;\n    color: #fff;\n}\n\n.addin .bubble {\n    display: inline-block;\n    text-align: center;\n    vertical-align: middle;\n    border: 1px solid #eee;\n    border-radius: 100%;\n}\n\n\n.totalSales .sales {\n    text-align: right;\n}\n\n\n.trendArrowContainer .arrow {\n    font-size: 30px;\n}\n\n.hyperlink {\n    margin: 5px 0px;\n}\n\n.template {\n    margin: 20px 0px;\n}\n\n.clippedText {\n    margin: 10px 0px 5px 0px;\n}\n\n\n\n.addin .clippedText {\n    width: 50%;\n    margin-right: 25%;\n    margin-left: 25%;\n} \n\n.addin .bubble {\n    display: inline-block;\n    text-align: center;\n    vertical-align: middle;\n}\n\n.bubbleContainer {\n    display: table-cell;\n    vertical-align: middle;\n    text-align: center;\n} "
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Css"
+     }
+    ],
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "aa439bd0-0237-2880-679c-382c47697492",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "Spacer"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": "20"
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "5800067a-3ca2-5b64-ada6-1a785f56823c",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "Title"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "WDheader"
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "b68e8027-ecfb-991b-6ccc-b1c7eb70fb08",
+    "parent": "5800067a-3ca2-5b64-ada6-1a785f56823c",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "53673db1-ff00-a2f8-1cb7-8d78a176cb9f",
+    "parent": "b68e8027-ecfb-991b-6ccc-b1c7eb70fb08",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "Template Addins samples "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": "18"
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "fd0d6cc0-801e-5ecf-7a31-012330a8d880",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "DescriptionBody"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "1110bb42-870d-c91a-aa53-18fd1992ef9c",
+    "parent": "fd0d6cc0-801e-5ecf-7a31-012330a8d880",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "0a506931-9be4-70e8-1e93-743ad555087f",
+    "parent": "1110bb42-870d-c91a-aa53-18fd1992ef9c",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<p> Examples of using the template type addins </p>\n "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "56bcbf91-0e2a-c6c0-ea65-8c13a2a66ddd",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "parent": "56bcbf91-0e2a-c6c0-ea65-8c13a2a66ddd",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "714b47b4-2683-7204-2050-e1befc87aa1c",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "0ccb12cd-259b-8fc6-f56c-23f5b4cb3b1e",
+    "parent": "714b47b4-2683-7204-2050-e1befc87aa1c",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "d7929eac-7136-94db-f73f-a005642bf880",
+    "parent": "0ccb12cd-259b-8fc6-f56c-23f5b4cb3b1e",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "allInOne"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>All in One:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "95df98db-b955-0a93-f027-ddaafd1ded71",
+    "parent": "714b47b4-2683-7204-2050-e1befc87aa1c",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template"
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "template"
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "09fecdfd-b375-52f1-baed-36a7592f3b3b",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "6ee3d985-f3a7-9799-3cc6-6ac9e91648d4",
+    "parent": "09fecdfd-b375-52f1-baed-36a7592f3b3b",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "8338c619-18d7-ace2-1bf1-171e2a94c9f4",
+    "parent": "6ee3d985-f3a7-9799-3cc6-6ac9e91648d4",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "cccChart"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>CCC Chart:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "92906654-186a-95b3-4ba1-ae5d6ec46030",
+    "parent": "09fecdfd-b375-52f1-baed-36a7592f3b3b",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template_cccChart"
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "template cccChart"
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "fea5c393-8138-0bde-f0f1-70d1e2178eeb",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "60e281fa-5013-bdec-396f-3bf2fdc912db",
+    "parent": "fea5c393-8138-0bde-f0f1-70d1e2178eeb",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "41ece098-2372-a4c6-fad4-ec6c6369ae29",
+    "parent": "60e281fa-5013-bdec-396f-3bf2fdc912db",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "bulletChart"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>Bullet Chart:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "47c753a8-f5ef-1db5-856f-b7deda19bf53",
+    "parent": "fea5c393-8138-0bde-f0f1-70d1e2178eeb",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template_bulletChart"
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "template bulletChart"
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "48ad8c75-6c44-43dc-6e51-9f79ba570741",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "9ac17afe-77b7-9c78-2c7f-039ece22df9a",
+    "parent": "48ad8c75-6c44-43dc-6e51-9f79ba570741",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "68e1d432-f656-9754-41dd-e498db6e9c27",
+    "parent": "9ac17afe-77b7-9c78-2c7f-039ece22df9a",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "bubble"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>Bubble:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "5d85c88a-0106-4bc0-0cc8-42c71f060af3",
+    "parent": "48ad8c75-6c44-43dc-6e51-9f79ba570741",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template_bubble"
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": " bubble"
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "fcd51255-6415-c411-00d6-15e506a1e534",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "9c28135a-17a2-78ef-5732-44c168eb69e4",
+    "parent": "fcd51255-6415-c411-00d6-15e506a1e534",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "f4d58ea7-391d-9fb5-2d7c-9f38c693b0f7",
+    "parent": "9c28135a-17a2-78ef-5732-44c168eb69e4",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "bullet"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>Bullet:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "e903247d-1bd1-23d8-7e77-eafe8fee2cea",
+    "parent": "fcd51255-6415-c411-00d6-15e506a1e534",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template_bullet"
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "template bullet"
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "08bed5a0-8d27-8b87-04d7-04c5ebfb0929",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "08c7383e-210e-177d-4ece-36fa111a844c",
+    "parent": "08bed5a0-8d27-8b87-04d7-04c5ebfb0929",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "a55c59ed-9f54-86d5-595b-6c3242112712",
+    "parent": "08c7383e-210e-177d-4ece-36fa111a844c",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "sparklines"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>Sparklines:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "eb18d347-732f-9252-6aec-a1a9ca082be9",
+    "parent": "08bed5a0-8d27-8b87-04d7-04c5ebfb0929",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template_sparklines"
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "template sparkline"
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "b319e7b6-8579-afbd-55ee-309de91a528b",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "224e25c8-f560-b9a4-dff9-8610387edf06",
+    "parent": "b319e7b6-8579-afbd-55ee-309de91a528b",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "881eee3f-be84-3643-d734-bf4548da1e4b",
+    "parent": "224e25c8-f560-b9a4-dff9-8610387edf06",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "trendArrow"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>Trend Arrow:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "8c14ca89-a367-97fa-d660-870f5d6cd190",
+    "parent": "b319e7b6-8579-afbd-55ee-309de91a528b",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template_trendArrow"
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "template trendArrow"
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   }
+  ],
+  "title": "CDF - Sample structure"
+ }
+}

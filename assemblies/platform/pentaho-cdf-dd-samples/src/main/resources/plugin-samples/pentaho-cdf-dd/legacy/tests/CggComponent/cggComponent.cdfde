@@ -1,0 +1,4223 @@
+{
+  "components": {
+    "rows": [
+      {
+        "id": "GENERIC",
+        "name": "Generic",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "Group",
+            "type": "Label",
+            "value": "Generic"
+          }
+        ],
+        "type": "Label",
+        "typeDesc": "<i>Group</i>"
+      },
+      {
+        "id": "ed9f3acd-64ee-5093-68d7-70eee969af45",
+        "parent": "GENERIC",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "productLine"
+          },
+          {
+            "name": "propertyValue",
+            "type": "String",
+            "value": "Planes"
+          },
+          {
+            "name": "parameterViewRole",
+            "type": "parameterViewRoleCustom",
+            "value": "unused"
+          },
+          {
+            "name": "bookmarkable",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "public",
+            "value": "false",
+            "type": "Boolean"
+          }
+        ],
+        "type": "ComponentsParameter",
+        "typeDesc": "Simple parameter"
+      },
+      {
+        "id": "e0719878-4c0c-4f0f-32e3-530e687ea0e6",
+        "parent": "GENERIC",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "territory"
+          },
+          {
+            "name": "propertyValue",
+            "type": "String",
+            "value": "APAC"
+          },
+          {
+            "name": "parameterViewRole",
+            "type": "parameterViewRoleCustom",
+            "value": "unused"
+          },
+          {
+            "name": "bookmarkable",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "public",
+            "value": "false",
+            "type": "Boolean"
+          }
+        ],
+        "type": "ComponentsParameter",
+        "typeDesc": "Simple parameter"
+      },
+      {
+        "id": "CHARTS",
+        "name": "Charts",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "Group",
+            "type": "Label",
+            "value": "Charts"
+          }
+        ],
+        "type": "Label",
+        "typeDesc": "<i>Group</i>"
+      },
+      {
+        "id": "2a1644dd-6e79-7e0c-3559-08defcfe50b6",
+        "meta_cdwSupport": "false",
+        "parent": "CHARTS",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "cgg2"
+          },
+          {
+            "name": "listeners",
+            "type": "Listeners",
+            "value": "[]"
+          },
+          {
+            "name": "parameters",
+            "type": "ValuesArray",
+            "value": "[[\"territory\",\"territory\"],[\"productLine\",\"productLine\"]]"
+          },
+          {
+            "name": "resourceFile",
+            "type": "CggPath",
+            "value": "public/plugin-samples/pentaho-cdf-dd/tests/CggComponent/cggComponent_bar2.js"
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": "300"
+          },
+          {
+            "name": "priority",
+            "type": "Integer",
+            "value": 5
+          },
+          {
+            "name": "width",
+            "type": "Integer",
+            "value": "300"
+          },
+          {
+            "name": "htmlObject",
+            "type": "HtmlObject",
+            "value": "column2"
+          },
+          {
+            "name": "executeAtStart",
+            "type": "Boolean",
+            "value": "true"
+          },
+          {
+            "name": "preExecution",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "postExecution",
+            "type": "JavaScript",
+            "value": ""
+          }
+        ],
+        "type": "Componentscgg",
+        "typeDesc": "Container for CGG Grahpics"
+      },
+      {
+        "id": "f89180cc-a69a-fa43-96d6-c6ddcecbdf5d",
+        "meta_cdwRender": "true",
+        "meta_cdwSupport": "true",
+        "parent": "CHARTS",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "bar2"
+          },
+          {
+            "name": "title",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "listeners",
+            "type": "Listeners",
+            "value": "[]"
+          },
+          {
+            "name": "parameters",
+            "type": "ValuesArray",
+            "value": "[]"
+          },
+          {
+            "name": "dataSource",
+            "type": "Datasource",
+            "value": "sqlQuery"
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": "300"
+          },
+          {
+            "name": "priority",
+            "type": "Integer",
+            "value": 5
+          },
+          {
+            "name": "refreshPeriod",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "width",
+            "type": "Integer",
+            "value": "300"
+          },
+          {
+            "name": "colors",
+            "type": "Array",
+            "value": "[]"
+          },
+          {
+            "name": "htmlObject",
+            "type": "HtmlObject",
+            "value": ""
+          },
+          {
+            "name": "executeAtStart",
+            "type": "Boolean",
+            "value": "true"
+          },
+          {
+            "name": "preExecution",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "postExecution",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "postFetch",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "preChange",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "postChange",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "extensionPoints",
+            "type": "EditorValuesArray",
+            "value": "[]"
+          },
+          {
+            "name": "tooltip",
+            "type": "Html",
+            "value": ""
+          },
+          {
+            "name": "animate",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "barOrthoSizeMin",
+            "type": "Float",
+            "value": 1.5
+          },
+          {
+            "name": "barSizeMax",
+            "type": "Float",
+            "value": 2000
+          },
+          {
+            "name": "barSizeRatio",
+            "type": "Float",
+            "value": 0.9
+          },
+          {
+            "name": "barStackedMargin",
+            "type": "Float",
+            "value": 0
+          },
+          {
+            "name": "baseAxisBandSize",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisBandSizeMax",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisBandSizeMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisBandSpacing",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisBandSpacingMax",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisBandSpacingMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisClickAction",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "baseAxisDoubleClickAction",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "baseAxisFont",
+            "value": "",
+            "type": "String"
+          },
+          {
+            "name": "baseAxisGrid",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "baseAxisLabelDesiredAngles",
+            "value": "[]",
+            "type": "Array"
+          },
+          {
+            "name": "baseAxisLabelRotationDirection",
+            "value": "",
+            "type": "cccBaseAxisLabelRotationDirectionCustom"
+          },
+          {
+            "name": "baseAxisLabelSpacingMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisOffset",
+            "type": "Float",
+            "value": 0
+          },
+          {
+            "name": "baseAxisOverlappedLabelsMode",
+            "type": "cccBaseAxisOverlappedLabelsModeCustom",
+            "value": "hide"
+          },
+          {
+            "name": "baseAxisPosition",
+            "type": "cccBaseAxisPositionCustom",
+            "value": ""
+          },
+          {
+            "name": "baseAxisSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "baseAxisSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "baseAxisTickFormatter",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "baseAxisTicks",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "baseAxisTitle",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "baseAxisTitleAlign",
+            "type": "cccBaseAxisTitleAlignCustom",
+            "value": ""
+          },
+          {
+            "name": "baseAxisTitleFont",
+            "type": "String",
+            "value": "12px sans-serif"
+          },
+          {
+            "name": "baseAxisTitleMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "baseAxisTitleSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "baseAxisTitleSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "baseAxisTitleVisible",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "baseAxisTooltipAutoContent",
+            "type": "cccBaseAxisTooltipAutoContentCustom",
+            "value": "value"
+          },
+          {
+            "name": "baseAxisTooltipEnabled",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "baseAxisTooltipFormat",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "baseAxisVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "categoryRole",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "clearSelectionMode",
+            "type": "cccClearSelectionModeCustom",
+            "value": "emptySpaceClick"
+          },
+          {
+            "name": "clickable",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "clickAction",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "color2AxisColors",
+            "type": "Array",
+            "value": "[]"
+          },
+          {
+            "name": "color2AxisLegendClickMode",
+            "type": "cccColor2AxisLegendClickModeCustom",
+            "value": "toggleVisible"
+          },
+          {
+            "name": "color2AxisLegendDrawLine",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "color2AxisLegendDrawMarker",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "color2AxisLegendShape",
+            "type": "cccColor2AxisLegendShapeCustom",
+            "value": ""
+          },
+          {
+            "name": "color2AxisLegendVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "color2AxisPreserveMap",
+            "value": false,
+            "type": "Boolean"
+          },
+          {
+            "name": "color2AxisTransform",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "color2AxisUnbound",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "colorPreserveMap",
+            "value": false,
+            "type": "Boolean"
+          },
+          {
+            "name": "colorRole",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "colorTransform",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "colorUnbound",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "compatVersion",
+            "type": "Float",
+            "value": 2
+          },
+          {
+            "name": "contentMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "contentPaddings",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "crosstabMode",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "ctrlSelectMode",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "dataCategoriesCount",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "dataIgnoreMetadataLabels",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "dataMeasuresInColumns",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "dataPartRole",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "dataSeparator",
+            "type": "String",
+            "value": "~"
+          },
+          {
+            "name": "dataWhere",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "doubleClickAction",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "groupedLabelSep",
+            "type": "String",
+            "value": " ~ "
+          },
+          {
+            "name": "hoverable",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "ignoreNulls",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "interactive",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "isMultiValued",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "leafContentOverflow",
+            "type": "cccLeafContentOverflowCustom",
+            "value": "auto"
+          },
+          {
+            "name": "legend",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "legendAlign",
+            "type": "cccLegendAlignCustom",
+            "value": ""
+          },
+          {
+            "name": "legendClickMode",
+            "type": "cccLegendClickModeCustom",
+            "value": "toggleVisible"
+          },
+          {
+            "name": "legendDrawLine",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "legendDrawMarker",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "legendFont",
+            "type": "String",
+            "value": "10px sans-serif"
+          },
+          {
+            "name": "legendItemCountMax",
+            "value": "",
+            "type": "Float"
+          },
+          {
+            "name": "legendItemPadding",
+            "type": "String",
+            "value": "2.5"
+          },
+          {
+            "name": "legendItemSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "legendMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "legendMarkerSize",
+            "type": "Float",
+            "value": 15
+          },
+          {
+            "name": "legendOverflow",
+            "value": "",
+            "type": "cccLegendOverflowCustom"
+          },
+          {
+            "name": "legendPaddings",
+            "type": "String",
+            "value": "5"
+          },
+          {
+            "name": "legendPosition",
+            "type": "cccLegendPositionCustom",
+            "value": "bottom"
+          },
+          {
+            "name": "legendShape",
+            "type": "cccLegendShapeCustom",
+            "value": ""
+          },
+          {
+            "name": "legendSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "legendSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "legendTextMargin",
+            "type": "Float",
+            "value": 6
+          },
+          {
+            "name": "legendVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "margins",
+            "type": "String",
+            "value": "3"
+          },
+          {
+            "name": "measuresIndexes",
+            "type": "Array",
+            "value": "[]"
+          },
+          {
+            "name": "multiChartColumnsMax",
+            "type": "Float",
+            "value": 3
+          },
+          {
+            "name": "multiChartIndexes",
+            "type": "Array",
+            "value": "[]"
+          },
+          {
+            "name": "multiChartMax",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "multiChartOverflow",
+            "type": "cccMultiChartOverflowCustom",
+            "value": "grow"
+          },
+          {
+            "name": "multiChartRole",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "multiChartSingleColFillsHeight",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "multiChartSingleRowFillsHeight",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "nullInterpolationMode",
+            "type": "cccNullInterpolationModeCustom",
+            "value": "none"
+          },
+          {
+            "name": "orientation",
+            "type": "cccOrientationCustom",
+            "value": "vertical"
+          },
+          {
+            "name": "ortho2AxisDesiredTickCount",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisDomainAlign",
+            "value": "center",
+            "type": "cccOrtho2AxisDomainAlignCustom"
+          },
+          {
+            "name": "ortho2AxisDomainRoundMode",
+            "type": "cccOrtho2AxisDomainRoundModeCustom",
+            "value": "tick"
+          },
+          {
+            "name": "ortho2AxisDomainScope",
+            "type": "cccOrtho2AxisDomainScopeCustom",
+            "value": "global"
+          },
+          {
+            "name": "ortho2AxisFixedLength",
+            "value": "",
+            "type": "Float"
+          },
+          {
+            "name": "ortho2AxisFixedMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisFixedMin",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisFont",
+            "value": "",
+            "type": "String"
+          },
+          {
+            "name": "ortho2AxisGrid",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "ortho2AxisLabelSpacingMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisMinorTicks",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "ortho2AxisOffset",
+            "type": "Float",
+            "value": 0
+          },
+          {
+            "name": "ortho2AxisOriginIsZero",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisPosition",
+            "type": "cccOrtho2AxisPositionCustom",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisPreserveRatio",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "ortho2AxisRatio",
+            "value": "",
+            "type": "Float"
+          },
+          {
+            "name": "ortho2AxisSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTickExponentMax",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTickExponentMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTickFormatter",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTicks",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "ortho2AxisTickUnit",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTickUnitMax",
+            "type": "String",
+            "value": "Infinity"
+          },
+          {
+            "name": "ortho2AxisTickUnitMin",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "ortho2AxisTitle",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTitleAlign",
+            "type": "cccOrtho2AxisTitleAlignCustom",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTitleFont",
+            "type": "String",
+            "value": "12px sans-serif"
+          },
+          {
+            "name": "ortho2AxisTitleMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "ortho2AxisTitleSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTitleSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTitleVisible",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "ortho2AxisVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "ortho2AxisZeroLine",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "orthoAxisDesiredTickCount",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisDomainAlign",
+            "value": "center",
+            "type": "cccOrthoAxisDomainAlignCustom"
+          },
+          {
+            "name": "orthoAxisDomainRoundMode",
+            "type": "cccOrthoAxisDomainRoundModeCustom",
+            "value": "tick"
+          },
+          {
+            "name": "orthoAxisDomainScope",
+            "type": "cccOrthoAxisDomainScopeCustom",
+            "value": "global"
+          },
+          {
+            "name": "orthoAxisFixedLength",
+            "value": "",
+            "type": "Float"
+          },
+          {
+            "name": "orthoAxisFixedMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisFixedMin",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisFont",
+            "value": "",
+            "type": "String"
+          },
+          {
+            "name": "orthoAxisGrid",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "orthoAxisLabelSpacingMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisMinorTicks",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "orthoAxisOffset",
+            "type": "Float",
+            "value": 0
+          },
+          {
+            "name": "orthoAxisOriginIsZero",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisPosition",
+            "type": "cccOrthoAxisPositionCustom",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisPreserveRatio",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "orthoAxisRatio",
+            "value": "",
+            "type": "Float"
+          },
+          {
+            "name": "orthoAxisSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTickExponentMax",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTickExponentMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTickFormatter",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTicks",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "orthoAxisTickUnit",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTickUnitMax",
+            "type": "String",
+            "value": "Infinity"
+          },
+          {
+            "name": "orthoAxisTickUnitMin",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "orthoAxisTitle",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTitleAlign",
+            "type": "cccOrthoAxisTitleAlignCustom",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTitleFont",
+            "type": "String",
+            "value": "12px sans-serif"
+          },
+          {
+            "name": "orthoAxisTitleMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "orthoAxisTitleSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTitleSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTitleVisible",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "orthoAxisVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "orthoAxisZeroLine",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "overflowMarkersVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "paddings",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "panelSizeRatio",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "percentValueFormat",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "plot2",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "plot2AreasFillOpacity",
+            "value": 0.5,
+            "type": "Float"
+          },
+          {
+            "name": "plot2AreasVisible",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "plot2ColorAxis",
+            "type": "Float",
+            "value": 2
+          },
+          {
+            "name": "plot2DotsVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "plot2LinesVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "plot2NullInterpolationMode",
+            "type": "cccPlot2NullInterpolationModeCustom",
+            "value": "none"
+          },
+          {
+            "name": "plot2OrthoAxis",
+            "type": "Float",
+            "value": 1
+          },
+          {
+            "name": "plot2Series",
+            "type": "Array",
+            "value": "[]"
+          },
+          {
+            "name": "plot2SeriesIndexes",
+            "type": "Array",
+            "value": -1
+          },
+          {
+            "name": "plot2Stacked",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "plot2TrendLabel",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "plot2TrendType",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "plot2ValuesAnchor",
+            "type": "cccPlot2ValuesAnchorCustom",
+            "value": ""
+          },
+          {
+            "name": "plot2ValuesFont",
+            "type": "String",
+            "value": "10px sans-serif"
+          },
+          {
+            "name": "plot2ValuesMask",
+            "type": "String",
+            "value": "{value}"
+          },
+          {
+            "name": "plot2ValuesVisible",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "plotFrameVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "plotSizeMin",
+            "value": "",
+            "type": "String"
+          },
+          {
+            "name": "pointingMode",
+            "type": "cccPointingModeCustom",
+            "value": "near"
+          },
+          {
+            "name": "preserveLayout",
+            "value": false,
+            "type": "Boolean"
+          },
+          {
+            "name": "readers",
+            "value": "[]",
+            "type": "Array"
+          },
+          {
+            "name": "renderCallback",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "renderedCallback",
+            "value": "",
+            "type": "JavaScript"
+          },
+          {
+            "name": "selectable",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "selectionChangedAction",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "seriesInRows",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "seriesRole",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "slidingWindow",
+            "value": false,
+            "type": "Boolean"
+          },
+          {
+            "name": "slidingWindowDimension",
+            "value": "",
+            "type": "String"
+          },
+          {
+            "name": "slidingWindowLength",
+            "value": "",
+            "type": "String"
+          },
+          {
+            "name": "slidingWindowSelect",
+            "value": "",
+            "type": "JavaScript"
+          },
+          {
+            "name": "smallAspectRatio",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "smallContentMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "smallContentPaddings",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "smallHeight",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "smallMargins",
+            "type": "String",
+            "value": "2%"
+          },
+          {
+            "name": "smallPaddings",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "smallTitleAlign",
+            "type": "cccSmallTitleAlignCustom",
+            "value": ""
+          },
+          {
+            "name": "smallTitleFont",
+            "type": "String",
+            "value": "14px sans-serif"
+          },
+          {
+            "name": "smallTitleMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "smallTitlePaddings",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "smallTitlePosition",
+            "type": "cccSmallTitlePositionCustom",
+            "value": "top"
+          },
+          {
+            "name": "smallTitleSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "smallTitleSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "smallTitleVisible",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "smallWidth",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "stacked",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "timeSeries",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "timeSeriesFormat",
+            "type": "String",
+            "value": "%Y-%m-%d"
+          },
+          {
+            "name": "titleAlign",
+            "type": "cccTitleAlignCustom",
+            "value": ""
+          },
+          {
+            "name": "titleFont",
+            "type": "String",
+            "value": "14px sans-serif"
+          },
+          {
+            "name": "titleMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "titlePaddings",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "titlePosition",
+            "type": "cccTitlePositionCustom",
+            "value": "top"
+          },
+          {
+            "name": "titleSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "titleSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "titleVisible",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "tooltipArrowVisible",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "tooltipClassName",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "tooltipEnabled",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "tooltipFade",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "tooltipFollowMouse",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "tooltipFormat",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "tooltipGravity",
+            "type": "cccTooltipGravityCustom",
+            "value": ""
+          },
+          {
+            "name": "tooltipHtml",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "tooltipOffset",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "tooltipOpacity",
+            "type": "Float",
+            "value": 0.9
+          },
+          {
+            "name": "tooltipUseCorners",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "trendAreasFillOpacity",
+            "value": 0.5,
+            "type": "Float"
+          },
+          {
+            "name": "trendAreasVisible",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "trendColorAxis",
+            "type": "Float",
+            "value": 2
+          },
+          {
+            "name": "trendDotsVisible",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "trendLabel",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "trendLinesVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "trendOrthoAxis",
+            "type": "Float",
+            "value": 1
+          },
+          {
+            "name": "trendStacked",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "trendType",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "trendValuesAnchor",
+            "type": "cccTrendValuesAnchorCustom",
+            "value": "right"
+          },
+          {
+            "name": "trendValuesFont",
+            "type": "String",
+            "value": "10px sans-serif"
+          },
+          {
+            "name": "trendValuesMask",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "trendValuesVisible",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "userSelectionAction",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "valueFormat",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "valueRole",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "valuesAnchor",
+            "type": "cccValuesAnchorCustom",
+            "value": ""
+          },
+          {
+            "name": "valuesFont",
+            "type": "String",
+            "value": "10px sans-serif"
+          },
+          {
+            "name": "valuesMask",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "valuesNormalized",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "valuesOptimizeLegibility",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "valuesOverflow",
+            "type": "cccValuesOverflowCustom",
+            "value": "hide"
+          },
+          {
+            "name": "valuesVisible",
+            "type": "Boolean",
+            "value": ""
+          }
+        ],
+        "type": "ComponentscccBarChart",
+        "typeDesc": "CCC Bar Chart"
+      },
+      {
+        "id": "7115b4f1-85d8-d14b-3fbc-84972ffc3774",
+        "meta_cdwRender": "true",
+        "meta_cdwSupport": "true",
+        "parent": "CHARTS",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "bar1"
+          },
+          {
+            "name": "title",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "listeners",
+            "type": "Listeners",
+            "value": "[]"
+          },
+          {
+            "name": "parameters",
+            "type": "ValuesArray",
+            "value": "[]"
+          },
+          {
+            "name": "dataSource",
+            "type": "Datasource",
+            "value": "sampleQuery"
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": "300"
+          },
+          {
+            "name": "priority",
+            "type": "Integer",
+            "value": 5
+          },
+          {
+            "name": "refreshPeriod",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "width",
+            "type": "Integer",
+            "value": "300"
+          },
+          {
+            "name": "colors",
+            "type": "Array",
+            "value": "[]"
+          },
+          {
+            "name": "htmlObject",
+            "type": "HtmlObject",
+            "value": ""
+          },
+          {
+            "name": "executeAtStart",
+            "type": "Boolean",
+            "value": "true"
+          },
+          {
+            "name": "preExecution",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "postExecution",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "postFetch",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "preChange",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "postChange",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "extensionPoints",
+            "type": "EditorValuesArray",
+            "value": "[]"
+          },
+          {
+            "name": "tooltip",
+            "type": "Html",
+            "value": ""
+          },
+          {
+            "name": "animate",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "barOrthoSizeMin",
+            "type": "Float",
+            "value": 1.5
+          },
+          {
+            "name": "barSizeMax",
+            "type": "Float",
+            "value": 2000
+          },
+          {
+            "name": "barSizeRatio",
+            "type": "Float",
+            "value": 0.9
+          },
+          {
+            "name": "barStackedMargin",
+            "type": "Float",
+            "value": 0
+          },
+          {
+            "name": "baseAxisBandSize",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisBandSizeMax",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisBandSizeMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisBandSpacing",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisBandSpacingMax",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisBandSpacingMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisClickAction",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "baseAxisDoubleClickAction",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "baseAxisFont",
+            "value": "",
+            "type": "String"
+          },
+          {
+            "name": "baseAxisGrid",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "baseAxisLabelDesiredAngles",
+            "value": "[]",
+            "type": "Array"
+          },
+          {
+            "name": "baseAxisLabelRotationDirection",
+            "value": "",
+            "type": "cccBaseAxisLabelRotationDirectionCustom"
+          },
+          {
+            "name": "baseAxisLabelSpacingMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "baseAxisOffset",
+            "type": "Float",
+            "value": 0
+          },
+          {
+            "name": "baseAxisOverlappedLabelsMode",
+            "type": "cccBaseAxisOverlappedLabelsModeCustom",
+            "value": "hide"
+          },
+          {
+            "name": "baseAxisPosition",
+            "type": "cccBaseAxisPositionCustom",
+            "value": ""
+          },
+          {
+            "name": "baseAxisSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "baseAxisSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "baseAxisTickFormatter",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "baseAxisTicks",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "baseAxisTitle",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "baseAxisTitleAlign",
+            "type": "cccBaseAxisTitleAlignCustom",
+            "value": ""
+          },
+          {
+            "name": "baseAxisTitleFont",
+            "type": "String",
+            "value": "12px sans-serif"
+          },
+          {
+            "name": "baseAxisTitleMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "baseAxisTitleSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "baseAxisTitleSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "baseAxisTitleVisible",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "baseAxisTooltipAutoContent",
+            "type": "cccBaseAxisTooltipAutoContentCustom",
+            "value": "value"
+          },
+          {
+            "name": "baseAxisTooltipEnabled",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "baseAxisTooltipFormat",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "baseAxisVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "categoryRole",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "clearSelectionMode",
+            "type": "cccClearSelectionModeCustom",
+            "value": "emptySpaceClick"
+          },
+          {
+            "name": "clickable",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "clickAction",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "color2AxisColors",
+            "type": "Array",
+            "value": "[]"
+          },
+          {
+            "name": "color2AxisLegendClickMode",
+            "type": "cccColor2AxisLegendClickModeCustom",
+            "value": "toggleVisible"
+          },
+          {
+            "name": "color2AxisLegendDrawLine",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "color2AxisLegendDrawMarker",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "color2AxisLegendShape",
+            "type": "cccColor2AxisLegendShapeCustom",
+            "value": ""
+          },
+          {
+            "name": "color2AxisLegendVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "color2AxisPreserveMap",
+            "value": false,
+            "type": "Boolean"
+          },
+          {
+            "name": "color2AxisTransform",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "color2AxisUnbound",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "colorPreserveMap",
+            "value": false,
+            "type": "Boolean"
+          },
+          {
+            "name": "colorRole",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "colorTransform",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "colorUnbound",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "compatVersion",
+            "type": "Float",
+            "value": 2
+          },
+          {
+            "name": "contentMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "contentPaddings",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "crosstabMode",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "ctrlSelectMode",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "dataCategoriesCount",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "dataIgnoreMetadataLabels",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "dataMeasuresInColumns",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "dataPartRole",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "dataSeparator",
+            "type": "String",
+            "value": "~"
+          },
+          {
+            "name": "dataWhere",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "doubleClickAction",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "groupedLabelSep",
+            "type": "String",
+            "value": " ~ "
+          },
+          {
+            "name": "hoverable",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "ignoreNulls",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "interactive",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "isMultiValued",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "leafContentOverflow",
+            "type": "cccLeafContentOverflowCustom",
+            "value": "auto"
+          },
+          {
+            "name": "legend",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "legendAlign",
+            "type": "cccLegendAlignCustom",
+            "value": ""
+          },
+          {
+            "name": "legendClickMode",
+            "type": "cccLegendClickModeCustom",
+            "value": "toggleVisible"
+          },
+          {
+            "name": "legendDrawLine",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "legendDrawMarker",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "legendFont",
+            "type": "String",
+            "value": "10px sans-serif"
+          },
+          {
+            "name": "legendItemCountMax",
+            "value": "",
+            "type": "Float"
+          },
+          {
+            "name": "legendItemPadding",
+            "type": "String",
+            "value": "2.5"
+          },
+          {
+            "name": "legendItemSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "legendMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "legendMarkerSize",
+            "type": "Float",
+            "value": 15
+          },
+          {
+            "name": "legendOverflow",
+            "value": "",
+            "type": "cccLegendOverflowCustom"
+          },
+          {
+            "name": "legendPaddings",
+            "type": "String",
+            "value": "5"
+          },
+          {
+            "name": "legendPosition",
+            "type": "cccLegendPositionCustom",
+            "value": "bottom"
+          },
+          {
+            "name": "legendShape",
+            "type": "cccLegendShapeCustom",
+            "value": ""
+          },
+          {
+            "name": "legendSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "legendSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "legendTextMargin",
+            "type": "Float",
+            "value": 6
+          },
+          {
+            "name": "legendVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "margins",
+            "type": "String",
+            "value": "3"
+          },
+          {
+            "name": "measuresIndexes",
+            "type": "Array",
+            "value": "[]"
+          },
+          {
+            "name": "multiChartColumnsMax",
+            "type": "Float",
+            "value": 3
+          },
+          {
+            "name": "multiChartIndexes",
+            "type": "Array",
+            "value": "[]"
+          },
+          {
+            "name": "multiChartMax",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "multiChartOverflow",
+            "type": "cccMultiChartOverflowCustom",
+            "value": "grow"
+          },
+          {
+            "name": "multiChartRole",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "multiChartSingleColFillsHeight",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "multiChartSingleRowFillsHeight",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "nullInterpolationMode",
+            "type": "cccNullInterpolationModeCustom",
+            "value": "none"
+          },
+          {
+            "name": "orientation",
+            "type": "cccOrientationCustom",
+            "value": "vertical"
+          },
+          {
+            "name": "ortho2AxisDesiredTickCount",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisDomainAlign",
+            "value": "center",
+            "type": "cccOrtho2AxisDomainAlignCustom"
+          },
+          {
+            "name": "ortho2AxisDomainRoundMode",
+            "type": "cccOrtho2AxisDomainRoundModeCustom",
+            "value": "tick"
+          },
+          {
+            "name": "ortho2AxisDomainScope",
+            "type": "cccOrtho2AxisDomainScopeCustom",
+            "value": "global"
+          },
+          {
+            "name": "ortho2AxisFixedLength",
+            "value": "",
+            "type": "Float"
+          },
+          {
+            "name": "ortho2AxisFixedMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisFixedMin",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisFont",
+            "value": "",
+            "type": "String"
+          },
+          {
+            "name": "ortho2AxisGrid",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "ortho2AxisLabelSpacingMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisMinorTicks",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "ortho2AxisOffset",
+            "type": "Float",
+            "value": 0
+          },
+          {
+            "name": "ortho2AxisOriginIsZero",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisPosition",
+            "type": "cccOrtho2AxisPositionCustom",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisPreserveRatio",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "ortho2AxisRatio",
+            "value": "",
+            "type": "Float"
+          },
+          {
+            "name": "ortho2AxisSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTickExponentMax",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTickExponentMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTickFormatter",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTicks",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "ortho2AxisTickUnit",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTickUnitMax",
+            "type": "String",
+            "value": "Infinity"
+          },
+          {
+            "name": "ortho2AxisTickUnitMin",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "ortho2AxisTitle",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTitleAlign",
+            "type": "cccOrtho2AxisTitleAlignCustom",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTitleFont",
+            "type": "String",
+            "value": "12px sans-serif"
+          },
+          {
+            "name": "ortho2AxisTitleMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "ortho2AxisTitleSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTitleSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "ortho2AxisTitleVisible",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "ortho2AxisVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "ortho2AxisZeroLine",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "orthoAxisDesiredTickCount",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisDomainAlign",
+            "value": "center",
+            "type": "cccOrthoAxisDomainAlignCustom"
+          },
+          {
+            "name": "orthoAxisDomainRoundMode",
+            "type": "cccOrthoAxisDomainRoundModeCustom",
+            "value": "tick"
+          },
+          {
+            "name": "orthoAxisDomainScope",
+            "type": "cccOrthoAxisDomainScopeCustom",
+            "value": "global"
+          },
+          {
+            "name": "orthoAxisFixedLength",
+            "value": "",
+            "type": "Float"
+          },
+          {
+            "name": "orthoAxisFixedMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisFixedMin",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisFont",
+            "value": "",
+            "type": "String"
+          },
+          {
+            "name": "orthoAxisGrid",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "orthoAxisLabelSpacingMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisMinorTicks",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "orthoAxisOffset",
+            "type": "Float",
+            "value": 0
+          },
+          {
+            "name": "orthoAxisOriginIsZero",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisPosition",
+            "type": "cccOrthoAxisPositionCustom",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisPreserveRatio",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "orthoAxisRatio",
+            "value": "",
+            "type": "Float"
+          },
+          {
+            "name": "orthoAxisSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTickExponentMax",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTickExponentMin",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTickFormatter",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTicks",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "orthoAxisTickUnit",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTickUnitMax",
+            "type": "String",
+            "value": "Infinity"
+          },
+          {
+            "name": "orthoAxisTickUnitMin",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "orthoAxisTitle",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTitleAlign",
+            "type": "cccOrthoAxisTitleAlignCustom",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTitleFont",
+            "type": "String",
+            "value": "12px sans-serif"
+          },
+          {
+            "name": "orthoAxisTitleMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "orthoAxisTitleSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTitleSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "orthoAxisTitleVisible",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "orthoAxisVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "orthoAxisZeroLine",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "overflowMarkersVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "paddings",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "panelSizeRatio",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "percentValueFormat",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "plot2",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "plot2AreasFillOpacity",
+            "value": 0.5,
+            "type": "Float"
+          },
+          {
+            "name": "plot2AreasVisible",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "plot2ColorAxis",
+            "type": "Float",
+            "value": 2
+          },
+          {
+            "name": "plot2DotsVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "plot2LinesVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "plot2NullInterpolationMode",
+            "type": "cccPlot2NullInterpolationModeCustom",
+            "value": "none"
+          },
+          {
+            "name": "plot2OrthoAxis",
+            "type": "Float",
+            "value": 1
+          },
+          {
+            "name": "plot2Series",
+            "type": "Array",
+            "value": "[]"
+          },
+          {
+            "name": "plot2SeriesIndexes",
+            "type": "Array",
+            "value": -1
+          },
+          {
+            "name": "plot2Stacked",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "plot2TrendLabel",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "plot2TrendType",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "plot2ValuesAnchor",
+            "type": "cccPlot2ValuesAnchorCustom",
+            "value": ""
+          },
+          {
+            "name": "plot2ValuesFont",
+            "type": "String",
+            "value": "10px sans-serif"
+          },
+          {
+            "name": "plot2ValuesMask",
+            "type": "String",
+            "value": "{value}"
+          },
+          {
+            "name": "plot2ValuesVisible",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "plotFrameVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "plotSizeMin",
+            "value": "",
+            "type": "String"
+          },
+          {
+            "name": "pointingMode",
+            "type": "cccPointingModeCustom",
+            "value": "near"
+          },
+          {
+            "name": "preserveLayout",
+            "value": false,
+            "type": "Boolean"
+          },
+          {
+            "name": "readers",
+            "value": "[]",
+            "type": "Array"
+          },
+          {
+            "name": "renderCallback",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "renderedCallback",
+            "value": "",
+            "type": "JavaScript"
+          },
+          {
+            "name": "selectable",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "selectionChangedAction",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "seriesInRows",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "seriesRole",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "slidingWindow",
+            "value": false,
+            "type": "Boolean"
+          },
+          {
+            "name": "slidingWindowDimension",
+            "value": "",
+            "type": "String"
+          },
+          {
+            "name": "slidingWindowLength",
+            "value": "",
+            "type": "String"
+          },
+          {
+            "name": "slidingWindowSelect",
+            "value": "",
+            "type": "JavaScript"
+          },
+          {
+            "name": "smallAspectRatio",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "smallContentMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "smallContentPaddings",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "smallHeight",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "smallMargins",
+            "type": "String",
+            "value": "2%"
+          },
+          {
+            "name": "smallPaddings",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "smallTitleAlign",
+            "type": "cccSmallTitleAlignCustom",
+            "value": ""
+          },
+          {
+            "name": "smallTitleFont",
+            "type": "String",
+            "value": "14px sans-serif"
+          },
+          {
+            "name": "smallTitleMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "smallTitlePaddings",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "smallTitlePosition",
+            "type": "cccSmallTitlePositionCustom",
+            "value": "top"
+          },
+          {
+            "name": "smallTitleSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "smallTitleSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "smallTitleVisible",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "smallWidth",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "stacked",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "timeSeries",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "timeSeriesFormat",
+            "type": "String",
+            "value": "%Y-%m-%d"
+          },
+          {
+            "name": "titleAlign",
+            "type": "cccTitleAlignCustom",
+            "value": ""
+          },
+          {
+            "name": "titleFont",
+            "type": "String",
+            "value": "14px sans-serif"
+          },
+          {
+            "name": "titleMargins",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "titlePaddings",
+            "type": "String",
+            "value": "0"
+          },
+          {
+            "name": "titlePosition",
+            "type": "cccTitlePositionCustom",
+            "value": "top"
+          },
+          {
+            "name": "titleSize",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "titleSizeMax",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "titleVisible",
+            "value": "",
+            "type": "Boolean"
+          },
+          {
+            "name": "tooltipArrowVisible",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "tooltipClassName",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "tooltipEnabled",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "tooltipFade",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "tooltipFollowMouse",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "tooltipFormat",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "tooltipGravity",
+            "type": "cccTooltipGravityCustom",
+            "value": ""
+          },
+          {
+            "name": "tooltipHtml",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "tooltipOffset",
+            "type": "Float",
+            "value": ""
+          },
+          {
+            "name": "tooltipOpacity",
+            "type": "Float",
+            "value": 0.9
+          },
+          {
+            "name": "tooltipUseCorners",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "trendAreasFillOpacity",
+            "value": 0.5,
+            "type": "Float"
+          },
+          {
+            "name": "trendAreasVisible",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "trendColorAxis",
+            "type": "Float",
+            "value": 2
+          },
+          {
+            "name": "trendDotsVisible",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "trendLabel",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "trendLinesVisible",
+            "type": "Boolean",
+            "value": true
+          },
+          {
+            "name": "trendOrthoAxis",
+            "type": "Float",
+            "value": 1
+          },
+          {
+            "name": "trendStacked",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "trendType",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "trendValuesAnchor",
+            "type": "cccTrendValuesAnchorCustom",
+            "value": "right"
+          },
+          {
+            "name": "trendValuesFont",
+            "type": "String",
+            "value": "10px sans-serif"
+          },
+          {
+            "name": "trendValuesMask",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "trendValuesVisible",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "userSelectionAction",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "valueFormat",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "valueRole",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "valuesAnchor",
+            "type": "cccValuesAnchorCustom",
+            "value": ""
+          },
+          {
+            "name": "valuesFont",
+            "type": "String",
+            "value": "10px sans-serif"
+          },
+          {
+            "name": "valuesMask",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "valuesNormalized",
+            "type": "Boolean",
+            "value": false
+          },
+          {
+            "name": "valuesOptimizeLegibility",
+            "type": "Boolean",
+            "value": ""
+          },
+          {
+            "name": "valuesOverflow",
+            "type": "cccValuesOverflowCustom",
+            "value": "hide"
+          },
+          {
+            "name": "valuesVisible",
+            "type": "Boolean",
+            "value": ""
+          }
+        ],
+        "type": "ComponentscccBarChart",
+        "typeDesc": "CCC Bar Chart"
+      },
+      {
+        "id": "14deab3c-8b8d-2b2b-6f34-9abd2b9e8403",
+        "meta_cdwSupport": "false",
+        "parent": "CHARTS",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "cgg1"
+          },
+          {
+            "name": "listeners",
+            "type": "Listeners",
+            "value": "[]"
+          },
+          {
+            "name": "parameters",
+            "type": "ValuesArray",
+            "value": "[]"
+          },
+          {
+            "name": "resourceFile",
+            "type": "CggPath",
+            "value": "public/plugin-samples/pentaho-cdf-dd/tests/CggComponent/cggComponent_bar1.js"
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": "300"
+          },
+          {
+            "name": "priority",
+            "type": "Integer",
+            "value": 5
+          },
+          {
+            "name": "width",
+            "type": "Integer",
+            "value": "300"
+          },
+          {
+            "name": "htmlObject",
+            "type": "HtmlObject",
+            "value": "${p:column1}"
+          },
+          {
+            "name": "executeAtStart",
+            "type": "Boolean",
+            "value": "true"
+          },
+          {
+            "name": "preExecution",
+            "type": "JavaScript",
+            "value": ""
+          },
+          {
+            "name": "postExecution",
+            "type": "JavaScript",
+            "value": ""
+          }
+        ],
+        "type": "Componentscgg",
+        "typeDesc": "Container for CGG Grahpics"
+      }
+    ]
+  },
+  "datasources": {
+    "rows": [
+      {
+        "id": "SCRIPTING",
+        "name": "SCRIPTING Queries",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "Group",
+            "type": "Label",
+            "value": "SCRIPTING Queries"
+          }
+        ],
+        "type": "Label",
+        "typeDesc": "<i>Group</i>"
+      },
+      {
+        "id": "509ef380-c804-e7e2-ea71-87dc23ae677f",
+        "meta": "CDA",
+        "meta_conntype": "scripting.scripting",
+        "meta_datype": "scriptable",
+        "parent": "SCRIPTING",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "sampleQuery"
+          },
+          {
+            "name": "initscript",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "language",
+            "type": "String",
+            "value": "beanshell"
+          },
+          {
+            "name": "access",
+            "type": "Access",
+            "value": "public"
+          },
+          {
+            "name": "query",
+            "type": "SqlQuery",
+            "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"series\",\n\"category\",\n\"value\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class,\nString.class,\nInteger.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Red\"), new Integer(\"10\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Blue\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Green\"), new Integer(\"30\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Yellow\"), new Integer(\"5\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Black\"), new Integer(\"25\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"White\"), new Integer(\"7\") });\n\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Red\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Blue\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Green\"), new Integer(\"40\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Yellow\"), new Integer(\"80\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Black\"), new Integer(\"1\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"White\"), new Integer(\"23\") });\n\nmodel.addRow(new Object[]{ new String(\"Ship\"), new String(\"Red\"), new Integer(\"2\") });\nmodel.addRow(new Object[]{ new String(\"Ship\"), new String(\"Blue\"), new Integer(\"7\") });\n\n\nmodel.addRow(new Object[]{ new String(\"Plane\"), new String(\"Red\"), new Integer(\"5\") });\nmodel.addRow(new Object[]{ new String(\"Plane\"), new String(\"Blue\"), new Integer(\"4\") });\n\nmodel.addRow(new Object[]{ new String(\"Train\"), new String(\"Red\"), new Integer(\"50\") });\nmodel.addRow(new Object[]{ new String(\"Train\"), new String(\"Blue\"), new Integer(\"50\") });\nmodel.addRow(new Object[]{ new String(\"Train\"), new String(\"Green\"), new Integer(\"7\") });\n\nreturn model;"
+          },
+          {
+            "name": "parameters",
+            "type": "CdaParameters",
+            "value": "[]"
+          },
+          {
+            "name": "cdacalculatedcolumns",
+            "type": "CdaCalculatedColumnsArray",
+            "value": "[]"
+          },
+          {
+            "name": "cdacolumns",
+            "type": "CdaColumnsArray",
+            "value": "[]"
+          },
+          {
+            "name": "output",
+            "type": "IndexArray",
+            "value": "[]"
+          },
+          {
+            "name": "outputMode",
+            "type": "OutputMode",
+            "value": "include"
+          },
+          {
+            "name": "cacheKeys",
+            "value": "[]",
+            "type": "CacheKeysValues"
+          },
+          {
+            "name": "cacheDuration",
+            "type": "Integer",
+            "value": 3600
+          },
+          {
+            "name": "cache",
+            "type": "Boolean",
+            "value": "true"
+          }
+        ],
+        "type": "Componentsscriptable_scripting",
+        "typeDesc": "scriptable over scripting"
+      },
+      {
+        "id": "SQL",
+        "name": "SQL Queries",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "Group",
+            "type": "Label",
+            "value": "SQL Queries"
+          }
+        ],
+        "type": "Label",
+        "typeDesc": "<i>Group</i>"
+      },
+      {
+        "id": "eb6694bc-c0de-cf96-779c-cffd1b368374",
+        "meta": "CDA",
+        "meta_conntype": "sql.jndi",
+        "meta_datype": "sql",
+        "parent": "SQL",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "sqlQuery"
+          },
+          {
+            "name": "access",
+            "type": "Access",
+            "value": "public"
+          },
+          {
+            "name": "jndi",
+            "type": "Jndi",
+            "value": "SampleData"
+          },
+          {
+            "name": "query",
+            "type": "SqlQuery",
+            "value": "SELECT\nc.CUSTOMERNAME as customer, sum(f.TOTALPRICE) as total\nFROM ORDERFACT f\ninner join PRODUCTS p on ( p.PRODUCTCODE = f.PRODUCTCODE )\ninner join CUSTOMER_W_TER c on (c.CUSTOMERNUMBER = f.CUSTOMERNUMBER)\nwhere p.PRODUCTLINE=${productLine}\nand c.TERRITORY=${territory}\ngroup by c.CUSTOMERNAME\norder by total desc "
+          },
+          {
+            "name": "parameters",
+            "type": "CdaParameters",
+            "value": "[[\"productLine\",\"Classic Cars\",\"String\",\"\"],[\"territory\",\"APAC\",\"String\",\"\"]]"
+          },
+          {
+            "name": "cdacalculatedcolumns",
+            "type": "CdaCalculatedColumnsArray",
+            "value": "[]"
+          },
+          {
+            "name": "cdacolumns",
+            "type": "CdaColumnsArray",
+            "value": "[]"
+          },
+          {
+            "name": "output",
+            "type": "IndexArray",
+            "value": "[]"
+          },
+          {
+            "name": "outputMode",
+            "type": "OutputMode",
+            "value": "include"
+          },
+          {
+            "name": "cacheKeys",
+            "value": "[]",
+            "type": "CacheKeysValues"
+          },
+          {
+            "name": "cacheDuration",
+            "type": "Integer",
+            "value": 3600
+          },
+          {
+            "name": "cache",
+            "type": "Boolean",
+            "value": "true"
+          }
+        ],
+        "type": "Componentssql_sqlJndi",
+        "typeDesc": "sql over sqlJndi"
+      }
+    ]
+  },
+  "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/CggComponent/cggComponent.cdfde",
+  "layout": {
+    "rows": [
+      {
+        "id": "4996fa5f-09f0-cd60-77e7-5772215aeb51",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "template"
+          },
+          {
+            "name": "resourceFile",
+            "type": "ResourceFile",
+            "value": "${res:../../template.css}"
+          },
+          {
+            "name": "resourceType",
+            "type": "Label",
+            "value": "Css"
+          }
+        ],
+        "type": "LayoutResourceFile",
+        "typeDesc": "Resource"
+      },
+      {
+        "id": "03a83220-159d-d841-c40d-0a04044f3e51",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "css"
+          },
+          {
+            "name": "resourceFile",
+            "type": "ResourceFile",
+            "value": "${res:../../cdeReference.css}"
+          },
+          {
+            "name": "resourceType",
+            "type": "Label",
+            "value": "Css"
+          }
+        ],
+        "type": "LayoutResourceFile",
+        "typeDesc": "Resource"
+      },
+      {
+        "id": "7746f3c7-ccfb-9cba-b7cd-f5dae17d6a63",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "Spacer"
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": "20"
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutRow",
+        "typeDesc": "Row"
+      },
+      {
+        "id": "85d4b41a-992a-e121-9f35-44dab8fe9d70",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": "WDdataCellHeader"
+          }
+        ],
+        "type": "LayoutRow",
+        "typeDesc": "Row"
+      },
+      {
+        "id": "c9b074c0-b4fc-9809-4cdf-23e3a3729633",
+        "parent": "85d4b41a-992a-e121-9f35-44dab8fe9d70",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "columnSpan",
+            "type": "Integer",
+            "value": "24"
+          },
+          {
+            "name": "columnPrepend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnAppend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnPrependTop",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnAppendBottom",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBigBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutColumn",
+        "typeDesc": "Column"
+      },
+      {
+        "id": "01a041c6-d67a-2c90-0e5d-48aab26b5bcd",
+        "parent": "c9b074c0-b4fc-9809-4cdf-23e3a3729633",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "html",
+            "type": "Html",
+            "value": "Cgg Component sample "
+          },
+          {
+            "name": "fontSize",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "color",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutHtml",
+        "typeDesc": "Html"
+      },
+      {
+        "id": "699b3087-f199-0780-9add-fad401819ed1",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": "WDdataCellBody"
+          }
+        ],
+        "type": "LayoutRow",
+        "typeDesc": "Row"
+      },
+      {
+        "id": "ead53126-6ae0-ac94-8de0-11fe6acd57b1",
+        "parent": "699b3087-f199-0780-9add-fad401819ed1",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "columnSpan",
+            "type": "Integer",
+            "value": "24"
+          },
+          {
+            "name": "columnPrepend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnAppend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnPrependTop",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnAppendBottom",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBigBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutColumn",
+        "typeDesc": "Column"
+      },
+      {
+        "id": "426d802f-ad54-1c91-3a45-3f1cbddbbe93",
+        "parent": "ead53126-6ae0-ac94-8de0-11fe6acd57b1",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "html",
+            "type": "Html",
+            "value": "&nbsp;Without parameters:<br><br> "
+          },
+          {
+            "name": "fontSize",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "color",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutHtml",
+        "typeDesc": "Html"
+      },
+      {
+        "id": "fa756ecf-ab44-dfa9-cdc9-f68584c53661",
+        "parent": "ead53126-6ae0-ac94-8de0-11fe6acd57b1",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutRow",
+        "typeDesc": "Row"
+      },
+      {
+        "id": "b2c2c5c0-5f97-505a-82c1-288837fd6d2a",
+        "parent": "fa756ecf-ab44-dfa9-cdc9-f68584c53661",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "columnSpan",
+            "type": "Integer",
+            "value": "2"
+          },
+          {
+            "name": "columnPrepend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnAppend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnPrependTop",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnAppendBottom",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBigBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutColumn",
+        "typeDesc": "Column"
+      },
+      {
+        "id": "7db381f6-9b42-463e-fac8-915d25299c11",
+        "parent": "b2c2c5c0-5f97-505a-82c1-288837fd6d2a",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "html",
+            "type": "Html",
+            "value": "&nbsp; "
+          },
+          {
+            "name": "fontSize",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "color",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutHtml",
+        "typeDesc": "Html"
+      },
+      {
+        "id": "5ec3422d-a879-774c-76c5-c4e8150590cc",
+        "parent": "fa756ecf-ab44-dfa9-cdc9-f68584c53661",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "column1"
+          },
+          {
+            "name": "columnSpan",
+            "type": "Integer",
+            "value": "22"
+          },
+          {
+            "name": "columnPrepend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnAppend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnPrependTop",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnAppendBottom",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBigBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutColumn",
+        "typeDesc": "Column"
+      },
+      {
+        "id": "64902c44-bdce-1965-d731-27a50485a473",
+        "parent": "UnIqEiD",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": "WDdataCellBody"
+          }
+        ],
+        "type": "LayoutRow",
+        "typeDesc": "Row"
+      },
+      {
+        "id": "e8b59a56-9578-1580-cf2d-010babef6ed9",
+        "parent": "64902c44-bdce-1965-d731-27a50485a473",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "columnSpan",
+            "type": "Integer",
+            "value": "24"
+          },
+          {
+            "name": "columnPrepend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnAppend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnPrependTop",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnAppendBottom",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBigBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutColumn",
+        "typeDesc": "Column"
+      },
+      {
+        "id": "2dc79e1d-00c0-b4d6-df4b-9ad643581784",
+        "parent": "e8b59a56-9578-1580-cf2d-010babef6ed9",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "html",
+            "type": "Html",
+            "value": "&nbsp;Using two string parameters:<br><br> "
+          },
+          {
+            "name": "fontSize",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "color",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutHtml",
+        "typeDesc": "Html"
+      },
+      {
+        "id": "cbe1d993-6e8b-ac55-fe07-61b3f0a79b84",
+        "parent": "e8b59a56-9578-1580-cf2d-010babef6ed9",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutRow",
+        "typeDesc": "Row"
+      },
+      {
+        "id": "5f87b743-2005-b7fe-322b-22985195461a",
+        "parent": "cbe1d993-6e8b-ac55-fe07-61b3f0a79b84",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "columnSpan",
+            "type": "Integer",
+            "value": "2"
+          },
+          {
+            "name": "columnPrepend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnAppend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnPrependTop",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnAppendBottom",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBigBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutColumn",
+        "typeDesc": "Column"
+      },
+      {
+        "id": "4bffb5c4-5074-daa2-dbd0-36c5a0ef52d4",
+        "parent": "5f87b743-2005-b7fe-322b-22985195461a",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": ""
+          },
+          {
+            "name": "html",
+            "type": "Html",
+            "value": "&nbsp; "
+          },
+          {
+            "name": "fontSize",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "color",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutHtml",
+        "typeDesc": "Html"
+      },
+      {
+        "id": "2b1d9b4e-8693-ee00-5385-cac1716a97b2",
+        "parent": "cbe1d993-6e8b-ac55-fe07-61b3f0a79b84",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "column2"
+          },
+          {
+            "name": "columnSpan",
+            "type": "Integer",
+            "value": "22"
+          },
+          {
+            "name": "columnPrepend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnAppend",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "columnPrependTop",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnAppendBottom",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "columnBigBorder",
+            "type": "Boolean",
+            "value": "false"
+          },
+          {
+            "name": "height",
+            "type": "Integer",
+            "value": ""
+          },
+          {
+            "name": "backgroundColor",
+            "type": "Color",
+            "value": ""
+          },
+          {
+            "name": "roundCorners",
+            "type": "RoundCorners",
+            "value": ""
+          },
+          {
+            "name": "textAlign",
+            "type": "TextAlign",
+            "value": ""
+          },
+          {
+            "name": "cssClass",
+            "type": "String",
+            "value": ""
+          }
+        ],
+        "type": "LayoutColumn",
+        "typeDesc": "Column"
+      }
+    ],
+    "title": "CDF - Sample structure"
+  }
+}
