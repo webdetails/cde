@@ -1931,7 +1931,7 @@
       }
     ]
   },
-  "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/PopupComponent/popup.cdfde",
+  "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/PopupComponent/popup.cdfde",
   "layout": {
     "rows": [
       {

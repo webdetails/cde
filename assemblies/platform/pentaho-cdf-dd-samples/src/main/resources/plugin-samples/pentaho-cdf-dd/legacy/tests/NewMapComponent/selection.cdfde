@@ -1038,7 +1038,7 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/NewMapComponent/selection.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/legacy/tests/NewMapComponent/selection.cdfde",
  "layout": {
   "rows": [
    {

@@ -476,5 +476,5 @@
  "datasources": {
   "rows": []
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/CggDialComponent/cggDialComponent.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/legacy/tests/CggDialComponent/cggDialComponent.cdfde"
 }

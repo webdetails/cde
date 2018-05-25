@@ -32,7 +32,7 @@
      {
       "name": "dashboardPath",
       "type": "String",
-      "value": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/cde_sample1.wcdf"
+      "value": "/public/plugin-samples/pentaho-cdf-dd/cde_sample1.wcdf"
      },
      {
       "name": "dataSourceMapping",
@@ -95,7 +95,7 @@
      {
       "name": "dashboardPath",
       "type": "String",
-      "value": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/cde_sample1.wcdf"
+      "value": "/public/plugin-samples/pentaho-cdf-dd/cde_sample1.wcdf"
      },
      {
       "name": "dataSourceMapping",
@@ -582,7 +582,7 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/DashboardComponent/DashboardComponent.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/DashboardComponent/DashboardComponent.cdfde",
  "layout": {
   "rows": [
    {
@@ -597,7 +597,7 @@
      {
       "name": "resourceFile",
       "type": "ResourceFile",
-      "value": "${solution:/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/template.css}"
+      "value": "${solution:../../template.css}"
      },
      {
       "name": "resourceType",
@@ -830,7 +830,7 @@
      {
       "name": "html",
       "type": "Html",
-      "value": "<h1>Dashboard Component</h1>\n<p>This component allows you to include a require ready dashboard in your require ready dashboard!</p>\n<p>You can also map parameters and datasources from this dashboard, to the included one.</p>\n<h3>Properties</h3>\n<ul>\n    <li><b>Dashboard Path</b> - The path to the dashboard to include, this path must be absolute from the root:\n        <ul>\n    \t\t<li>/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/cde_sample1.wcdf</li>\n\t\t</ul>\n\t</li>\n\t<li><b>Parameter Mapping</b> - The parameter mapping array. Ex. [\"myDashboardParam\", \"includedDashboardParam\"], when <b>myDashboardParam</b> changes, it will fire a change in <b>includedDashboardParam</b>, which the included dashboard may be listening for.<br><b>NOTE:</b> only public parameters from the included dashboard will be mapped.</li>\n    <li><b>Datasource Mapping</b> - The datasource mapping array. Ex. [\"myDashboardDatasource\", \"includedDashboardDatasource\"] - components using <b>includedDashboardDatasource</b>, will use <b>myDashboardDatasource</b> instead.\n</ul>\n<p>In this example, we included the CDE Sample dashboard, twice. <br>\nYou can change the parameter <b>Territory</b> in the left one, using the select component, which will trigger changes in the included dashboard. (Look at the table).\n<p>In the dashboard on the right, we changed the datasources, both the chart and the table one, to show how our imaginary RC car business is going (won't be making a living off that one though...).</p>\n</p> "
+      "value": "<h1>Dashboard Component</h1>\n<p>This component allows you to include a require ready dashboard in your require ready dashboard!</p>\n<p>You can also map parameters and datasources from this dashboard, to the included one.</p>\n<h3>Properties</h3>\n<ul>\n    <li><b>Dashboard Path</b> - The path to the dashboard to include, this path must be absolute from the root:\n        <ul>\n    \t\t<li>/public/plugin-samples/pentaho-cdf-dd/cde_sample1.wcdf</li>\n\t\t</ul>\n\t</li>\n\t<li><b>Parameter Mapping</b> - The parameter mapping array. Ex. [\"myDashboardParam\", \"includedDashboardParam\"], when <b>myDashboardParam</b> changes, it will fire a change in <b>includedDashboardParam</b>, which the included dashboard may be listening for.<br><b>NOTE:</b> only public parameters from the included dashboard will be mapped.</li>\n    <li><b>Datasource Mapping</b> - The datasource mapping array. Ex. [\"myDashboardDatasource\", \"includedDashboardDatasource\"] - components using <b>includedDashboardDatasource</b>, will use <b>myDashboardDatasource</b> instead.\n</ul>\n<p>In this example, we included the CDE Sample dashboard, twice. <br>\nYou can change the parameter <b>Territory</b> in the left one, using the select component, which will trigger changes in the included dashboard. (Look at the table).\n<p>In the dashboard on the right, we changed the datasources, both the chart and the table one, to show how our imaginary RC car business is going (won't be making a living off that one though...).</p>\n</p> "
      },
      {
       "name": "fontSize",

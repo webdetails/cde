@@ -452,5 +452,5 @@
  "datasources": {
   "rows": []
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/Raphael/raphael.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/legacy/tests/Raphael/raphael.cdfde"
 }

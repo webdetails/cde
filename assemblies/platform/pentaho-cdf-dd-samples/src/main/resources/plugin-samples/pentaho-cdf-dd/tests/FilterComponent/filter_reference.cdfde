@@ -885,7 +885,7 @@
       }
     ]
   },
-  "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/FilterComponent/filter_reference.cdfde",
+  "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/FilterComponent/filter_reference.cdfde",
   "layout": {
     "rows": [
       {

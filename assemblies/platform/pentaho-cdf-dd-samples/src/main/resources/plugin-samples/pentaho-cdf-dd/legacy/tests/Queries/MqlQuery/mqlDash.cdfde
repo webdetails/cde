@@ -600,5 +600,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/Queries/MqlQuery/mqlDash.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/legacy/tests/Queries/MqlQuery/mqlDash.cdfde"
 }

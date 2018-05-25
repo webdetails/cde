@@ -504,7 +504,7 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/VisualizationApi/VisualizationAPIreference.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/VisualizationApi/VisualizationAPIreference.cdfde",
  "layout": {
   "rows": [
    {
