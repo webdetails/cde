@@ -608,7 +608,7 @@
  "datasources": {
   "rows": []
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/DuplicateComponent/duplicateComponent.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/legacy/tests/DuplicateComponent/duplicateComponent.cdfde",
  "layout": {
   "rows": [
    {

@@ -3940,7 +3940,7 @@
       }
     ]
   },
-  "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/FilterComponent/filter_visual_guide.cdfde",
+  "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/FilterComponent/filter_visual_guide.cdfde",
   "layout": {
     "rows": [
       {

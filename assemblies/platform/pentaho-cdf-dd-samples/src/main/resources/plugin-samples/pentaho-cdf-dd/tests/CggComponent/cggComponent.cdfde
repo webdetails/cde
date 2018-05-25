@@ -118,7 +118,7 @@
           {
             "name": "resourceFile",
             "type": "CggPath",
-            "value": "public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/CggComponent/cggComponent_bar2.js"
+            "value": "${solution:cggComponent_bar2.js}"
           },
           {
             "name": "height",
@@ -3042,7 +3042,7 @@
           {
             "name": "resourceFile",
             "type": "CggPath",
-            "value": "public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/CggComponent/cggComponent_bar1.js"
+            "value": "${solution:cggComponent_bar1.js}"
           },
           {
             "name": "height",
@@ -3264,7 +3264,7 @@
       }
     ]
   },
-  "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/CggComponent/cggComponent.cdfde",
+  "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/CggComponent/cggComponent.cdfde",
   "layout": {
     "rows": [
       {

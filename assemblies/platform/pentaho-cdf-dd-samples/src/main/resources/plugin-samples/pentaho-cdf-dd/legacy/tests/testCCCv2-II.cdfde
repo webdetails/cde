@@ -3849,7 +3849,7 @@
       }
     ]
   },
-  "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/testCCCv2-II.cdfde",
+  "filename": "/public/plugin-samples/pentaho-cdf-dd/legacy/tests/testCCCv2-II.cdfde",
   "layout": {
     "rows": [
       {

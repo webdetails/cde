@@ -1845,7 +1845,7 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/NewMapComponent/maps_addins_reference.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/legacy/tests/NewMapComponent/maps_addins_reference.cdfde",
  "layout": {
   "rows": [
    {

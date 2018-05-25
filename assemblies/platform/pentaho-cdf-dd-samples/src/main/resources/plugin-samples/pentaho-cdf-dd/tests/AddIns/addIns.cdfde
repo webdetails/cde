@@ -2470,7 +2470,7 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/AddIns/addIns.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/AddIns/addIns.cdfde",
  "layout": {
   "rows": [
    {

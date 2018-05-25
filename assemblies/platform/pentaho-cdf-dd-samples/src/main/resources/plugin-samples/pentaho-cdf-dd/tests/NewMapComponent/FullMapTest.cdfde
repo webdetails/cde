@@ -92,7 +92,7 @@
      {
       "name": "markerCggGraph",
       "type": "String",
-      "value": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewMapComponent/salesGraphForMarker.js"
+      "value": "${solution:salesGraphForMarker.js}"
      },
      {
       "name": "markerClickFunction",
@@ -1901,7 +1901,7 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewMapComponent/FullMapTest.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/NewMapComponent/FullMapTest.cdfde",
  "layout": {
   "rows": [
    {

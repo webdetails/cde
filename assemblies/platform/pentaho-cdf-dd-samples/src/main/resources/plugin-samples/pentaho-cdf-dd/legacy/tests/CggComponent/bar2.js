@@ -9,7 +9,7 @@ var render_bar2 = {
   listeners: [],
   chartDefinition:  {
     dataAccessId: "sqlQuery",
-    path: "/public/plugin-samples/pentaho-cdf-dd/tests/CggComponent/cggComponent.cda",
+    path: "/public/plugin-samples/pentaho-cdf-dd/legacy/tests/CggComponent/cggComponent.cda",
     width: 300,
     height: 300,
     extensionPoints: [],

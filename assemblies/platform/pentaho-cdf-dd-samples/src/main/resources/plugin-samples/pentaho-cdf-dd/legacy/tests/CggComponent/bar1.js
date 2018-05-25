@@ -9,7 +9,7 @@ var render_bar1 = {
   listeners: [],
   chartDefinition:  {
     dataAccessId: "sampleQuery",
-    path: "/public/plugin-samples/pentaho-cdf-dd/tests/CggComponent/cggComponent.cda",
+    path: "/public/plugin-samples/pentaho-cdf-dd/legacy/tests/CggComponent/cggComponent.cda",
     width: 300,
     height: 300,
     extensionPoints: [],

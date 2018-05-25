@@ -237,7 +237,7 @@
  "datasources": {
   "rows": []
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/OlapSelector/olapSelector.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/legacy/tests/OlapSelector/olapSelector.cdfde",
  "layout": {
   "rows": [
    {

@@ -906,7 +906,7 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/Queries/Compound/compoundQueryDash.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/Queries/Compound/compoundQueryDash.cdfde",
  "layout": {
   "rows": [
    {

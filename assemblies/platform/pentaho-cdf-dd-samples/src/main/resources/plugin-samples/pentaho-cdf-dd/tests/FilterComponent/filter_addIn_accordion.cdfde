@@ -1078,7 +1078,7 @@
       }
     ]
   },
-  "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/FilterComponent/filter_addIn_accordion.cdfde",
+  "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/FilterComponent/filter_addIn_accordion.cdfde",
   "layout": {
     "rows": [
       {
