@@ -43,7 +43,13 @@
       <type>xml</type>
       <classifier>features</classifier>
     </dependency>
-
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
+      <artifactId>solr-proxy-service-assembly</artifactId>
+      <version>${solr-proxy-service-assembly.version}</version>
+      <type>xml</type>
+      <classifier>features</classifier>
+    </dependency>
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
       <artifactId>cde-core-impl</artifactId>

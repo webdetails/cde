@@ -19,5 +19,6 @@
     <module>platform</module>
     <module>cde-renderer</module>
     <module>pdi</module>
+    <module>solr-proxy-service</module>
   </modules>
 </project>
