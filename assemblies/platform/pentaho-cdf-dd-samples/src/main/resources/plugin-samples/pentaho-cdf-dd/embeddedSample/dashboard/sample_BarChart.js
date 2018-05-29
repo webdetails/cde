@@ -10,7 +10,7 @@ var render_BarChart = {
   listeners: [],
   chartDefinition:  {
     dataAccessId: "ThreeColumns",
-    path: "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/embeddedSample/dashboard/sample.cda",
+    path: "/public/plugin-samples/pentaho-cdf-dd/embeddedSample/dashboard/sample.cda",
     width: 350,
     height: 200,
     extensionPoints: [],

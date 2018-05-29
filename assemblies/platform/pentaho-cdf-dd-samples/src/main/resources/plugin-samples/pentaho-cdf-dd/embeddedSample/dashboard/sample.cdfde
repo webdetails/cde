@@ -2546,7 +2546,7 @@
       }
     ]
   },
-  "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/embeddedSample/dashboard/sample.cdfde",
+  "filename": "/public/plugin-samples/pentaho-cdf-dd/embeddedSample/dashboard/sample.cdfde",
   "layout": {
     "rows": [
       {
@@ -2561,7 +2561,7 @@
           {
             "name": "resourceFile",
             "type": "ResourceFile",
-            "value": "${solution:/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/embeddedSample/myModule.js}"
+            "value": "${solution:/public/plugin-samples/pentaho-cdf-dd/embeddedSample/myModule.js}"
           },
           {
             "name": "resourceType",

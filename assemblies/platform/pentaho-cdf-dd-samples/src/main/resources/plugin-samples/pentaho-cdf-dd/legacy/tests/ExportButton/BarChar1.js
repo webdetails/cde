@@ -10,7 +10,7 @@ var render_BarChar1 = {
   listeners: [],
   chartDefinition:  {
     dataAccessId: "Char3Col",
-    path: "/public/plugin-samples/pentaho-cdf-dd/tests/ExportButton/exportbutton.cda",
+    path: "/public/plugin-samples/pentaho-cdf-dd/legacy/tests/ExportButton/exportbutton.cda",
     width: 300,
     height: 500,
     extensionPoints: [],
