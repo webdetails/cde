@@ -1,0 +1,6 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="48" height="16" viewBox="0 0 48 16">
+  <title>variation-arrows-sprite</title>
+  <polygon id="Arrow" points="8.47 11.23 8.47 3 7.55 3 7.55 11.24 4.64 8.35 4 9.02 8.01 13 12 9.02 11.36 8.36 8.47 11.23" style="fill: #b71c1c"/>
+  <polygon id="Arrow-2" points="39.53 4.77 39.53 13 40.45 13 40.45 4.76 43.36 7.65 44 6.98 39.99 3 36 6.98 36.65 7.64 39.53 4.77" style="fill: #00845b"/>
+  <line x1="20" y1="8" x2="28" y2="8" style="fill: none;stroke: #f2c249;stroke-miterlimit: 10"/>
+</svg>

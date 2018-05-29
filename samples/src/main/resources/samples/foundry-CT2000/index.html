@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    
+    <title>CDE Embedded Dashboard on Karaf</title>
+
+    <script src="/pentaho/webcontext.js"></script>
+  </head>
+
+  <body>
+    <div id="content" class="container"></div>
+
+    <script type="text/javascript">
+      require([
+        'dash!/samples/foundry-CT2000/resources/sample.wcdf&debug=true&bypassCache=true'
+      ], function(SampleDash) {
+        var sampleDash = new SampleDash("content");
+        
+        sampleDash.render();
+      });
+    </script>
+  </body>
+</html>

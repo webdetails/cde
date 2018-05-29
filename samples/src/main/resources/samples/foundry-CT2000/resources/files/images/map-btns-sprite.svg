@@ -1,0 +1,83 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="56" height="140" viewBox="0 0 56 140">
+  <title>map-btns-sprite</title>
+  <g>
+    <line x1="14" y1="8" x2="14" y2="20" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+    <line x1="8" y1="14" x2="20" y2="14" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+  </g>
+  <line x1="8" y1="42" x2="20" y2="42" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+  <g>
+    <g>
+      <line x1="14" y1="69" x2="14" y2="64" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+      <polyline points="12 66 14 64 16 66" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+    </g>
+    <g>
+      <line x1="15" y1="70" x2="8" y2="70" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+      <polyline points="10 72 8 70 10 68" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+    </g>
+    <g>
+      <line x1="15" y1="70" x2="20" y2="70" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+      <polyline points="18 68 20 70 18 72" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+    </g>
+    <g>
+      <line x1="14" y1="69" x2="14" y2="76" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+      <polyline points="16 74 14 76 12 74" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+    </g>
+  </g>
+  <g>
+    <g>
+      <circle cx="18" cy="101.8" r="2.5" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+      <line x1="19.7" y1="103.6" x2="21.7" y2="105.6" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+    </g>
+    <polyline points="12.9 102.4 6.3 102.4 6.3 96.4 6.3 90.4 12.3 90.4 18.3 90.4 18.3 97" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+  </g>
+  <g>
+    <line x1="42" y1="8" x2="42" y2="20" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+    <line x1="36" y1="14" x2="48" y2="14" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+  </g>
+  <line x1="36" y1="42" x2="48" y2="42" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+  <g>
+    <g>
+      <line x1="42" y1="69" x2="42" y2="64" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+      <polyline points="40 66 42 64 44 66" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+    </g>
+    <g>
+      <line x1="43" y1="70" x2="36" y2="70" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+      <polyline points="38 72 36 70 38 68" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+    </g>
+    <g>
+      <line x1="43" y1="70" x2="48" y2="70" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+      <polyline points="46 68 48 70 46 72" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+    </g>
+    <g>
+      <line x1="42" y1="69" x2="42" y2="76" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+      <polyline points="44 74 42 76 40 74" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+    </g>
+  </g>
+  <g>
+    <g>
+      <circle cx="46" cy="101.8" r="2.5" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+      <line x1="47.7" y1="103.6" x2="49.7" y2="105.6" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+    </g>
+    <polyline points="40.9 102.4 34.3 102.4 34.3 96.4 34.3 90.4 40.3 90.4 46.3 90.4 46.3 97" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+  </g>
+  <g>
+    <circle cx="37.9" cy="122.5" r="1.5" style="fill: #fff"/>
+    <circle cx="42.9" cy="122" r="1.5" style="fill: #fff"/>
+    <polyline points="41 130.5 34.4 130.5 34.4 124.5 34.4 118.5 40.4 118.5 46.4 118.5 46.4 125.1" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+    <circle cx="38.9" cy="127" r="1.5" style="fill: #fff"/>
+    <g>
+      <line x1="45.3" y1="129.3" x2="49.6" y2="133.5" style="fill: none;stroke: #fff;stroke-miterlimit: 10"/>
+      <polygon points="45.5 132.8 43.8 127.8 48.8 129.4 45.5 132.8" style="fill: #fff"/>
+    </g>
+  </g>
+  <g>
+    <circle cx="9.9" cy="122.5" r="1.5" style="fill: #333"/>
+    <circle cx="14.9" cy="122" r="1.5" style="fill: #333"/>
+    <polyline points="13 130.5 6.4 130.5 6.4 124.5 6.4 118.5 12.4 118.5 18.4 118.5 18.4 125.1" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+    <circle cx="10.9" cy="127" r="1.5" style="fill: #333"/>
+    <g>
+      <line x1="17.3" y1="129.3" x2="21.6" y2="133.5" style="fill: none;stroke: #333;stroke-miterlimit: 10"/>
+      <polygon points="17.64 133.5 15.8 127.8 21.2 129.62 17.64 133.5" style="fill: #333"/>
+    </g>
+  </g>
+</svg>
