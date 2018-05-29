@@ -1092,7 +1092,7 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/AddIns/TemplateTypes/TemplateAddins.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/AddIns/TemplateTypes/TemplateAddins.cdfde",
  "layout": {
   "rows": [
    {

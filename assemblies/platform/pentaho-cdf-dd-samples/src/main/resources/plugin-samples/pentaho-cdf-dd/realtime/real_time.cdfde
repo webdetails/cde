@@ -1646,7 +1646,7 @@
 			}
 		]
 	},
-	"filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/realtime/real_time.cdfde",
+	"filename": "/public/plugin-samples/pentaho-cdf-dd/realtime/real_time.cdfde",
 	"layout": {
 		"rows": [{
 				"id": "2c7b9309-ac54-01a3-5608-b1ad4bddcd50",
