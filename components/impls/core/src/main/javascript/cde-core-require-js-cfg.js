@@ -67,7 +67,8 @@
     'SiteMapComponent',
     'ViewManagerComponent',
     'GoogleAnalyticsComponent',
-    'DashboardComponent'
+    'DashboardComponent',
+    'NewMapComponent'          // moved from Pentaho
   ].forEach(function(component) {
     requireCfg.packages.push({
       name: 'cde/components/' + component,

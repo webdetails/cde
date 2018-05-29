@@ -207,6 +207,33 @@
       ]
     },
     {
+      name: "cde/components/NewMapComponent",
+      exclude: [
+        // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
+        'css!cde/components/NewMapComponent/Map',
+        'css!cde/components/NewMapComponent/ControlPanel/ControlPanel',
+        'css!cde/components/NewMapComponent/engines/openlayers2/styleOpenLayers2',
+        'css!cde/components/NewMapComponent/engines/google/styleGoogle',
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "amd!cdf/lib/underscore",
+        "cdf/components/UnmanagedComponent",
+        "cdf/Logger",
+        'cdf/components/CggComponent.ext',
+        'cdf/lib/BaseEvents',
+        'cdf/lib/baseSelectionTree/Tree',
+        'cdf/lib/baseSelectionTree/BaseSelectionTree',
+        // mapengine
+        "cdf/lib/Base",
+        // mapengine-openlayers
+        "cdf/lib/OpenLayers",
+        "cdf/lib/OpenStreetMap",
+        // map addIns
+        "cdf/AddIn",
+        "cdf/Dashboard.Clean"
+      ]
+    },
+    {
       name: "cde/components/DuplicateComponent",
       exclude: [
         // CDF libs / components / utils
