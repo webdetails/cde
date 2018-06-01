@@ -427,7 +427,7 @@
      },
      {
       "name": "mapName",
-      "value": "${solution:map-def/chicago_beats.js}",
+      "value": "/public/plugin-samples/pentaho-cdf-dd/tests/GMapsOverlay/map-def/chicago_beats.js",
       "type": "String"
      },
      {
