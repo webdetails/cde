@@ -32,7 +32,7 @@
      {
       "name": "vizId",
       "type": "Datasource",
-      "value": "pentaho/visual/models/bar"
+      "value": "pentaho/visual/models/Bar"
      },
      {
       "name": "vizOptions",
