@@ -2,14 +2,14 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    
+
     <title>CDE Embedded Dashboard on Karaf</title>
 
-    <script src="/pentaho/webcontext.js"></script>
+    <script src="/pentaho/webcontext.js?application=pentaho-cdf"></script>
   </head>
 
   <body>
-    
+
     <!-- Start; CDE Docs template -->
     <div class="webdetailsWrapper">
       <div class="webdetailsHead">
@@ -23,7 +23,7 @@
         <div class="webdetailsPanelsContainer">
           <div class="panelContainer selectedPanel">
             <div class="webdetailsPanelContainerLeft"></div>
-            
+
             <div class="webdetailsPanelContainerCenter">
 
               <div class="panelTitle">
@@ -57,7 +57,7 @@
         'dash!/samples/karaf-dashboard/resources/dashboard-component/dash.wcdf&debug=true&bypassCache=true'
       ], function(SampleDash) {
         var sampleDash = new SampleDash("content");
-        
+
         sampleDash.render();
       });
     </script>
