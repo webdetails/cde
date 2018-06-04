@@ -12,6 +12,16 @@
   <artifactId>pentaho-cde-renderer</artifactId>
   <packaging>feature</packaging>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-servlets</artifactId>
+        <version>${jetty.version}</version>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
 
     <!-- Feature Dependencies -->
@@ -43,13 +53,13 @@
       <type>xml</type>
       <classifier>features</classifier>
     </dependency>
+
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
-      <artifactId>solr-proxy-service-assembly</artifactId>
-      <version>${solr-proxy-service-assembly.version}</version>
-      <type>xml</type>
-      <classifier>features</classifier>
+      <artifactId>solr-proxy</artifactId>
+      <version>${project.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
       <artifactId>cde-core-impl</artifactId>

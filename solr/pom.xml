@@ -9,11 +9,39 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>solr-proxy-service</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>solr-proxy</artifactId>
+    <packaging>bundle</packaging>
 
-    <modules>
-        <module>solr-proxy</module>
-    </modules>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <!-- We need to explicitlly exclude org.eclipse.jetty.servlets.ProxyServlet
+                             because we are using the Transparent inner class and the plugin is using
+                             org.eclipse.jetty.servlets.ProxyServlet like a package name, witch is wrong. -->
+                        <Import-Package>!org.eclipse.jetty.servlets.ProxyServlet,org.eclipse.jetty
+                            .servlets,*</Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlets</artifactId>
+            <version>8.1.19.v20160209</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

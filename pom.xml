@@ -69,6 +69,7 @@
     <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
     <jersey-multipart.version>1.19.1</jersey-multipart.version>
     <jersey-common.version>2.5.1</jersey-common.version>
+    <jetty.version>8.1.19.v20160209</jetty.version>
     <jackson-mapper-asl.version>1.8.2</jackson-mapper-asl.version>
     <jackson-core-asl.version>1.9.3</jackson-core-asl.version>
     <fasterxml.jackson.core.version>2.9.4</fasterxml.jackson.core.version>
@@ -470,6 +471,11 @@
             <groupId>*</groupId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-servlets</artifactId>
+        <version>${jetty.version}</version>
       </dependency>
       <dependency>
         <groupId>com.hds.ensemble</groupId>
