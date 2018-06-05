@@ -23,7 +23,7 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <!-- We need to explicitlly exclude org.eclipse.jetty.servlets.ProxyServlet
                              because we are using the Transparent inner class and the plugin is using
-                             org.eclipse.jetty.servlets.ProxyServlet like a package name, witch is wrong. -->
+                             org.eclipse.jetty.servlets.ProxyServlet like a package name, which is wrong. -->
                         <Import-Package>!org.eclipse.jetty.servlets.ProxyServlet,org.eclipse.jetty
                             .servlets,*</Import-Package>
                     </instructions>
