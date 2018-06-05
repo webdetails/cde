@@ -6413,14 +6413,14 @@
             "value": "continentFilterQuery"
           },
           {
-            "name": "parameters",
+            "name": "macros",
             "type": "CdaParameters",
             "value": "[]"
           },
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://172.20.43.56:8181/solr/solr"
+            "value": "http://localhost:8983/solr/"
           },
           {
             "name": "collection",
@@ -6468,7 +6468,7 @@
             "value": "12500"
           },
           {
-            "name": "rawQueryParams",
+            "name": "rawQueryParameters",
             "type": "String",
             "value": "group=true&group.main=true&group.field=Continent"
           },
@@ -6505,14 +6505,14 @@
             "value": "yearFilterQuery"
           },
           {
-            "name": "parameters",
+            "name": "macros",
             "type": "CdaParameters",
             "value": "[]"
           },
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://172.20.43.56:8181/solr/solr"
+            "value": "http://localhost:8983/solr/"
           },
           {
             "name": "collection",
@@ -6560,7 +6560,7 @@
             "value": "12500"
           },
           {
-            "name": "rawQueryParams",
+            "name": "rawQueryParameters",
             "type": "String",
             "value": "group=true&group.main=true&group.field=Year"
           },
@@ -6597,14 +6597,14 @@
             "value": "technologyFilterQuery"
           },
           {
-            "name": "parameters",
+            "name": "macros",
             "type": "CdaParameters",
             "value": "[]"
           },
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://172.20.43.56:8181/solr/solr"
+            "value": "http://localhost:8983/solr/"
           },
           {
             "name": "collection",
@@ -6652,7 +6652,7 @@
             "value": "12500"
           },
           {
-            "name": "rawQueryParams",
+            "name": "rawQueryParameters",
             "type": "String",
             "value": "group=true&group.main=true&group.field=Tech2"
           },
@@ -6689,14 +6689,14 @@
             "value": "kpiQuery"
           },
           {
-            "name": "parameters",
+            "name": "macros",
             "type": "CdaParameters",
             "value": "[[\"year\",\"yearParam\",\"String\",\"\",\"\"],[\"indicator\",\"indicatorParam\",\"String\",\"\",\"\"],[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"]]"
           },
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://172.20.43.56:8181/solr/solr"
+            "value": "http://localhost:8983/solr/"
           },
           {
             "name": "collection",
@@ -6711,7 +6711,7 @@
           {
             "name": "q",
             "type": "String",
-            "value": "Year:$year AND Continent:$continent AND Tech2:$technology"
+            "value": "Year:${year} AND Continent:${continent} AND Tech2:${technology}"
           },
           {
             "name": "fq",
@@ -6721,7 +6721,7 @@
           {
             "name": "fl",
             "type": "String",
-            "value": "$indicator"
+            "value": "${indicator}"
           },
           {
             "name": "df",
@@ -6744,14 +6744,14 @@
             "value": "1"
           },
           {
-            "name": "rawQueryParams",
+            "name": "rawQueryParameters",
             "type": "String",
             "value": ""
           },
           {
             "name": "schemaColumnNames",
             "type": "SchemaColumnNamesArray",
-            "value": "[\"$indicator\",\"Vs Prev Year\"]"
+            "value": "[\"${indicator}\",\"Vs Prev Year\"]"
           },
           {
             "name": "schemaColumnTypes",
@@ -6761,7 +6761,7 @@
           {
             "name": "schemaColumnPaths",
             "type": "SchemaColumnPathsArray",
-            "value": "[\"$indicator\",\"$indicator\"]"
+            "value": "[\"${indicator}\",\"${indicator}\"]"
           }
         ],
         "rowName": "Apache Solr",
@@ -6781,14 +6781,14 @@
             "value": "popUpChartQuery"
           },
           {
-            "name": "parameters",
+            "name": "macros",
             "type": "CdaParameters",
             "value": "[[\"year\",\"yearParam\",\"String\",\"\",\"\"],[\"indicator\",\"indicatorParam\",\"String\",\"\",\"\"],[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"]]"
           },
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://172.20.43.56:8181/solr/solr"
+            "value": "http://localhost:8983/solr/"
           },
           {
             "name": "collection",
@@ -6803,7 +6803,7 @@
           {
             "name": "q",
             "type": "String",
-            "value": "Year:$year AND Continent:$continent AND Tech2:$technology"
+            "value": "Year:${year} AND Continent:${continent} AND Tech2:${technology}"
           },
           {
             "name": "fq",
@@ -6813,7 +6813,7 @@
           {
             "name": "fl",
             "type": "String",
-            "value": "$indicator,Tech3"
+            "value": "${indicator},Tech3"
           },
           {
             "name": "df",
@@ -6836,14 +6836,14 @@
             "value": "12500"
           },
           {
-            "name": "rawQueryParams",
+            "name": "rawQueryParameters",
             "type": "String",
             "value": ""
           },
           {
             "name": "schemaColumnNames",
             "type": "SchemaColumnNamesArray",
-            "value": "[\"Technology\",\"$indicator\"]"
+            "value": "[\"Technology\",\"${indicator}\"]"
           },
           {
             "name": "schemaColumnTypes",
@@ -6853,7 +6853,7 @@
           {
             "name": "schemaColumnPaths",
             "type": "SchemaColumnPathsArray",
-            "value": "[\"Tech3\",\"$indicator\"]"
+            "value": "[\"Tech3\",\"${indicator}\"]"
           }
         ],
         "rowName": "Apache Solr",
@@ -6873,14 +6873,14 @@
             "value": "top3TableQuery"
           },
           {
-            "name": "parameters",
+            "name": "macros",
             "type": "CdaParameters",
             "value": "[[\"year\",\"yearParam\",\"String\",\"\",\"\"],[\"indicator\",\"indicatorParam\",\"String\",\"\",\"\"],[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"]]"
           },
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://172.20.43.56:8181/solr/solr"
+            "value": "http://localhost:8983/solr/"
           },
           {
             "name": "collection",
@@ -6895,7 +6895,7 @@
           {
             "name": "q",
             "type": "String",
-            "value": "Year:$year AND Continent:$continent AND Tech2:$technology"
+            "value": "Year:${year} AND Continent:${continent} AND Tech2:${technology}"
           },
           {
             "name": "fq",
@@ -6905,7 +6905,7 @@
           {
             "name": "fl",
             "type": "String",
-            "value": "Country,$indicator"
+            "value": "Country,${indicator}"
           },
           {
             "name": "df",
@@ -6928,14 +6928,14 @@
             "value": "3"
           },
           {
-            "name": "rawQueryParams",
+            "name": "rawQueryParameters",
             "type": "String",
             "value": ""
           },
           {
             "name": "schemaColumnNames",
             "type": "SchemaColumnNamesArray",
-            "value": "[\"Country\",\"$indicator\"]"
+            "value": "[\"Country\",\"${indicator}\"]"
           },
           {
             "name": "schemaColumnTypes",
@@ -6945,7 +6945,7 @@
           {
             "name": "schemaColumnPaths",
             "type": "SchemaColumnPathsArray",
-            "value": "[\"Country\",\"$indicator\"]"
+            "value": "[\"Country\",\"${indicator}\"]"
           }
         ],
         "rowName": "Apache Solr",
@@ -6965,14 +6965,14 @@
             "value": "indicatorBarQuery"
           },
           {
-            "name": "parameters",
+            "name": "macros",
             "type": "CdaParameters",
             "value": "[[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"],[\"indicator\",\"indicatorParam\",\"String\",\"\",\"\"]]"
           },
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://172.20.43.56:8181/solr/solr"
+            "value": "http://localhost:8983/solr/"
           },
           {
             "name": "collection",
@@ -6987,7 +6987,7 @@
           {
             "name": "q",
             "type": "String",
-            "value": "Continent:$continent AND Tech2:$technology"
+            "value": "Continent:${continent} AND Tech2:${technology}"
           },
           {
             "name": "fq",
@@ -6997,7 +6997,7 @@
           {
             "name": "fl",
             "type": "String",
-            "value": "Country,$indicator"
+            "value": "Country,${indicator}"
           },
           {
             "name": "df",
@@ -7020,14 +7020,14 @@
             "value": "12500"
           },
           {
-            "name": "rawQueryParams",
+            "name": "rawQueryParameters",
             "type": "String",
             "value": ""
           },
           {
             "name": "schemaColumnNames",
             "type": "SchemaColumnNamesArray",
-            "value": "[\"Geo\",\"$indicator\"]"
+            "value": "[\"Geo\",\"${indicator}\"]"
           },
           {
             "name": "schemaColumnTypes",
@@ -7037,7 +7037,7 @@
           {
             "name": "schemaColumnPaths",
             "type": "SchemaColumnPathsArray",
-            "value": "[\"Country\",\"$indicator\"]"
+            "value": "[\"Country\",\"${indicator}\"]"
           }
         ],
         "rowName": "Apache Solr",
@@ -7057,14 +7057,14 @@
             "value": "indicatorScatterQuery"
           },
           {
-            "name": "parameters",
+            "name": "macros",
             "type": "CdaParameters",
             "value": "[[\"year\",\"yearParam\",\"String\",\"\",\"\"],[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"]]"
           },
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://172.20.43.56:8181/solr/solr"
+            "value": "http://localhost:8983/solr/"
           },
           {
             "name": "collection",
@@ -7079,7 +7079,7 @@
           {
             "name": "q",
             "type": "String",
-            "value": "Year:$year AND Continent:$continent AND Tech2:$technology"
+            "value": "Year:${year} AND Continent:${continent} AND Tech2:${technology}"
           },
           {
             "name": "fq",
@@ -7112,7 +7112,7 @@
             "value": "12500"
           },
           {
-            "name": "rawQueryParams",
+            "name": "rawQueryParameters",
             "type": "String",
             "value": ""
           },
@@ -7149,14 +7149,14 @@
             "value": "cardQuery"
           },
           {
-            "name": "parameters",
+            "name": "macros",
             "type": "CdaParameters",
             "value": "[[\"year\",\"yearParam\",\"String\",\"\",\"\"],[\"indicator\",\"indicatorParam\",\"String\",\"\",\"\"],[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"]]"
           },
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://172.20.43.56:8181/solr/solr"
+            "value": "http://localhost:8983/solr/"
           },
           {
             "name": "collection",
@@ -7171,7 +7171,7 @@
           {
             "name": "q",
             "type": "String",
-            "value": "Year:$year AND Continent:$continent AND Tech2:$technology"
+            "value": "Year:${year} AND Continent:${continent} AND Tech2:${technology}"
           },
           {
             "name": "fq",
@@ -7181,7 +7181,7 @@
           {
             "name": "fl",
             "type": "String",
-            "value": "Tech3,Tech2,$indicator"
+            "value": "Tech3,Tech2,${indicator}"
           },
           {
             "name": "df",
@@ -7204,14 +7204,14 @@
             "value": "12500"
           },
           {
-            "name": "rawQueryParams",
+            "name": "rawQueryParameters",
             "type": "String",
             "value": "group=true&group.main=true&group.field=Tech3"
           },
           {
             "name": "schemaColumnNames",
             "type": "SchemaColumnNamesArray",
-            "value": "[\"Technology\",\"Tech2\",\"$indicator\",\"Vs Prev year\"]"
+            "value": "[\"Technology\",\"Tech2\",\"${indicator}\",\"Vs Prev year\"]"
           },
           {
             "name": "schemaColumnTypes",
@@ -7221,7 +7221,7 @@
           {
             "name": "schemaColumnPaths",
             "type": "SchemaColumnPathsArray",
-            "value": "[\"Tech3\",\"Tech2\",\"$indicator\",\"$indicator\"]"
+            "value": "[\"Tech3\",\"Tech2\",\"${indicator}\",\"${indicator}\"]"
           }
         ],
         "rowName": "Apache Solr",
@@ -7241,14 +7241,14 @@
             "value": "mapKTRQuery"
           },
           {
-            "name": "parameters",
+            "name": "macros",
             "type": "CdaParameters",
             "value": "[[\"year\",\"yearParam\",\"String\",\"\",\"\"],[\"indicator\",\"indicatorParam\",\"String\",\"\",\"\"],[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"]]"
           },
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://172.20.43.56:8181/solr/solr"
+            "value": "http://localhost:8983/solr/"
           },
           {
             "name": "collection",
@@ -7263,7 +7263,7 @@
           {
             "name": "q",
             "type": "String",
-            "value": "Year:$year AND Continent:$continent AND Tech2:$technology"
+            "value": "Year:${year} AND Continent:${continent} AND Tech2:${technology}"
           },
           {
             "name": "fq",
@@ -7273,7 +7273,7 @@
           {
             "name": "fl",
             "type": "String",
-            "value": "latitude,longitude,$indicator,Country,colorColumn"
+            "value": "latitude,longitude,${indicator},Country,colorColumn"
           },
           {
             "name": "df",
@@ -7296,7 +7296,7 @@
             "value": "12500"
           },
           {
-            "name": "rawQueryParams",
+            "name": "rawQueryParameters",
             "type": "String",
             "value": ""
           },
@@ -7313,7 +7313,7 @@
           {
             "name": "schemaColumnPaths",
             "type": "SchemaColumnPathsArray",
-            "value": "[\"latitude\",\"longitude\",\"$indicator\",\"Country\",\"colorColumn\"]"
+            "value": "[\"latitude\",\"longitude\",\"${indicator}\",\"Country\",\"colorColumn\"]"
           }
         ],
         "rowName": "Apache Solr",

@@ -1,19 +1,20 @@
 # OS-generated files
 .DS_Store*
 
-#Eclipse project files
+# Eclipse project files
 .classpath
 .project
 .settings
 .metadata
 
-#IntelliJ files
+# IntelliJ files
 .idea/
 *.iml
 
-#Output dir
+# Output dir
 **/target
 
-#Node dirs
+# Node
+package-lock.json
 **/node
 **/node_modules

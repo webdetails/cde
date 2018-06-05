@@ -23,14 +23,14 @@
       <Property name="endpoint">solrEndpoint</Property>
       <Property name="collection">solrCollection</Property>
       <Property name="requestHandler">solrRequestHandler</Property>
-      <Property name="rawQueryParams">solrRawQueryParameters</Property>
+      <Property name="rawQueryParameters">solrRawQueryParameters</Property>
 
       <Property name="q">solrQuery</Property>
       <Property name="fq">solrFilterQuery</Property>
       <Property name="fl">solrFieldList</Property>
       <Property name="df">solrDefaultField</Property>
 
-      <Property>parameters</Property>
+      <Property name="macros">parameters</Property>
       
       <Property name="start">solrStart</Property>
       <Property name="rows">solrRows</Property>

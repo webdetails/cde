@@ -79,7 +79,7 @@
       <Parent>BaseProperty</Parent>
       <DefaultValue/>
       <Description>Field List</Description>
-      <Tooltip>Specified the list of fields to be returned.</Tooltip>
+      <Tooltip>Specifies the list of fields to be returned.</Tooltip>
       <InputType>String</InputType>
       <OutputType>String</OutputType>
       <Order>605</Order>
