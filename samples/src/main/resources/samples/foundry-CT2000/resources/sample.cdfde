@@ -6420,7 +6420,7 @@
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://localhost:8983/solr/"
+            "value": "http://172.20.43.47:8983/solr/"
           },
           {
             "name": "collection",
@@ -6512,7 +6512,7 @@
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://localhost:8983/solr/"
+            "value": "http://172.20.43.47:8983/solr/"
           },
           {
             "name": "collection",
@@ -6604,7 +6604,7 @@
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://localhost:8983/solr/"
+            "value": "http://172.20.43.47:8983/solr/"
           },
           {
             "name": "collection",
@@ -6696,7 +6696,7 @@
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://localhost:8983/solr/"
+            "value": "http://172.20.43.47:8983/solr/"
           },
           {
             "name": "collection",
@@ -6788,7 +6788,7 @@
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://localhost:8983/solr/"
+            "value": "http://172.20.43.47:8983/solr/"
           },
           {
             "name": "collection",
@@ -6880,7 +6880,7 @@
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://localhost:8983/solr/"
+            "value": "http://172.20.43.47:8983/solr/"
           },
           {
             "name": "collection",
@@ -6972,7 +6972,7 @@
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://localhost:8983/solr/"
+            "value": "http://172.20.43.47:8983/solr/"
           },
           {
             "name": "collection",
@@ -7064,7 +7064,7 @@
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://localhost:8983/solr/"
+            "value": "http://172.20.43.47:8983/solr/"
           },
           {
             "name": "collection",
@@ -7156,7 +7156,7 @@
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://localhost:8983/solr/"
+            "value": "http://172.20.43.47:8983/solr/"
           },
           {
             "name": "collection",
@@ -7248,7 +7248,7 @@
           {
             "name": "endpoint",
             "type": "String",
-            "value": "http://localhost:8983/solr/"
+            "value": "http://172.20.43.47:8983/solr/"
           },
           {
             "name": "collection",
