@@ -2526,7 +2526,7 @@
 					}, {
 						"name": "html",
 						"type": "Html",
-						"value": "\u003Cdiv class=\u0022footer_ctools\u0022\u003E\r\n\r\n    \u003Cdiv class=\u0022pull-right\u0022\u003E\r\n        \u003Cspan class=\u0022footerInfo \u0022\u003E\r\n            \u0026copy; Hitachi Vantara Corporation \r\n        \r\n            \u003Cscript type=\u0022text/javascript\u0022\u003E\r\n                document.write(new Date().getFullYear());\r\n            \u003C/script\u003E. All Rights Reserved.\r\n        \u003C/span\u003E \r\n    \u003C/div\u003E \r\n\r\n\u003C/div\u003E "
+						"value": "\u003Cdiv class=\u0022footer_ctools\u0022\u003E\r\n\r\n    \u003Cdiv class=\u0022pull-right\u0022\u003E\r\n        \u003Cspan class=\u0022footerInfo \u0022\u003E\r\n            \u0026copy; Hitachi Vantara Corporation \u003Cspan id=\u0027footerYearSpan\u0027\u003E \u003C/span\u003E. All Rights Reserved.\r\n        \u003C/span\u003E \r\n    \u003C/div\u003E \r\n\u003C/div\u003E\r\n\u003Cscript type=\u0022text/javascript\u0022\u003E\r\n    document.getElementById(\u0027footerYearSpan\u0027).innerHTML = new Date().getFullYear();\r\n\u003C/script\u003E "
 					}, {
 						"name": "fontSize",
 						"type": "Integer",
