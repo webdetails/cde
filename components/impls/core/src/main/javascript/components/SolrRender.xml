@@ -30,8 +30,6 @@
       <Property name="fl">solrFieldList</Property>
       <Property name="df">solrDefaultField</Property>
 
-      <Property name="macros">parameters</Property>
-      
       <Property name="start">solrStart</Property>
       <Property name="rows">solrRows</Property>
       <Property name="wt">solrWriterType</Property>

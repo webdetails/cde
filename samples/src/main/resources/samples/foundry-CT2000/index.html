@@ -12,10 +12,22 @@
     <div id="content" class="container"></div>
 
     <script type="text/javascript">
+      var bypassCache = "true";
+      var debug = "true";
+
+      var dashboardPath = '/samples/foundry-CT2000/resources/sample.wcdf';
+      var alias = "foundry";
+      var queryString = dashboardPath + '&bypassCache=' + bypassCache + '&debug=' + debug + '&alias=' + alias;
+
       require([
-        'dash!/samples/foundry-CT2000/resources/sample.wcdf&debug=true&bypassCache=true'
+        'dash!' + queryString
       ], function(SampleDash) {
-        var sampleDash = new SampleDash("content");
+        var renderElement = "content";
+        var options = {
+          alias: alias
+        };
+
+        var sampleDash = new SampleDash(renderElement, options);
         
         sampleDash.render();
       });

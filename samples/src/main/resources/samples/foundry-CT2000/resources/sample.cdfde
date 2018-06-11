@@ -1025,7 +1025,7 @@
           {
             "name": "parameters",
             "type": "ValuesArray",
-            "value": "[[\"continentParam\",\"continentParam\"],[\"indicatorParam\",\"indicatorParam\"],[\"technologyParam\",\"technologyParam\"],[\"yearParam\",\"yearParam\"]]"
+            "value": "[[\"continent\",\"continentParam\"],[\"indicator\",\"indicatorParam\"],[\"technology\",\"technologyParam\"],[\"year\",\"yearParam\"]]"
           },
           {
             "name": "displayLength",
@@ -1150,7 +1150,7 @@
           {
             "name": "postFetch",
             "type": "JavaScript",
-            "value": "function f(data) {\n    /**\n     * Query KpiQuery returns metric and variation versus previous year\n     * When no data is returned, the mdx is returning a line with null values\n     * this is due to the fact that there is no breakdown by any dimension\n     * It's not possible to use a dummy dimension to workaround this issue\n     * since all of them are being used in the query\n     * Due to this MDX limitation we we're forced to validate the content\n     * of the resultset and when the values are null, resultset should be set\n     * has a empty array and the same with the queryInfo.totalRows\n    */\n    if(data.resultset[0][0] == null && data.resultset[0][1] == null) {\n        data.resultset = [];\n        data.queryInfo.totalRows = \"0\";\n    } else if(data.resultset[0][0] != null && data.resultset[0][1] == null) {\n        data.resultset[0][1] = 0;\n    }\n}\n "
+            "value": "function f(data) {\n    /**\n     * Query KpiQuery returns metric and variation versus previous year\n     * When no data is returned, the mdx is returning a line with null values\n     * this is due to the fact that there is no breakdown by any dimension\n     * It's not possible to use a dummy dimension to workaround this issue\n     * since all of them are being used in the query\n     * Due to this MDX limitation we we're forced to validate the content\n     * of the resultset and when the values are null, resultset should be set\n     * has a empty array and the same with the queryInfo.totalRows\n    */\n    var resultset = data.resultset;\n    var firstRow = resultset != null ? resultset[0] : null;\n\n    if (firstRow == null || (firstRow[0] == null && firstRow[1] == null)) {\n      data.resultset = [];\n      data.queryInfo.totalRows = \"0\";\n    } else if (firstRow[0] != null && firstRow[1] == null) {\n      data.resultset[0][1] = 0;\n    }\n}\n "
           },
           {
             "name": "preChange",
@@ -1244,7 +1244,7 @@
           {
             "name": "parameters",
             "type": "ValuesArray",
-            "value": "[[\"continentParam\",\"continentParam\"],[\"indicatorParam\",\"indicatorParam\"],[\"technologyParam\",\"technologyParam\"],[\"yearParam\",\"yearParam\"]]"
+            "value": "[[\"continent\",\"continentParam\"],[\"indicator\",\"indicatorParam\"],[\"technology\",\"technologyParam\"],[\"year\",\"yearParam\"]]"
           },
           {
             "name": "displayLength",
@@ -1369,7 +1369,7 @@
           {
             "name": "postFetch",
             "type": "JavaScript",
-            "value": "function f(data) {\n    _.each(data.resultset,function(row) {\n        if(row[2]==null) row[2] = 0;\n    });\n}\n "
+            "value": "function f(data) {\n  _.each(data.resultset, function(row) {\n    if (row[2] == null) row[2] = 0;\n  });\n}\n "
           },
           {
             "name": "preChange",
@@ -1418,7 +1418,7 @@
           {
             "name": "parameters",
             "type": "ValuesArray",
-            "value": "[[\"continentParam\",\"continentParam\"],[\"technologyParam\",\"technologyParam\"],[\"indicatorParam\",\"indicatorParam\"],[\"yearParam\",\"yearParam\"]]"
+            "value": "[[\"continent\",\"continentParam\"],[\"technology\",\"technologyParam\"],[\"indicator\",\"indicatorParam\"],[\"year\",\"yearParam\"]]"
           },
           {
             "name": "dataSource",
@@ -2054,7 +2054,7 @@
           {
             "name": "parameters",
             "type": "ValuesArray",
-            "value": "[[\"continentParam\",\"continentParam\"],[\"indicatorParam\",\"indicatorParam\"],[\"technologyParam\",\"technologyParam\"],[\"yearParam\",\"yearParam\"]]"
+            "value": "[[\"continent\",\"continentParam\"],[\"indicator\",\"indicatorParam\"],[\"technology\",\"technologyParam\"],[\"year\",\"yearParam\"]]"
           },
           {
             "name": "popupContentsDiv",
@@ -2124,7 +2124,7 @@
           {
             "name": "postExecution",
             "type": "JavaScript",
-            "value": "function f(){\r\n    \r\n    /*Define max and min Zoom*/\r\n    this.mapEngine.map.isValidZoomLevel = function(z){\r\n        return z >= 2 &&  z <= 7;\r\n    };\r\n} "
+            "value": "function f() {\r\n    \r\n  /*Define max and min Zoom*/\r\n  this.mapEngine.map.isValidZoomLevel = function(zoom) {\r\n    var min = 2;\r\n    var max = 7;\r\n     \r\n    return zoom >= min &&  zoom <= max;\r\n  };\r\n\r\n}\r\n "
           },
           {
             "name": "postFetch",
@@ -2203,7 +2203,7 @@
           {
             "name": "parameters",
             "type": "ValuesArray",
-            "value": "[[\"continentParam\",\"continentParam\"],[\"technologyParam\",\"technologyParam\"],[\"indicatorParam\",\"indicatorParam\"],[\"yearParam\",\"yearParam\"]]"
+            "value": "[[\"continent\",\"continentParam\"],[\"technology\",\"technologyParam\"],[\"year\",\"yearParam\"]]"
           },
           {
             "name": "dataSource",
@@ -2493,7 +2493,7 @@
           {
             "name": "clickAction",
             "type": "JavaScript",
-            "value": "function f(event){\n    // Render chart Popup\n    var country = event.atoms.series.value;\n    dashboard.fireChange(\"countryParam\", country);\n\n    var chartElem = $(\"#attachPopUpCountry\");\n    render_popUpByCountry.popup($(chartElem));\n} "
+            "value": "function f(event){\n    // Render chart Popup\n    var country = event.atoms.series.value;\n    dashboard.fireChange(\"countryParam\", country);\n\n    var chartElem = $(\"#${h:attachPopUpCountry}\");\n    render_popUpByCountry.popup($(chartElem));\n} "
           },
           {
             "name": "color2AxisColors",
@@ -3433,7 +3433,7 @@
           {
             "name": "parameters",
             "type": "ValuesArray",
-            "value": "[[\"continentParam\",\"continentParam\"],[\"technologyParam\",\"technologyParam\"],[\"indicatorParam\",\"indicatorParam\"],[\"yearParam\",\"yearParam\"]]"
+            "value": "[[\"continent\",\"continentParam\"],[\"technology\",\"technologyParam\"],[\"indicator\",\"indicatorParam\"],[\"year\",\"yearParam\"]]"
           },
           {
             "name": "dataSource",
@@ -4893,7 +4893,7 @@
           {
             "name": "parameters",
             "type": "ValuesArray",
-            "value": "[[\"countryParam\",\"countryParam\"],[\"yearParam\",\"yearParam\"],[\"technologyParam\",\"technologyParam\"]]"
+            "value": "[[\"country\",\"countryParam\"],[\"indicator\",\"indicatorParam\"],[\"year\",\"yearParam\"],[\"technology\",\"technologyParam\"]]"
           },
           {
             "name": "dataSource",
@@ -4948,7 +4948,7 @@
           {
             "name": "preExecution",
             "type": "JavaScript",
-            "value": "function f(){\n    \n    $.extend(\n        true,\n        this.chartDefinition,\n        dashboardJS.configurations.charts,\n        dashboardJS.configurations.charts.popupBarChart\n    );\n            \n    pvc.ext.detTooltip().install(this.chartDefinition);    \n     \n} "
+            "value": "function f() {\n\n  $.extend(\n    true,\n    this.chartDefinition,\n    dashboardJS.configurations.charts,\n    dashboardJS.configurations.charts.popupBarChart\n  );\n\n  pvc.ext.detTooltip().install(this.chartDefinition);    \n\n}\n "
           },
           {
             "name": "postExecution",
@@ -6413,11 +6413,6 @@
             "value": "continentFilterQuery"
           },
           {
-            "name": "macros",
-            "type": "CdaParameters",
-            "value": "[]"
-          },
-          {
             "name": "endpoint",
             "type": "String",
             "value": "http://172.20.43.47:8983/solr/"
@@ -6493,98 +6488,6 @@
         "typeDesc": "Apache Solr Datasource"
       },
       {
-        "id": "ca2fc62a-86b2-e74b-a933-2f5a36be586e",
-        "meta": "SOLR",
-        "meta_conntype": "rest",
-        "meta_datype": "solr",
-        "parent": "NOSQL",
-        "properties": [
-          {
-            "name": "name",
-            "type": "Id",
-            "value": "yearFilterQuery"
-          },
-          {
-            "name": "macros",
-            "type": "CdaParameters",
-            "value": "[]"
-          },
-          {
-            "name": "endpoint",
-            "type": "String",
-            "value": "http://172.20.43.47:8983/solr/"
-          },
-          {
-            "name": "collection",
-            "type": "String",
-            "value": "CT2000_MERGE_DATA"
-          },
-          {
-            "name": "requestHandler",
-            "type": "String",
-            "value": "select"
-          },
-          {
-            "name": "q",
-            "type": "String",
-            "value": "*:*"
-          },
-          {
-            "name": "fq",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "fl",
-            "type": "String",
-            "value": "id:Year,Year"
-          },
-          {
-            "name": "df",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "wt",
-            "type": "String",
-            "value": "json"
-          },
-          {
-            "name": "start",
-            "type": "Integer",
-            "value": 0
-          },
-          {
-            "name": "rows",
-            "type": "Integer",
-            "value": "12500"
-          },
-          {
-            "name": "rawQueryParameters",
-            "type": "String",
-            "value": "group=true&group.main=true&group.field=Year"
-          },
-          {
-            "name": "schemaColumnNames",
-            "type": "SchemaColumnNamesArray",
-            "value": "[\"id\",\"Year\"]"
-          },
-          {
-            "name": "schemaColumnTypes",
-            "type": "schemaColumnTypesCustom",
-            "value": "[\"string\",\"string\"]"
-          },
-          {
-            "name": "schemaColumnPaths",
-            "type": "SchemaColumnPathsArray",
-            "value": "[\"id\",\"Year\"]"
-          }
-        ],
-        "rowName": "Apache Solr",
-        "type": "DatasourcesApacheSolr",
-        "typeDesc": "Apache Solr Datasource"
-      },
-      {
         "id": "6ddab451-103c-3710-1335-dcfc043ef132",
         "meta": "SOLR",
         "meta_conntype": "rest",
@@ -6595,11 +6498,6 @@
             "name": "name",
             "type": "Id",
             "value": "technologyFilterQuery"
-          },
-          {
-            "name": "macros",
-            "type": "CdaParameters",
-            "value": "[]"
           },
           {
             "name": "endpoint",
@@ -6689,11 +6587,6 @@
             "value": "kpiQuery"
           },
           {
-            "name": "macros",
-            "type": "CdaParameters",
-            "value": "[[\"year\",\"yearParam\",\"String\",\"\",\"\"],[\"indicator\",\"indicatorParam\",\"String\",\"\",\"\"],[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"]]"
-          },
-          {
             "name": "endpoint",
             "type": "String",
             "value": "http://172.20.43.47:8983/solr/"
@@ -6711,7 +6604,7 @@
           {
             "name": "q",
             "type": "String",
-            "value": "Year:${year} AND Continent:${continent} AND Tech2:${technology}"
+            "value": "Year:${year:\"\"} AND Continent:${continent:\"\"} AND Tech2:${technology:\"\"}"
           },
           {
             "name": "fq",
@@ -6769,98 +6662,6 @@
         "typeDesc": "Apache Solr Datasource"
       },
       {
-        "id": "4eea051a-dbd4-89df-fb0f-179725cc772a",
-        "meta": "SOLR",
-        "meta_conntype": "rest",
-        "meta_datype": "solr",
-        "parent": "NOSQL",
-        "properties": [
-          {
-            "name": "name",
-            "type": "Id",
-            "value": "popUpChartQuery"
-          },
-          {
-            "name": "macros",
-            "type": "CdaParameters",
-            "value": "[[\"year\",\"yearParam\",\"String\",\"\",\"\"],[\"indicator\",\"indicatorParam\",\"String\",\"\",\"\"],[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"]]"
-          },
-          {
-            "name": "endpoint",
-            "type": "String",
-            "value": "http://172.20.43.47:8983/solr/"
-          },
-          {
-            "name": "collection",
-            "type": "String",
-            "value": "CT2000_MERGE_DATA"
-          },
-          {
-            "name": "requestHandler",
-            "type": "String",
-            "value": "select"
-          },
-          {
-            "name": "q",
-            "type": "String",
-            "value": "Year:${year} AND Continent:${continent} AND Tech2:${technology}"
-          },
-          {
-            "name": "fq",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "fl",
-            "type": "String",
-            "value": "${indicator},Tech3"
-          },
-          {
-            "name": "df",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "wt",
-            "type": "String",
-            "value": "json"
-          },
-          {
-            "name": "start",
-            "type": "Integer",
-            "value": 0
-          },
-          {
-            "name": "rows",
-            "type": "Integer",
-            "value": "12500"
-          },
-          {
-            "name": "rawQueryParameters",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "schemaColumnNames",
-            "type": "SchemaColumnNamesArray",
-            "value": "[\"Technology\",\"${indicator}\"]"
-          },
-          {
-            "name": "schemaColumnTypes",
-            "type": "schemaColumnTypesCustom",
-            "value": "[\"string\",\"numeric\"]"
-          },
-          {
-            "name": "schemaColumnPaths",
-            "type": "SchemaColumnPathsArray",
-            "value": "[\"Tech3\",\"${indicator}\"]"
-          }
-        ],
-        "rowName": "Apache Solr",
-        "type": "DatasourcesApacheSolr",
-        "typeDesc": "Apache Solr Datasource"
-      },
-      {
         "id": "837b8754-464b-841a-5bc6-2ea61961251a",
         "meta": "SOLR",
         "meta_conntype": "rest",
@@ -6873,11 +6674,6 @@
             "value": "top3TableQuery"
           },
           {
-            "name": "macros",
-            "type": "CdaParameters",
-            "value": "[[\"year\",\"yearParam\",\"String\",\"\",\"\"],[\"indicator\",\"indicatorParam\",\"String\",\"\",\"\"],[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"]]"
-          },
-          {
             "name": "endpoint",
             "type": "String",
             "value": "http://172.20.43.47:8983/solr/"
@@ -6895,7 +6691,7 @@
           {
             "name": "q",
             "type": "String",
-            "value": "Year:${year} AND Continent:${continent} AND Tech2:${technology}"
+            "value": "Year:${year:\"\"} AND Continent:${continent:\"\"} AND Tech2:${technology:\"\"}"
           },
           {
             "name": "fq",
@@ -6953,190 +6749,6 @@
         "typeDesc": "Apache Solr Datasource"
       },
       {
-        "id": "45b175f4-43c7-5965-bb93-6f0b6cf65d4f",
-        "meta": "SOLR",
-        "meta_conntype": "rest",
-        "meta_datype": "solr",
-        "parent": "NOSQL",
-        "properties": [
-          {
-            "name": "name",
-            "type": "Id",
-            "value": "indicatorBarQuery"
-          },
-          {
-            "name": "macros",
-            "type": "CdaParameters",
-            "value": "[[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"],[\"indicator\",\"indicatorParam\",\"String\",\"\",\"\"]]"
-          },
-          {
-            "name": "endpoint",
-            "type": "String",
-            "value": "http://172.20.43.47:8983/solr/"
-          },
-          {
-            "name": "collection",
-            "type": "String",
-            "value": "CT2000_MERGE_DATA"
-          },
-          {
-            "name": "requestHandler",
-            "type": "String",
-            "value": "select"
-          },
-          {
-            "name": "q",
-            "type": "String",
-            "value": "Continent:${continent} AND Tech2:${technology}"
-          },
-          {
-            "name": "fq",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "fl",
-            "type": "String",
-            "value": "Country,${indicator}"
-          },
-          {
-            "name": "df",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "wt",
-            "type": "String",
-            "value": "json"
-          },
-          {
-            "name": "start",
-            "type": "Integer",
-            "value": "0"
-          },
-          {
-            "name": "rows",
-            "type": "Integer",
-            "value": "12500"
-          },
-          {
-            "name": "rawQueryParameters",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "schemaColumnNames",
-            "type": "SchemaColumnNamesArray",
-            "value": "[\"Geo\",\"${indicator}\"]"
-          },
-          {
-            "name": "schemaColumnTypes",
-            "type": "schemaColumnTypesCustom",
-            "value": "[\"string\",\"numeric\"]"
-          },
-          {
-            "name": "schemaColumnPaths",
-            "type": "SchemaColumnPathsArray",
-            "value": "[\"Country\",\"${indicator}\"]"
-          }
-        ],
-        "rowName": "Apache Solr",
-        "type": "DatasourcesApacheSolr",
-        "typeDesc": "Apache Solr Datasource"
-      },
-      {
-        "id": "b544f91e-4c41-452e-7086-54e9c705c05d",
-        "meta": "SOLR",
-        "meta_conntype": "rest",
-        "meta_datype": "solr",
-        "parent": "NOSQL",
-        "properties": [
-          {
-            "name": "name",
-            "type": "Id",
-            "value": "indicatorScatterQuery"
-          },
-          {
-            "name": "macros",
-            "type": "CdaParameters",
-            "value": "[[\"year\",\"yearParam\",\"String\",\"\",\"\"],[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"]]"
-          },
-          {
-            "name": "endpoint",
-            "type": "String",
-            "value": "http://172.20.43.47:8983/solr/"
-          },
-          {
-            "name": "collection",
-            "type": "String",
-            "value": "CT2000_MERGE_DATA"
-          },
-          {
-            "name": "requestHandler",
-            "type": "String",
-            "value": "select"
-          },
-          {
-            "name": "q",
-            "type": "String",
-            "value": "Year:${year} AND Continent:${continent} AND Tech2:${technology}"
-          },
-          {
-            "name": "fq",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "fl",
-            "type": "String",
-            "value": "Capacity_Factor,Generation_Capacity_MW,Electricity_Generated_GWh,Country"
-          },
-          {
-            "name": "df",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "wt",
-            "type": "String",
-            "value": "json"
-          },
-          {
-            "name": "start",
-            "type": "Integer",
-            "value": "0"
-          },
-          {
-            "name": "rows",
-            "type": "Integer",
-            "value": "12500"
-          },
-          {
-            "name": "rawQueryParameters",
-            "type": "String",
-            "value": ""
-          },
-          {
-            "name": "schemaColumnNames",
-            "type": "SchemaColumnNamesArray",
-            "value": "[\"Capacity Factor (%)\",\"Electricity Generated (GWh)\",\"Generation Capacity (MW)\",\"Geo\"]"
-          },
-          {
-            "name": "schemaColumnTypes",
-            "type": "schemaColumnTypesCustom",
-            "value": "[\"numeric\",\"numeric\",\"numeric\",\"string\"]"
-          },
-          {
-            "name": "schemaColumnPaths",
-            "type": "SchemaColumnPathsArray",
-            "value": "[\"Capacity_Factor\",\"Electricity_Generated_GWh\",\"Generation_Capacity_MW\",\"Country\"]"
-          }
-        ],
-        "rowName": "Apache Solr",
-        "type": "DatasourcesApacheSolr",
-        "typeDesc": "Apache Solr Datasource"
-      },
-      {
         "id": "41a416bf-9b80-b3e4-12c2-33fbaae81d23",
         "meta": "SOLR",
         "meta_conntype": "rest",
@@ -7149,11 +6761,6 @@
             "value": "cardQuery"
           },
           {
-            "name": "macros",
-            "type": "CdaParameters",
-            "value": "[[\"year\",\"yearParam\",\"String\",\"\",\"\"],[\"indicator\",\"indicatorParam\",\"String\",\"\",\"\"],[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"]]"
-          },
-          {
             "name": "endpoint",
             "type": "String",
             "value": "http://172.20.43.47:8983/solr/"
@@ -7171,7 +6778,7 @@
           {
             "name": "q",
             "type": "String",
-            "value": "Year:${year} AND Continent:${continent} AND Tech2:${technology}"
+            "value": "Year:${year:\"\"} AND Continent:${continent:\"\"} AND Tech2:${technology:\"\"}"
           },
           {
             "name": "fq",
@@ -7241,11 +6848,6 @@
             "value": "mapKTRQuery"
           },
           {
-            "name": "macros",
-            "type": "CdaParameters",
-            "value": "[[\"year\",\"yearParam\",\"String\",\"\",\"\"],[\"indicator\",\"indicatorParam\",\"String\",\"\",\"\"],[\"continent\",\"continentParam\",\"String\",\"\",\"\"],[\"technology\",\"technologyParam\",\"String\",\"\",\"\"]]"
-          },
-          {
             "name": "endpoint",
             "type": "String",
             "value": "http://172.20.43.47:8983/solr/"
@@ -7263,7 +6865,7 @@
           {
             "name": "q",
             "type": "String",
-            "value": "Year:${year} AND Continent:${continent} AND Tech2:${technology}"
+            "value": "Year:${year:\"\"} AND Continent:${continent:\"\"} AND Tech2:${technology:\"\"}"
           },
           {
             "name": "fq",
@@ -7314,6 +6916,267 @@
             "name": "schemaColumnPaths",
             "type": "SchemaColumnPathsArray",
             "value": "[\"latitude\",\"longitude\",\"${indicator}\",\"Country\",\"colorColumn\"]"
+          }
+        ],
+        "rowName": "Apache Solr",
+        "type": "DatasourcesApacheSolr",
+        "typeDesc": "Apache Solr Datasource"
+      },
+      {
+        "id": "b544f91e-4c41-452e-7086-54e9c705c05d",
+        "meta": "SOLR",
+        "meta_conntype": "rest",
+        "meta_datype": "solr",
+        "parent": "NOSQL",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "indicatorScatterQuery"
+          },
+          {
+            "name": "endpoint",
+            "type": "String",
+            "value": "http://172.20.43.47:8983/solr/"
+          },
+          {
+            "name": "collection",
+            "type": "String",
+            "value": "CT2000_MERGE_DATA"
+          },
+          {
+            "name": "requestHandler",
+            "type": "String",
+            "value": "select"
+          },
+          {
+            "name": "q",
+            "type": "String",
+            "value": "Year:${year:\"\"} AND Continent:${continent:\"\"} AND Tech2:${technology:\"\"}"
+          },
+          {
+            "name": "fq",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "fl",
+            "type": "String",
+            "value": "Capacity_Factor,Generation_Capacity_MW,Electricity_Generated_GWh,Country"
+          },
+          {
+            "name": "df",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "wt",
+            "type": "String",
+            "value": "json"
+          },
+          {
+            "name": "start",
+            "type": "Integer",
+            "value": "0"
+          },
+          {
+            "name": "rows",
+            "type": "Integer",
+            "value": "12500"
+          },
+          {
+            "name": "rawQueryParameters",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "schemaColumnNames",
+            "type": "SchemaColumnNamesArray",
+            "value": "[\"Capacity Factor (%)\",\"Electricity Generated (GWh)\",\"Generation Capacity (MW)\",\"Geo\"]"
+          },
+          {
+            "name": "schemaColumnTypes",
+            "type": "schemaColumnTypesCustom",
+            "value": "[\"numeric\",\"numeric\",\"numeric\",\"string\"]"
+          },
+          {
+            "name": "schemaColumnPaths",
+            "type": "SchemaColumnPathsArray",
+            "value": "[\"Capacity_Factor\",\"Electricity_Generated_GWh\",\"Generation_Capacity_MW\",\"Country\"]"
+          }
+        ],
+        "rowName": "Apache Solr",
+        "type": "DatasourcesApacheSolr",
+        "typeDesc": "Apache Solr Datasource"
+      },
+      {
+        "id": "45b175f4-43c7-5965-bb93-6f0b6cf65d4f",
+        "meta": "SOLR",
+        "meta_conntype": "rest",
+        "meta_datype": "solr",
+        "parent": "NOSQL",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "indicatorBarQuery"
+          },
+          {
+            "name": "endpoint",
+            "type": "String",
+            "value": "http://172.20.43.47:8983/solr/"
+          },
+          {
+            "name": "collection",
+            "type": "String",
+            "value": "CT2000_MERGE_DATA"
+          },
+          {
+            "name": "requestHandler",
+            "type": "String",
+            "value": "select"
+          },
+          {
+            "name": "q",
+            "type": "String",
+            "value": "Year:${year:\"\"} AND Continent:${continent:\"\"} AND Tech2:${technology:\"\"}"
+          },
+          {
+            "name": "fq",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "fl",
+            "type": "String",
+            "value": "Country,${indicator}"
+          },
+          {
+            "name": "df",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "wt",
+            "type": "String",
+            "value": "json"
+          },
+          {
+            "name": "start",
+            "type": "Integer",
+            "value": "0"
+          },
+          {
+            "name": "rows",
+            "type": "Integer",
+            "value": "12500"
+          },
+          {
+            "name": "rawQueryParameters",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "schemaColumnNames",
+            "type": "SchemaColumnNamesArray",
+            "value": "[\"Geo\",\"${indicator}\"]"
+          },
+          {
+            "name": "schemaColumnTypes",
+            "type": "schemaColumnTypesCustom",
+            "value": "[\"string\",\"numeric\"]"
+          },
+          {
+            "name": "schemaColumnPaths",
+            "type": "SchemaColumnPathsArray",
+            "value": "[\"Country\",\"${indicator}\"]"
+          }
+        ],
+        "rowName": "Apache Solr",
+        "type": "DatasourcesApacheSolr",
+        "typeDesc": "Apache Solr Datasource"
+      },
+      {
+        "id": "4eea051a-dbd4-89df-fb0f-179725cc772a",
+        "meta": "SOLR",
+        "meta_conntype": "rest",
+        "meta_datype": "solr",
+        "parent": "NOSQL",
+        "properties": [
+          {
+            "name": "name",
+            "type": "Id",
+            "value": "popUpChartQuery"
+          },
+          {
+            "name": "endpoint",
+            "type": "String",
+            "value": "http://172.20.43.47:8983/solr/"
+          },
+          {
+            "name": "collection",
+            "type": "String",
+            "value": "CT2000_MERGE_DATA"
+          },
+          {
+            "name": "requestHandler",
+            "type": "String",
+            "value": "select"
+          },
+          {
+            "name": "q",
+            "type": "String",
+            "value": "Year:${year:\"\"} AND Country:${country:\"\"} AND Tech2:${technology:\"\"}"
+          },
+          {
+            "name": "fq",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "fl",
+            "type": "String",
+            "value": "${indicator},Tech3"
+          },
+          {
+            "name": "df",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "wt",
+            "type": "String",
+            "value": "json"
+          },
+          {
+            "name": "start",
+            "type": "Integer",
+            "value": 0
+          },
+          {
+            "name": "rows",
+            "type": "Integer",
+            "value": "12500"
+          },
+          {
+            "name": "rawQueryParameters",
+            "type": "String",
+            "value": ""
+          },
+          {
+            "name": "schemaColumnNames",
+            "type": "SchemaColumnNamesArray",
+            "value": "[\"Technology\",\"${indicator}\"]"
+          },
+          {
+            "name": "schemaColumnTypes",
+            "type": "schemaColumnTypesCustom",
+            "value": "[\"string\",\"numeric\"]"
+          },
+          {
+            "name": "schemaColumnPaths",
+            "type": "SchemaColumnPathsArray",
+            "value": "[\"Tech3\",\"${indicator}\"]"
           }
         ],
         "rowName": "Apache Solr",
