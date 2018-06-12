@@ -22,7 +22,6 @@
     <module>components</module>
     <module>webclient</module>
     <module>assemblies</module>
-    <module>solr</module>
   </modules>
 
   <scm>

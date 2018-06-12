@@ -18,6 +18,8 @@
     <module>feature</module>
     <module>karaf</module>
     <module>docker</module>
+    <module>solr</module>
+
   </modules>
 
   <properties>
