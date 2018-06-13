@@ -102,15 +102,15 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
 
   private void renderSolrDataSource( StringBuilder out, DataSourceComponent dataSourceComp ) {
     String queryType = PropertyValue.SOLR_QUERY_TYPE;
-    addFirstJsProperty( out, PropertyName.QUERY_TYPE, buildJsStringValue( queryType ), Writer.INDENT2 );
+    addFirstJsProperty( out, PropertyName.QUERY_TYPE, JsonUtils.toJsString( queryType ), Writer.INDENT2 );
 
     dataSourceComp.getPropertyBindings().forEach( binding -> {
-      String name = binding.getName();
+      String name = binding.getAlias();
       String value = binding.getValue();
 
       PropertyType.ValueType valueType = binding.getProperty().getValueType();
       if ( PropertyType.ValueType.STRING.equals( valueType ) ) {
-        value = buildJsStringValue( value );
+        value = JsonUtils.toJsString( value );
       }
 
       addJsProperty( out, name, value, Writer.INDENT2 );

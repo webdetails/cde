@@ -1,0 +1,61 @@
+/* Css map background */
+
+.mapCol {
+  background: #cdd2d4;
+}
+
+.templateCard {
+  border: 1px solid #F2F2F2;
+  height: 150px;
+  padding: 15px;
+  color: #333;
+}
+
+.templateCard .imageDiv {
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 60px;
+}
+
+.templateCard .imageDiv.bioenergy {
+  background-image: url('../images/biofuel.png');
+}
+
+.templateCard .imageDiv.geothermal {
+  background-image: url('../images/geothermal.png');
+}
+
+.templateCard .imageDiv.hydro {
+  background-image: url('../images/hydro.png');
+}
+
+.templateCard .imageDiv.marine {
+  background-image: url('../images/marine.png');
+}
+
+.templateCard .imageDiv.solar {
+  background-image: url('../images/solar.png');
+}
+
+.templateCard .imageDiv.wind {
+  background-image: url('../images/wind.png');
+}
+
+.templateCard .techName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 20px;
+}
+
+.templateCard .prevYear {
+  font-size: 10px;
+  line-height: 20px;
+  color: #777777;
+  text-align: right;
+}
+
+.templateCard .greyLine {
+  border-bottom: 1px solid #F2F2F2;
+  margin: 10px 0;
+}

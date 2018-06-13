@@ -64,11 +64,6 @@ if(typeof CONTEXT_PATH !== "undefined") { // production
     main: 'GMapsOverlayComponent'
   },
   {
-    name: 'cde/components/NewMapComponent',
-    location: componentsPath + '/NewMapComponent/amd',
-    main: 'NewMapComponent'
-  },
-  {
     name: 'cde/components/OlapSelectorComponent',
     location: componentsPath + '/OlapSelectorComponent/amd',
     main: 'OlapSelectorComponent'

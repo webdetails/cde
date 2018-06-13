@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    
+    <title>CDE Embedded Dashboard on Karaf</title>
+
+    <script src="/pentaho/webcontext.js"></script>
+  </head>
+
+  <body>
+    <div id="content" class="container"></div>
+
+    <script type="text/javascript">
+      var bypassCache = "true";
+      var debug = "true";
+
+      var dashboardPath = '/samples/foundry-CT2000/resources/sample.wcdf';
+      var alias = "foundry";
+      var queryString = dashboardPath + '&bypassCache=' + bypassCache + '&debug=' + debug + '&alias=' + alias;
+
+      require([
+        'dash!' + queryString
+      ], function(SampleDash) {
+        var renderElement = "content";
+        var options = {
+          alias: alias
+        };
+
+        var sampleDash = new SampleDash(renderElement, options);
+        
+        sampleDash.render();
+      });
+    </script>
+  </body>
+</html>

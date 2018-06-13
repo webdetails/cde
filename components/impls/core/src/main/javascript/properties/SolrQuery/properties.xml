@@ -1,0 +1,224 @@
+<DesignerProperties>
+
+  <!-- region Solr API request endpoint -->
+  <DesignerProperty>
+    <Header>
+      <Name>solrEndpoint</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Solr Rest Endpoint</Description>
+      <Tooltip>Solr Rest Endpoint</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>600</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>solrCollection</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Solr Collection</Description>
+      <Tooltip>Solr Collection</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>601</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>solrRequestHandler</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>select</DefaultValue>
+      <Description>Request Handler</Description>
+      <Tooltip>Request Handler</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>602</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <!-- endregion -->
+
+  <!-- region Solr API request parameters -->
+  <DesignerProperty>
+    <Header>
+      <Name>solrQuery</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>*:*</DefaultValue>
+      <Description>Query</Description>
+      <Tooltip>Define a query using standard query syntax.</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>603</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>solrFilterQuery</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Filter Query</Description>
+      <Tooltip>Restrict the superset of documents that can be returned.</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>604</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>solrFieldList</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Field List</Description>
+      <Tooltip>Specifies the list of fields to be returned.</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>605</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>solrDefaultField</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Default Search Field</Description>
+      <Tooltip>Specifies a default field, overriding the definition of a default field in the Schema.</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>606</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>solrWriterType</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>json</DefaultValue>
+      <Description>Writer Type</Description>
+      <Tooltip>Response Writer used to format the query's response.</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>607</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>solrStart</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>0</DefaultValue>
+      <Description>Rows start</Description>
+      <Tooltip>Number of leading documents to skip.</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>608</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>solrRows</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>10</DefaultValue>
+      <Description>Rows limit</Description>
+      <Tooltip>The maximum number of documents that can be returned.</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>609</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>solrRawQueryParameters</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Raw Query Parameters</Description>
+      <Tooltip>Extra query parameters.</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>611</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <!-- endregion -->
+
+  <!-- region Solr Conversion Schema -->
+  <DesignerProperty>
+    <Header>
+      <Name>schemaColumnNames</Name>
+      <Description>Schema Column Names</Description>
+      <Tooltip>Define the query's column names metadata.</Tooltip>
+
+      <Parent>BaseProperty</Parent>
+
+      <DefaultValue>"[]"</DefaultValue>
+      <InputType>SchemaColumnNamesArray</InputType>
+      <OutputType>Array</OutputType>
+
+      <Order>612</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>schemaColumnTypes</Name>
+      <Description>Schema Column Types</Description>
+      <Tooltip>Define the query's column types metadata.</Tooltip>
+
+      <Parent>BaseProperty</Parent>
+
+      <DefaultValue>"[]"</DefaultValue>
+      <InputType type='valueList' base='ColTypesArrayRender'/>
+      <OutputType>Array</OutputType>
+
+      <Order>613</Order>
+      <Version>1.0</Version>
+      <Parent>BaseProperty</Parent>
+    </Header>
+
+    <!-- CDA field types -->
+    <Values>
+      <Value display="String">string</Value>
+      <Value display="Numeric">numeric</Value>
+      <Value display="Integer">integer</Value>
+      <Value display="Boolean">boolean</Value>
+      <Value display="Date">date</Value>
+    </Values>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>schemaColumnPaths</Name>
+      <Description>Schema Column Paths</Description>
+      <Tooltip>Define the query's column paths for the resultset values.</Tooltip>
+
+      <Parent>BaseProperty</Parent>
+
+      <DefaultValue>"[]"</DefaultValue>
+      <InputType>SchemaColumnPathsArray</InputType>
+      <OutputType>Array</OutputType>
+
+      <Order>614</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <!-- endregion -->
+
+</DesignerProperties>

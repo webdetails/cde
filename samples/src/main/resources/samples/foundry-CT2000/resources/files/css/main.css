@@ -1,0 +1,923 @@
+/* ==========================================================================
+   Pentaho CT2000
+   ========================================================================== */
+
+/* ==========================================================================
+   Fonts
+   ========================================================================== */
+
+/*@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: url('../fonts/OpenSans-Light.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/OpenSans-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/OpenSans-Semibold.woff') format('woff');
+}*/
+
+/* ==========================================================================
+   General Styles
+   ========================================================================== */
+
+.ct2000 {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #333;
+  min-width: 320px;
+}
+
+.ct2000 .isSection {
+  margin-bottom: 40px;
+}
+
+.ct2000 .map.isSection {
+  margin-bottom: 20px;
+}
+
+.ct2000 .sectionTitle {
+  font-size: 16px;
+  font-weight: 300;
+  margin: 0 0 20px 0;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.ct2000:before {
+  /* use before CSS pseudo-element to show full-width background */
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  top: 0;
+  left: 0;
+  background: #005DA6;
+  z-index: -1;
+}
+
+.ct2000 .header {
+  height: 100px;
+}
+
+.ct2000 .header h1 {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #FFF;
+  margin: 32px 0;
+}
+
+.ct2000 .header .helloUserTextObj {
+  font-weight: 400;
+  line-height: 20px;
+  text-align: right;
+  color: #FFF;
+  margin: 40px 0;
+}
+
+/* ==========================================================================
+   Filters
+   ========================================================================== */
+
+.ct2000:after {
+  /* use after CSS pseudo-element to show full-width background */
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 333px;
+  top: 100px;
+  left: 0;
+  background: #F2F2F2;
+  z-index: -1;
+}
+
+.ct2000 .filters {
+  padding-top: 21px;
+  padding-bottom: 40px;
+  height: 333px;
+}
+
+.ct2000 .filterObj {
+  margin-bottom: 20px;
+}
+
+.ct2000 .filters > .last > .filterObj {
+  margin-bottom: 0;
+}
+
+.ct2000 .filters .filter-title {
+  color: #777777;
+}
+
+.ct2000.filter-root-header {
+  border: 1px solid #CCC;
+}
+
+.ct2000 .filters .filter-root-header:hover,
+.ct2000 .filters .expanded .filter-root-header {
+  border-color: #333;
+}
+
+.ct2000 .filters .filter-collapse-icon {
+  background-image: url(../images/filter-arrow.svg);
+}
+
+.no-svg .ct2000 .filters .filter-collapse-icon {
+  /* fallback to png image if browser doesn't support svg */
+  background-image: url(../images/filter-arrow.png);
+}
+
+.ct2000 .filters .filter-root-body {
+  border: 1px solid #333;
+  border-top: none;
+  font-size: 14px;
+}
+
+.ct2000 .filters .filter-root-container.collapsed > .filter-root-body {
+  border-bottom: none;
+}
+
+.ct2000 .filters .filter-item-container {
+  font-size: 14px;
+}
+
+.ct2000 .filters .filter-controls {
+  background: none;
+  padding: 0;
+}
+
+.ct2000 .filters .filter-controls .filter-control-buttons {
+  padding: 0;
+}
+
+.ct2000 .filters .filter-controls .filter-control-button:first-child {
+  width: 40%;
+  padding: 0;
+  border-right: 1px solid #E7E7E7;
+}
+
+.ct2000 .filters .filter-controls .filter-control-button:last-child {
+  width: 60%;
+  padding: 0;
+}
+
+.ct2000 .filter-root-selection-label,
+.ct2000 .filter-group-label {
+  font-weight: 400;
+}
+
+.ct2000 .filters .multi-select .filter-root-selection {
+  margin: 10px 0;
+  background: #FFF;
+}
+
+.ct2000 .filters .filter-root-control.some-selected .filter-root-selection,
+.ct2000 .filters .filter-group-header.some-selected .filter-group-selection,
+.ct2000 .filters .filter-item-container.some-selected,
+.ct2000 .filters .filter-root-control.all-selected .filter-root-selection,
+.ct2000 .filters .filter-group-header.all-selected .filter-group-selection,
+.ct2000 .filters .filter-item-container.all-selected {
+  background: #FFF;
+  color: #333;
+}
+
+.ct2000 .filters .filter-root-control.some-selected .filter-root-selection:hover,
+.ct2000 .filters .filter-group-header.some-selected .filter-group-selection:hover,
+.ct2000 .filters .filter-item-container.some-selected:hover,
+.ct2000 .filters .filter-root-control.all-selected .filter-root-selection:hover,
+.ct2000 .filters .filter-group-header.all-selected .filter-group-selection:hover,
+.ct2000 .filters .filter-item-container.all-selected:hover,
+.ct2000 .filters .filter-root-control .filter-root-selection:hover,
+.ct2000 .filters .filter-group-header .filter-group-selection:hover,
+.ct2000 .filters .filter-item-container:hover {
+  background: #E6EFF6;
+}
+
+.ct2000 .filters .filter-root-container.multi-select .filter-root-selection-icon.all-selected,
+.ct2000 .filters .filter-root-container.multi-select .filter-group-selection-icon.all-selected,
+.ct2000 .filters .filter-root-container.multi-select .filter-item-container.all-selected .filter-item-selection-icon {
+  background-color: #616161;
+}
+
+.ct2000 .filters .filter-root-selection-icon.all-selected,
+.ct2000 .filters .filter-group-selection-icon.all-selected,
+.ct2000 .filters .filter-item-container.all-selected .filter-item-selection-icon,
+.ct2000 .filters .filter-root-container.single-select .filter-item-container:hover .filter-item-selection-icon,
+.ct2000 .filters .filter-root-selection:hover .filter-root-selection-icon,
+.ct2000 .filters .filter-group-container:hover .filter-group-selection-icon,
+.ct2000 .filters .filter-item-container:hover .filter-item-selection-icon {
+  border-color: #616161;
+}
+
+.ct2000 .filters .filter-root-selection-icon.all-selected,
+.ct2000 .filters .filter-group-selection-icon.all-selected,
+.ct2000 .filters .filter-item-container.all-selected .filter-item-selection-icon,
+.ct2000 .filter-root-container.single-select .filter-root-selection-icon,
+.ct2000 .filter-root-container.single-select .filter-group-selection-icon,
+.ct2000 .filter-root-container.single-select .filter-item-container .filter-item-selection-icon {
+  border-color: #616161;
+}
+
+.ct2000 .filters .filter-root-container.single-select .filter-root-selection-icon.all-selected > div,
+.ct2000 .filters .filter-root-container.single-select .filter-group-selection-icon.all-selected > div,
+.ct2000 .filters .filter-root-container.single-select .filter-item-container.all-selected .filter-item-selection-icon > div {
+  background: #FFF;
+}
+
+.ct2000 .filters .filter-root-container.single-select .filter-item-container.all-selected .filter-item-selection-icon {
+  border: 1px solid #616161 !important; /* using !important to overlap inline styles */
+  background: #616161;
+}
+
+.ct2000 .filters .filter-root-container.multi-select .filter-root-selection-icon,
+.ct2000 .filters .filter-root-container.multi-select .filter-group-selection-icon,
+.ct2000 .filters .filter-root-container.multi-select .filter-item-selection-icon {
+  background-image: url(../images/checkbox-sprite.svg);
+  border-color: #616161;
+}
+
+.no-svg .ct2000 .filters .filter-root-container.multi-select .filter-root-selection-icon,
+.no-svg .ct2000 .filters .filter-root-container.multi-select .filter-group-selection-icon,
+.no-svg .ct2000 .filters .filter-root-container.multi-select .filter-item-selection-icon {
+  /* fallback to png image if browser doesn't support svg */
+  background-image: url(../images/checkbox-sprite.png);
+}
+
+.ct2000 .filters .filter-controls .filter-btn-cancel,
+.ct2000 .filters .filter-controls .filter-btn-apply {
+  padding: 5px 0;
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   KPI Bar - Tables
+   ========================================================================== */
+
+.ct2000 .tableObj {
+  padding: 15px;
+}
+
+.ct2000 .tableObj table,
+.ct2000 .tableObj table > thead > tr > th,
+.ct2000 .tableObj table > tbody > tr > td {
+  border: 0 none;
+  padding: 0;
+  background: none;
+  vertical-align: bottom;
+  line-height: 20px;
+}
+
+.ct2000 .tableObj table > thead > tr > th {
+  font-size: 10px;
+  font-weight: 400;
+  color: #777;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #F2F2F2;
+}
+
+.ct2000 .tableObj table > thead > tr > th.column0 {
+  font-size: 16px;
+  font-weight: 300;
+  color: #333;
+  padding-bottom: 5px;
+}
+
+.ct2000 .tableObj table > tbody > tr > td {
+  padding: 12px 0;
+  border-bottom: 1px solid #F2F2F2;
+}
+
+.ct2000 .tableObj table > tbody > tr:last-child > td {
+  border-bottom: 0 none;
+  padding-bottom: 0;
+}
+
+.ct2000 .tableObj table > tbody > tr > td .trend {
+  height: 20px;
+  width: 16px;
+  margin: 0;
+  background: url(../images/variation-arrows-sprite.svg) no-repeat;
+}
+
+.no-svg .ct2000 .tableObj .trend {
+  /* fallback to png image if browser doesn't support svg */
+  background-image: url(../images/variation-arrows-sprite.png);
+}
+
+.ct2000 .tableObj .trend.down.good {
+  background-position: left center;
+}
+
+.ct2000 .tableObj .trend.neutral.good {
+  background-position: center center;
+}
+
+.ct2000 .tableObj .trend.up.good {
+  background-position: right center;
+}
+
+.ct2000 .tableObj .trend.invalid {
+  display: none;
+}
+
+/* ==========================================================================
+   KPI Table
+   ========================================================================== */
+
+.ct2000 .tableObj.top3TableObj {
+  margin-top: 40px;
+}
+
+.ct2000 .tableObj.kpiTableObj table > tbody > tr > td {
+  padding-top: 43px;
+  padding-bottom: 43px;
+}
+
+.ct2000 .tableObj.kpiTableObj table > tbody > tr > td.column1 {
+  padding-top: 40px;
+  padding-bottom: 47px;
+}
+
+.ct2000 .tableObj.kpiTableObj table > tbody > tr > td.column0 {
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 300;
+}
+
+/* ==========================================================================
+   Top 3 Table
+   ========================================================================== */
+
+.ct2000 .tableObj.top3TableObj td.flagAddin {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ct2000 .tableObj.top3TableObj .topFlag {
+  display: block;
+  width: 30px;
+  height: 20px;
+  float: left;
+  background: no-repeat left center;
+}
+
+.ct2000 .tableObj.top3TableObj table > thead > tr > th.column1,
+.ct2000 .tableObj.top3TableObj table > tbody > tr > td.column1 {
+  text-align: right;
+}
+
+.ct2000 .tableObj.top3TableObj table > tbody > tr > td.column1 {
+  font-weight: 600;
+}
+
+.ct2000 .tableObj.top3TableObj table > thead > tr > th.column1,
+.ct2000 .tableObj.top3TableObj table > tbody > tr > td.column1 {
+  padding-right: 10px;
+}
+
+.ct2000 .tableObj.top3TableObj table > thead > tr > th,
+.ct2000 .tableObj.top3TableObj table > tbody > tr > td {
+  white-space: nowrap;
+}
+
+.ct2000 .tableObj.top3TableObj table > tbody > tr > td.dataTables_empty {
+  padding-top: 43px;
+}
+
+/* ==========================================================================
+   Legend - Map & Charts
+   ========================================================================== */
+
+.ct2000 .sectionLegendWrapper {
+  margin-bottom: 6px;
+}
+
+.ct2000 .sectionLegendIntensity {
+  font-size: 10px;
+  color: #777;
+  padding-left: 14px;
+  margin-left: 15px;
+  position: relative;
+}
+
+.ct2000 .sectionLegendIntensity:before {
+  /* use before CSS pseudo-element to display legend dots */
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  width: 10px;
+  height: 10px;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+}
+
+.ct2000 .sectionLegendIntensity.low:before {
+  background: rgba(183, 28, 28, .7);
+}
+
+.ct2000 .sectionLegendIntensity.medium:before {
+  background: rgba(242, 184, 73, .7);
+}
+
+.ct2000 .sectionLegendIntensity.high:before {
+  background: rgba(0, 132, 91, .7);
+}
+
+/* ==========================================================================
+   Map
+   ========================================================================== */
+
+.ct2000 .mapObj {
+  background: #CDD2D4;
+}
+
+.ct2000 .map-controls {
+  z-index: 9999;
+}
+
+.ct2000 .map-control-panel {
+  right: initial;
+  left: 15px;
+  margin-top: 15px;
+}
+
+.ct2000 .map-control-panel .map-control-button,
+.ct2000 .map-control-panel .map-control-button.map-control-zoom-in {
+  border: 1px solid #F2F2F2;
+  margin-top: -1px;
+  position: relative;
+}
+
+.ct2000 .map-control-panel.pan .map-control-pan,
+.ct2000 .map-control-panel.zoombox .map-control-zoombox,
+.ct2000 .map-control-panel.selection .map-control-select,
+.ct2000 .map-control-panel .map-control-button:hover,
+.ct2000 .map-control-panel .map-control-button.map-control-zoom-in:hover {
+  border: 1px solid #333;
+  background-color: #FFF;
+  z-index: 10;
+}
+
+.ct2000 .map-control-panel.pan .map-control-pan,
+.ct2000 .map-control-panel.zoombox .map-control-zoombox,
+.ct2000 .map-control-panel.selection .map-control-select {
+  background-color: #616161;
+  border: 1px solid #616161;
+}
+
+.ct2000 .map-control-panel .map-control-button {
+  background-image: url(../images/map-btns-sprite.svg);
+}
+
+.no-svg .ct2000 .map-control-panel .map-control-button {
+  /* fallback to png image if browser doesn't support svg */
+  background-image: url(../images/map-btns-sprite.png);
+}
+
+.ct2000 .map-control-panel .map-control-button.map-control-zoom-in,
+.ct2000 .map-control-panel .map-control-button.map-control-zoom-in:hover {
+  background-position: top left;
+}
+
+.ct2000 .map-control-panel .map-control-button.map-control-zoom-out,
+.ct2000 .map-control-panel .map-control-button.map-control-zoom-out:hover {
+  background-position: top -28px left;
+}
+
+.ct2000 .map-control-panel .map-control-button.map-control-zoombox,
+.ct2000 .map-control-panel .map-control-button.map-control-zoombox:hover {
+  background-position: top -84px left;
+}
+
+.ct2000 .map-control-panel.zoombox .map-control-button.map-control-zoombox,
+.ct2000 .map-control-panel.zoombox .map-control-button.map-control-zoombox:hover {
+  background-position: top -84px right;
+  cursor: default;
+}
+
+.ct2000 .map-control-panel .map-control-button.map-control-pan,
+.ct2000 .map-control-panel .map-control-button.map-control-pan:hover {
+  background-position: top -56px left;
+}
+
+.ct2000 .map-control-panel.pan .map-control-button.map-control-pan,
+.ct2000 .map-control-panel.pan .map-control-button.map-control-pan:hover {
+  background-position: top -56px right;
+  cursor: default;
+}
+
+.map-container .olControlAttribution {
+  bottom: 5px;
+  right: 5px;
+  max-width: 60%;
+}
+
+/* ==========================================================================
+   Charts
+   ========================================================================== */
+
+.ct2000 .chartObj.barChartObj {
+  margin-top: 20px;
+}
+
+.ct2000 .ccc-ext-det-tooltip.tipsy .tipsy-inner {
+  color: #333;
+  border: 0 none;
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+  padding: 0;
+  max-width: none;
+}
+
+.ct2000 .ccc-ext-det-tooltip * {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  line-height: 20px;
+}
+
+.ct2000 .ccc-ext-det-tooltip .series,
+.ct2000 .ccc-ext-det-tooltip h1,
+.ct2000 .ccc-ext-det-tooltip .measures-containers {
+  padding: 10px 15px;
+}
+
+.ct2000 .ccc-ext-det-tooltip .series,
+.ct2000 .ccc-ext-det-tooltip h1 {
+  background: #F9F9F9;
+}
+
+.ct2000 .ccc-ext-det-tooltip .measures-container .measure {
+  padding: 7px 0;
+}
+
+.ct2000 .ccc-ext-det-tooltip .measures-container .measure,
+.ct2000 .ccc-ext-det-tooltip .measures-container .measure h3,
+.ct2000 .ccc-ext-det-tooltip .measures-container .measure span {
+  line-height: 20px;
+}
+
+.ct2000 .ccc-ext-det-tooltip .measures-container .measure span {
+  font-weight: 600;
+  margin-left: 40px;
+}
+
+/* ==========================================================================
+   Chart Popup
+   ========================================================================== */
+
+.ct2000 .chartPopupOverlay {
+  background: rgba(255, 255, 255, .5);
+  cursor: pointer;
+}
+
+.ct2000 .chartPopup {
+  position: fixed;
+  left: 0 !important; /* using !important to overlap inline styles */
+  right: 0 !important; /* using !important to overlap inline styles */
+  top: 0 !important; /* using !important to overlap inline styles */
+  bottom: 0 !important; /* using !important to overlap inline styles */
+  margin: auto;
+  padding: 15px;
+  height: 400px;
+  max-height: 80%;
+  overflow: auto;
+  width: 702px;
+  color: #333;
+  border: 0 none;
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ct2000 .chartPopup .arrow {
+  visibility: hidden;
+}
+
+.ct2000 .popupComponent a.close {
+  position: absolute;
+  text-decoration: none;
+  top: 14px;
+  right: 15px;
+  width: 24px;
+  height: 24px;
+  opacity: 1;
+  background: url(../images/close-button.svg) no-repeat left center;
+}
+
+.no-svg .ct2000 .popupComponent a.close {
+  /* fallback to png image if browser doesn't support svg */
+  background-image: url(../images/close-button.png);
+}
+
+.ct2000 .popupComponent a.close:hover {
+  background-position: right center;
+}
+
+.ct2000 .chartPopup .popUpChartObj {
+  width: 670px;
+}
+
+.ct2000 .chartPopup .countryLabelObj {
+  font-size: 16px;
+  font-weight: 300;
+  margin: 0 0 20px;
+}
+
+.ct2000 .blockUI.blockOverlay {
+  z-index: 100001 !important; /* using !important to overlap inline styles */
+  opacity: .5 !important; /* using !important to overlap inline styles */
+}
+
+.ct2000 .blockUI.blockMsg.blockPage.ui-draggable {
+  z-index: 100002 !important; /* using !important to overlap inline styles */
+}
+
+/* ==========================================================================
+   Cards - Template Component
+   ========================================================================== */
+
+.ct2000 .sectionTitle.technologyBreakdownTitle {
+  margin-bottom: 20px;
+}
+
+.ct2000 .cards {
+  margin: 0 -7px -15px;
+}
+
+.ct2000 .cards > .card {
+  padding: 0 7px;
+}
+
+.ct2000 .templateCard {
+  line-height: 20px;
+  border: 1px solid #F2F2F2;
+  padding: 0 15px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.ct2000 .templateCard .imageDiv {
+  background: url(../images/technology-icon-sprite.svg) no-repeat left center;
+  height: 30px;
+  width: 30px;
+  margin: 20px auto;
+}
+
+.no-svg .ct2000 .templateCard .imageDiv {
+  /* fallback to png image if browser doesn't support svg */
+  background-image: url(../images/technology-icon-sprite.png);
+}
+
+.ct2000 .templateCard .imageDiv.Hydropower {
+  background-position: left center;
+}
+
+.ct2000 .templateCard .imageDiv.Wind {
+  background-position: left -30px center;
+}
+
+.ct2000 .templateCard .imageDiv.Bioenergy {
+  background-position: left -60px center;
+}
+
+.ct2000 .templateCard .imageDiv.Solar {
+  background-position: left -90px center;
+}
+
+.ct2000 .templateCard .imageDiv.Geothermal {
+  background-position: left -120px center;
+}
+
+.ct2000 .templateCard .imageDiv.Marine {
+  background-position: left -150px center;
+}
+
+.ct2000 .templateCard .techName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ct2000 .templateCard .prevYear {
+  font-size: 10px;
+  color: #777777;
+  text-align: right;
+}
+
+.ct2000 .templateCard .techValues {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 10px;
+  background: #F2F2F2;
+  border-top: 1px solid #F2F2F2;
+}
+
+.ct2000 .templateCard .techValues.techTrendUp {
+  background: rgba(0, 132, 91, .05);
+}
+
+.ct2000 .templateCard .techValues.techTrendNeutral {
+  background: rgba(242, 194, 73, .05);
+}
+
+.ct2000 .templateCard .techValues.techTrendDown {
+  background: rgba(183, 28, 28, .05);
+}
+
+.ct2000 .templateCard .techValue {
+  font-weight: 600;
+}
+
+.ct2000 .templateCard .prevYearValue {
+  text-align: right;
+  padding-right: 16px;
+  position: relative;
+}
+
+.ct2000 .templateCard .prevYearValue.notAvailable {
+  padding-right: 0;
+}
+
+.ct2000 .templateCard .prevYearValue.techTrendUp:after,
+.ct2000 .templateCard .prevYearValue.techTrendNeutral:after,
+.ct2000 .templateCard .prevYearValue.techTrendDown:after {
+  /* use after CSS pseudo-element to show the trend arrows */
+  position: absolute;
+  content: '';
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  width: 16px;
+  height: 16px;
+  background: url(../images/variation-arrows-sprite.svg) no-repeat;
+}
+
+.no-svg .ct2000 .templateCard .prevYearValue.techTrendUp:after,
+.no-svg .ct2000 .templateCard .prevYearValue.techTrendNeutral:after,
+.no-svg .ct2000 .templateCard .prevYearValue.techTrendDown:after {
+  /* fallback to png image if browser doesn't support svg */
+  background-image: url(../images/variation-arrows-sprite.png);
+}
+
+.ct2000 .templateCard .prevYearValue.techTrendUp:after {
+  background-position: right center;
+}
+
+.ct2000 .templateCard .prevYearValue.techTrendNeutral:after {
+  background-position: center center;
+}
+
+.ct2000 .templateCard .prevYearValue.techTrendDown:after {
+  background-position: left center;
+}
+
+.ct2000 .alert-danger {
+  background-color: transparent;
+  border: 0 none;
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
+  color: #333;
+  font-size: 14px;
+}
+
+.ct2000 .alert-danger .glyphicon {
+  display: none;
+}
+
+/* ==========================================================================
+   Embedded Dashboards - Dashboard Component
+   ========================================================================== */
+
+.ct2000.ct2000-embedded {
+  min-width: 1170px;
+  position: relative;
+}
+
+.ct2000.ct2000-embedded .container {
+  width: 1170px;
+  min-width: 1170px;
+}
+
+.ct2000.ct2000-embedded .embeddedHidden {
+  display: none;
+}
+
+.ct2000.ct2000-embedded .kpiBar > div {
+  /* Override Bootstrap grid rules to make KPI and Top 3 Countries tables
+     full width for each dashboard component */
+  width: 100%;
+}
+
+.ct2000.ct2000-embedded .map.isSection {
+  margin-bottom: 40px;
+}
+
+.ct2000.ct2000-embedded:after {
+  /* use after CSS pseudo-element to show full-width background */
+  height: 114px;
+}
+
+.ct2000.ct2000-embedded .filters {
+  height: 114px;
+}
+
+/* ==========================================================================
+   Embedded Dashboards - Portal (RequireJS)
+   ========================================================================== */
+
+/* Hide header when embedding on Web Portal, using RequireJS */
+.portal .ct2000:before,
+.portal .ct2000 .header {
+  display: none;
+}
+
+.portal .ct2000:after {
+  top: 0;
+}
+
+/* ==========================================================================
+   Responsive - Media Queries
+   ========================================================================== */
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+  .ct2000:not(.ct2000-embedded) .isSection,
+  .ct2000:not(.ct2000-embedded) .map.isSection {
+    margin-bottom: 60px;
+  }
+
+  .ct2000:after {
+    /* use after CSS pseudo-element to show full-width background */
+    height: 114px;
+  }
+
+  .ct2000 .filters {
+    height: 114px;
+  }
+
+  .ct2000 .filterObj {
+    margin-bottom: 0;
+  }
+
+  .ct2000:not(.ct2000-embedded) .tableObj.top3TableObj {
+    margin-top: 0;
+  }
+
+  .ct2000:not(.ct2000-embedded) .sectionTitle {
+    margin: 0;
+  }
+
+  .ct2000 .sectionTitle.technologyBreakdownTitle {
+    margin-bottom: 20px;
+  }
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+  .ct2000:not(.ct2000-embedded) .tableObj.kpiTableObj table > tbody > tr > td.column0 {
+    font-size: 36px;
+  }
+
+  .ct2000:not(.ct2000-embedded) .tableObj.kpiTableObj table > tbody > tr > td.column1 {
+    padding-top: 43px;
+    padding-bottom: 43px;
+  }
+
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+}

@@ -71,6 +71,10 @@
       "name": "cde/components/DashboardComponent",
       "location": "/components/DashboardComponent/amd",
       "main": "DashboardComponent"
+    }, {
+      "name": "cde/components/NewMapComponent",
+      "location": "/components/NewMapComponent/amd",
+      "main": "NewMapComponent"
     }
   ],
 

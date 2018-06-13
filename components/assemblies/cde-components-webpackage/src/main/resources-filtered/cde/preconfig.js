@@ -1,4 +1,4 @@
-/* globals requireCfg, packageInfo, getVersionedModuleId */
+/* globals requireCfg, getVersionedModuleId */
 
 var mappedModuleId = getVersionedModuleId('cde/components');
 
@@ -13,4 +13,3 @@ requireCfg.paths['cde/resources'] = "/cxf/cde/resources";
 
 // TODO is this needed?
 // requireCfg.paths['cde/repo'] = resourcesPath + '/public/cde';
-

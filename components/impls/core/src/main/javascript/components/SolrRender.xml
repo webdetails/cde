@@ -20,17 +20,23 @@
 
   <Contents>
     <Model prefix="Datasources">
-      <Property>endpoint</Property>
-      <Property>collection</Property>
-      <Property>requestHandler</Property>
-      <Property>responseType</Property>
-      <Property>solrQuery</Property>
+      <Property name="endpoint">solrEndpoint</Property>
+      <Property name="collection">solrCollection</Property>
+      <Property name="requestHandler">solrRequestHandler</Property>
+      <Property name="rawQueryParameters">solrRawQueryParameters</Property>
+
+      <Property name="q">solrQuery</Property>
+      <Property name="fq">solrFilterQuery</Property>
+      <Property name="fl">solrFieldList</Property>
+      <Property name="df">solrDefaultField</Property>
+
+      <Property name="start">solrStart</Property>
+      <Property name="rows">solrRows</Property>
+      <Property name="wt">solrWriterType</Property>
 
       <Property>schemaColumnNames</Property>
       <Property>schemaColumnTypes</Property>
       <Property>schemaColumnPaths</Property>
-
-      <Property>rowsLimit</Property>
     </Model>
   </Contents>
 </DesignerComponent>
