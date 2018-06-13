@@ -46,6 +46,12 @@
 
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
+      <artifactId>solr-proxy</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.pentaho.ctools</groupId>
       <artifactId>cde-core-impl</artifactId>
       <version>${project.version}</version>
     </dependency>

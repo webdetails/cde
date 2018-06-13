@@ -1,0 +1,16 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+        xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0">
+
+    <!-- Load system property -->
+    <ext:property-placeholder />
+
+    <service interface="javax.servlet.Servlet">
+        <service-properties>
+            <entry key="alias" value="/solr"></entry>
+            <entry key="init.Prefix" value="/"></entry>
+            <entry key="init.ProxyTo" value="${solr.url}"></entry>
+        </service-properties>
+        <bean class="org.eclipse.jetty.servlets.ProxyServlet.Transparent">
+        </bean>
+    </service>
+</blueprint>

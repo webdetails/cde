@@ -46,6 +46,7 @@
 
     <pentaho-cdf-plugin.version>9.0.0.0-SNAPSHOT</pentaho-cdf-plugin.version>
     <pentaho-cpf-plugin.version>9.0.0.0-SNAPSHOT</pentaho-cpf-plugin.version>
+    <solr-proxy-service-assembly.version>9.0.0.0-SNAPSHOT</solr-proxy-service-assembly.version>
     <pentaho-json.version>9.0.0.0-SNAPSHOT</pentaho-json.version>
     <mondrian.version>9.0.0.0-SNAPSHOT</mondrian.version>
     <platform.version>9.0.0.0-SNAPSHOT</platform.version>
@@ -67,6 +68,7 @@
     <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
     <jersey-multipart.version>1.19.1</jersey-multipart.version>
     <jersey-common.version>2.5.1</jersey-common.version>
+    <jetty.version>8.1.19.v20160209</jetty.version>
     <jackson-mapper-asl.version>1.8.2</jackson-mapper-asl.version>
     <jackson-core-asl.version>1.9.3</jackson-core-asl.version>
     <fasterxml.jackson.core.version>2.9.4</fasterxml.jackson.core.version>
@@ -81,6 +83,8 @@
     <karaf-maven-plugin.version>${karaf.version}</karaf-maven-plugin.version>
     <karaf-maven-plugin.aggregateFeatures>false</karaf-maven-plugin.aggregateFeatures>
     <maven-filtering.version>3.1.1</maven-filtering.version>
+
+    <foundry.version>1.3.0.93</foundry.version>
   </properties>
 
   <dependencyManagement>
@@ -466,6 +470,21 @@
             <groupId>*</groupId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-servlets</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.hds.ensemble</groupId>
+        <artifactId>plugin-sdk</artifactId>
+        <version>${foundry.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.hds.ensemble</groupId>
+        <artifactId>service-sdk</artifactId>
+        <version>${foundry.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
