@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -10,7 +10,6 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-
 package pt.webdetails.cdf.dd.api;
 
 import org.pentaho.platform.util.StringUtil;
@@ -18,6 +17,7 @@ import org.pentaho.platform.web.http.api.resources.utils.EscapeUtils;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.util.CorsUtil;
+import pt.webdetails.cpf.resources.IResourceLoader;
 
 public class XSSHelper {
 
@@ -27,7 +27,6 @@ public class XSSHelper {
     return instance;
   }
 
-
   static void setInstance( final XSSHelper newInstance ) {
     instance = newInstance;
   }
@@ -36,15 +35,18 @@ public class XSSHelper {
     if ( StringUtil.isEmpty( userInput ) ) {
       return userInput;
     }
-    if ( "false".equals( getPluginSetting() ) ) {
+
+    if ( "false".equals( getXssEscapingPluginSetting() ) ) {
       return userInput;
     }
+
     return EscapeUtils.escapeJsonOrRaw( userInput );
   }
 
-  protected String getPluginSetting() {
-    return CdeEngine.getInstance().getEnvironment().getResourceLoader().getPluginSetting( CorsUtil.class,
-      CdeConstants.PARAMETER_XSS_ESCAPING );
+  protected String getXssEscapingPluginSetting() {
+    IResourceLoader cdeResourceLoader = CdeEngine.getInstance().getEnvironment().getResourceLoader();
+
+    return cdeResourceLoader.getPluginSetting( CorsUtil.class, CdeConstants.PARAMETER_XSS_ESCAPING );
   }
 
 }
