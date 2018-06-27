@@ -49,4 +49,8 @@ public class XSSHelper {
     return cdeResourceLoader.getPluginSetting( CorsUtil.class, CdeConstants.PARAMETER_XSS_ESCAPING );
   }
 
+  boolean isIndentationEnabled() {
+    return EscapeUtils.isIndentationEnabled();
+  }
+
 }

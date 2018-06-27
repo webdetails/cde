@@ -180,6 +180,8 @@ public class SynchronizerApiTest {
   public void saveDashboardTest() throws Exception {
     operation = StringUtils.EMPTY;
 
+    assertTrue( originalHelper.isIndentationEnabled() );
+
     assertNull( servletResponse.getContentType() );
     assertNull( servletResponse.getCharacterEncoding() );
 
