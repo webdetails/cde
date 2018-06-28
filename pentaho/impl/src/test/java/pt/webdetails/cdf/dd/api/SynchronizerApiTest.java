@@ -35,7 +35,6 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
@@ -179,8 +178,6 @@ public class SynchronizerApiTest {
   @Test
   public void saveDashboardTest() throws Exception {
     operation = StringUtils.EMPTY;
-
-    assertTrue( originalHelper.isIndentationEnabled() );
 
     assertNull( servletResponse.getContentType() );
     assertNull( servletResponse.getCharacterEncoding() );
