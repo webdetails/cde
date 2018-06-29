@@ -10,10 +10,8 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-
 package pt.webdetails.cdf.dd.api;
 
-import junit.framework.Assert;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 import org.junit.After;
@@ -21,9 +19,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import pt.webdetails.cpf.messaging.MockHttpServletRequest;
 import pt.webdetails.cpf.messaging.MockHttpServletResponse;
 import pt.webdetails.cpf.utils.CharsetHelper;
@@ -35,12 +30,19 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class SynchronizerApiTest {
 
@@ -50,6 +52,7 @@ public class SynchronizerApiTest {
 
   private String file;
   private String path;
+
   private static final String title = "MOCK_TITLE";
   private static final String author = "MOCK_AUTHOR";
   private static final String description = "MOCK_DESCRIPTION";
@@ -58,9 +61,11 @@ public class SynchronizerApiTest {
   private static final boolean widget = false;
   private static final boolean require = false;
   private static final String rendererType = "MOCK_RENDERED_TYPE";
-  private static final List<String> widgetParams = new ArrayList<String>();
+  private static final List<String> widgetParams = new ArrayList<>();
   private static final String cdfStructure = "MOCK_CDF_STRUCTURE";
+
   private String operation = "savesettings";
+
   private static XSSHelper originalHelper;
   private static XSSHelper mockHelper;
 
@@ -77,18 +82,18 @@ public class SynchronizerApiTest {
   @Before
   public void beforeEach() throws Exception {
     synchronizerApi = spy( new SynchronizerApiForTesting() );
-    servletRequest = new MockHttpServletRequest( "/pentaho-cdf/api/views", (Map) new HashMap<String, String[]>() );
+
+    servletRequest = new MockHttpServletRequest( "/pentaho-cdf/api/views", new HashMap<>() );
+
     servletResponse = new MockHttpServletResponse( new ObjectOutputStream( new ByteArrayOutputStream() ) );
     servletResponse.setContentType( null );
     servletResponse.setCharacterEncoding( null );
+
     path = StringUtils.EMPTY;
     file = StringUtils.EMPTY;
+
     mockHelper = mock( XSSHelper.class );
-    when( mockHelper.escape( any() ) ).thenAnswer( new Answer<Object>() {
-      @Override public Object answer( InvocationOnMock invocation ) throws Throwable {
-        return invocation.getArguments()[ 0 ];
-      }
-    } );
+    when( mockHelper.escape( any() ) ).thenAnswer(invocation -> invocation.getArguments()[ 0 ]);
     XSSHelper.setInstance( mockHelper );
   }
 
@@ -99,6 +104,7 @@ public class SynchronizerApiTest {
     servletResponse = null;
     file = null;
     path = null;
+
     reset( mockHelper );
   }
 
@@ -107,10 +113,10 @@ public class SynchronizerApiTest {
     path = StringUtils.EMPTY;
     file = StringUtils.EMPTY; // no file sent, therefore no initial dashboard save has been done
 
-    HttpServletRequest mockRequest = Mockito.mock( HttpServletRequest.class );
-    Mockito.when( mockRequest.getParameterMap() ).thenReturn( new HashMap<>() );
+    HttpServletRequest mockRequest = mock( HttpServletRequest.class );
+    when( mockRequest.getParameterMap() ).thenReturn( new HashMap<>() );
 
-    HttpServletResponse mockResponse = Mockito.mock( HttpServletResponse.class );
+    HttpServletResponse mockResponse = mock( HttpServletResponse.class );
 
     String result = new SynchronizerApiForTesting()
       .syncronize( file, path, title, author, description, style, widgetName, widget, rendererType, widgetParams,
@@ -118,61 +124,69 @@ public class SynchronizerApiTest {
 
     JSONObject jsonObj = new JSONObject( result );
 
-    Assert.assertTrue( jsonObj.getString( "status" ) != null );
-    Assert.assertTrue( jsonObj.getString( "result" ) != null );
-    Assert.assertTrue( "false".equals( jsonObj.getString( "status" ) ) );
-    Assert.assertTrue( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST".equals( jsonObj.getString( "result" ) ) );
+    assertNotNull( jsonObj.getString( "status" ) );
+    assertNotNull( jsonObj.getString( "result" ) );
+
+    assertEquals( "false", jsonObj.getString( "status" ) );
+    assertEquals( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST", jsonObj.getString( "result" ) );
+
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
   public void listViewsTest() throws Exception {
-    Assert.assertEquals( servletResponse.getContentType(), null );
-    Assert.assertEquals( servletResponse.getCharacterEncoding(), null );
+    assertNull( servletResponse.getContentType() );
+    assertNull( servletResponse.getCharacterEncoding() );
 
     synchronizerApi.syncronize( file, path, title, author, description, style, widgetName, widget, rendererType,
       widgetParams, cdfStructure, operation, require, servletRequest, servletResponse );
 
-    Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
-    Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
+    assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
+
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
   public void syncTemplatesTest() throws Exception {
     operation = StringUtils.EMPTY;
-    Assert.assertEquals( servletResponse.getContentType(), null );
-    Assert.assertEquals( servletResponse.getCharacterEncoding(), null );
+
+    assertNull( servletResponse.getContentType() );
+    assertNull( servletResponse.getCharacterEncoding() );
 
     synchronizerApi.syncTemplates( operation, file, cdfStructure, rendererType, servletResponse );
 
-    Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
-    Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
+    assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
+
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
   public void syncStylesTest() throws Exception {
     operation = StringUtils.EMPTY;
-    Assert.assertEquals( servletResponse.getContentType(), null );
-    Assert.assertEquals( servletResponse.getCharacterEncoding(), null );
+
+    assertNull( servletResponse.getContentType() );
+    assertNull( servletResponse.getCharacterEncoding() );
 
     synchronizerApi.syncStyles( servletResponse );
 
-    Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
-    Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
+    assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
   }
 
   @Test
   public void saveDashboardTest() throws Exception {
     operation = StringUtils.EMPTY;
-    Assert.assertEquals( servletResponse.getContentType(), null );
-    Assert.assertEquals( servletResponse.getCharacterEncoding(), null );
+
+    assertNull( servletResponse.getContentType() );
+    assertNull( servletResponse.getCharacterEncoding() );
 
     synchronizerApi.saveDashboard( file, title, description, cdfStructure, operation, servletResponse );
 
-    Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
-    Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
+    assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
+
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 }

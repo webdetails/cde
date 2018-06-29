@@ -52,7 +52,6 @@ import pt.webdetails.cdf.dd.render.CdaRenderer;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
-import pt.webdetails.cpf.repository.api.IUserContentAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
 
 public class DashboardStructure implements IDashboardStructure {
@@ -69,7 +68,6 @@ public class DashboardStructure implements IDashboardStructure {
     String filePath = (String) parameters.get( "file" );
 
     logger.info( "Deleting File:" + filePath );
-
 
     if ( Utils.getSystemOrUserRWAccess( filePath ).deleteFile( filePath ) ) {
       throw new DashboardStructureException(
@@ -151,11 +149,12 @@ public class DashboardStructure implements IDashboardStructure {
   public HashMap<String, String> save( HashMap<String, Object> parameters ) throws Exception {
     String cdeFilePath = (String) parameters.get( "file" );
     String cdfdeJsText = (String) parameters.get( "cdfstructure" );
+
     return save( cdeFilePath, cdfdeJsText );
   }
 
   public HashMap<String, String> save( String cdeFilePath, String cdfdeJsText ) throws Exception {
-    final HashMap<String, String> result = new HashMap<String, String>();
+    final HashMap<String, String> result = new HashMap<>();
 
     logger.info( "Saving File:" + cdeFilePath );
 
@@ -208,20 +207,6 @@ public class DashboardStructure implements IDashboardStructure {
     return result;
   }
 
-  private void saveCgg( IUserContentAccess access, String cdeRelFilePath )
-    throws ThingReadException, UnsupportedThingException, ThingWriteException {
-    String wcdfFilePath = cdeRelFilePath.replace( ".cdfde", ".wcdf" );
-
-    // Obtain an UPDATED dashboard object
-    DashboardManager dashMgr = DashboardManager.getInstance();
-    Dashboard dash = dashMgr.getDashboard( wcdfFilePath, /*bypassCacheRead*/false );
-
-    CggRunJsThingWriterFactory cggWriteFactory = new CggRunJsThingWriterFactory();
-    IThingWriter cggDashWriter = cggWriteFactory.getWriter( dash );
-    CggRunJsDashboardWriteContext cggDashContext = new CggRunJsDashboardWriteContext( cggWriteFactory, dash );
-    cggDashWriter.write( access, cggDashContext, dash );
-  }
-
   private void saveCgg( IRWAccess access, String cdeRelFilePath )
     throws ThingReadException, UnsupportedThingException, ThingWriteException {
     String wcdfFilePath = cdeRelFilePath.replace( ".cdfde", ".wcdf" );
@@ -242,6 +227,7 @@ public class DashboardStructure implements IDashboardStructure {
     String title = StringUtils.defaultIfEmpty( (String) parameters.get( "title" ), "Dashboard" );
     String description = StringUtils.defaultIfEmpty( (String) parameters.get( "description" ), "" );
     String cdfdeJsText = (String) parameters.get( "cdfstructure" );
+
     saveAs( filePath, title, description, cdfdeJsText, false );
   }
 
@@ -279,14 +265,14 @@ public class DashboardStructure implements IDashboardStructure {
     }
   }
 
-    /**
-     * Deligates parameters setting to {@link #savesettings(HashMap)} adds updated wcdf to JSON object
-     * and returns it.
-     *
-     * @param parameters map of parameters of wcdf to updating
-     * @return JSON object with wcdf that conatins updated parameters
-     * @throws Exception
-     */
+  /**
+   * Deligates parameters setting to {@link #savesettings(HashMap)} adds updated wcdf to JSON object
+   * and returns it.
+   *
+   * @param parameters map of parameters of wcdf to updating
+   * @return JSON object with wcdf that conatins updated parameters
+   * @throws Exception
+   */
   public JSONObject saveSettingsToWcdf( HashMap<String, Object> parameters ) throws Exception {
     savesettings( parameters );
 
