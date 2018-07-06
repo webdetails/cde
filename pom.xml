@@ -46,7 +46,6 @@
 
     <pentaho-cdf-plugin.version>9.0.0.0-SNAPSHOT</pentaho-cdf-plugin.version>
     <pentaho-cpf-plugin.version>9.0.0.0-SNAPSHOT</pentaho-cpf-plugin.version>
-    <solr-proxy-service-assembly.version>9.0.0.0-SNAPSHOT</solr-proxy-service-assembly.version>
     <pentaho-json.version>9.0.0.0-SNAPSHOT</pentaho-json.version>
     <mondrian.version>9.0.0.0-SNAPSHOT</mondrian.version>
     <platform.version>9.0.0.0-SNAPSHOT</platform.version>
