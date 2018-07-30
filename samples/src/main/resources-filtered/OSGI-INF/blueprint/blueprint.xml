@@ -6,6 +6,11 @@
 
   <!-- Gain access to files available in bundles through CPF IReadAccess -->
   <service interface="pt.webdetails.cpf.repository.api.IReadAccess">
+    <service-properties>
+      <entry key="isUserContent">
+        <value type="java.lang.Boolean">true</value>
+      </entry>
+    </service-properties>
     <bean class="org.pentaho.ctools.cpf.repository.bundle.ReadAccess">
       <property name="bundle" ref="blueprintBundle"/>
     </bean>
