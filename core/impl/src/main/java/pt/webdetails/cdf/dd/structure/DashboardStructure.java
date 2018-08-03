@@ -69,9 +69,11 @@ public class DashboardStructure implements IDashboardStructure {
 
     logger.info( "Deleting File:" + filePath );
 
-    if ( Utils.getSystemOrUserRWAccess( filePath ).deleteFile( filePath ) ) {
+    if ( !Utils.getSystemOrUserRWAccess( filePath ).deleteFile( filePath ) ) {
       throw new DashboardStructureException(
         Messages.getString( "DashboardStructure.ERROR_007_DELETE_FILE_EXCEPTION" ) );
+    } else {
+      logger.info( "Deleted file " + filePath );
     }
   }
 
