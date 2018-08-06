@@ -678,6 +678,154 @@ var OlapWizard = WizardManager.extend({
     }
   },
 
+  _prepareDashboardForPreview: function(fileName, queryName, successFunction) {
+    var topCount = this.getSelectedOptions().topCount;
+    topCount = (topCount.length > 0) ? topCount : undefined;
+
+    var dashboardData = {
+        components: {
+            rows: []
+        },
+        datasources: {
+            rows: [
+                {
+                    id: "MDX",
+                    name: "MDX Queries",
+                    type: "Label",
+                    typeDesc: "<i>Group</i>",
+                    parent: "UnIqEiD",
+                    properties: [
+                        {
+                            name: "Group",
+                            value: "MDX Queries",
+                            type: "Label"
+                        }
+                    ]
+                },
+                {
+                    id: "fca15f79-4416-5a31-36bb-9cf2e5f3aa7a",
+                    type: "Componentsmdx_mondrianJndi",
+                    typeDesc: "mdx over mondrianJndi",
+                    parent: "MDX",
+                    properties: [
+                        {
+                            name: "name",
+                            value: queryName,
+                            type: "Id"
+                        },
+                        {
+                            name: "access",
+                            value: "public",
+                            type: "Access"
+                        },
+                        {
+                            name: "jndi",
+                            value: this.getSelectedOptions().jndi,
+                            type: "Jndi"
+                        },
+                        {
+                            name: "catalog",
+                            value: this.getSelectedOptions().schema.replace('solution:', ''),
+                            type: "MondrianCatalog"
+                        },
+                        {
+                            name: "query",
+                            value: this.buildQuery(false, topCount),
+                            type: "CurrentMdxQuery"
+                        },
+                        {
+                            name: "parameters",
+                            value: "[]",
+                            type: "CdaParameters"
+                        },
+                        {
+                            name: "bandedMode",
+                            value: "compact",
+                            type: "BandedMode"
+                        },
+                        {
+                            name: "cdacalculatedcolumns",
+                            value: "[]",
+                            type: "CdaCalculatedColumnsArray"
+                        },
+                        {
+                            name: "cdacolumns",
+                            value: "[]",
+                            type: "CdaColumnsArray"
+                        },
+                        {
+                            name: "output",
+                            value: "[]",
+                            type: "IndexArray"
+                        },
+                        {
+                            name: "outputMode",
+                            value: "include",
+                            type: "OutputMode"
+                        },
+                        {
+                            name: "cacheKeys",
+                            value: "[]",
+                            type: "CacheKeysValues"
+                        },
+                        {
+                            name: "cacheDuration",
+                            value: 3600,
+                            type: "Integer"
+                        },
+                        {
+                            name: "cache",
+                            value: "true",
+                            type: "Boolean"
+                        }
+                    ],
+                    meta: "CDA",
+                    meta_conntype: "mondrian.jndi",
+                    meta_datype: "mdx",
+                    rowName: "mdx over mondrianJndi"
+                }
+            ]
+        },
+        layout: {
+            rows: [],
+            title: "CDF - Sample structure"
+        }
+    };
+
+    dashboardData.filename = fileName;
+
+      $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard",
+          {
+              operation: "saveas",
+              file: fileName,
+              cdfstructure: JSON.stringify(dashboardData, null, 0)
+          }
+          , successFunction);
+
+    },
+
+    _deleteTemporaryDatasource: function(fileName) {
+        var deleteData = {
+            operation: "delete",
+            file: fileName
+        };
+        $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", deleteData);
+        deleteData.file = fileName.replace(".wcdf",".cda");
+        $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", deleteData);
+        deleteData.file = fileName.replace(".wcdf",".cdfde");
+        $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", deleteData);
+
+    },
+
+
+    _getTemporaryFilenameToUse: function () {
+        if (CDFDDFileName != "")
+            return   CDFDDFileName.replace(".cdfde", "_wizard_temp.wcdf");
+        else
+            return "/public/cde/unnamed_wizard_temp.wcdf";
+    },
+
+
   /**
    * Create the mdx query from elements
    */
@@ -813,7 +961,7 @@ var OlapParameterWizard = OlapWizard.extend({
   },
 
   getDroppableFilters: function() {
-    return ".draggableDimension, .draggableMeasure, .draggableFilter";
+    return ".draggableFilter";
   },
 
   processChange: function() {
@@ -850,38 +998,49 @@ var OlapParameterWizard = OlapWizard.extend({
     }
   },
 
+
   preview: function() {
 
     this.logger.debug("Launching preview");
+    var fileName = this._getTemporaryFilenameToUse();
+    var myself = this;
+    this._prepareDashboardForPreview(fileName, "ParameterWizardQuery", function() {
 
-    // Build cdf component
-    CDFDDPreviewComponent = {
-      name: "CDFDDPreviewComponent",
-      type: this.getSelectedOptions().type,
-      valueAsId: true,
-      size: this.getSelectedOptions().type == "selectMultiComponent" ? 5 : 1,
-      selectMulti: true,
-      queryDefinition: {
-        queryType: 'mdx',
-        jndi: this.getSelectedOptions().jndi,
-        catalog: this.getSelectedOptions().schema,
-        query: this.getSelectedOptions().query,
-        cube: this.getSelectedOptions().cube
-      },
-      parameters: {},
+        // Build cdf component
+        CDFDDPreviewComponent = {
+            name: "CDFDDPreviewComponent",
+            type: myself.getSelectedOptions().type,
+            valueAsId: true,
+            size: myself.getSelectedOptions().type == "selectMultiComponent" ? 5 : 1,
+            selectMulti: true,
+            queryDefinition: {
+                dataAccessId: "ParameterWizardQuery",
+                path: fileName.replace(".wcdf", ".cda")
+            },
+            parameters: {},
 
-      htmlObject: "cdfdd-olap-preview-area",
-      executeAtStart: true
-    };
-    Dashboards.components = [];
-    Dashboards.finishedInit = false;
-    Dashboards.init([CDFDDPreviewComponent]);
+            htmlObject: "cdfdd-olap-preview-area",
+            executeAtStart: true
+        };
+        Dashboards.components = [];
+        Dashboards.finishedInit = false;
+        Dashboards.init([CDFDDPreviewComponent]);
 
+
+    });
   },
 
 
   buttonOk: function() {
     this.apply();
+
+    this._deleteTemporaryDatasource(this._getTemporaryFilenameToUse());
+    $('#' + WizardManager.MAIN_DIALOG).jqmHide();
+  },
+
+  buttonCancel: function() {
+
+    this._deleteTemporaryDatasource(this._getTemporaryFilenameToUse());
     $('#' + WizardManager.MAIN_DIALOG).jqmHide();
   },
 
@@ -1065,7 +1224,7 @@ var OlapChartWizard = OlapWizard.extend({
   },
 
   getDroppableFilters: function() {
-    return "li.draggableDimension, li.draggableMeasure, li.draggableFilter";
+    return "li.draggableFilter";
   },
 
   processChange: function() {
@@ -1122,94 +1281,107 @@ var OlapChartWizard = OlapWizard.extend({
   preview: function() {
     this.logger.debug("Launching preview");
 
-    // Build cdf component
-    CDFDDPreviewComponentDefinition = {
-      width: 440,
-      height: 200,
-      title: "Preview",
-      titlePosition: "top",
-      titleSize: 40,
-      showDots: this.getSelectedOptions().type == "cccDotChart",
-      showLines: this.getSelectedOptions().type == "cccLineChart",
 
-      legend: false,
-      maxBarSize: 100,
+    var fileName = this._getTemporaryFilenameToUse();
+    var myself = this;
+    this._prepareDashboardForPreview(fileName, "ParameterWizardQuery", function() {
 
-      innerGap: 0.9,
-      explodedSliceIndex: 0,
-      explodedSliceRadius: 0,
-      orientation: this.getSelectedOptions().orientation,
-      queryType: 'mdx',
-      jndi: this.getSelectedOptions().jndi,
-      catalog: this.getSelectedOptions().schema,
-      title: this.getSelectedOptions().title,
-      query: this.getSelectedOptions().query,
-      crosstabMode: true,
-      seriesInRows: false,
-      animate: false,
-      clickable: false,
-      timeSeries: false,
-      timeSeriesFormat: "%Y-%m-%d",
-      stacked: false,
-      panelSizeRatio: 0.8,
-      barSizeRatio: 0.9,
-      colors: [],
-      showValues: false,
-      valuesAnchor: "right",
-      titlePosition: "top",
-      titleSize: 25,
-      legend: true,
-      legendPosition: "bottom",
-      legendAlign: "center",
-      showXScale: true,
-      xAxisPosition: "bottom",
-      xAxisSize: 30,
-      showYScale: true,
-      yAxisPosition: "left",
-      yAxisSize: 50,
-      xAxisFullGrid: false,
-      yAxisFullGrid: false,
-      axisOffset: 0,
-      originIsZero: true,
-      secondAxis: false,
-      secondAxisIndependentScale: true,
-      secondAxisIdx: -1,
-      secondAxisOriginIsZero: true,
-      secondAxisColor: "blue",
-      extensionPoints: []
-    };
 
-    CDFDDPreviewComponent = {
-      name: "CDFDDPreviewComponent",
-      type: this.getComponentType(),
-      chartDefinition: CDFDDPreviewComponentDefinition,
-      htmlObject: "cdfdd-olap-preview-area",
-      executeAtStart: true,
-      postFetch: function(values) {
-        values.resultset.map(function(row) {//parse numeric values, otherwise sum will concatenate them
-          row.splice(1, 1, parseFloat(row[1]));
-        });
+        // Build cdf component
+        CDFDDPreviewComponentDefinition = {
+            width: 440,
+            height: 200,
+            title: "Preview",
+            titlePosition: "top",
+            titleSize: 40,
+            showDots: myself.getSelectedOptions().type == "cccDotChart",
+            showLines: myself.getSelectedOptions().type == "cccLineChart",
 
-        return {
-          resultset: values.resultset,
-          metadata: [
-            {colIndex: 0, colName: 'Name', colType: 'String'},
-            {colIndex: 1, colName: 'Value', colType: 'Numeric'}
-          ]
+            legend: false,
+            maxBarSize: 100,
+
+            innerGap: 0.9,
+            explodedSliceIndex: 0,
+            explodedSliceRadius: 0,
+            orientation: myself.getSelectedOptions().orientation,
+            dataAccessId: "ParameterWizardQuery",
+            path: fileName.replace(".wcdf", ".cda"),
+            title: myself.getSelectedOptions().title,
+            crosstabMode: true,
+            seriesInRows: false,
+            animate: false,
+            clickable: false,
+            timeSeries: false,
+            timeSeriesFormat: "%Y-%m-%d",
+            stacked: false,
+            panelSizeRatio: 0.8,
+            barSizeRatio: 0.9,
+            colors: [],
+            showValues: false,
+            valuesAnchor: "right",
+            titlePosition: "top",
+            titleSize: 25,
+            legend: true,
+            legendPosition: "bottom",
+            legendAlign: "center",
+            showXScale: true,
+            xAxisPosition: "bottom",
+            xAxisSize: 30,
+            showYScale: true,
+            yAxisPosition: "left",
+            yAxisSize: 50,
+            xAxisFullGrid: false,
+            yAxisFullGrid: false,
+            axisOffset: 0,
+            originIsZero: true,
+            secondAxis: false,
+            secondAxisIndependentScale: true,
+            secondAxisIdx: -1,
+            secondAxisOriginIsZero: true,
+            secondAxisColor: "blue",
+            extensionPoints: []
         };
-      }
-    };
 
-    Dashboards.components = [];
-    Dashboards.finishedInit = false;
-    Dashboards.init([CDFDDPreviewComponent]);
+        CDFDDPreviewComponent = {
+            name: "CDFDDPreviewComponent",
+            type: myself.getComponentType(),
+            chartDefinition: CDFDDPreviewComponentDefinition,
+            htmlObject: "cdfdd-olap-preview-area",
+            executeAtStart: true,
+            postFetch: function (values) {
+                values.resultset.map(function (row) {//parse numeric values, otherwise sum will concatenate them
+                    row.splice(1, 1, parseFloat(row[1]));
+                });
+
+                return {
+                    resultset: values.resultset,
+                    metadata: [
+                        {colIndex: 0, colName: 'Name', colType: 'String'},
+                        {colIndex: 1, colName: 'Value', colType: 'Numeric'}
+                    ]
+                };
+            }
+        };
+
+        Dashboards.components = [];
+        Dashboards.finishedInit = false;
+        Dashboards.init([CDFDDPreviewComponent]);
+    });
   },
 
 
   buttonOk: function() {
     this.apply();
+    this._deleteTemporaryDatasource(this._getTemporaryFilenameToUse());
     $('#' + WizardManager.MAIN_DIALOG).jqmHide();
   },
+
+  buttonCancel: function() {
+    this._deleteTemporaryDatasource(this._getTemporaryFilenameToUse());
+    $('#' + WizardManager.MAIN_DIALOG).jqmHide();
+  },
+
+
 
   getComponentType: function() {
     return 'ccc' + this.getSelectedOptions().type;  //BarChart | LineChart | PieChart
