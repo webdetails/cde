@@ -16,6 +16,12 @@
             <artifactId>cpf-pentaho-rca</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.pentaho.ctools</groupId>
+            <artifactId>cde-foundry-extensions-impl</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>

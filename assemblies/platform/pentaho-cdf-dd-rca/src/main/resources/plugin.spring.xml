@@ -28,6 +28,8 @@
   <bean id="syncronizer" class="pt.webdetails.cdf.dd.api.SyncronizerApi"/>
   <bean id="version" class="pt.webdetails.cdf.dd.api.VersionApi"/>
 
+  <bean id="dashboards.api" class="org.pentaho.ctools.cde.api.DashboardsApi"/>
+
   <bean id="wcdf.new" class="pt.webdetails.cdf.dd.DashboardDesignerContentGenerator" scope="prototype">
     <property name="create" value="true"/>
     <property name="renderer" ref="renderApi"/>
