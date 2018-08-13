@@ -30,7 +30,6 @@
       <useTransitiveDependencies>false</useTransitiveDependencies>
       <useProjectArtifact>false</useProjectArtifact>
       <includes>
-        <include>org.pentaho.ctools:cpf-rca:jar</include>
         <include>pentaho:cpf-pentaho-rca:jar</include>
       </includes>
     </dependencySet>

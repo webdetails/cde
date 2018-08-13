@@ -12,11 +12,6 @@
     <description>Pentaho Community Dashboard Editor Assemblies for the Pentaho Platform Server</description>
     <dependencies>
         <dependency>
-            <groupId>org.pentaho.ctools</groupId>
-            <artifactId>cpf-rca</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>pentaho</groupId>
             <artifactId>cpf-pentaho-rca</artifactId>
             <version>${project.version}</version>
