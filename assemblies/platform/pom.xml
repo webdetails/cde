@@ -14,5 +14,6 @@
     <module>pentaho-cdf-dd</module>
     <module>pentaho-cdf-dd-disabled</module>
     <module>pentaho-cdf-dd-samples</module>
+    <module>pentaho-cdf-dd-rca</module>
   </modules>
 </project>
