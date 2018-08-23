@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.pentaho.ctools</groupId>
-        <artifactId>cde-plugin-assemblies</artifactId>
+        <artifactId>cde-plugin-assemblies-platform</artifactId>
         <version>9.0.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>pentaho-cdf-dd-rca</artifactId>
