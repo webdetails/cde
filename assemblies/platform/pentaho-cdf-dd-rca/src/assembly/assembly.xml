@@ -10,10 +10,10 @@
 
   <fileSets>
     <!-- resources -->
-  <fileSet>
-    <directory>${basedir}/src/main/resources</directory>
-    <outputDirectory>.</outputDirectory>
-  </fileSet>
+    <fileSet>
+      <directory>${basedir}/src/main/resources</directory>
+      <outputDirectory>.</outputDirectory>
+    </fileSet>
 
     <fileSet>
       <directory>${project.build.directory}/pentaho-cdf-dd</directory>
@@ -31,6 +31,7 @@
       <useProjectArtifact>false</useProjectArtifact>
       <includes>
         <include>pentaho:cpf-pentaho-rca:jar</include>
+        <include>org.pentaho.ctools:cde-foundry-extensions-impl</include>
       </includes>
     </dependencySet>
   </dependencySets>

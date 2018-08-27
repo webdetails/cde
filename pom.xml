@@ -18,6 +18,7 @@
     <module>core</module>
     <module>pentaho</module>
     <module>osgi</module>
+    <module>foundry-extensions</module>
     <module>samples</module>
     <module>components</module>
     <module>webclient</module>
@@ -67,6 +68,7 @@
     <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
     <jersey-multipart.version>1.19.1</jersey-multipart.version>
     <jersey-common.version>2.5.1</jersey-common.version>
+    <jersey-bundle.version>1.19.1</jersey-bundle.version>
     <jetty.version>8.1.19.v20160209</jetty.version>
     <backport-util-concurrent.version>3.1</backport-util-concurrent.version>
     <osgi.version>4.3.1</osgi.version>
