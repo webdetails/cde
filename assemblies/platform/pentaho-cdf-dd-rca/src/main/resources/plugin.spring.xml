@@ -77,4 +77,18 @@
     <property name="cache" ref="cache"/>
   </bean>
 
+  <!-- pt.webdetails.cdf.dd.extapi.FileHandler (in the function saveDashboardAs ) is using the getInstance() method
+       to obtain an instance of pt.webdetails.cpf.PentahoPluginEnvironment (this method is returning a singleton
+       of pt.webdetails.cpf.PentahoPluginEnvironment, statically created in that class), instead of using the
+       the singleton bean 'pentahoCdeEnvironment' that has been injected in CdeEngine.
+       The direct use of the CdeEngine instance is not possible because it results in an implementation of
+       IContextAccessFactory instead of IContentAccessFactoryExtended which is required by the FileHandler method.
+
+       To avoid the two 'singleton's having different views of how to access repository content, until a major refactor
+       of these singleton class hierarchies, we obtain the singleton instance an inject the required remote access
+       factory instance.
+  -->
+  <bean id="pentahoCdeEnvironmentStatic" class="pt.webdetails.cdf.dd.PentahoCdeEnvironment" factory-method="getInstance">
+    <property name="repositoryAccessFactory" ref="remoteRepositoryFactory"/>
+  </bean>
 </beans>
