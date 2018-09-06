@@ -8,7 +8,6 @@
                type="streaming">
       <Name>real_time_table</Name>
       <Columns/>
-      <ComponentRefreshPeriod>1</ComponentRefreshPeriod>
       <DataServiceQuery>SELECT increaseDateDate, Lap, latG, longG, Kmh, Gear, Rpm, Accelerator, Brake&#xD;
 FROM "plugin_sample_real_time"</DataServiceQuery>
       <Parameters/>
@@ -22,7 +21,6 @@ FROM "plugin_sample_real_time"</DataServiceQuery>
                type="streaming">
       <Name>realtime_chart</Name>
       <Columns/>
-      <ComponentRefreshPeriod>1</ComponentRefreshPeriod>
       <DataServiceQuery>SELECT increaseDateDate as Date, latG as Lat.G, longG as Long.G&#xD;
 FROM "plugin_sample_real_time"</DataServiceQuery>
       <Parameters/>

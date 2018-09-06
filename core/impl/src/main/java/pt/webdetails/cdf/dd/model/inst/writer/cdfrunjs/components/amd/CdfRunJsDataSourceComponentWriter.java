@@ -35,8 +35,10 @@ import java.util.regex.Pattern;
 
 import static pt.webdetails.cdf.dd.CdeConstants.Writer;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource;
-import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyValue;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.AttributeName.DATA_ACCESS_TYPE;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyName;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyName.STREAMING_TYPE;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyValue;
 
 public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implements IThingWriter {
   protected static final Log logger = LogFactory.getLog( CdfRunJsDataSourceComponentWriter.class );
@@ -128,6 +130,9 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
 
     addFirstJsProperty( out, PropertyName.DATA_ACCESS_ID, buildJsStringValue( dataAccessId ), Writer.INDENT2 );
 
+    String dataSourceType = dataSourceComp.tryGetAttributeValue( DATA_ACCESS_TYPE, null );
+    addJsProperty( out, PropertyName.DATA_ACCESS_PUSH_ENABLED, String.valueOf( STREAMING_TYPE.equals( dataSourceType ) ), Writer.INDENT2 );
+
     String outputIndexId = dataSourceComp.tryGetPropertyValue( PropertyName.OUTPUT_INDEX_ID, null );
     if ( outputIndexId != null ) {
       addJsProperty( out, PropertyName.OUTPUT_INDEX_ID, buildJsStringValue( outputIndexId ), Writer.INDENT2 );
@@ -165,8 +170,8 @@ public class CdfRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
     String dsName = dataSourceComp.getName();
     addFirstJsProperty( out, PropertyName.DATA_ACCESS_ID, buildJsStringValue( dsName ), Writer.INDENT2 );
 
-    String refreshPeriod = dataSourceComp.tryGetPropertyBindingByName( PropertyValue.COMPONENT_REFRESH_RATE ) != null ? dataSourceComp.tryGetPropertyBindingByName( PropertyValue.COMPONENT_REFRESH_RATE ).getValue() : "";
-    addJsProperty( out, PropertyName.DATA_ACCESS_STREAM_REFRESH_PERIOD, buildJsStringValue( refreshPeriod ), Writer.INDENT2 );
+    String dataSourceType = dataSourceComp.tryGetAttributeValue( DATA_ACCESS_TYPE, null );
+    addJsProperty( out, PropertyName.DATA_ACCESS_PUSH_ENABLED, String.valueOf( STREAMING_TYPE.equals( dataSourceType ) ), Writer.INDENT2 );
 
     String cdeFilePath = context.getDashboard().getSourcePath();
     if ( cdeFilePath != null ) {

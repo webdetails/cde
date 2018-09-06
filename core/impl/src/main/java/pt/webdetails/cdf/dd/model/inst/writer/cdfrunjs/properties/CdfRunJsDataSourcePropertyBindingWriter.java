@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,9 +13,6 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -28,6 +25,12 @@ import pt.webdetails.cdf.dd.model.meta.DataSourceComponentType;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.AttributeName.DATA_ACCESS_TYPE;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyName.STREAMING_TYPE;
 
 public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBindingWriter {
   protected static final Log logger = LogFactory.getLog( CdfRunJsDataSourcePropertyBindingWriter.class );
@@ -48,6 +51,7 @@ public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBin
     public static final String JNDI = "jndi";
     public static final String CATALOG = "catalog";
     public static final String CUBE = "cube";
+    public static final String PUSH_ENABLED = "pushEnabled";
 
     // CPK DataSource
     public static final String DATA_ACCESS_ID = "dataAccessId";
@@ -167,6 +171,11 @@ public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBin
       String file = buildJsStringValue( dataSourceComp.tryGetPropertyValue( PropertyName.FILE, "" ) );
       addJsProperty( out, PropertyName.FILE, file, indent, false );
     }
+
+    String dataSourceType = dataSourceComp.tryGetAttributeValue( DATA_ACCESS_TYPE, null );
+    addJsProperty( out, PropertyName.PUSH_ENABLED,
+      String.valueOf( STREAMING_TYPE.equals( dataSourceType ) ),
+      indent, false );
   }
 
   protected void renderBuiltinCdaDatasource(
@@ -189,6 +198,11 @@ public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBin
     String cdaFilePath = cdeFilePath.replaceAll( ".cdfde", ".cda" );
 
     addJsProperty( out, PropertyName.PATH, JsonUtils.toJsString( cdaFilePath ), indent, false );
+
+    String dataSourceType = dataSourceComp.tryGetAttributeValue( DATA_ACCESS_TYPE, null );
+    addJsProperty( out, PropertyName.PUSH_ENABLED,
+      String.valueOf( STREAMING_TYPE.equals( dataSourceType ) ),
+      indent, false );
   }
 
   // ---------------------
