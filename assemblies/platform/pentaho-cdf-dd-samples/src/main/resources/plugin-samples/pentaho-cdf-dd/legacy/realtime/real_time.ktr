@@ -734,7 +734,7 @@ streaming step, like MQTT, could be used.</note>
     </fields>
     <limit>50000</limit>
     <never_ending>Y</never_ending>
-    <interval_in_ms>200</interval_in_ms>
+    <interval_in_ms>500</interval_in_ms>
     <row_time_field/>
     <last_time_field/>
     <cluster_schema/>

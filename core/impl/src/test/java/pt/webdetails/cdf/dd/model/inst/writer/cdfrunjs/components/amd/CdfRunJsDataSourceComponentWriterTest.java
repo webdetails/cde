@@ -52,7 +52,6 @@ import static pt.webdetails.cdf.dd.CdeConstants.Writer.NEWLINE;
 public class CdfRunJsDataSourceComponentWriterTest {
 
   private static final String DATASOURCE_COMPONENT_NAME = "dsName";
-  private static final String DATASOURCE_COMPONENT_REFRESH_PERIOD = "componentRefreshPeriod";
 
   private Dashboard dash;
   private CdeRunJsThingWriterFactory factory;
@@ -105,6 +104,7 @@ public class CdfRunJsDataSourceComponentWriterTest {
 
     Map<String, String> properties = new LinkedHashMap<>( 2 );
     properties.put( PropertyName.DATA_ACCESS_ID, "fakeDataAccessId" );
+    properties.put( PropertyName.DATA_ACCESS_PUSH_ENABLED, Boolean.FALSE.toString() );
     properties.put( PropertyName.PATH, path );
 
     when( dataSourceComponent.tryGetPropertyValue( eq( PropertyName.CDA_PATH ), any() ) ).thenReturn( path );
@@ -116,11 +116,10 @@ public class CdfRunJsDataSourceComponentWriterTest {
   public void testBuiltInCdaDataSourceComponentWriter() throws ThingWriteException, ValidationException {
     Map<String, String> properties = new LinkedHashMap<>( 3 );
     properties.put( DATASOURCE_COMPONENT_NAME, "fakeDataAccessId" );
-    properties.put( DATASOURCE_COMPONENT_REFRESH_PERIOD, "10" );
+    properties.put( PropertyName.DATA_ACCESS_PUSH_ENABLED, Boolean.FALSE.toString() );
     properties.put( PropertyName.PATH, "" );
 
     when( dataSourceComponent.getName() ).thenReturn( properties.get( DATASOURCE_COMPONENT_NAME ) );
-    when( dataSourceComponent.tryGetPropertyBindingByName( PropertyValue.COMPONENT_REFRESH_RATE ) ).thenReturn( getPropertyBinding( "10" ) );
 
     assertDataSourceComponentWriterOutput( DataSource.META_TYPE_CDA, properties, true );
   }
@@ -176,10 +175,12 @@ public class CdfRunJsDataSourceComponentWriterTest {
       } else {
         when( dataSourceComponent.tryGetPropertyValue( eq( prop ), any() ) ).thenReturn( value );
       }
-
       boolean isDataAccessId = PropertyName.DATA_ACCESS_ID.equals( prop );
-      if ( !isDataAccessId || outputDataAccessId ) {
+      boolean isPushEnabled = PropertyName.DATA_ACCESS_PUSH_ENABLED.equals( prop );
+      if ( !isPushEnabled && ( !isDataAccessId || outputDataAccessId ) ) {
         expected.add( INDENT2 + prop + ": " + JsonUtils.toJsString( value ) );
+      } else if ( isPushEnabled ) {
+        expected.add( INDENT2 + prop + ": " + value );
       }
 
     } );

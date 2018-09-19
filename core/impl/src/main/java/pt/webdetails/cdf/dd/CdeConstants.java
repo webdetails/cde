@@ -293,6 +293,7 @@ public class CdeConstants {
         public static final String JNDI = "jndi";
         public static final String CATALOG = "catalog";
         public static final String CUBE = "cube";
+        public static final String STREAMING_TYPE = "streaming";
 
         // CPK DataSource
         public static final String DATA_ACCESS_ID = "dataAccessId";
@@ -305,7 +306,7 @@ public class CdeConstants {
         // CDA DataSource
         public static final String DATA_ACCESS_LEGACY = "datasourceProperties";
         public static final String OUTPUT_INDEX_ID = "outputIndexId";
-        public static final String DATA_ACCESS_STREAM_REFRESH_PERIOD = "componentRefreshPeriod";
+        public static final String DATA_ACCESS_PUSH_ENABLED = "pushEnabled";
         public static final String SOLUTION = "solution";
         public static final String PATH = "path";
         public static final String CDA_PATH = "cdaPath";
@@ -320,7 +321,6 @@ public class CdeConstants {
         public static final String MDX_QUERY_TYPE = "mdx";
         public static final String SQL_QUERY_TYPE = "sql";
         public static final String SOLR_QUERY_TYPE = "solr";
-        public static final String COMPONENT_REFRESH_RATE = "componentrefreshperiod";
       }
 
       public static class AttributeName {

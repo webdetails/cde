@@ -734,7 +734,7 @@ streaming step, like MQTT, could be used.</note>
     </fields>
     <limit>50000</limit>
     <never_ending>Y</never_ending>
-    <interval_in_ms>200</interval_in_ms>
+    <interval_in_ms>500</interval_in_ms>
     <row_time_field/>
     <last_time_field/>
     <cluster_schema/>
@@ -790,16 +790,16 @@ var Lap = typeof(previousLap) !== 'undefined' ? previousLap + ((times%100)==0?1:
 
 //[0;420] - will increase to 420 and decrease to 80, and loop
 var Kmh = typeof(previousKmh) !== 'undefined'
-? 
+?
 Math.min(previousKmh + ((Math.random()*5)*(kmIncrease|1)), 420)
 :
-0; 
+0;
 Kmh = round(Kmh, 2);
 
 //[-1;1] the next curve side (left or right) is a "random" of the number of times the KmH are above 100
 var latGRight = latGRight|1;
 var latG = typeof(previouslatG) !== 'undefined'
-? 
+?
 (previousKmh &lt; 100 ?  Math.max(Math.min(previouslatG + (Math.random()*0.4*latGRight), 1), -1) : (latGRight *= -1)*0)
 :
 0;
@@ -807,7 +807,7 @@ latG = round(latG, 2);
 
 //[-2;4] negative when accelerating and positive when braking
 var longG = typeof(previouslongG) !== 'undefined'
-? 
+?
 Math.max(Math.min(previouslongG + (Math.random()*0.1*(Kmh > previousKmh?2:-1.5)), 4), -2)
 :
 0;
