@@ -20,11 +20,16 @@ import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
 import pt.webdetails.cdf.dd.reader.factory.ResourceLoaderFactory;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IBasicFileExtended;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 public class DashboardsImpl {
@@ -32,6 +37,10 @@ public class DashboardsImpl {
   private IResourceLoader resourceLoader = null;
   private IReadAccess readAccess = null;
   private String path = "";
+  private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss" );
+
+  //BACKLOG - 25778
+  private static final String IGNORE_END_PATTERN = "_tmp.wcdf";
 
   public DashboardsImpl() {
     init();
@@ -52,19 +61,43 @@ public class DashboardsImpl {
   public JSONArray getDashboardList( int maxDepth, boolean showHiddenFiles ) {
 
     List<IBasicFile> fileList = readAccess.listFiles( path, getFilterForCDEDashboardFiles(),
-        maxDepth, false, showHiddenFiles );
+      maxDepth, false, showHiddenFiles );
 
     JSONArray dashboardArray = null;
 
     if ( fileList != null && fileList.size() > 0 ) {
       dashboardArray = new JSONArray();
       JSONObject jsonObject;
+      IBasicFileExtended fileExtended;
       try {
         for ( IBasicFile file : fileList ) {
-          jsonObject = new JSONObject();
-          jsonObject.put( "path", file.getFullPath() );
-          jsonObject.put( "name", getNameWithoutExtension( file ) );
-          dashboardArray.put( jsonObject );
+          if ( !file.getFullPath().endsWith( IGNORE_END_PATTERN ) ) {
+            jsonObject = new JSONObject();
+            jsonObject.put( "path", file.getFullPath() );
+            jsonObject.put( "name", getNameWithoutExtension( file ) );
+
+            /**
+             * Using cpf-pentaho-rca implementation which we know
+             * it returns IBasicFileExtended instead of IBasicFile
+             * BACKLOG - 25778
+             */
+            if ( file instanceof IBasicFileExtended ) {
+              fileExtended = (IBasicFileExtended) file;
+              jsonObject.put( "title", fileExtended.getTitle() != null
+                ? fileExtended.getTitle() : JSONObject.NULL );
+              jsonObject.put( "description", fileExtended.getDescription() != null
+                ? fileExtended.getDescription() : JSONObject.NULL );
+              jsonObject.put( "owner", fileExtended.getOwner() != null
+                ? fileExtended.getOwner() : JSONObject.NULL );
+              jsonObject.put( "created", fileExtended.getCreatedDate() != null
+                ? getPrettyDate( fileExtended.getCreatedDate() ) : JSONObject.NULL );
+              jsonObject.put( "modified", fileExtended.getLastModifiedDate() != null
+                ? getPrettyDate( fileExtended.getLastModifiedDate() ) : JSONObject.NULL );
+              jsonObject.put( "size", fileExtended.getFileSize() );
+            }
+
+            dashboardArray.put( jsonObject );
+          }
         }
       } catch ( JSONException jEx ) {
         logger.fatal( jEx );
@@ -72,6 +105,13 @@ public class DashboardsImpl {
     }
 
     return dashboardArray;
+  }
+
+  private String getPrettyDate( String timeDate ) {
+    Date date = new Date();
+    date.setTime( Long.parseLong( timeDate ) );
+    LocalDateTime localDate = LocalDateTime.ofInstant( date.toInstant(), ZoneId.systemDefault() );
+    return localDate.format( dtf );
   }
 
   public GenericBasicFileFilter getFilterForCDEDashboardFiles() {
