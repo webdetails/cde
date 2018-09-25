@@ -21,9 +21,8 @@
             in time (i.e. remove them from custom.properties and remove them as provided from this dependency management).
        -->
       <dependency>
-        <groupId>dom4j</groupId>
+        <groupId>org.dom4j</groupId>
         <artifactId>dom4j</artifactId>
-        <version>${dom4j.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>

@@ -170,14 +170,24 @@ public class Utils {
     return reader.read( input );
   }
 
-  @SuppressWarnings( "unchecked" )
-  public static List<Element> selectNodes( Element elem, String xpath ) {
+  @Deprecated
+  public static List<Node> selectNodes( Element elem, String xpath ) {
     return elem.selectNodes( xpath );
   }
 
-  @SuppressWarnings( "unchecked" )
-  public static List<Element> selectNodes( Document doc, String xpath ) {
+  @Deprecated
+  public static List<Node> selectNodes( Document doc, String xpath ) {
     return doc.selectNodes( xpath );
+  }
+
+  @SuppressWarnings( "unchecked" )
+  public static List<Element> selectElements( Element elem, String xpath ) {
+    return (List<Element>) (List<?>) selectNodes( elem, xpath );
+  }
+
+  @SuppressWarnings( "unchecked" )
+  public static List<Element> selectElements( Document doc, String xpath ) {
+    return (List<Element>) (List<?>) selectNodes( doc, xpath );
   }
 
   public static Document getDocFromFile( final IReadAccess access, final String filePath,
