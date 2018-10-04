@@ -72,31 +72,7 @@ public class DashboardsImpl {
       try {
         for ( IBasicFile file : fileList ) {
           if ( !file.getFullPath().endsWith( IGNORE_END_PATTERN ) ) {
-            jsonObject = new JSONObject();
-            jsonObject.put( "path", file.getFullPath() );
-            jsonObject.put( "name", getNameWithoutExtension( file ) );
-
-            /**
-             * Using cpf-pentaho-rca implementation which we know
-             * it returns IBasicFileExtended instead of IBasicFile
-             * BACKLOG - 25778
-             */
-            if ( file instanceof IBasicFileExtended ) {
-              fileExtended = (IBasicFileExtended) file;
-              jsonObject.put( "title", fileExtended.getTitle() != null
-                ? fileExtended.getTitle() : JSONObject.NULL );
-              jsonObject.put( "description", fileExtended.getDescription() != null
-                ? fileExtended.getDescription() : JSONObject.NULL );
-              jsonObject.put( "owner", fileExtended.getOwner() != null
-                ? fileExtended.getOwner() : JSONObject.NULL );
-              jsonObject.put( "created", fileExtended.getCreatedDate() != null
-                ? getPrettyDate( fileExtended.getCreatedDate() ) : JSONObject.NULL );
-              jsonObject.put( "modified", fileExtended.getLastModifiedDate() != null
-                ? getPrettyDate( fileExtended.getLastModifiedDate() ) : JSONObject.NULL );
-              jsonObject.put( "size", fileExtended.getFileSize() );
-            }
-
-            dashboardArray.put( jsonObject );
+            dashboardArray.put( assembleJsonFromFile( file ) );
           }
         }
       } catch ( JSONException jEx ) {
@@ -107,6 +83,55 @@ public class DashboardsImpl {
     return dashboardArray;
   }
 
+  public JSONObject getDashboardFromPath( String path ) {
+
+    IBasicFile file = readAccess.fetchFile( path );
+    if ( file != null && !file.isDirectory() ) {
+      try {
+        if ( !file.getFullPath().endsWith( IGNORE_END_PATTERN ) ) {
+          return assembleJsonFromFile( file );
+        }
+      } catch ( JSONException jEx ) {
+        logger.fatal( jEx );
+      }
+    }
+
+    return null;
+  }
+
+  private JSONObject assembleJsonFromFile( IBasicFile file ) throws JSONException {
+    JSONObject jsonObject;
+    IBasicFileExtended fileExtended;
+    jsonObject = new JSONObject();
+    jsonObject.put( "path", file.getFullPath() );
+    jsonObject.put( "name", getNameWithoutExtension( file ) );
+    if ( !( file instanceof IBasicFileExtended ) ) {
+      jsonObject.put( "title", file.getFullPath() );
+    }
+
+    /**
+     * Using cpf-pentaho-rca implementation which we know
+     * it returns IBasicFileExtended instead of IBasicFile
+     * BACKLOG - 25778
+     */
+    if ( file instanceof IBasicFileExtended ) {
+      fileExtended = (IBasicFileExtended) file;
+      jsonObject.put( "title", fileExtended.getTitle() != null
+        ? fileExtended.getTitle() : JSONObject.NULL );
+      jsonObject.put( "description", fileExtended.getDescription() != null
+        ? fileExtended.getDescription() : JSONObject.NULL );
+      jsonObject.put( "owner", fileExtended.getOwner() != null
+        ? fileExtended.getOwner() : JSONObject.NULL );
+      jsonObject.put( "created", fileExtended.getCreatedDate() != null
+        ? getPrettyDate( fileExtended.getCreatedDate() ) : JSONObject.NULL );
+      jsonObject.put( "modified", fileExtended.getLastModifiedDate() != null
+        ? getPrettyDate( fileExtended.getLastModifiedDate() ) : JSONObject.NULL );
+      jsonObject.put( "size", fileExtended.getFileSize() );
+    }
+
+    return jsonObject;
+  }
+
   private String getPrettyDate( String timeDate ) {
     Date date = new Date();
     date.setTime( Long.parseLong( timeDate ) );
@@ -114,7 +139,7 @@ public class DashboardsImpl {
     return localDate.format( dtf );
   }
 
-  public GenericBasicFileFilter getFilterForCDEDashboardFiles() {
+  protected GenericBasicFileFilter getFilterForCDEDashboardFiles() {
     return new GenericBasicFileFilter( null, "wcdf", true );
   }
 

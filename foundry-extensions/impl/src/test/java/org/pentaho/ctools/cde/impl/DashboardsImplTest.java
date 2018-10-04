@@ -14,30 +14,35 @@ package org.pentaho.ctools.cde.impl;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
+import org.skyscreamer.jsonassert.JSONAssert;
+import pt.webdetails.cdf.dd.CdeEngine;
+import pt.webdetails.cdf.dd.ICdeEnvironment;
 import pt.webdetails.cdf.dd.reader.factory.SolutionResourceLoader;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.rca.RemoteBasicFile;
 import pt.webdetails.cpf.repository.rca.RemoteReadAccess;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.skyscreamer.jsonassert.JSONAssert;
 import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyBoolean;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class DashboardsImplTest {
@@ -47,6 +52,7 @@ public class DashboardsImplTest {
   private List<IBasicFile> fileListTwoDashboards = null;
   private String[] cdeDashboardsExtension = null;
   private JSONArray expectedResult = null;
+  private JSONObject expectedResultByPath = null;
 
   @Before
   public void setUp() {
@@ -63,6 +69,15 @@ public class DashboardsImplTest {
     when( file2.getFullPath() ).thenReturn( "/home/sample CDE/sample.wcdf" );
     when( file2.getExtension() ).thenReturn( "wcdf" );
 
+    RemoteBasicFile fileSolo = Mockito.mock( RemoteBasicFile.class );
+    when( fileSolo.getName() ).thenReturn( "sampleSolo" );
+    when( fileSolo.getFullPath() ).thenReturn( "/home/sample CDE/sampleSolo.wcdf" );
+    when( fileSolo.getExtension() ).thenReturn( "wcdf" );
+    when( fileSolo.getTitle() ).thenReturn( "title" );
+    when( fileSolo.getDescription() ).thenReturn( "description" );
+    when( fileSolo.getCreatedDate() ).thenReturn( "1514764800000" );
+    when( fileSolo.getLastModifiedDate() ).thenReturn( "1517443200000" );
+
     fileListTwoDashboards = new ArrayList<>();
     fileListTwoDashboards.add( file1 );
     fileListTwoDashboards.add( file2 );
@@ -71,6 +86,7 @@ public class DashboardsImplTest {
     when( readAccessMockitoForTwoDashboards.listFiles( anyString(), any( GenericBasicFileFilter.class ),
       anyInt(), anyBoolean(), anyBoolean() ) )
       .thenReturn( fileListTwoDashboards );
+    when( readAccessMockitoForTwoDashboards.fetchFile( "/home/sample CDE/sampleSolo.wcdf" ) ).thenReturn( fileSolo );
 
     try {
       expectedResult = new JSONArray( "[\n"
@@ -86,6 +102,18 @@ public class DashboardsImplTest {
     } catch ( JSONException jEx ) {
       fail( "No exception should be thrown: " + jEx.getMessage() );
     }
+    try {
+      expectedResultByPath = new JSONObject( "{\n"
+        + "  \"name\": \"sampleSolo\",\n"
+        + "  \"path\": \"/home/sample CDE/sampleSolo.wcdf\",\n"
+        + "  \"title\": \"title\",\n"
+        + "  \"description\": \"description\",\n"
+        + "  \"created\": \"2018-01-01 00:00:00\",\n"
+        + "  \"modified\": \"2018-02-01 00:00:00\"\n"
+        + "}");
+    } catch ( JSONException jEx ) {
+      fail( "No exception should be thrown: " + jEx.getMessage() );
+    }
 
     cdeDashboardsExtension = new String[] { "wcdf" };
   }
@@ -97,8 +125,16 @@ public class DashboardsImplTest {
     fileListTwoDashboards = null;
     cdeDashboardsExtension = null;
     expectedResult = null;
+    expectedResultByPath = null;
   }
 
+  @Test
+  public void testConstructor() {
+    ICdeEnvironment mockedEnvironment = mock( ICdeEnvironment.class );
+    when( mockedEnvironment.getContentAccessFactory() ).thenReturn( mock( IContentAccessFactory.class ) );
+    CdeEngine.getInstance().setEnvironment( mockedEnvironment );
+    assertNotNull( new DashboardsImpl() );
+  }
 
   @Test
   public void testGetDashboardList() {
@@ -106,6 +142,17 @@ public class DashboardsImplTest {
       //all files should get returned
       dashboardImpl.setReadAccess( readAccessMockitoForTwoDashboards );
       JSONAssert.assertEquals( expectedResult, dashboardImpl.getDashboardList( -1, false ), false );
+    } catch ( JSONException jEx ) {
+      fail( "No exception should be thrown: " + jEx.getMessage() );
+    }
+  }
+
+  @Test
+  public void testGetDashboardFromPath() {
+    try {
+      //file2 should be returned
+      dashboardImpl.setReadAccess( readAccessMockitoForTwoDashboards );
+      JSONAssert.assertEquals( expectedResultByPath, dashboardImpl.getDashboardFromPath( "/home/sample CDE/sampleSolo.wcdf" ), false );
     } catch ( JSONException jEx ) {
       fail( "No exception should be thrown: " + jEx.getMessage() );
     }
