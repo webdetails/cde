@@ -141,8 +141,7 @@ public final class XmlFsPluginModelReader {
     }
 
     // One file can contain multiple definitions.
-    @SuppressWarnings( "unchecked" )
-    List<Element> propertieElems = doc.selectNodes( "//DesignerProperty" );
+    List<Element> propertieElems = Utils.selectElements( doc, "//DesignerProperty" );
     for ( Element propertyElem : propertieElems ) {
       readProperty( model, factory, propertyElem, file );
     }
@@ -227,7 +226,7 @@ public final class XmlFsPluginModelReader {
       return;
     }
     if ( doc != null ) {
-      List<Element> widgetLocations = doc.selectNodes( "//widgetsLocations//location" );
+      List<Element> widgetLocations = Utils.selectElements( doc, "//widgetsLocations//location" );
       List<List<IBasicFile>> widgetsLists = new ArrayList<List<IBasicFile>>();
       String locations = "";
       for ( Element location : widgetLocations ) {
@@ -305,7 +304,7 @@ public final class XmlFsPluginModelReader {
       logger.error( "Unable to check meta for " + componentXml.getPath() + ", moving on" );
       return;
     }
-    List<Element> wcdfMeta = doc.selectNodes( "//meta[@name='wcdf']" );
+    List<Element> wcdfMeta = Utils.selectElements( doc, "//meta[@name='wcdf']" );
     String wcdfName = componentXml.getName().replace( ".component.xml", ".wcdf" );
     String wcdfPath = FilenameUtils.getPath( componentXml.getPath() ) + wcdfName;
 
@@ -369,8 +368,7 @@ public final class XmlFsPluginModelReader {
     }
 
     // One file can contain multiple definitions.
-    @SuppressWarnings( "unchecked" )
-    List<Element> componentElems = doc.selectNodes( "//DesignerComponent" );
+    List<Element> componentElems = Utils.selectElements( doc, "//DesignerComponent" );
 
     if ( logger.isDebugEnabled() && componentElems.size() > 0 ) {
       logger.debug( String.format( "\t%s [%s]", file.getPath(), componentElems.size() ) );
