@@ -29,7 +29,11 @@ import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.rca.RemoteBasicFile;
 import pt.webdetails.cpf.repository.rca.RemoteReadAccess;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static junit.framework.TestCase.fail;
@@ -59,6 +63,12 @@ public class DashboardsImplTest {
     SolutionResourceLoader resourceLoaderMockito = Mockito.mock( SolutionResourceLoader.class );
     dashboardImpl = new DashboardsImpl( resourceLoaderMockito );
 
+    long createDate = 1514764800000L;
+    LocalDateTime createDateObject = LocalDateTime.ofInstant( new Date( createDate ).toInstant(), ZoneId.systemDefault() );
+
+    long lastModifiedDate = 1517443200000L;
+    LocalDateTime lastModifiedDateObject =  LocalDateTime.ofInstant( new Date( lastModifiedDate ).toInstant(), ZoneId.systemDefault() );
+
     RemoteBasicFile file1 = Mockito.mock( RemoteBasicFile.class );
     when( file1.getName() ).thenReturn( "CDE Test Dashboard" );
     when( file1.getFullPath() ).thenReturn( "/home/CDE Test Dashboard.wcdf" );
@@ -75,8 +85,8 @@ public class DashboardsImplTest {
     when( fileSolo.getExtension() ).thenReturn( "wcdf" );
     when( fileSolo.getTitle() ).thenReturn( "title" );
     when( fileSolo.getDescription() ).thenReturn( "description" );
-    when( fileSolo.getCreatedDate() ).thenReturn( "1514764800000" );
-    when( fileSolo.getLastModifiedDate() ).thenReturn( "1517443200000" );
+    when( fileSolo.getCreatedDate() ).thenReturn( String.valueOf( createDate ) );
+    when( fileSolo.getLastModifiedDate() ).thenReturn( String.valueOf( lastModifiedDate ) );
 
     fileListTwoDashboards = new ArrayList<>();
     fileListTwoDashboards.add( file1 );
@@ -103,14 +113,15 @@ public class DashboardsImplTest {
       fail( "No exception should be thrown: " + jEx.getMessage() );
     }
     try {
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss" );
       expectedResultByPath = new JSONObject( "{\n"
         + "  \"name\": \"sampleSolo\",\n"
         + "  \"path\": \"/home/sample CDE/sampleSolo.wcdf\",\n"
         + "  \"title\": \"title\",\n"
         + "  \"description\": \"description\",\n"
-        + "  \"created\": \"2018-01-01 00:00:00\",\n"
-        + "  \"modified\": \"2018-02-01 00:00:00\"\n"
-        + "}");
+        + "  \"created\": \"" + dtf.format( createDateObject ) + "\",\n"
+        + "  \"modified\": \"" + dtf.format( lastModifiedDateObject ) + "\"\n"
+        + "}" );
     } catch ( JSONException jEx ) {
       fail( "No exception should be thrown: " + jEx.getMessage() );
     }
