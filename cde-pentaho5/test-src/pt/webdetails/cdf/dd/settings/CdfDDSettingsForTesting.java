@@ -18,7 +18,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import pt.webdetails.cdf.dd.CdeSettings;
-import pt.webdetails.cdf.dd.utils.Utils;
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 
 import java.io.File;
