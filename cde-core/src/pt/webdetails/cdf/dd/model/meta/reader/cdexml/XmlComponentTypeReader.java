@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -58,7 +58,7 @@ public abstract class XmlComponentTypeReader {
 
     readModelProperties( builder, elem );
 
-    List<Element> attributeElems = Utils.selectNodes( elem, "Metadata/*" );
+    List<Element> attributeElems = Utils.selectElements( elem, "Metadata/*" );
     for ( Element attributeElem : attributeElems ) {
       builder.addAttribute(
           Utils.getNodeText( "@name", attributeElem ),
@@ -114,7 +114,7 @@ public abstract class XmlComponentTypeReader {
 
   private void readCustomProperties( ComponentType.Builder builder, XmlFsPluginThingReaderFactory factory,
                                      Element elem, String sourcePath ) {
-    List<Element> propElems = Utils.selectNodes( elem, "Contents/Implementation/CustomProperties/*" );
+    List<Element> propElems = Utils.selectElements( elem, "Contents/Implementation/CustomProperties/*" );
     for ( Element propElem : propElems ) {
       String className = Utils.getNodeText( "Header/Override", propElem );
       // String propName = Utils.getNodeText("Header/Name", propElem);
@@ -133,7 +133,7 @@ public abstract class XmlComponentTypeReader {
 
   private void readModelProperties( ComponentType.Builder builder, Element elem ) {
     // The "//" in the XPath is to catch properties inside Defintions
-    List<Element> usedPropElems = Utils.selectNodes( elem, "Contents/Model//Property" );
+    List<Element> usedPropElems = Utils.selectElements( elem, "Contents/Model//Property" );
     for ( Element usedPropElem : usedPropElems ) {
       String definitionName = null;
       Element parentElem = usedPropElem.getParent();
@@ -184,7 +184,7 @@ public abstract class XmlComponentTypeReader {
     }
 
     @SuppressWarnings( "unchecked" )
-    List<Element> legacyNamesElems = elem.selectNodes( "Header/LegacyIName" );
+    List<Element> legacyNamesElems = Utils.selectElements( elem, "Header/LegacyIName" );
     for ( Element legacyNameElem : legacyNamesElems ) {
       String legacyName = legacyNameElem.getStringValue();
       if ( StringUtils.isNotBlank( legacyName ) ) {
@@ -198,7 +198,7 @@ public abstract class XmlComponentTypeReader {
   private void readResourceDependencies( ComponentType.Builder builder, Element compElem, String compDir,
                                          String compName ) {
     @SuppressWarnings( "unchecked" )
-    List<Element> depElems = compElem.selectNodes( "Contents/Implementation/Dependencies/*" );
+    List<Element> depElems = Utils.selectElements( compElem, "Contents/Implementation/Dependencies/*" );
     for ( Element depElem : depElems ) {
       Resource.Builder resourceBuilder = createResource( Resource.Type.SCRIPT, compDir, depElem, compName );
       if ( resourceBuilder != null ) {
@@ -207,7 +207,7 @@ public abstract class XmlComponentTypeReader {
     }
 
     @SuppressWarnings( "unchecked" )
-    List<Element> styleElems = compElem.selectNodes( "Contents/Implementation/Styles/*" );
+    List<Element> styleElems = Utils.selectElements( compElem, "Contents/Implementation/Styles/*" );
     for ( Element styleElem : styleElems ) {
       Resource.Builder resourceBuilder = createResource( Resource.Type.STYLE, compDir, styleElem, compName );
       if ( resourceBuilder != null ) {
@@ -216,7 +216,7 @@ public abstract class XmlComponentTypeReader {
     }
 
     @SuppressWarnings( "unchecked" )
-    List<Element> rawElems = compElem.selectNodes( "Contents/Implementation/Raw/*" );
+    List<Element> rawElems = Utils.selectElements( compElem, "Contents/Implementation/Raw/*" );
     for ( Element rawElem : rawElems ) {
       builder.addResource(
           new Resource.Builder()

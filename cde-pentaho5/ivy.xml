@@ -15,7 +15,7 @@
 
         <!--  third party dependencies -->
         <dependency org="commons-logging"         name="commons-logging"    rev="1.1"                           transitive="false"/>
-        <dependency org="dom4j"                   name="dom4j"              rev="1.6.1"                         transitive="false"/>
+        <dependency org="org.dom4j"               name="dom4j"              rev="2.1.1"                         transitive="false"/>
         <dependency org="net.sf.ehcache"          name="ehcache"            rev="1.4.1"                         transitive="false"/>
         <dependency org="commons-lang"            name="commons-lang"       rev="2.4"                           transitive="false"/>
         <dependency org="org.pentaho"             name="json"               rev="${dependency.json.revision}"   transitive="false"/>
@@ -59,7 +59,7 @@
 
         <!-- test dependencies -->
         <dependency org="junit"             name="junit"             rev="4.10"                conf="test->default" transitive="false"/>
-        <dependency org="jaxen"             name="jaxen"             rev="1.1"                 conf="test->default" transitive="false"/>
+        <dependency org="jaxen"             name="jaxen"             rev="1.1.6"               conf="test->default" transitive="false"/>
         <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.1"               conf='test->default' transitive="false"/>
         <dependency org="net.sf.ezmorph"    name="ezmorph"           rev="1.0.6"               conf='test->default' transitive="false"/>
         <dependency org="pentaho"           name="cde-core"          rev="${project.revision}" conf="test->default" transitive="false" changing="true"/>

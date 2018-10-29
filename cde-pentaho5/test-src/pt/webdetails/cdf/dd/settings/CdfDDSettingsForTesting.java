@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -18,6 +18,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import pt.webdetails.cdf.dd.CdeSettings;
+import pt.webdetails.cdf.dd.utils.Utils;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 
 import java.io.File;
@@ -41,7 +42,7 @@ public class CdfDDSettingsForTesting extends CdeSettings.CdfDDSettings {
 
   @Override
   protected List<Element> getSettingsXmlSection( String section ) {
-    return settings.selectNodes( "/settings/" + section );
+    return Utils.selectElements( settings, "/settings/" + section );
   }
 
   private boolean loadDocument() {
