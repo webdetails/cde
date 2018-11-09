@@ -32,6 +32,6 @@
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-chrome-launcher": "^0.2.2",
     "karma-firefox-launcher": "~0.1",
-    "requirejs": "~2.1.9"
+    "requirejs": "~2.3.6"
   }
 }
