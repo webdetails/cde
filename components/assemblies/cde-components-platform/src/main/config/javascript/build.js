@@ -102,7 +102,6 @@
   //https://github.com/mishoo/UglifyJS2#compressor-options
   uglify2: {
     output: {
-      max_line_len: 80,
       beautify: false
     },
     warnings: true,
