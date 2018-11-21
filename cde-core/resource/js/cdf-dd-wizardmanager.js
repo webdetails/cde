@@ -1110,11 +1110,7 @@ var OlapChartWizard = OlapWizard.extend({
   getSeriesName: function() {
     var row = this.selectedWizardObjects.rows[0];
     if(row) {
-      for(var i = 0; i < row.membersArray.length; i++) {
-        if(row.member == row.membersArray[i].qualifiedName) {
-          return row.membersArray[i].name;
-        }
-      }
+      return row.olapObject.name;
     }
     return null;
   },
