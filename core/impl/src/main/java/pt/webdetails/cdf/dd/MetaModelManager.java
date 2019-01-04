@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -38,12 +38,9 @@ import pt.webdetails.cdf.dd.util.Utils;
 public final class MetaModelManager {
   protected static final Log logger = LogFactory.getLog( MetaModelManager.class );
 
-  private static MetaModelManager instance;
+  private static final MetaModelManager instance = new MetaModelManager();
 
-  public static synchronized MetaModelManager getInstance() {
-    if ( instance == null ) {
-      instance = new MetaModelManager();
-    }
+  public static MetaModelManager getInstance() {
     return instance;
   }
 
