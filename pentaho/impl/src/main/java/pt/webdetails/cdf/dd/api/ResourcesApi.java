@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -14,11 +14,11 @@
 package pt.webdetails.cdf.dd.api;
 
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static javax.ws.rs.core.MediaType.WILDCARD;
 import static pt.webdetails.cpf.utils.MimeTypes.CSS;
 import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +34,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.StreamingOutput;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,7 +59,6 @@ import pt.webdetails.cpf.MimeTypeHandler;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
-import pt.webdetails.cpf.utils.PluginIOUtils;
 
 @Path( "pentaho-cdf-dd/api/resources" )
 public class ResourcesApi {
@@ -74,115 +76,99 @@ public class ResourcesApi {
   @GET
   @Path( "/get" )
   @Produces( TEXT_PLAIN )
-  public void getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
-                           @Context HttpServletResponse response ) throws IOException {
+  public Response getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource ) throws IOException {
 
     resource = decodeAndEscape( resource );
 
     try {
-      String extension = resource.replaceAll( ".*\\.(.*)", "$1" );
-      if ( allowedExtensions.indexOf( extension ) < 0 ) {
-        // We can't provide this type of file
-        logger.error( "Extension '" + extension + "' not whitelisted" );
-        throw new SecurityException( "Not allowed" );
-      }
+      checkExtensions( resource );
 
       IBasicFile file = Utils.getFileViaAppropriateReadAccess( resource );
 
       if ( file == null ) {
         logger.error( "resource not found:" + resource );
-        response.sendError( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-        return;
+        return Response.status( Status.INTERNAL_SERVER_ERROR ).build();
       }
 
       IPluginResourceLoader resLoader = PentahoSystem.get( IPluginResourceLoader.class, null );
       String maxAge = resLoader.getPluginSetting( this.getClass(), "max-age" );
 
-      String mimeType;
-      try {
-        mimeType = MimeTypeHandler.getMimeTypeFromExtension( file.getExtension() );
-      } catch ( IllegalArgumentException | EnumConstantNotPresentException ex ) {
-        mimeType = "";
-      }
+      String mimeType = getMimeType( file.getExtension() );
 
-      response.setHeader( "Content-Type", mimeType );
-      response.setHeader( "content-disposition", "inline; filename=\"" + file.getName() + "\"" );
+      StreamingOutput streamingOutput = new StreamingOutput() {
+        public void write( OutputStream output ) throws IOException {
+          IOUtils.copy( file.getContents(), output );
+        }
+      };
+
+      Response.ResponseBuilder responseBuilder = Response.ok( streamingOutput );
 
       if ( maxAge != null ) {
-        response.setHeader( "Cache-Control", "max-age=" + maxAge );
+        responseBuilder.header( "Cache-Control", "max-age=" + maxAge );
       }
+      responseBuilder.header( "Content-Type", mimeType );
+      responseBuilder.header( "content-disposition", "inline; filename=\"" + file.getName() + "\"" );
 
-      PluginIOUtils.writeOutAndFlush( response.getOutputStream(), file.getContents() );
+      return responseBuilder.build();
+
     } catch ( SecurityException e ) {
-      response.sendError( HttpServletResponse.SC_FORBIDDEN );
+      return Response.status( Status.FORBIDDEN ).build();
     }
   }
 
   @GET
   @Path( "/getCss" )
   @Produces( CSS )
-  public void getCssResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
-                              @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
-                              @Context HttpServletResponse response )
+  public Response getCssResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
+                              @QueryParam( "resource" ) @DefaultValue( "" ) String resource )
     throws IOException {
 
-    resource = decodeAndEscape( resource );
-
-    getResource( resource, response );
+    return getResource( resource );
   }
 
   @GET
   @Path( "/getJs" )
   @Produces( JAVASCRIPT )
-  public void getJsResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
-                             @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
-                             @Context HttpServletResponse response )
+  public Response getJsResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
+                             @QueryParam( "resource" ) @DefaultValue( "" ) String resource )
     throws IOException {
 
-    resource = decodeAndEscape( resource );
-
-    getResource( resource, response );
+    return getResource( resource );
   }
 
   @GET
   @Path( "/getUntyped" )
   @Produces( TEXT_PLAIN )
-  public void getUntypedResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
+  public Response getUntypedResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                                   @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                                   @Context HttpServletResponse response )
     throws IOException {
 
-    resource = decodeAndEscape( resource );
-
     response.setHeader( "content-disposition", "inline" );
 
-    getResource( resource, response );
+    return getResource( resource );
   }
 
   @GET
   @Path( "/getImg" )
   @Produces( TEXT_PLAIN )
-  public void getImage( @QueryParam( "path" ) @DefaultValue( "" ) String path,
-                        @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
-                        @Context HttpServletResponse response )
+  public Response getImage( @QueryParam( "path" ) @DefaultValue( "" ) String path,
+                        @QueryParam( "resource" ) @DefaultValue( "" ) String resource )
     throws IOException {
 
-    resource = decodeAndEscape( resource );
-
-    getResource( resource, response );
+    return getResource( resource );
   }
 
   @GET
   @Path( "/res" )
   @Produces( TEXT_PLAIN )
-  public void res( @QueryParam( "path" ) @DefaultValue( "" ) String path,
-                   @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
-                   @Context HttpServletResponse response )
-    throws Exception {
+  public Response res( @QueryParam( "path" ) @DefaultValue( "" ) String path,
+                   @QueryParam( "resource" ) @DefaultValue( "" ) String resource )
+    throws IOException {
 
     resource = decodeAndEscape( resource );
 
-    getResource( resource, response );
+    return getResource( resource );
   }
 
   @POST
@@ -229,7 +215,7 @@ public class ResourcesApi {
     }
 
     GenericBasicFileFilter fileFilter = new GenericBasicFileFilter(
-      null, extensionsList.toArray( new String[ extensionsList.size() ] ), true );
+      null, extensionsList.toArray( new String[ 0 ] ), true );
 
     //check if it is a system dashboard
     List<IBasicFile> fileList;
@@ -263,8 +249,8 @@ public class ResourcesApi {
       fileList = access.listFiles( dir, fileAndDirFilter, 1, true, showHiddenFiles );
     }
 
-    if ( fileList != null && fileList.size() > 0 ) {
-      return fileList.toArray( new IBasicFile[ fileList.size() ] );
+    if ( fileList != null && !fileList.isEmpty() ) {
+      return fileList.toArray( new IBasicFile[ 0 ] );
     }
 
     return new IBasicFile[] { };
@@ -272,18 +258,13 @@ public class ResourcesApi {
 
   @GET
   @Path( "/system/{path: [^?]+ }" )
-  @Produces( { WILDCARD } )
+  @Produces( {  } )
   public Response getSystemResource( @PathParam( "path" ) String path, @Context HttpServletResponse response )
     throws IOException {
 
     path = decodeAndEscape( path );
 
-    String extension = path.replaceAll( ".*\\.(.*)", "$1" );
-    if ( allowedExtensions.indexOf( extension ) < 0 ) {
-      // We can't provide this type of file
-      logger.error( "Extension '" + extension + "' not whitelisted" );
-      throw new SecurityException( "Not allowed" );
-    }
+    checkExtensions( path );
 
     String[] splitPath = path.split( "/" );
     String pluginId = splitPath[ 0 ];
@@ -308,13 +289,11 @@ public class ResourcesApi {
 
   @GET
   @Path( "/{resource: [^?]+ }" )
-  @Produces( { WILDCARD } )
-  public void resource( @PathParam( "resource" ) String resource, @Context HttpServletResponse response )
-    throws Exception {
+  @Produces( {  } )
+  public Response resource( @PathParam( "resource" ) String resource )
+    throws IOException {
 
-    resource = decodeAndEscape( resource );
-
-    getResource( resource, response );
+    return getResource( resource );
   }
 
   /**
@@ -334,6 +313,34 @@ public class ResourcesApi {
     final XSSHelper helper = XSSHelper.getInstance();
 
     return helper.escape( Utils.getURLDecoded( path ) );
+  }
+
+  /**
+   * Checks it the resource extensions are allowed. If not logs the information and throws an exception.
+   *
+   * @param decodedPath - Path already decoded and escaped.
+   */
+  private void checkExtensions( String decodedPath ) {
+    String extension = decodedPath.replaceAll( ".*\\.(.*)", "$1" );
+    if ( allowedExtensions.indexOf( extension ) < 0 ) {
+      // We can't provide this type of file
+      logger.error( "Extension '" + extension + "' not whitelisted" );
+      throw new SecurityException( "Not allowed" );
+    }
+  }
+
+  /**
+   * Returns the mime type from the received file extension.
+   *
+   * @param fileExtension - File extension.
+   * @return - The mime type.
+   */
+  private String getMimeType( String fileExtension ) {
+    try {
+      return MimeTypeHandler.getMimeTypeFromExtension( fileExtension );
+    } catch ( IllegalArgumentException | EnumConstantNotPresentException ex ) {
+      return "";
+    }
   }
 
 }
