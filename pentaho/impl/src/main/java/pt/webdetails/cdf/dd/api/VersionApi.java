@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -15,12 +15,11 @@ package pt.webdetails.cdf.dd.api;
 
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+
 import org.json.JSONException;
 import pt.webdetails.cdf.dd.CdeSettings;
 import pt.webdetails.cdf.dd.CdeVersionChecker;
@@ -36,10 +35,11 @@ public class VersionApi {
   @GET
   @Path( "/check" )
   @Produces( TEXT_PLAIN )
-  public void checkVersion( @Context HttpServletResponse response ) throws IOException, JSONException {
+  public Response checkVersion() throws JSONException {
     VersionChecker versionChecker = new CdeVersionChecker( CdeSettings.getSettings() );
     CheckVersionResponse result = versionChecker.checkVersion();
-    JsonUtils.buildJsonResult( response.getOutputStream(), result != null, result );
+
+    return Response.ok( JsonUtils.getJsonResult( result != null, result ) ).build();
   }
 
   @GET

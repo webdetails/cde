@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -25,13 +25,17 @@ import pt.webdetails.cpf.utils.CharsetHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -93,7 +97,7 @@ public class SynchronizerApiTest {
     file = StringUtils.EMPTY;
 
     mockHelper = mock( XSSHelper.class );
-    when( mockHelper.escape( any() ) ).thenAnswer(invocation -> invocation.getArguments()[ 0 ]);
+    when( mockHelper.escape( any() ) ).thenAnswer( invocation -> invocation.getArguments()[ 0 ] );
     XSSHelper.setInstance( mockHelper );
   }
 
@@ -164,15 +168,14 @@ public class SynchronizerApiTest {
 
   @Test
   public void syncStylesTest() throws Exception {
-    operation = StringUtils.EMPTY;
+    final Response response = synchronizerApi.syncStyles();
 
-    assertNull( servletResponse.getContentType() );
-    assertNull( servletResponse.getCharacterEncoding() );
+    Map<String, String> mtParameters = new HashMap<>();
+    mtParameters.put( "charset", CharsetHelper.getEncoding() );
 
-    synchronizerApi.syncStyles( servletResponse );
+    MediaType mt = new MediaType( APPLICATION_JSON_TYPE.getType(), APPLICATION_JSON_TYPE.getSubtype(), mtParameters );
 
-    assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
-    assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
+    assertEquals( mt, response.getMediaType() );
   }
 
   @Test

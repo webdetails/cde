@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -14,6 +14,7 @@
 package pt.webdetails.cdf.dd.api;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA;
 
 import com.sun.jersey.multipart.FormDataParam;
@@ -22,6 +23,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -32,6 +34,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -244,13 +249,15 @@ public class SyncronizerApi { //TODO: synchronizer?
   @GET
   @Path( "/syncronizeStyles" )
   @Produces( APPLICATION_JSON )
-  public void syncStyles( @Context HttpServletResponse servletResponse )
-      throws IOException, DashboardDesignerException, JSONException {
+  public Response syncStyles() throws DashboardDesignerException, JSONException {
+    String styles = listStyles();
 
-    servletResponse.setContentType( APPLICATION_JSON );
-    servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
+    Map<String, String> mtParameters = new HashMap<>();
+    mtParameters.put( "charset", CharsetHelper.getEncoding() );
 
-    listStyles( servletResponse );
+    MediaType mt = new MediaType( APPLICATION_JSON_TYPE.getType(), APPLICATION_JSON_TYPE.getSubtype(), mtParameters );
+
+    return Response.ok( styles, mt ).build();
   }
 
   private class MethodParams {
@@ -304,7 +311,7 @@ public class SyncronizerApi { //TODO: synchronizer?
 
       // check access to path folder
       String fileDir =
-          file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
+          file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( '/' ) ) : file;
 
       isPreview = ( file.contains( "_tmp.cdfde" ) || file.contains( "_tmp.wcdf" ) );
 
@@ -349,11 +356,11 @@ public class SyncronizerApi { //TODO: synchronizer?
     return Messages.getString( key );
   }
 
-  protected void listStyles( HttpServletResponse servletResponse )
-      throws IOException, DashboardDesignerException, JSONException {
+  protected String listStyles( )
+      throws DashboardDesignerException, JSONException {
 
     final CdfStyles cdfStyles = new CdfStyles();
-    JsonUtils.buildJsonResult( servletResponse.getOutputStream(), true, cdfStyles.liststyles() );
+    return JsonUtils.getJsonResult( true, cdfStyles.liststyles() );
   }
 
   private void handleDashboardStructureException( Exception e, OutputStream out ) throws Exception {
