@@ -140,11 +140,8 @@ public class ResourcesApi {
   @Path( "/getUntyped" )
   @Produces( TEXT_PLAIN )
   public Response getUntypedResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
-                                  @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
-                                  @Context HttpServletResponse response )
+                                  @QueryParam( "resource" ) @DefaultValue( "" ) String resource )
     throws IOException {
-
-    response.setHeader( "content-disposition", "inline" );
 
     return getResource( resource );
   }
