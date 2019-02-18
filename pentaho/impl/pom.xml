@@ -114,13 +114,13 @@
       <artifactId>mockito-all</artifactId>
       <scope>test</scope>
     </dependency>
-    <!-- Only needed for runtime testing -->
+    <!-- region - Needed for runtime testing -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
       <scope>test</scope>
     </dependency>
-    <!-- -->
+    <!-- endregion -->
     <dependency>
       <groupId>backport-util-concurrent</groupId>
       <artifactId>backport-util-concurrent</artifactId>
