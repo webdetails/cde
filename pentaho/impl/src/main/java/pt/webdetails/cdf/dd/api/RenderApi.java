@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -202,14 +202,16 @@ public class RenderApi {
         loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, style );
 
       DashboardWcdfDescriptor dashboardWcdf = DashboardWcdfDescriptor.load( filePath );
-      String context = dashboardWcdf.isRequire()
-        ? getCdfRequireContext( filePath, requestParams )
-        : getCdfContext( filePath, "", view, requestParams );
+
+      String context = "";
+      if ( dashboardWcdf != null && !dashboardWcdf.isRequire() ) {
+        context = getCdfContext( filePath, "", view, requestParams );
+      }
 
       String result = dashboard.render( context, getCdfRequireConfig( filePath, requestParams ) );
 
       //i18n token replacement
-      if ( !StringUtils.isEmpty( result ) && !dashboardWcdf.isRequire() ) {
+      if ( !StringUtils.isEmpty( result ) && dashboardWcdf != null && !dashboardWcdf.isRequire() ) {
         String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( filePath ) );
         msgDir = msgDir.startsWith( Util.SEPARATOR ) ? msgDir : Util.SEPARATOR + msgDir;
 
@@ -583,10 +585,6 @@ public class RenderApi {
 
   protected String getCdfRequireConfig( String filePath, IParameterProvider requestParams ) throws Exception {
     return InterPluginBroker.getCdfRequireConfig( filePath, requestParams );
-  }
-
-  protected String getCdfRequireContext( String filePath, IParameterProvider requestParams ) throws Exception {
-    return InterPluginBroker.getCdfRequireContext( filePath, requestParams );
   }
 
   protected String getCdfContext( String filePath, String action, String view, IParameterProvider requestParams )

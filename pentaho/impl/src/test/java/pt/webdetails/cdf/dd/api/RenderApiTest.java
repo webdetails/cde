@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -258,11 +258,6 @@ public class RenderApiTest {
     RenderApiForTesting.cdfRequireContextConfiguration = requireContextConfiguration;
     String reqCase2 = doRenderCase( DUMMY_REQUIRE_WCDF );
     Assert.assertTrue( reqCase2.contains( "new Dashboard(" + requireContextConfiguration + ")" ) );
-
-    String cdfRequireContext = "cdf-require-context-for-tests";
-    RenderApiForTesting.cdfRequireContext = cdfRequireContext;
-    String reqCase3 = doRenderCase( DUMMY_REQUIRE_WCDF );
-    Assert.assertTrue( reqCase3.contains( cdfRequireContext ) );
 
     // with legacy dashboards
 
