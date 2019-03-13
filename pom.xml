@@ -68,12 +68,10 @@
     <jersey-bundle.version>1.19.1</jersey-bundle.version>
     <jetty.version>8.1.19.v20160209</jetty.version>
     <backport-util-concurrent.version>3.1</backport-util-concurrent.version>
-    <karaf.version>3.0.8</karaf.version>
 
     <junit.version>4.12</junit.version>
     <mockito-all.version>1.9.5</mockito-all.version>
 
-    <karaf-maven-plugin.version>${karaf.version}</karaf-maven-plugin.version>
     <karaf-maven-plugin.aggregateFeatures>false</karaf-maven-plugin.aggregateFeatures>
     <maven-filtering.version>3.1.1</maven-filtering.version>
 
