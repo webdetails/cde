@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features name="${project.artifactId}-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
-  <repository>mvn:org.apache.cxf.karaf/apache-cxf/${karaf.version}/xml/features</repository>
+  <repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf.version}/xml/features</repository>
 
   <feature name="pentaho-cde-renderer" version="${project.version}">
 
-    <feature version="${karaf.version}">cxf-jaxrs</feature>
+    <feature>cxf-jaxrs</feature>
 
   </feature>
 
