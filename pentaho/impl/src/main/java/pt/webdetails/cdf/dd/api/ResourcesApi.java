@@ -17,8 +17,8 @@ import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static pt.webdetails.cpf.utils.MimeTypes.CSS;
 import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -76,7 +77,8 @@ public class ResourcesApi {
   @GET
   @Path( "/get" )
   @Produces( TEXT_PLAIN )
-  public Response getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource ) throws IOException {
+  public Response getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
+                               @HeaderParam( "if-none-match" ) String ifNoneMatch ) throws IOException {
 
     resource = decodeAndEscape( resource );
 
@@ -90,22 +92,18 @@ public class ResourcesApi {
         return Response.status( Status.INTERNAL_SERVER_ERROR ).build();
       }
 
-      IPluginResourceLoader resLoader = PentahoSystem.get( IPluginResourceLoader.class, null );
-      String maxAge = resLoader.getPluginSetting( this.getClass(), "max-age" );
+      boolean modified = wasModified( ifNoneMatch, resource );
+
+      if ( !modified ) {
+        return buildNotModifiedResponse( resource );
+      }
 
       String mimeType = getMimeType( file.getExtension() );
 
-      StreamingOutput streamingOutput = new StreamingOutput() {
-        public void write( OutputStream output ) throws IOException {
-          IOUtils.copy( file.getContents(), output );
-        }
-      };
+      StreamingOutput streamingOutput = output -> IOUtils.copy( file.getContents(), output );
 
-      Response.ResponseBuilder responseBuilder = Response.ok( streamingOutput );
+      Response.ResponseBuilder responseBuilder = cacheControlHandler( file, streamingOutput, resource );
 
-      if ( maxAge != null ) {
-        responseBuilder.header( "Cache-Control", "max-age=" + maxAge );
-      }
       responseBuilder.header( "Content-Type", mimeType );
       responseBuilder.header( "content-disposition", "inline; filename=\"" + file.getName() + "\"" );
 
@@ -120,20 +118,21 @@ public class ResourcesApi {
   @Path( "/getCss" )
   @Produces( CSS )
   public Response getCssResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
-                              @QueryParam( "resource" ) @DefaultValue( "" ) String resource )
+                                  @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
+                                  @HeaderParam( "if-none-match" ) String ifNoneMatch )
     throws IOException {
 
-    return getResource( resource );
+    return getResource( resource, ifNoneMatch );
   }
 
   @GET
   @Path( "/getJs" )
-  @Produces( JAVASCRIPT )
+  @Produces ( JAVASCRIPT )
   public Response getJsResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                              @QueryParam( "resource" ) @DefaultValue( "" ) String resource )
     throws IOException {
 
-    return getResource( resource );
+    return getResource( resource, null );
   }
 
   @GET
@@ -143,7 +142,7 @@ public class ResourcesApi {
                                   @QueryParam( "resource" ) @DefaultValue( "" ) String resource )
     throws IOException {
 
-    return getResource( resource );
+    return getResource( resource, null );
   }
 
   @GET
@@ -153,7 +152,7 @@ public class ResourcesApi {
                         @QueryParam( "resource" ) @DefaultValue( "" ) String resource )
     throws IOException {
 
-    return getResource( resource );
+    return getResource( resource, null );
   }
 
   @GET
@@ -165,7 +164,7 @@ public class ResourcesApi {
 
     resource = decodeAndEscape( resource );
 
-    return getResource( resource );
+    return getResource( resource, null );
   }
 
   @POST
@@ -287,10 +286,12 @@ public class ResourcesApi {
   @GET
   @Path( "/{resource: [^?]+ }" )
   @Produces( {  } )
-  public Response resource( @PathParam( "resource" ) String resource )
+  public Response resource( @PathParam( "resource" ) String resource,
+                            @HeaderParam( "if-none-match" ) String ifNoneMatch )
     throws IOException {
 
-    return getResource( resource );
+    return getResource( resource,
+      Utils.getFileViaAppropriateReadAccess( resource ).getExtension().equals( "css" ) ? ifNoneMatch : null );
   }
 
   /**
@@ -306,7 +307,8 @@ public class ResourcesApi {
     return new ResourceLoaderFactory().getResourceLoader( path );
   }
 
-  private String decodeAndEscape( String path ) {
+  @VisibleForTesting
+  String decodeAndEscape( String path ) {
     final XSSHelper helper = XSSHelper.getInstance();
 
     return helper.escape( Utils.getURLDecoded( path ) );
@@ -338,6 +340,56 @@ public class ResourcesApi {
     } catch ( IllegalArgumentException | EnumConstantNotPresentException ex ) {
       return "";
     }
+  }
+
+  private Response.ResponseBuilder cacheControlHandler( IBasicFile file, StreamingOutput streamingOutput, String resource ) {
+    Response.ResponseBuilder responseBuilder = Response.ok( streamingOutput );
+
+    if ( file.getExtension().equals( "css" ) ) {
+      long lastModifiedTime = getLastModifiedTime( resource );
+      //forces the first time to check the resource freshness adding also Etag tag
+      responseBuilder.header( "Cache-Control", "max-age=0" );
+      responseBuilder.header( "Etag", lastModifiedTime );
+    } else {
+      IPluginResourceLoader resLoader = PentahoSystem.get( IPluginResourceLoader.class, null );
+
+      String maxAge = resLoader.getPluginSetting( this.getClass(), "max-age" );
+      if ( maxAge != null ) {
+        responseBuilder.header( "Cache-Control", "max-age=" + maxAge );
+      }
+    }
+
+    return responseBuilder;
+  }
+
+  private Response buildNotModifiedResponse( String resource ) {
+    final long lastModifiedTime = getLastModifiedTime( resource );
+
+    Response.ResponseBuilder responseBuilder = Response.notModified();
+    responseBuilder.header( "Etag", lastModifiedTime );
+
+    return responseBuilder.build();
+  }
+
+  @VisibleForTesting
+  long getLastModifiedTime( String resource ) {
+    IReadAccess ra = getResourceLoader( "" ).getReader();
+
+    return ra.getLastModified( resource );
+  }
+
+  private boolean wasModified( String ifNoneMatch, String resource ) {
+    String lastModifiedTime = Long.toString( getLastModifiedTime( resource ) );
+
+    if ( ifNoneMatch == null ) {
+      return true;
+    }
+
+    if ( lastModifiedTime.equals( ifNoneMatch ) ) {
+      return false;
+    }
+
+    return true;
   }
 
 }
