@@ -109,7 +109,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       // 2 - resources being called from other resources (ex: resource plugin-samples/template.css calls resource
       // images/button-contact-png)
 
-      new ResourcesApi().getResource( pathParams.getStringParameter( MethodParams.COMMAND, "" ) );
+      new ResourcesApi().getResource( pathParams.getStringParameter( MethodParams.COMMAND, "" ), null );
 
     } else {
 
