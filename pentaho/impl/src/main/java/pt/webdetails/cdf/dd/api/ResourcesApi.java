@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -18,6 +18,7 @@ import static javax.ws.rs.core.MediaType.WILDCARD;
 import static pt.webdetails.cpf.utils.MimeTypes.CSS;
 import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -34,6 +36,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -75,7 +78,8 @@ public class ResourcesApi {
   @Path( "/get" )
   @Produces( TEXT_PLAIN )
   public void getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
-                           @Context HttpServletResponse response ) throws IOException {
+                           @Context HttpServletResponse response,
+                           @HeaderParam( "if-none-match" ) String ifNoneMatch ) throws IOException {
 
     resource = decodeAndEscape( resource );
 
@@ -95,22 +99,19 @@ public class ResourcesApi {
         return;
       }
 
-      IPluginResourceLoader resLoader = PentahoSystem.get( IPluginResourceLoader.class, null );
-      String maxAge = resLoader.getPluginSetting( this.getClass(), "max-age" );
+      boolean modified = wasModified( ifNoneMatch, resource );
 
-      String mimeType;
-      try {
-        mimeType = MimeTypeHandler.getMimeTypeFromExtension( file.getExtension() );
-      } catch ( IllegalArgumentException | EnumConstantNotPresentException ex ) {
-        mimeType = "";
+      if ( !modified ) {
+        buildNotModifiedResponse( resource, response );
+        return;
       }
+
+      String mimeType = getMimeType( file.getExtension() );
+
+      cacheControlHandler( file, response, resource );
 
       response.setHeader( "Content-Type", mimeType );
       response.setHeader( "content-disposition", "inline; filename=\"" + file.getName() + "\"" );
-
-      if ( maxAge != null ) {
-        response.setHeader( "Cache-Control", "max-age=" + maxAge );
-      }
 
       PluginIOUtils.writeOutAndFlush( response.getOutputStream(), file.getContents() );
     } catch ( SecurityException e ) {
@@ -123,12 +124,13 @@ public class ResourcesApi {
   @Produces( CSS )
   public void getCssResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                               @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
-                              @Context HttpServletResponse response )
+                              @Context HttpServletResponse response,
+                              @HeaderParam( "if-none-match" ) String ifNoneMatch )
     throws IOException {
 
     resource = decodeAndEscape( resource );
 
-    getResource( resource, response );
+    getResource( resource, response, ifNoneMatch );
   }
 
   @GET
@@ -141,7 +143,7 @@ public class ResourcesApi {
 
     resource = decodeAndEscape( resource );
 
-    getResource( resource, response );
+    getResource( resource, response, null );
   }
 
   @GET
@@ -156,7 +158,7 @@ public class ResourcesApi {
 
     response.setHeader( "content-disposition", "inline" );
 
-    getResource( resource, response );
+    getResource( resource, response, null );
   }
 
   @GET
@@ -169,7 +171,7 @@ public class ResourcesApi {
 
     resource = decodeAndEscape( resource );
 
-    getResource( resource, response );
+    getResource( resource, response, null );
   }
 
   @GET
@@ -182,7 +184,7 @@ public class ResourcesApi {
 
     resource = decodeAndEscape( resource );
 
-    getResource( resource, response );
+    getResource( resource, response, null );
   }
 
   @POST
@@ -309,12 +311,15 @@ public class ResourcesApi {
   @GET
   @Path( "/{resource: [^?]+ }" )
   @Produces( { WILDCARD } )
-  public void resource( @PathParam( "resource" ) String resource, @Context HttpServletResponse response )
+  public void resource( @PathParam( "resource" ) String resource,
+                        @Context HttpServletResponse response,
+                        @HeaderParam( "if-none-match" ) String ifNoneMatch )
     throws Exception {
 
     resource = decodeAndEscape( resource );
 
-    getResource( resource, response );
+    getResource( resource, response,
+      Utils.getFileViaAppropriateReadAccess( resource ).getExtension().equals( "css" ) ? ifNoneMatch : null );
   }
 
   /**
@@ -330,10 +335,74 @@ public class ResourcesApi {
     return new ResourceLoaderFactory().getResourceLoader( path );
   }
 
-  private String decodeAndEscape( String path ) {
+  @VisibleForTesting
+  String decodeAndEscape( String path ) {
     final XSSHelper helper = XSSHelper.getInstance();
 
     return helper.escape( Utils.getURLDecoded( path ) );
+  }
+
+  /**
+   * Returns the mime type from the received file extension.
+   *
+   * @param fileExtension - File extension.
+   * @return - The mime type.
+   */
+  private String getMimeType( String fileExtension ) {
+    try {
+      return MimeTypeHandler.getMimeTypeFromExtension( fileExtension );
+    } catch ( IllegalArgumentException | EnumConstantNotPresentException ex ) {
+      return "";
+    }
+  }
+
+  private void cacheControlHandler( IBasicFile file, HttpServletResponse response, String resource ) {
+    response.setStatus( response.SC_OK );
+
+    if ( file.getExtension().equals( "css" ) ) {
+      long lastModifiedTime = getLastModifiedTime( resource );
+      //forces the first time to check the resource freshness adding also Etag tag
+      response.setHeader( "Cache-Control", "max-age=0" );
+      response.setHeader( "Etag", Long.toString( lastModifiedTime ) );
+    } else {
+      IPluginResourceLoader resLoader = PentahoSystem.get( IPluginResourceLoader.class, null );
+
+      String maxAge = resLoader.getPluginSetting( this.getClass(), "max-age" );
+      if ( maxAge != null ) {
+        response.setHeader( "Cache-Control", "max-age=" + maxAge );
+      }
+    }
+
+  }
+
+  private void buildNotModifiedResponse( String resource, HttpServletResponse response ) throws IOException {
+    final long lastModifiedTime = getLastModifiedTime( resource );
+
+    response.setStatus( response.SC_NOT_MODIFIED );
+    response.setHeader( "Etag", Long.toString( lastModifiedTime ) );
+
+    PluginIOUtils.writeOutAndFlush( response.getOutputStream(), "" );
+  }
+
+  @VisibleForTesting
+  long getLastModifiedTime( String resource ) {
+    IReadAccess ra = getResourceLoader( "" ).getReader();
+
+    return ra.getLastModified( resource );
+  }
+
+  private boolean wasModified( String ifNoneMatch, String resource ) {
+    String lastModifiedTime = Long.toString( getLastModifiedTime( resource ) );
+
+    if ( ifNoneMatch == null ) {
+      return true;
+    }
+
+    if ( lastModifiedTime.equals( ifNoneMatch ) ) {
+      return false;
+    }
+
+    return true;
   }
 
 }
