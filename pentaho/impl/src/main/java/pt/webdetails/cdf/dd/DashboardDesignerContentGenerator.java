@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -109,7 +109,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       // 2 - resources being called from other resources (ex: resource plugin-samples/template.css calls resource
       // images/button-contact-png)
 
-      new ResourcesApi().getResource( pathParams.getStringParameter( MethodParams.COMMAND, "" ), getResponse() );
+      new ResourcesApi().getResource( pathParams.getStringParameter( MethodParams.COMMAND, "" ), getResponse(), null );
 
     } else {
 
