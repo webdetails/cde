@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -10,7 +10,6 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
-
 package pt.webdetails.cdf.dd.render;
 
 import java.io.IOException;
@@ -42,14 +41,13 @@ public final class DependenciesManager {
   private static Log logger = LogFactory.getLog( DependenciesManager.class );
 
   private static final String INCLUDES_PROP = "editor.includes.properties";
-
   private static final String EXTRA_INCLUDES_PROP = "render.includes.properties";
 
   private static DependenciesManager manager;
   private final HashMap<String, DependenciesPackage> packages;
 
   private DependenciesManager() {
-    packages = new HashMap<String, DependenciesPackage>();
+    packages = new HashMap<>();
   }
 
   public static synchronized DependenciesManager getInstance() {
@@ -81,13 +79,13 @@ public final class DependenciesManager {
    */
   private static DependenciesManager createInstance() {
     DependenciesManager manager = new DependenciesManager();
+
     IUrlProvider urlProvider = CdeEngine.getEnv().getUrlProvider();
     IContentAccessFactory factory = CdeEnvironment.getContentAccessFactory();
+
     manager.registerPackage( StdPackages.COMPONENT_STYLES, PackageType.CSS );
     manager.registerPackage( StdPackages.COMPONENT_DEF_SCRIPTS, PackageType.JS );
-    manager.registerPackage(
-      StdPackages.COMPONENT_SNIPPETS,
-      new DependenciesPackage( StdPackages.COMPONENT_SNIPPETS, PackageType.JS, factory, urlProvider ) ); // TODO change
+    manager.registerPackage( StdPackages.COMPONENT_SNIPPETS, createSnippetPackage( factory, urlProvider ) ); // TODO change
     manager.registerPackage( StdPackages.CDFDD, PackageType.JS );
 
     //read include.properties
@@ -96,30 +94,26 @@ public final class DependenciesManager {
       InputStream in = null;
       try {
         in = CdeEnvironment.getPluginSystemReader().getFileInputStream( INCLUDES_PROP );
+
         props.load( in );
       } finally {
         IOUtils.closeQuietly( in );
       }
-      PathOrigin origin = new StaticSystemOrigin( "" );
+
+      final PathOrigin origin = new StaticSystemOrigin( "" );
 
       manager.registerPackage( StdPackages.EDITOR_JS_INCLUDES, PackageType.JS );
-      DependenciesPackage scripts = manager.getPackage( StdPackages.EDITOR_JS_INCLUDES );
       if ( props.containsKey( "scripts" ) ) {
-        for ( String path : props.get( "scripts" ).toString().split( "," ) ) {
-          if ( !path.isEmpty() ) {
-            scripts.registerFileDependency( path, null, origin, path );
-          }
-        }
+        final DependenciesPackage scripts = manager.getPackage( StdPackages.EDITOR_JS_INCLUDES );
+
+        registerProperties( scripts, origin, props.get( "scripts" ) );
       }
 
       manager.registerPackage( StdPackages.EDITOR_CSS_INCLUDES, PackageType.CSS );
-      DependenciesPackage styles = manager.getPackage( StdPackages.EDITOR_CSS_INCLUDES );
       if ( props.containsKey( "styles" ) ) {
-        for ( String path : props.get( "styles" ).toString().split( "," ) ) {
-          if ( !path.isEmpty() ) {
-            styles.registerFileDependency( path, null, origin, path );
-          }
-        }
+        final DependenciesPackage styles = manager.getPackage( StdPackages.EDITOR_CSS_INCLUDES );
+
+        registerProperties( styles, origin, props.get( "styles" ) );
       }
     } catch ( IOException e ) {
       logger.error( "Error attempting to read " + INCLUDES_PROP, e );
@@ -128,96 +122,91 @@ public final class DependenciesManager {
     return manager;
   }
 
+  private static DependenciesPackage createSnippetPackage( IContentAccessFactory factory, IUrlProvider urlProvider ) {
+    return new DependenciesPackage( StdPackages.COMPONENT_SNIPPETS, PackageType.JS, factory, urlProvider );
+  }
+
   /**
    * instantiate and register resources from MetaModel
    */
   private static DependenciesManager createDependencyManager( MetaModel metaModel ) {
     long start = System.currentTimeMillis();
-    DependenciesManager depMgr = createInstance();
 
-    DependenciesPackage componentScripts = depMgr.getPackage( StdPackages.COMPONENT_DEF_SCRIPTS );
-    DependenciesPackage componentSnippets = depMgr.getPackage( StdPackages.COMPONENT_SNIPPETS );
-    DependenciesPackage componentStyles = depMgr.getPackage( StdPackages.COMPONENT_STYLES );
-
-    DependenciesPackage ddScripts = depMgr.getPackage( StdPackages.CDFDD );
+    DependenciesManager depManager = createInstance();
 
     for ( ComponentType compType : metaModel.getComponentTypes() ) {
       // Custom components that support legacy dashboards must register resources.
       if ( compType instanceof CustomComponentType && !compType.supportsLegacy() ) {
         continue;
       }
-      // General Resources
-      for ( Resource res : compType.getResources() ) {
-        Resource.Type resType = res.getType();
-        if ( resType == Resource.Type.RAW ) {
-          try {
-            componentSnippets.registerRawDependency( res.getName(), res.getVersion(), res.getSource() );
-          } catch ( Exception ex ) {
-            logger.error( "Failed to register code fragment '" + res.getSource() + "'" );
-          }
-        } else {
-          DependenciesPackage pack = null;
-          if ( resType == Resource.Type.SCRIPT ) {
-            String app = res.getApp();
-            if ( StringUtils.isEmpty( app ) || app.equals( StdPackages.COMPONENT_DEF_SCRIPTS ) ) {
-              pack = componentScripts;
-            } else if ( app.equals( StdPackages.CDFDD ) ) {
-              pack = ddScripts;
-            }
-          } else if ( resType == Resource.Type.STYLE ) {
-            pack = componentStyles;
-          }
 
-          if ( pack != null ) {
+      // General Resources
+      for ( Resource resource : compType.getResources() ) {
+        final String name = resource.getName();
+
+        final DependenciesPackage pack = getResourceDependencyPackage( depManager, resource );
+        if ( pack != null ) {
+          final String version = resource.getVersion();
+          final String source = resource.getSource();
+
+          final boolean isRawType = resource.getType() == Resource.Type.RAW;
+          if (isRawType) {
             try {
-              pack.registerFileDependency( res.getName(), res.getVersion(), res.getOrigin(), res.getSource() );
+              pack.registerRawDependency( name, version, source );
             } catch ( Exception ex ) {
-              logger.error( "Failed to register dependency '" + res.getSource() + "'" );
+              logger.error("Failed to register code fragment '" + source + "'");
+            }
+          } else {
+            try {
+              pack.registerFileDependency( name, version, resource.getOrigin(), source );
+            } catch ( Exception ex ) {
+              logger.error("Failed to register dependency '" + source + "'");
             }
           }
         }
       }
 
       // Implementation
-      PathOrigin origin = compType.getOrigin();
-      String srcImpl = compType.getImplementationPath();
-      if ( StringUtils.isNotEmpty( srcImpl ) ) {
+      final String compImplementation = compType.getImplementationPath();
+      if ( StringUtils.isNotEmpty( compImplementation ) ) {
+        final String compName = compType.getName();
+        final String compVersion = compType.getName();
+        final PathOrigin compOrigin = compType.getOrigin();
+
         try {
-          componentScripts.registerFileDependency( compType.getName(), compType.getVersion(), origin, srcImpl );
+          final DependenciesPackage componentScripts = depManager.getPackage( StdPackages.COMPONENT_DEF_SCRIPTS );
+
+          componentScripts.registerFileDependency( compName, compVersion, compOrigin, compImplementation );
         } catch ( Exception e ) {
-          logger.error( "Failed to register dependency '" + srcImpl + "'" );
+          logger.error( "Failed to register dependency '" + compImplementation + "'" );
         }
       }
     }
 
-    //read resources/include.properties
+    // read resources/include.properties
     Properties extraProps = new Properties();
     try {
       InputStream in = null;
       try {
         in = CdeEnvironment.getPluginSystemReader().getFileInputStream( EXTRA_INCLUDES_PROP );
+
         extraProps.load( in );
       } finally {
         IOUtils.closeQuietly( in );
       }
-      PathOrigin origin = new StaticSystemOrigin( "" );
 
-      DependenciesPackage scripts = depMgr.getPackage( StdPackages.COMPONENT_DEF_SCRIPTS );
+      final PathOrigin origin = new StaticSystemOrigin( "" );
+
       if ( extraProps.containsKey( "scripts" ) ) {
-        for ( String path : extraProps.get( "scripts" ).toString().split( "," ) ) {
-          if ( !path.isEmpty() ) {
-            scripts.registerFileDependency( path, null, origin, path );
-          }
-        }
+        final DependenciesPackage scripts = depManager.getPackage( StdPackages.COMPONENT_DEF_SCRIPTS );
+
+        registerProperties( scripts, origin, extraProps.get( "scripts" ) );
       }
 
-      DependenciesPackage styles = depMgr.getPackage( StdPackages.COMPONENT_STYLES );
       if ( extraProps.containsKey( "styles" ) ) {
-        for ( String path : extraProps.get( "styles" ).toString().split( "," ) ) {
-          if ( !path.isEmpty() ) {
-            styles.registerFileDependency( path, null, origin, path );
-          }
-        }
+        final DependenciesPackage styles = depManager.getPackage( StdPackages.COMPONENT_STYLES );
+
+        registerProperties( styles, origin, extraProps.get( "styles" ) );
       }
     } catch ( IOException e ) {
       logger.error( "Error attempting to read " + EXTRA_INCLUDES_PROP, e );
@@ -226,7 +215,42 @@ public final class DependenciesManager {
     if ( logger.isDebugEnabled() ) {
       logger.debug( String.format( "Registered meta model dependencies in %ss", Utils.ellapsedSeconds( start ) ) );
     }
-    return depMgr;
+
+    return depManager;
+  }
+
+  private static DependenciesPackage getResourceDependencyPackage( DependenciesManager manager, Resource resource ) {
+    final Resource.Type type = resource.getType();
+    if ( type == Resource.Type.RAW ) {
+      return manager.getPackage( StdPackages.COMPONENT_SNIPPETS );
+    }
+
+    if ( type == Resource.Type.SCRIPT ) {
+      final String app = resource.getApp();
+
+      final boolean isComponentScripts = StdPackages.COMPONENT_DEF_SCRIPTS.equals( app );
+      if ( StringUtils.isEmpty( app ) || isComponentScripts ) {
+        return manager.getPackage( StdPackages.COMPONENT_DEF_SCRIPTS );
+      }
+
+      if ( StdPackages.CDFDD.equals( app ) ) {
+        return manager.getPackage( StdPackages.CDFDD );
+      }
+    }
+
+    if ( type == Resource.Type.STYLE ) {
+      return manager.getPackage( StdPackages.COMPONENT_STYLES );
+    }
+
+    return null;
+  }
+
+  private static void registerProperties( DependenciesPackage depPackage, PathOrigin origin, Object properties ) {
+    for ( String path : properties.toString().split( "," ) ) {
+      if ( !path.isEmpty() ) {
+        depPackage.registerFileDependency( path, null, origin, path );
+      }
+    }
   }
 
   //TODO: unexpose file registration
@@ -242,8 +266,9 @@ public final class DependenciesManager {
   }
 
   public boolean registerPackage( String id, PackageType type ) {
-    IUrlProvider urlProvider = CdeEngine.getEnv().getUrlProvider();
-    return registerPackage( id,
-      new DependenciesPackage( id, type, CdeEnvironment.getContentAccessFactory(), urlProvider ) );
+    final IContentAccessFactory cdeContentFactory = CdeEnvironment.getContentAccessFactory();
+    final IUrlProvider urlProvider = CdeEngine.getEnv().getUrlProvider();
+
+    return registerPackage( id, new DependenciesPackage( id, type, cdeContentFactory, urlProvider ) );
   }
 }

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -44,12 +44,14 @@ import pt.webdetails.cpf.session.PentahoSessionUtils;
 
 public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements ICdeEnvironmentExtended {
 
+  protected static Log logger = LogFactory.getLog( PentahoCdeEnvironment.class );
+
   private static final String PLUGIN_REPOSITORY_DIR = "/public/cde";
   private static final String SYSTEM_DIR = "system";
   private static final String PLUGIN = "plugin";
   private static final String CDE_XML = "cde.xml";
   private static final String API_REPOS = "api/repos/";
-  protected static Log logger = LogFactory.getLog( PentahoCdeEnvironment.class );
+
   private IBeanFactory factory;
   private IResourceLoader resourceLoader;
 
@@ -58,12 +60,13 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   private IFileHandler fileHandler;
   private IAuthorizationPolicy authorizationPolicy;
 
-  public PentahoCdeEnvironment() { }
+  public PentahoCdeEnvironment() {}
 
   @Override
   public void init( IBeanFactory factory ) {
     this.factory = factory;
-    super.init( this );
+
+    PluginEnvironment.init( this );
   }
 
   @Override
@@ -142,10 +145,6 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absolute, absRoot, scheme );
   }
 
-  //  public String getCdfContext(String dashboard, String action, String view) throws Exception {
-  //    return InterPluginBroker.getCdfContext( dashboard, action, view );
-  //  }
-
   @Override
   public PluginEnvironment getPluginEnv() {
     return PentahoPluginEnvironment.getInstance();
@@ -157,6 +156,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     if ( apiPaths == null ) {
       apiPaths = new CdeApiPathProvider( getPluginEnv().getUrlProvider() );
     }
+
     return apiPaths;
   }
 
@@ -176,9 +176,9 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     if ( dash.getWcdf().isRequire() ) {
       return new pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd.PentahoCdfRunJsDashboardWriteContext(
           factory, indent, bypassCacheRead, dash, options );
-    } else {
-      return new PentahoCdfRunJsDashboardWriteContext( factory, indent, bypassCacheRead, dash, options );
     }
+
+    return new PentahoCdfRunJsDashboardWriteContext( factory, indent, bypassCacheRead, dash, options );
   }
 
   @Override
@@ -189,11 +189,15 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   @Override
   public IBasicFile getCdeXml() {
-    if ( getUserContentAccess( "/" ).fileExists( PLUGIN_REPOSITORY_DIR + "/" + CDE_XML ) ) {
-      return getUserContentAccess( "/" ).fetchFile( PLUGIN_REPOSITORY_DIR + "/" + CDE_XML );
-    } else if ( getPluginSystemReader( null ).fileExists( CDE_XML ) ) {
+    final String cdeXmlFile = PLUGIN_REPOSITORY_DIR + "/" + CDE_XML;
+    if ( getUserContentAccess( "/" ).fileExists( cdeXmlFile  ) ) {
+      return getUserContentAccess( "/" ).fetchFile( cdeXmlFile );
+    }
+
+    if ( getPluginSystemReader( null ).fileExists( CDE_XML ) ) {
       return getPluginSystemReader( null ).fetchFile( CDE_XML );
     }
+
     return null;
   }
 
@@ -216,11 +220,14 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   public boolean canCreateContent() {
     if ( authorizationPolicy == null ) {
       authorizationPolicy = PentahoSystem.get( IAuthorizationPolicy.class );
+
       if ( authorizationPolicy == null ) {
         logger.warn( "Couldn't retrieve Authorization Policy" );
+
         return getUserSession().isAdministrator();
       }
     }
+
     return authorizationPolicy.isAllowed( RepositoryCreateAction.NAME );
   }
 }
