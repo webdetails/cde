@@ -150,17 +150,17 @@ public final class DependenciesManager {
           final String source = resource.getSource();
 
           final boolean isRawType = resource.getType() == Resource.Type.RAW;
-          if (isRawType) {
+          if ( isRawType ) {
             try {
               pack.registerRawDependency( name, version, source );
             } catch ( Exception ex ) {
-              logger.error("Failed to register code fragment '" + source + "'");
+              logger.error( "Failed to register code fragment '" + source + "'" );
             }
           } else {
             try {
               pack.registerFileDependency( name, version, resource.getOrigin(), source );
             } catch ( Exception ex ) {
-              logger.error("Failed to register dependency '" + source + "'");
+              logger.error( "Failed to register dependency '" + source + "'" );
             }
           }
         }

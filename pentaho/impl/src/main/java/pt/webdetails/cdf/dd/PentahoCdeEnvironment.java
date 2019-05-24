@@ -60,7 +60,8 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   private IFileHandler fileHandler;
   private IAuthorizationPolicy authorizationPolicy;
 
-  public PentahoCdeEnvironment() {}
+  public PentahoCdeEnvironment() {
+  }
 
   @Override
   public void init( IBeanFactory factory ) {
