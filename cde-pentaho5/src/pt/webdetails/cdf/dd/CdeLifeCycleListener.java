@@ -27,6 +27,7 @@ public class CdeLifeCycleListener extends SimpleLifeCycleListener implements IPl
   @Override
   public void init() throws PluginLifecycleException {
     logger.debug( "Init for CDE" );
+    super.init();
   }
 
   @Override
