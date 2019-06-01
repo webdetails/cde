@@ -36,14 +36,14 @@ public class CdeLifeCycleListener extends SimpleLifeCycleListener implements IPl
   }
 
   @Override
-  public void ready() {
+  public void ready() throws PluginLifecycleException {
     logger.debug( "Ready Event for CDE" );
 
     CdeEngine.getInstance().ensureBasicDirs();
   }
 
   @Override
-  public void unLoaded() {
+  public void unLoaded() throws PluginLifecycleException {
     logger.debug( "Unload for CDE" );
   }
 
