@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -201,6 +201,7 @@ define([
 
       var mapOptions = {
         zoom: this.options.viewport.zoomLevel["default"],
+        numZoomLevels: 20, // OpenLayers defaults to 16, but in OpenStreetMap default is 20.
         zoomDuration: 10, // approximately match Google's zoom animation
         displayProjection: projectionWGS84,
         restrictedExtent: restrictedExtent,
