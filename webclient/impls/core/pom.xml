@@ -10,4 +10,50 @@
   <artifactId>cde-webclient-impls-core</artifactId>
   <packaging>pom</packaging>
   <description>Pentaho Community Dashboard Editor Webclient Core Implementation</description>
+
+  <properties>
+    <webjars.target.directory>${build.dependenciesDirectory}/META-INF/resources/webjars</webjars.target.directory>
+    <js.project.list>jquery</js.project.list>
+    <!--karma.file.config>karma.conf.js</karma.file.config-->
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.webjars.npm</groupId>
+      <artifactId>jquery</artifactId>
+    </dependency>
+  </dependencies>
+
+  <!-- copy jquery for tests -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.coderplus.maven.plugins</groupId>
+        <artifactId>copy-rename-maven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>copy-jquery</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <fileSets>
+                <set>
+                  <sourceFile>${webjars.target.directory}/jquery/${jquery.version}/dist/jquery.min.js</sourceFile>
+                  <destinationFile>${project.basedir}/src/test/javascript/lib/ace/jquery.min.js</destinationFile>
+                </set>
+                <set>
+                  <sourceFile>${webjars.target.directory}/jquery/${jquery.version}/dist/jquery.js</sourceFile>
+                  <destinationFile>${project.basedir}/src/test/javascript/lib/jquery.js</destinationFile>
+                </set>
+              </fileSets>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>

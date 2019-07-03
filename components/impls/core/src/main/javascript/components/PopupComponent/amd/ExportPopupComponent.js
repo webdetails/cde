@@ -211,7 +211,7 @@ define([
     },
 
     getExportChartUrl: function(options) {
-      return CggComponentExt.getCggDrawUrl() + '?' + $.param(options);
+      return CggComponentExt.getCggDrawUrl() + '?' + $.param(options, true);
     },
 
     exportChart: function() {

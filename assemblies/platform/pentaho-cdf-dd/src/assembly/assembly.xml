@@ -42,11 +42,17 @@
     </fileSet>
   </fileSets>
 
-  <!-- Components client-side RequireJS configuration file -->
+
   <files>
+    <!-- Components client-side RequireJS configuration file -->
     <file>
       <source>${project.build.directory}/dependency/cde/${global.require.file}</source>
       <destName>pentaho-cdf-dd/js/${global.require.file}</destName>
+    </file>
+
+    <file>
+      <outputDirectory>/pentaho-cdf-dd/resources/ace/</outputDirectory>
+      <source>${webjars.target.directory}/jquery/${jquery.version}/dist/jquery.min.js</source>
     </file>
   </files>
 

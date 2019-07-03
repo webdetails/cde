@@ -20,26 +20,35 @@ define([
    * ## The ExportPopup Component
    */
   describe("The ExportPopup Component #", function() {
-    var dashboard = new Dashboard();
+    var dashboard;
+    var exportPopupComponent;
 
-    dashboard.addParameter("array", ["one", "two"]);
-    dashboard.addParameter("funcArray", function() { return ["funcOne", "funcTwo"]; });
-    dashboard.addParameter("string", "stringOne;stringTwo");
+    beforeEach(function () {
+      dashboard = new Dashboard();
 
-    dashboard.init();
+      dashboard.addParameter("array", ["one", "two"]);
+      dashboard.addParameter("funcArray", function() { return ["funcOne", "funcTwo"]; });
+      dashboard.addParameter("string", "stringOne;stringTwo");
 
-    var exportPopupComponent = new ExportPopupComponent({
-      type: "ExportPopupComponent",
-      name: "popup1",
-      executeAtStart: true,
-      chartExportType: 'png',
-      chartExportComponent: 'chart',
-      htmlObject: "sampleObjectExportPop",
-      parameters: [],
-      listeners: []
+      dashboard.init();
+
+      exportPopupComponent = new ExportPopupComponent({
+        type: "ExportPopupComponent",
+        name: "popup1",
+        executeAtStart: true,
+        chartExportType: 'png',
+        chartExportComponent: 'chart',
+        htmlObject: "sampleObjectExportPop",
+        parameters: [],
+        listeners: []
+      });
+
+      dashboard.addComponent(exportPopupComponent);
     });
 
-    dashboard.addComponent(exportPopupComponent);
+
+
+
 
     /**
      * ## The ExportPopup Component # allows a dashboard to execute update
