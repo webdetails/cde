@@ -201,7 +201,7 @@ define([
 
       var mapOptions = {
         zoom: this.options.viewport.zoomLevel["default"],
-        numZoomLevels: 19, // OpenLayers defaults to 16, but in OpenStreetMap default is 19.
+        numZoomLevels: 20, // OpenLayers defaults to 16, but in OpenStreetMap default is 20.
         zoomDuration: 10, // approximately match Google's zoom animation
         displayProjection: projectionWGS84,
         restrictedExtent: restrictedExtent,
