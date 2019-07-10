@@ -12,11 +12,16 @@
   <description>Pentaho Community Dashboard Editor plugin for the Platform Server</description>
   <properties>
     <js.project.list>
-      cde-components-platform,cde-webclient-impls-core,cde-webclient-impls-pentaho
+      cde-components-platform,cde-webclient-impls-core,cde-webclient-impls-pentaho,jquery
     </js.project.list>
+    <webjars.target.directory>${build.dependenciesDirectory}/META-INF/resources/webjars</webjars.target.directory>
     <ant-contrib.version>1.0b3</ant-contrib.version>
   </properties>
   <dependencies>
+    <dependency>
+      <groupId>org.webjars.npm</groupId>
+      <artifactId>jquery</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.pentaho.ctools</groupId>
       <artifactId>cde-components-platform</artifactId>
