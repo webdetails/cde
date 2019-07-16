@@ -1432,7 +1432,7 @@ var CDFDD = Base.extend({
       var fullCggUrl = '';
       if(isCggDialComponent) {
         fullCggUrl = cggUrl + 'script=/system/pentaho-cdf-dd/resources/custom/components/cgg/charts/dial.js&'
-            + $.param(dialProperties);
+            + $.param(dialProperties, true);
       } else {
         // append dashboard name with component name and extension (.js)
         var script = "script=" + CDFDDFileName.substring(0, CDFDDFileName.lastIndexOf("/")) + "/"

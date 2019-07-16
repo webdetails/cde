@@ -958,7 +958,7 @@ $.fn.formToArray = function(semantic, elements) {
  */
 $.fn.formSerialize = function(semantic) {
     //hand off to jQuery.param for proper encoding
-    return $.param(this.formToArray(semantic));
+    return $.param(this.formToArray(semantic), true);
 };
 
 /**
@@ -983,7 +983,7 @@ $.fn.fieldSerialize = function(successful) {
         }
     });
     //hand off to jQuery.param for proper encoding
-    return $.param(a);
+    return $.param(a, true);
 };
 
 /**
