@@ -2540,7 +2540,7 @@ if ( !$.support.boxShadow ) {
 			//Add search (aka query) params to the specified url.
 			addSearchParams: function( url, params ) {
 				var u = path.parseUrl( url ),
-					p = ( typeof params === "object" ) ? $.param( params ) : params,
+					p = ( typeof params === "object" ) ? $.param( params, true ) : params,
 					s = u.search || "?";
 				return u.hrefNoSearch + s + ( s.charAt( s.length - 1 ) !== "?" ? "&" : "" ) + p + ( u.hash || "" );
 			},
@@ -5929,7 +5929,7 @@ $.widget( "mobile.page", {
 					url: url,
 					options: {
 						type:		method,
-						data:		$.param( formData ),
+						data:		$.param( formData, true ),
 						transition:	$form.jqmData( "transition" ),
 						reverse:	$form.jqmData( "direction" ) === "reverse",
 						reloadPage:	true

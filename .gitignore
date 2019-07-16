@@ -22,3 +22,4 @@ package-lock.json
 # These jquery files are added/replaced by maven on every build
 webclient/impls/core/src/test/javascript/lib/ace/jquery.min.js
 webclient/impls/core/src/test/javascript/lib/jquery.js
+webclient/impls/pentaho/src/test/javascript/lib/jquery.js
