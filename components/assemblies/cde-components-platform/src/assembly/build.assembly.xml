@@ -67,4 +67,10 @@
       <outputDirectory>cdf/components</outputDirectory>
     </fileSet>
   </fileSets>
+  <files>
+    <file>
+      <source>${project.build.directory}/dependency/cdf/js/lib/cdf-fancybox.css</source>
+      <outputDirectory>cdf/lib</outputDirectory>
+    </file>
+  </files>
 </assembly>

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -804,28 +804,35 @@ var CDFDD = Base.extend({
 	$("#cdedemo03").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdedemo03.png");	
 	$("#cde_logo").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cde_logo.png");
 	$(".link_img").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/link.png");	
-	};	  
-	
-    $.fancybox({
-      ajax: {
-        type: "GET"
-      },
-      closeBtn: true,
-      href: htmlHref,
-      autoDimensions: false,
-      width: 950,
-      height: 600,
-      padding: 0,
-      margin: 0,
-      onStart: function() {
+	};
+    $.fancybox.open({
+      src: htmlHref,
+      type: "ajax",
+      baseClass: "cdf-fancybox cdf-fancybox-iframe cdf-fancybox-ajax",
+      btnTpl: {
+        smallBtn:
+            '<button type="button" data-fancybox-close class="fancybox-button fancybox-close-small" title="close">' +
+            '<svg id="svg-fancybox-close-small" width="350" height="350" viewbox="0 0 350 350" xmlns="http://www.w3.org/2000/svg"> <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ --> <defs>  <filter id="svg_1_blur">   <feGaussianBlur stdDeviation="0" in="SourceGraphic"/>  </filter>  <filter height="200%" width="200%" y="-50%" x="-50%" id="svg_20_blur">   <feGaussianBlur stdDeviation="10" in="SourceGraphic"/>  </filter> </defs> <g>  <title>background</title>  <rect fill="none" id="canvas_background" height="302" width="302" y="-1" x="-1"/>  <g display="none" id="canvasGrid">   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%" id="svg_2"/>  </g> </g> <g>  <title>Layer 1</title>  <ellipse filter="url(#svg_20_blur)" ry="127.5" rx="127.5" id="svg_20" cy="154.5" cx="158.5" stroke-opacity="0" stroke-width="16" stroke="#0f0f00" fill="#000000"/>  <ellipse filter="url(#svg_1_blur)" ry="111" rx="111" id="svg_1" cy="145" cx="159" stroke-width="30" stroke="#ffffff" fill="#000"/>  <path d="m329,164l2,127" id="svg_3"/>  <path d="m329,164l2,127" id="svg_4"/>  <path d="m329,164l2,127" id="svg_5"/>  <path d="m329,164l2,127" id="svg_6"/>  <path d="m329,164l2,127" id="svg_9"/>  <path d="m241,161l2,127" id="svg_10"/>  <path d="m160,79l2,127"/>  <path d="m120,54l2,127"/>  <line transform="rotate(-45, 162, 143.5)" stroke-linecap="null" stroke-linejoin="null" id="svg_7" y2="207" x2="163" y1="80" x1="161" stroke-width="30" stroke="#ffffff" fill="none"/>  <path d="m329,164l2,127" id="svg_11"/>  <path d="m329,164l2,127" id="svg_12"/>  <path d="m329,164l2,127" id="svg_13"/>  <path d="m329,164l2,127" id="svg_14"/>  <path d="m329,164l2,127" id="svg_15"/>  <path d="m239,162l2,127" id="svg_16"/>  <path d="m239,162l2,127" id="svg_17"/>  <path d="m239,162l2,127" id="svg_18"/>  <path d="m239,162l2,127" id="svg_19"/>  <path d="m158,79l2,127"/>  <path d="m118,54l2,127"/>  <line transform="rotate(45, 163, 141.5)" stroke-linecap="null" stroke-linejoin="null" id="svg_8" y2="205" x2="164" y1="78" x1="162" stroke-width="30" stroke="#ffffff" fill="none"/> </g></svg>' +
+            '</button>'
+      }
+    },{
+      beforeLoad: function() {
         addCSS(cssFileRef);
       },
-      onClosed: function() {
+      afterClose: function() {
         removeCSS(cssFileRef);
       },
-	  onComplete: function() {
-		 addImg();		  
-	  }
+      afterLoad: function() {
+        addImg();
+      },
+      ajax: {
+        settings:{
+          type: "GET"
+        },
+        data: {
+          fancybox: true
+        }
+      }
     });
 
     if(mode == 'about.fancybox') {
