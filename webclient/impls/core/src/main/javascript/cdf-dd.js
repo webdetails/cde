@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -804,28 +804,33 @@ var CDFDD = Base.extend({
 	$("#cdedemo03").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdedemo03.png");	
 	$("#cde_logo").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cde_logo.png");
 	$(".link_img").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/link.png");	
-	};	  
-	
-    $.fancybox({
-      ajax: {
-        type: "GET"
-      },
-      closeBtn: true,
-      href: htmlHref,
-      autoDimensions: false,
-      width: 950,
-      height: 600,
-      padding: 0,
-      margin: 0,
-      onStart: function() {
+	};
+    $.fancybox.open({
+      src: htmlHref,
+      type: "ajax",
+      baseClass: "cdf-fancybox cdf-fancybox-iframe cdf-fancybox-ajax",
+      btnTpl: {
+        smallBtn:
+            '<button type="button" data-fancybox-close class="fancybox-button fancybox-close-small" title="close"></button>'
+      }
+    },{
+      beforeLoad: function() {
         addCSS(cssFileRef);
       },
-      onClosed: function() {
+      afterClose: function() {
         removeCSS(cssFileRef);
       },
-	  onComplete: function() {
-		 addImg();		  
-	  }
+      afterLoad: function() {
+        addImg();
+      },
+      ajax: {
+        settings:{
+          type: "GET"
+        },
+        data: {
+          fancybox: true
+        }
+      }
     });
 
     if(mode == 'about.fancybox') {
