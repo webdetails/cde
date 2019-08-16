@@ -557,7 +557,7 @@ var TableManager = Base.extend({
 
   scrollTo: function(row) {
     function getPosition(element) {
-      var top = element.position().top;
+      var top = element.offset().top;
       var bottom = top + element.outerHeight(true);
 
       return {top: top, bottom: bottom};
