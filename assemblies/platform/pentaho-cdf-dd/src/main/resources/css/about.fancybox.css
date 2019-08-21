@@ -180,7 +180,7 @@ b {
 /* _________________________________ expandable heading_______________________________ */
 .heading {
 	padding-left: 30px;
-	width:920px;
+	width:950px;
 	height:50px;
 	position:relative;
 	margin-top:0px;
@@ -354,7 +354,6 @@ h29 {
 .bodycopy {
 	width:935px;
 	padding:0px;
-	padding-left:30px;
 	margin-top:10px;
 	display:block;
 	overflow:hidden;
@@ -372,14 +371,19 @@ h29 {
 .bodycopy li {
 	list-style:none;
 	float:left;
+	padding-left:30px;
 	padding-right:20px;
-	width:280px;
+	width:310px;
 	min-height: 50px;
 	padding-top: 10px;
 }
+
+.bodycopy li.imgcs{
+	width:280px;
+}
 /* LISTA DENTRO DA LISTA */
 .bodycopylist {
-	width:280px;
+	width:310px;
 	padding:0px;
 	display:block;
 	overflow:visible;

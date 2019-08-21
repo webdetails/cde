@@ -11,7 +11,7 @@
   <packaging>pom</packaging>
   <description>Pentaho Community Dashboard Editor Webclient Pentaho Server Implementation</description>
   <properties>
-    <js.project.list>cde-webclient-impls-core</js.project.list>
+    <js.project.list>cde-webclient-impls-core,jquery</js.project.list>
   </properties>
   <dependencies>
     <dependency>
@@ -23,6 +23,29 @@
   </dependencies>
   <build>
     <plugins>
+      <!-- copy jquery for tests -->
+      <plugin>
+        <groupId>com.coderplus.maven.plugins</groupId>
+        <artifactId>copy-rename-maven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>copy-jquery</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <fileSets>
+                <set>
+                  <sourceFile>${webjars.target.directory}/jquery/${jquery.version}/dist/jquery.js</sourceFile>
+                  <destinationFile>${project.basedir}/src/test/javascript/lib/jquery.js</destinationFile>
+                </set>
+              </fileSets>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>

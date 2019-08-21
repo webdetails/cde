@@ -10,6 +10,9 @@
   <artifactId>cde-webclient-impls</artifactId>
   <packaging>pom</packaging>
   <description>Pentaho Community Dashboard Editor Webclient Implementations</description>
+  <properties>
+    <webjars.target.directory>${build.dependenciesDirectory}/META-INF/resources/webjars</webjars.target.directory>
+  </properties>
   <modules>
     <module>core</module>
     <module>pentaho</module>

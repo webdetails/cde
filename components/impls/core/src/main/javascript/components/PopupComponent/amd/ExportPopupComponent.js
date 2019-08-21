@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -211,7 +211,7 @@ define([
     },
 
     getExportChartUrl: function(options) {
-      return CggComponentExt.getCggDrawUrl() + '?' + $.param(options);
+      return CggComponentExt.getCggDrawUrl() + '?' + $.param(options, true);
     },
 
     exportChart: function() {
@@ -364,13 +364,18 @@ define([
       var holderDiv = $('<div class="exportChartMasterDivHolder">');
       holderDiv.append(masterDiv);
 
-      $.fancybox({
+      $.fancybox.open({
+        src: holderDiv,
         type: "html",
-        closeBtn: true,
-        content: holderDiv,
-        width: totalWidth,
-        height: this.chartComponent.chartDefinition.height + 60,
-        autoDimensions: false
+        baseClass: "cdf-fancybox cdf-fancybox-html",
+        btnTpl: {
+          smallBtn:
+              '<button type="button" data-fancybox-close class="fancybox-button fancybox-close-small" title="close"></button>'
+        }
+      });
+      $('.fancybox-content').css({
+        'max-width': totalWidth,
+        'height': this.chartComponent.chartDefinition.height + 60
       });
     }
   });
