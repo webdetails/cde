@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -685,7 +685,11 @@ define([
       }
       this.map.setZoom(zoomLevel);
       if (!this.zoomExtends()) {
-        this.map.panTo(new google.maps.LatLng(38, -9));
+        if(!isNaN(centerLatitude ) && !isNaN(centerLongitude)){
+          this.map.panTo(new google.maps.LatLng(centerLatitude, centerLongitude));
+        } else {
+          this.map.panTo(new google.maps.LatLng(38, -9));
+        }
       }
     },
 
