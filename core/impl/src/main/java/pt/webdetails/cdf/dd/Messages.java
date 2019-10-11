@@ -131,19 +131,17 @@ public class Messages {
   }
 
   public static String getString( final ResourceBundle bundle, final String key ) {
-    try {
+    if ( bundle != null ) {
       return bundle.getString( key );
-    } catch ( Exception e ) {
-      return '!' + key + '!';
     }
+    return '!' + key + '!';
   }
 
   public static String getString( final ResourceBundle bundle, final String key, final Object... params ) {
-    try {
+    if ( bundle != null ) {
       return MessageFormat.format( bundle.getString( key ), params );
-    } catch ( Exception e ) {
-      return '!' + key + '!';
     }
+    return '!' + key + '!';
   }
 
   public static String formatErrorMessage( final String key, final String msg ) {
