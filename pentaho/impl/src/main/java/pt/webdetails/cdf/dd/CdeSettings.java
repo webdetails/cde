@@ -121,7 +121,7 @@ public class CdeSettings {
       }
     }
 
-    return paths.toArray( new String[ files == null? 0:files.length ] );
+    return paths.toArray( new String[ files == null ? 0 : files.length ] );
   }
 
   public static IBasicFile[] getFilePickerHiddenFolders( FolderType folderType ) {

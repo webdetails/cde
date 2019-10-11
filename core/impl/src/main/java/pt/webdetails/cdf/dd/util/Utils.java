@@ -525,12 +525,14 @@ public class Utils {
       } else if ( CdeEnvironment.getPluginSystemReader().fileExists( templateFile ) ) {
         // template is in system
         return Util.toString( CdeEnvironment.getPluginSystemReader().getFileInputStream( templateFile ) );
-      } else if ( Utils.getAppropriateReadAccess( templateFile ) != null &&
-              Utils.getAppropriateReadAccess( templateFile ).fileExists( templateFile ) ) {
-        return Util.toString( Utils.getAppropriateReadAccess( templateFile ).getFileInputStream( templateFile ) );
       } else {
-        // last chance : template is in user-defined folder
-        return Util.toString( CdeEnvironment.getUserContentAccess().getFileInputStream( templateFile ) );
+        IReadAccess readAccess = Utils.getAppropriateReadAccess( templateFile );
+        if ( readAccess != null && readAccess.fileExists( templateFile ) ) {
+          return Util.toString( readAccess.getFileInputStream( templateFile ) );
+        } else {
+          // last chance : template is in user-defined folder
+          return Util.toString( CdeEnvironment.getUserContentAccess().getFileInputStream( templateFile ) );
+        }
       }
     } catch ( IOException ex ) {
       logger.error( MessageFormat.format( "Couldn''t open template file {0}.", templateFile ), ex );

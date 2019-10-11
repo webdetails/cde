@@ -64,7 +64,6 @@ public class CdfStyles {
       String pluginStylesDir = entity.getRegisteredEntity().valueOf( "path" );
       String finalPath = pluginStylesDir + "/";
       String pluginId = entity.getPlugin().getId();
-      style = null;
 
       IReadAccess access = CdeEnvironment.getOtherPluginSystemReader( pluginId );
 
@@ -83,7 +82,7 @@ public class CdfStyles {
       }
     }
 
-    if ( styles == null || styles.isEmpty() ) {
+    if ( styles.isEmpty() ) {
       logger.error( "No styles directory found in resources" );
       styles = new ArrayList<Style>();
     }
@@ -163,7 +162,7 @@ public class CdfStyles {
       List<IBasicFile> htmlList = access.listFiles( directory, htmlFilter, IReadAccess.DEPTH_ALL, false, true );
 
       if ( htmlList != null ) {
-          styleFiles.addAll( htmlList );
+        styleFiles.addAll( htmlList );
       }
     }
 
