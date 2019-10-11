@@ -139,7 +139,7 @@ public class DashboardEditor {
 
       if ( tokens != null && tokens.size() > 0 ) {
 
-        for (final Map.Entry<String,String> entry : tokens.entrySet() ) {
+        for ( final Map.Entry<String,String> entry : tokens.entrySet() ) {
           editorPage = StringUtils.replace( editorPage, entry.getKey() , entry.getValue() );
         }
       }
