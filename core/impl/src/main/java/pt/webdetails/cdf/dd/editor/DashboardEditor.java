@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -137,8 +138,9 @@ public class DashboardEditor {
       editorPage = processDashboardSupportTag( editorPage, isRequire );
 
       if ( tokens != null && tokens.size() > 0 ) {
-        for ( final String key : tokens.keySet() ) {
-          editorPage = StringUtils.replace( editorPage, key, tokens.get( key ) );
+
+        for ( final Map.Entry<String, String> entry : tokens.entrySet() ) {
+          editorPage = StringUtils.replace( editorPage, entry.getKey(), entry.getValue() );
         }
       }
 
@@ -173,7 +175,7 @@ public class DashboardEditor {
         resMgr.putResourceInCache( path, resource );
       }
     }
-    if ( resource.contains( WEBAPP_PATH ) ) {
+    if ( resource != null && resource.contains( WEBAPP_PATH ) ) {
       return resource.replace( WEBAPP_PATH,
         CdeEngine.getInstance().getEnvironment().getApplicationReposUrl()
           + CdeEngine.getInstance().getEnvironment().getPluginId() + "/" );

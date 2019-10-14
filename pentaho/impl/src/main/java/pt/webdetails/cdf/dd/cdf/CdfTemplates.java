@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -46,7 +46,7 @@ public class CdfTemplates {
   protected String resourceUrl;
 
   private static String REPOSITORY_CDF_DD_TEMPLATES_CUSTOM = "templates";
-  private final String DEFAULT_RENDERER_TYPE = "bootstrap";
+  private static final String DEFAULT_RENDERER_TYPE = "bootstrap";
   private static Log logger = LogFactory.getLog( CdfTemplates.class );
 
   public CdfTemplates( String getResourceEndpoint ) {
@@ -129,6 +129,10 @@ public class CdfTemplates {
       public int compare( IBasicFile file1, IBasicFile file2 ) {
         if ( file1 == null && file2 == null ) {
           return 0;
+        } else if ( file1 == null ) {
+          return 1;
+        } else if ( file2 == null ) {
+          return -1;
         } else {
           return file1.getFullPath().toLowerCase().compareTo( file2.getFullPath().toLowerCase() );
         }

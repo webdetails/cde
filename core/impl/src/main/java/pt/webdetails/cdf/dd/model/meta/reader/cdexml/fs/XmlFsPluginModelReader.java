@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -398,11 +398,11 @@ public final class XmlFsPluginModelReader {
       }
       // Just log and move on
       logger.fatal( msg );
+    } else {
+      ComponentType.Builder comp = reader.read( componentElem, origin, sourcePath );
+      comp.setOrigin( origin );
+      model.addComponent( comp );
     }
-
-    ComponentType.Builder comp = reader.read( componentElem, origin, sourcePath );
-    comp.setOrigin( origin );
-    model.addComponent( comp );
   }
 
 }
