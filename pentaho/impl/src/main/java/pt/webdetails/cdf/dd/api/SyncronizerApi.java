@@ -106,7 +106,7 @@ public class SyncronizerApi { //TODO: synchronizer?
 
     if ( null != widgetParams ) {
       for ( int i = 0; i < widgetParams.size(); i++ ) {
-        widgetParams.add( i, xssHelper.escape( widgetParams.get( i ) ) );
+        widgetParams.set( i, xssHelper.escape( widgetParams.get( i ) ) );
       }
     }
 
