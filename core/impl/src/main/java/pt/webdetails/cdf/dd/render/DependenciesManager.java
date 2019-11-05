@@ -85,7 +85,7 @@ public final class DependenciesManager {
 
     manager.registerPackage( StdPackages.COMPONENT_STYLES, PackageType.CSS );
     manager.registerPackage( StdPackages.COMPONENT_DEF_SCRIPTS, PackageType.JS );
-    manager.registerPackage( StdPackages.COMPONENT_SNIPPETS, createSnippetPackage( factory, urlProvider ) ); // TODO change
+    manager.registerPackage( StdPackages.COMPONENT_SNIPPETS, createSnippetPackage( factory, urlProvider ) );
     manager.registerPackage( StdPackages.CDFDD, PackageType.JS );
 
     //read include.properties
@@ -103,17 +103,17 @@ public final class DependenciesManager {
       final PathOrigin origin = new StaticSystemOrigin( "" );
 
       manager.registerPackage( StdPackages.EDITOR_JS_INCLUDES, PackageType.JS );
-      if ( props.containsKey( "scripts" ) ) {
+      if ( props.containsKey( StdPackages.EDITOR_JS_INCLUDES ) ) {
         final DependenciesPackage scripts = manager.getPackage( StdPackages.EDITOR_JS_INCLUDES );
 
-        registerProperties( scripts, origin, props.get( "scripts" ) );
+        registerProperties( scripts, origin, props.get( StdPackages.EDITOR_JS_INCLUDES ) );
       }
 
       manager.registerPackage( StdPackages.EDITOR_CSS_INCLUDES, PackageType.CSS );
-      if ( props.containsKey( "styles" ) ) {
+      if ( props.containsKey( StdPackages.EDITOR_CSS_INCLUDES ) ) {
         final DependenciesPackage styles = manager.getPackage( StdPackages.EDITOR_CSS_INCLUDES );
 
-        registerProperties( styles, origin, props.get( "styles" ) );
+        registerProperties( styles, origin, props.get( StdPackages.EDITOR_CSS_INCLUDES ) );
       }
     } catch ( IOException e ) {
       logger.error( "Error attempting to read " + INCLUDES_PROP, e );
@@ -197,16 +197,16 @@ public final class DependenciesManager {
 
       final PathOrigin origin = new StaticSystemOrigin( "" );
 
-      if ( extraProps.containsKey( "scripts" ) ) {
+      if ( extraProps.containsKey( StdPackages.EDITOR_JS_INCLUDES ) ) {
         final DependenciesPackage scripts = depManager.getPackage( StdPackages.COMPONENT_DEF_SCRIPTS );
 
-        registerProperties( scripts, origin, extraProps.get( "scripts" ) );
+        registerProperties( scripts, origin, extraProps.get( StdPackages.EDITOR_JS_INCLUDES ) );
       }
 
-      if ( extraProps.containsKey( "styles" ) ) {
+      if ( extraProps.containsKey( StdPackages.EDITOR_CSS_INCLUDES ) ) {
         final DependenciesPackage styles = depManager.getPackage( StdPackages.COMPONENT_STYLES );
 
-        registerProperties( styles, origin, extraProps.get( "styles" ) );
+        registerProperties( styles, origin, extraProps.get( StdPackages.EDITOR_CSS_INCLUDES ) );
       }
     } catch ( IOException e ) {
       logger.error( "Error attempting to read " + EXTRA_INCLUDES_PROP, e );
