@@ -278,10 +278,10 @@ public class DashboardManager {
     Dashboard dashboard = getDashboard( wcdfPath, bypassCacheRead );
     ArrayList<String> parameters = new ArrayList<String>();
     for ( Component component : dashboard.getRegulars() ) {
-      if ( Arrays.asList( MAP_PARAMETERS ).contains( component.getMeta().getName() ) &&
+      if ( Arrays.asList( MAP_PARAMETERS ).contains( component.getMeta().getName() )
         // if no 'public' property is present, we must default to true
-        !all && Boolean.valueOf( component.tryGetPropertyValue( "public", "true" ) ) ) {
-          parameters.add( component.getName() );
+        && !all && Boolean.valueOf( component.tryGetPropertyValue( "public", "true" ) ) ) {
+        parameters.add( component.getName() );
       }
     }
     String result = "{";
@@ -333,7 +333,7 @@ public class DashboardManager {
 
     Map<String, Dashboard> localDashboardsByCdfdeFilePath;
     synchronized ( this.dashboardsByCdfdeFilePath ) {
-      localDashboardsByCdfdeFilePath = new HashMap<String, Dashboard>( this.dashboardsByCdfdeFilePath );
+      localDashboardsByCdfdeFilePath = new HashMap<>( this.dashboardsByCdfdeFilePath );
     }
 
     Set<String> invalidateDashboards = new HashSet<String>();
