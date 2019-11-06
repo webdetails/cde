@@ -39,7 +39,7 @@ public class CdeEngine {
     this.cdeEnv = environment;
   }
 
-  public synchronized static CdeEngine getInstance() {
+  public static synchronized CdeEngine getInstance() {
     if ( instance == null ) {
       instance = new CdeEngine();
     }

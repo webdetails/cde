@@ -77,7 +77,7 @@ public class DashboardManager {
 
   protected DashboardManager() { }
 
-  public synchronized static DashboardManager getInstance() {
+  public static synchronized DashboardManager getInstance() {
     if ( _instance == null ) {
       _instance = new DashboardManager();
     }
@@ -278,11 +278,10 @@ public class DashboardManager {
     Dashboard dashboard = getDashboard( wcdfPath, bypassCacheRead );
     ArrayList<String> parameters = new ArrayList<String>();
     for ( Component component : dashboard.getRegulars() ) {
-      if ( Arrays.asList( MAP_PARAMETERS ).contains( component.getMeta().getName() ) ) {
+      if ( Arrays.asList( MAP_PARAMETERS ).contains( component.getMeta().getName() ) &&
         // if no 'public' property is present, we must default to true
-        if ( !all && Boolean.valueOf( component.tryGetPropertyValue( "public", "true" ) ) ) {
+        !all && Boolean.valueOf( component.tryGetPropertyValue( "public", "true" ) ) ) {
           parameters.add( component.getName() );
-        }
       }
     }
     String result = "{";
@@ -332,17 +331,17 @@ public class DashboardManager {
 
     String cdeFilePath = Utils.sanitizeSlashesInPath( DashboardWcdfDescriptor.toStructurePath( wcdfPath ) );
 
-    Map<String, Dashboard> dashboardsByCdfdeFilePath;
+    Map<String, Dashboard> localDashboardsByCdfdeFilePath;
     synchronized ( this.dashboardsByCdfdeFilePath ) {
-      dashboardsByCdfdeFilePath = new HashMap<String, Dashboard>( this.dashboardsByCdfdeFilePath );
+      localDashboardsByCdfdeFilePath = new HashMap<String, Dashboard>( this.dashboardsByCdfdeFilePath );
     }
 
     Set<String> invalidateDashboards = new HashSet<String>();
     invalidateDashboards.add( cdeFilePath );
 
-    Dashboard dash = dashboardsByCdfdeFilePath.get( cdeFilePath );
+    Dashboard dash = localDashboardsByCdfdeFilePath.get( cdeFilePath );
     if ( dash != null && dash.getWcdf().isWidget() ) {
-      collectWidgetsToInvalidate( invalidateDashboards, dashboardsByCdfdeFilePath, cdeFilePath );
+      collectWidgetsToInvalidate( invalidateDashboards, localDashboardsByCdfdeFilePath, cdeFilePath );
     }
 
     if ( _logger.isDebugEnabled() ) {
