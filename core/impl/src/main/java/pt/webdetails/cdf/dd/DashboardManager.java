@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -77,13 +77,9 @@ public class DashboardManager {
 
   protected DashboardManager() { }
 
-  public static DashboardManager getInstance() {
+  public static synchronized DashboardManager getInstance() {
     if ( _instance == null ) {
-      synchronized ( DashboardManager.class ) {
-        if ( _instance == null ) {
-          _instance = new DashboardManager();
-        }
-      }
+      _instance = new DashboardManager();
     }
     return _instance;
   }
@@ -282,11 +278,10 @@ public class DashboardManager {
     Dashboard dashboard = getDashboard( wcdfPath, bypassCacheRead );
     ArrayList<String> parameters = new ArrayList<String>();
     for ( Component component : dashboard.getRegulars() ) {
-      if ( Arrays.asList( MAP_PARAMETERS ).contains( component.getMeta().getName() ) ) {
+      if ( Arrays.asList( MAP_PARAMETERS ).contains( component.getMeta().getName() )
         // if no 'public' property is present, we must default to true
-        if ( !all && Boolean.valueOf( component.tryGetPropertyValue( "public", "true" ) ) ) {
-          parameters.add( component.getName() );
-        }
+        && !all && Boolean.valueOf( component.tryGetPropertyValue( "public", "true" ) ) ) {
+        parameters.add( component.getName() );
       }
     }
     String result = "{";
@@ -336,17 +331,17 @@ public class DashboardManager {
 
     String cdeFilePath = Utils.sanitizeSlashesInPath( DashboardWcdfDescriptor.toStructurePath( wcdfPath ) );
 
-    Map<String, Dashboard> dashboardsByCdfdeFilePath;
+    Map<String, Dashboard> localDashboardsByCdfdeFilePath;
     synchronized ( this.dashboardsByCdfdeFilePath ) {
-      dashboardsByCdfdeFilePath = new HashMap<String, Dashboard>( this.dashboardsByCdfdeFilePath );
+      localDashboardsByCdfdeFilePath = new HashMap<>( this.dashboardsByCdfdeFilePath );
     }
 
     Set<String> invalidateDashboards = new HashSet<String>();
     invalidateDashboards.add( cdeFilePath );
 
-    Dashboard dash = dashboardsByCdfdeFilePath.get( cdeFilePath );
+    Dashboard dash = localDashboardsByCdfdeFilePath.get( cdeFilePath );
     if ( dash != null && dash.getWcdf().isWidget() ) {
-      collectWidgetsToInvalidate( invalidateDashboards, dashboardsByCdfdeFilePath, cdeFilePath );
+      collectWidgetsToInvalidate( invalidateDashboards, localDashboardsByCdfdeFilePath, cdeFilePath );
     }
 
     if ( _logger.isDebugEnabled() ) {

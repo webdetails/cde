@@ -61,6 +61,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   private IAuthorizationPolicy authorizationPolicy;
 
   public PentahoCdeEnvironment() {
+    //Needs to be here due to inheritance chain
   }
 
   @Override
