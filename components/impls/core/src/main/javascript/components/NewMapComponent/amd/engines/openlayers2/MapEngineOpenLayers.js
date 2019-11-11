@@ -199,8 +199,9 @@ define([
         extent.northWest.longitude, extent.northWest.latitude
       ).transform(projectionWGS84, projectionMap);
 
+      var ultimateZoomLevelDefault = 5;
       var mapOptions = {
-        zoom: this.options.viewport.zoomLevel["default"],
+        zoom: this.options.viewport.zoomLevel["default"] || ultimateZoomLevelDefault,
         numZoomLevels: 20, // OpenLayers defaults to 16, but in OpenStreetMap default is 20.
         zoomDuration: 10, // approximately match Google's zoom animation
         displayProjection: projectionWGS84,
@@ -348,7 +349,8 @@ define([
         if (bounds) {
           this.map.zoomToExtent(bounds);
         } else {
-          this.map.zoomTo(this.options.viewport.zoomLevel["default"]);
+          var ultimateZoomLevelDefault = 5;
+          this.map.zoomTo(this.options.viewport.zoomLevel["default"] || ultimateZoomLevelDefault);
         }
       }
 
