@@ -22,6 +22,9 @@ import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 import pt.webdetails.cpf.utils.PluginIOUtils;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.UUID;
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
@@ -109,7 +112,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       // 2 - resources being called from other resources (ex: resource plugin-samples/template.css calls resource
       // images/button-contact-png)
 
-      new ResourcesApi().getResource( pathParams.getStringParameter( MethodParams.COMMAND, "" ), null );
+      // [CDE-1021] Translation from a javax Response object to a HttpServletResponse object needed, so when we try
+      // and retrieve a resource object and generate content for the dashboard, we can get the object properly moved from
+      // the resources api and into our http servlet response's output stream (fixing a previous regression where the
+      // writing to our http servlet response was removed)
+      translateResponseToServletResponse( pathParams );
 
     } else {
 
@@ -132,6 +139,32 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
   public String getObjectName() {
     return this.getClass().getName();
+  }
+
+  private void translateResponseToServletResponse( IParameterProvider pathParams ) throws IOException {
+    // This is necessary when we need to convert the ResourcesApi Response object into the HttpServletResponse object
+    // we are using in this class.
+    HttpServletResponse servletResponse = getResponse();
+    ResourcesApi resourcesApi = new ResourcesApi();
+    String resourceParam = pathParams.getStringParameter( MethodParams.COMMAND, "" );
+    // First retrieve the ResourcesApi Response object
+    Response resourceResponse = resourcesApi.getResource( resourceParam, null );
+
+    // We should check to see if the status is OK first before continuing. Also need to send over the status as well
+    servletResponse.setStatus( resourceResponse.getStatus() );
+    if ( resourceResponse.getStatus() == Response.Status.OK.getStatusCode() ) {
+      // Next convert the headers over (the headers from resourceResponse are OutBoundHeaders which use a String-key
+      // to LinkedList-values), while HttpServletResponse uses more of a flat list type, so need to convert them.
+      resourceResponse.getMetadata().forEach( (key, value) ->
+        value.forEach( headerValue -> servletResponse.setHeader( key, (String) headerValue ) ) );
+
+      // Unable to safely retrieve the contents of the resourceResponse's output stream (i.e. JSON translated properly,
+      // but had issues with image files like PNG), so we need to retrieve the original resource file and write it to
+      // the HttpServletResponse object's OutputStream directly.
+      PluginIOUtils.writeOutAndFlush( servletResponse.getOutputStream(),
+        resourcesApi.getResourceFile( resourceParam ).getContents() );
+    }
+    servletResponse.flushBuffer();
   }
 
   private class MethodParams {
