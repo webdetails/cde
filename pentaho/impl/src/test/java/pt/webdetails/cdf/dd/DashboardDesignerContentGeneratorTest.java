@@ -22,9 +22,9 @@ import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.web.http.request.HttpRequestParameterProvider;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.mock.web.MockHttpServletResponse;
 import pt.webdetails.cdf.dd.api.ResourcesApi;
 import pt.webdetails.cdf.dd.api.XSSHelper;
-import pt.webdetails.cdf.dd.testUtils.StringHeaderHttpServletResponseForTests;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
@@ -32,9 +32,7 @@ import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,9 +50,8 @@ public class DashboardDesignerContentGeneratorTest {
 
   private static final String PLUGIN_NAME = "pentaho-cdf-dd";
   private static final String COMMAND = "test/path/file.json";
-  private ByteArrayOutputStream byteStream;
   private DashboardDesignerContentGenerator contentGenerator;
-  private HttpServletResponse servletResponse;
+  private MockHttpServletResponse servletResponse;
   private IPluginResourceLoader iPluginResourceLoader;
   private XSSHelper xssHelper;
 
@@ -69,9 +66,9 @@ public class DashboardDesignerContentGeneratorTest {
     xssHelper = mock( XSSHelper.class );
     iPluginResourceLoader = mock( IPluginResourceLoader.class );
     contentGenerator = spy( new DashboardDesignerContentGenerator() );
-    byteStream = new ByteArrayOutputStream();
 
-    servletResponse = new StringHeaderHttpServletResponseForTests( byteStream );
+    servletResponse = new MockHttpServletResponse();
+
   }
 
   @Test
@@ -86,7 +83,7 @@ public class DashboardDesignerContentGeneratorTest {
 
     // The expectedJsonContents string is an input into the Response object, then it gets translated over to the
     // servletResponse's object. this byteStream check verifies the output the servletResponse writes to.
-    assertEquals( expectedJsonContents, byteStream.toString() );
+    assertEquals( expectedJsonContents, servletResponse.getContentAsString() );
 
     assertEquals( "inline; filename=\"null\"", servletResponse.getHeader( "content-disposition" ) );
     assertEquals( "application/unknown", servletResponse.getHeader( "Content-Type" ) );

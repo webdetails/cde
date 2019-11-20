@@ -24,6 +24,7 @@ import pt.webdetails.cpf.utils.PluginIOUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -158,11 +159,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       resourceResponse.getMetadata().forEach( (key, value) ->
         value.forEach( headerValue -> servletResponse.setHeader( key, (String) headerValue ) ) );
 
-      // Unable to safely retrieve the contents of the resourceResponse's output stream (i.e. JSON translated properly,
-      // but had issues with image files like PNG), so we need to retrieve the original resource file and write it to
-      // the HttpServletResponse object's OutputStream directly.
-      PluginIOUtils.writeOutAndFlush( servletResponse.getOutputStream(),
-        resourcesApi.getResourceFile( resourceParam ).getContents() );
+      // We need to retrieve the original resource file and write it to the HttpServletResponse object's OutputStream directly.
+      ((StreamingOutput) resourceResponse.getEntity()).write( servletResponse.getOutputStream() );
     }
     servletResponse.flushBuffer();
   }

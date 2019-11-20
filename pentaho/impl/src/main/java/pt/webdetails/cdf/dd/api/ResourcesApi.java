@@ -80,10 +80,15 @@ public class ResourcesApi {
   public Response getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                                @HeaderParam( "if-none-match" ) String ifNoneMatch ) throws IOException {
 
+    resource = decodeAndEscape( resource );
+
     try {
-      IBasicFile file = getResourceFile( resource );
+      checkExtensions( resource );
+
+      IBasicFile file = Utils.getFileViaAppropriateReadAccess( resource );
 
       if ( file == null ) {
+        logger.error( "resource not found:" + resource );
         return Response.status( Status.INTERNAL_SERVER_ERROR ).build();
       }
 
@@ -157,8 +162,6 @@ public class ResourcesApi {
                    @QueryParam( "resource" ) @DefaultValue( "" ) String resource )
     throws IOException {
 
-    resource = decodeAndEscape( resource );
-
     return getResource( resource, null );
   }
 
@@ -189,18 +192,6 @@ public class ResourcesApi {
       IBasicFile[] files = getFileList( folder, dashboardPath, fileExtensions, showHiddenFiles );
       return RepositoryHelper.toJQueryFileTree( folder, files );
     }
-  }
-
-  public IBasicFile getResourceFile( String resource ) {
-    resource = decodeAndEscape( resource );
-    checkExtensions( resource );
-    IBasicFile file = Utils.getFileViaAppropriateReadAccess( resource );
-
-    if ( file == null ) {
-      logger.error( "resource not found:" + resource );
-    }
-
-    return file;
   }
 
   private IBasicFile[] getFileList( String dir, String dashboardPath, final String fileExtensions,
