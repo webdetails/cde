@@ -162,8 +162,6 @@ public class ResourcesApi {
                    @QueryParam( "resource" ) @DefaultValue( "" ) String resource )
     throws IOException {
 
-    resource = decodeAndEscape( resource );
-
     return getResource( resource, null );
   }
 
