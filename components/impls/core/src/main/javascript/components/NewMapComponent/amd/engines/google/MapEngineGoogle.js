@@ -645,7 +645,8 @@ define([
                 mapTypeId: google.maps.MapTypeId.HYBRID
               }
             };
-
+            // Apply map skin.
+            this.map.setMapTypeId(mapOpts[variant].mapTypeId || mapOpts.default.mapTypeId);
             layerOptions.push(mapOpts[variant] || mapOpts.default);
             layers.push("");
             break;
