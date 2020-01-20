@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2020 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -81,7 +81,6 @@ var CDFDD = Base.extend({
     TableManager.globalInit();
     WizardManager.globalInit();
   },
-
 
   init: function() {
 
@@ -352,13 +351,13 @@ var CDFDD = Base.extend({
 
   /*
    * Sample CDFDE JSON structure:
-   * 
-   * cdeDef = { 
+   *
+   * cdeDef = {
    *   layout: {
    *      rows: [
    *        // One component
    *        {
-   *          id:   "", 
+   *          id:   "",
    *          name: "",
    *          type: "",
    *          typeDesc: "",
@@ -373,7 +372,7 @@ var CDFDD = Base.extend({
    *          ]
    *        }
    *      ]
-   *   }, 
+   *   },
    *   components: {
    *      rows: [...]
    *   },
@@ -615,7 +614,7 @@ var CDFDD = Base.extend({
               prop.name = propUsage.alias;
             }
 
-            // Add own attributes of Stub to property, 
+            // Add own attributes of Stub to property,
             // if it doesn't have them already.
             for(var attr in propStub) {
               if(propStub.hasOwnProperty(attr)) {
@@ -765,75 +764,93 @@ var CDFDD = Base.extend({
     };
 
     var addCSS = function(fileRef) {
-      var fileref = document.createElement("link");
-      fileref.setAttribute("rel", "stylesheet");
-      fileref.setAttribute("type", "text/css");
-      fileref.setAttribute("href", fileRef);
-      document.getElementsByTagName("head")[0].appendChild(fileref);
+      var link = document.createElement("link");
+
+      link.setAttribute("rel", "stylesheet");
+      link.setAttribute("type", "text/css");
+      link.setAttribute("href", fileRef);
+
+      document.getElementsByTagName("head")[0].appendChild(link);
     };
 
     var removeCSS = function(fileRef) {
       var allCtrl = document.getElementsByTagName('link');
-      for(var i = allCtrl.length; i >= 0; i--) {
-        if(allCtrl[i] && allCtrl[i].getAttribute('href') != null && allCtrl[i].getAttribute('href').indexOf(fileRef) != -1)
-          allCtrl[i].parentNode.removeChild(allCtrl[i]);
+
+      for (var i = allCtrl.length; i >= 0; i--) {
+        var element = allCtrl[i];
+
+        var elementHref = element != null ? element.getAttribute('href') : null;
+        if (elementHref != null && elementHref.indexOf(fileRef) !== -1) {
+          element.parentNode.removeChild(element);
+        }
       }
     };
-      
-	var htmlHref = webAppPath+"/plugin/pentaho-cdf-dd/api/resources/static/" + mode + ".html";
-	var cssFileRef = webAppPath+"/plugin/pentaho-cdf-dd/api/resources/css/" + mode + ".css";
-    
-	var addImg= function(){	
-	$("#cdeimg").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdeimg.png");
-	$("#cdetutimg").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdetutimg.png");
-	$("#cdesample1").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdesample1.png");
-	$("#cdesample2").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdesample2.png");
-	$("#cdesample3").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdesample3.png");
-	$("#CdfTutorialImg").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/CdfTutorialImg.png");
-	$("#cdfsample1").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdfsample1.png");
-	$("#cdfsample2").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdfsample2.png");
-	$("#cdfsample3").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdfsample3.png");
-	$("#cdesampleimg").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdesampleimg.png");
-	$("#demo_spaulo").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/demo_spaulo.png");
-	$("#demo_orlando").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/demo_orlando.png");
-	$("#demo_geek").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/demo_geek.png");
-	$("#demo_productsale").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/demo_productsale.png");
-	$("#demo_netherlands").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/demo_netherlands.png");
-	$("#cdedemo01").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdedemo01.png");
-	$("#cdedemo02").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdedemo02.png");
-	$("#cdedemo03").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdedemo03.png");	
-	$("#cde_logo").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cde_logo.png");
-	$(".link_img").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/link.png");	
-	};
+
+    var resourcesAPI = webAppPath + "/plugin/pentaho-cdf-dd/api/resources";
+
+	  var addImg= function() {
+      $("#cdeimg").attr("src", resourcesAPI + "/images/cdeimg.png");
+      $("#cdetutimg").attr("src", resourcesAPI + "/images/cdetutimg.png");
+      $("#cdesample1").attr("src", resourcesAPI + "/images/cdesample1.png");
+      $("#cdesample2").attr("src", resourcesAPI + "/images/cdesample2.png");
+      $("#cdesample3").attr("src", resourcesAPI + "/images/cdesample3.png");
+
+      $("#CdfTutorialImg").attr("src", resourcesAPI + "/images/CdfTutorialImg.png");
+      $("#cdfsample1").attr("src", resourcesAPI + "/images/cdfsample1.png");
+      $("#cdfsample2").attr("src", resourcesAPI + "/images/cdfsample2.png");
+      $("#cdfsample3").attr("src", resourcesAPI + "/images/cdfsample3.png");
+
+      $("#cdesampleimg").attr("src", resourcesAPI + "/images/cdesampleimg.png");
+
+      $("#demo_spaulo").attr("src", resourcesAPI + "/images/demo_spaulo.png");
+      $("#demo_orlando").attr("src", resourcesAPI + "/images/demo_orlando.png");
+      $("#demo_geek").attr("src", resourcesAPI + "/images/demo_geek.png");
+      $("#demo_productsale").attr("src", resourcesAPI + "/images/demo_productsale.png");
+      $("#demo_netherlands").attr("src", resourcesAPI + "/images/demo_netherlands.png");
+
+      $("#cdedemo01").attr("src", resourcesAPI + "/images/cdedemo01.png");
+      $("#cdedemo02").attr("src", resourcesAPI + "/images/cdedemo02.png");
+      $("#cdedemo03").attr("src", resourcesAPI + "/images/cdedemo03.png");
+
+      $("#cde_logo").attr("src", resourcesAPI + "/images/cde_logo.png");
+      $(".link_img").attr("src", resourcesAPI + "/images/link.png");
+	  };
+
+    var htmlHref = resourcesAPI + "/static/" + mode + ".html";
+    var cssFileRef = resourcesAPI + "/css/" + mode + ".css";
+
     $.fancybox.open({
       src: htmlHref,
       type: "ajax",
-      baseClass: "cdf-fancybox cdf-fancybox-iframe cdf-fancybox-ajax",
-      btnTpl: {
-        smallBtn:
+
+      opts: {
+        baseClass: "cdf-fancybox cdf-fancybox-iframe cdf-fancybox-ajax",
+        btnTpl: {
+          smallBtn:
             '<button type="button" data-fancybox-close class="fancybox-button fancybox-close-small" title="close"></button>'
-      }
-    },{
-      beforeLoad: function() {
-        addCSS(cssFileRef);
-      },
-      afterClose: function() {
-        removeCSS(cssFileRef);
-      },
-      afterLoad: function() {
-        addImg();
-      },
-      ajax: {
-        settings:{
-          type: "GET"
         },
-        data: {
-          fancybox: true
+
+        ajax: {
+          settings: {
+            type: "GET"
+          }
+        },
+
+        beforeLoad: function() {
+          addCSS(cssFileRef);
+        },
+
+        afterClose: function() {
+          removeCSS(cssFileRef);
+        },
+
+        afterLoad: function() {
+          addImg();
         }
       }
     });
 
-    if(mode == 'about.fancybox') {
+    if (mode === 'about.fancybox') {
       $('#fancybox-content .version').html(version.getVersion());
       $('#fancybox-content .message').html(version.checkVersion());
     }
@@ -1356,19 +1373,6 @@ var CDFDD = Base.extend({
     return this.dashboardWcdf;
   },
 
-  //setExitNotification: function(enable){
-  //  if(window.parent && window.parent != window){//only do this outside of puc (puc's close tab won't trigger this, only closing puc)
-  //    return;
-  //  }
-  //
-  //  if(enable){
-  //    window.onbeforeunload = function(e) { return 'Any unsaved changes will be lost.'; }
-  //  }
-  //  else {
-  //    window.onbeforeunload = function() {null};
-  //  }
-  //},
-
   cggDialog: function() {
     var components = cdfdd.dashboardData.components.rows;
     var cggCandidates = components.filter(function(e) {
@@ -1469,8 +1473,6 @@ var CDFDD = Base.extend({
   DISCONTINUED_PROP_PATTERN: /^V(\d+)\s*-/
 });
 
-
-// Panel
 var Panel = Base.extend({
 
   id: "",
@@ -1543,8 +1545,6 @@ var Panel = Base.extend({
     return output;
   },
   enableThisButton: function(doc) {
-    //var ENABLED_STR = "_active";
-    //var DISABLED_STR = "_inactive";
     // Disable other buttons and enable this one
     var a = $(doc);
     $(".panelButton").removeClass("panelButton-active");
@@ -1587,8 +1587,6 @@ var Panel = Base.extend({
 
 });
 
-
-// Logger
 var Logger = Base.extend({
 
   ERROR: 0,
@@ -1622,8 +1620,6 @@ var Logger = Base.extend({
   }
 });
 
-
-// Utility functions
 var CDFDDUtils = Base.extend({}, {
   ev: function(v) {
     return (typeof v === 'function' ? v() : v);
@@ -1689,6 +1685,7 @@ var CDFDDUtils = Base.extend({}, {
       }
     });
   },
+
   // central prompt builder
   prompt: function(content, options) {
     var options = options || {};
@@ -1777,7 +1774,6 @@ var CDFDDUtils = Base.extend({}, {
   }
 });
 
-
 var NotifyBarUtils = {
   successNotifyBar: function(message) {
     this.notifyBar(message, 'success');
@@ -1833,15 +1829,11 @@ var NotifyBarUtils = {
 };
 
 var cdfdd;
+
 $(function() {
 
   cdfdd = new CDFDD();
   cdfdd.load();
-
-  // Temp stuff
-  // WizardManager.globalInit();
-  // var wizard = new OlapParameterWizard();
-  // wizard.init();
 
   // Extend jeditable
   /*
@@ -1926,7 +1918,7 @@ $(function() {
   /* End Jeditable attribution */
 
   /*!
-   * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+   * Copyright 2002 - 2020 Webdetails, a Hitachi Vantara company. All rights reserved.
    *
    * This software was developed by Webdetails and is provided under the terms
    * of the Mozilla Public License, Version 2.0, or any later version. You may not use

@@ -27,6 +27,12 @@ p, h1, h2, h3, div, a {
 	font-family: 'Gudea', sans-serif;
 }
 
+/* url(data:0) ==> hack for IE 11 to hide list item bullets  */
+.cfooterlist li, .bodycopy li, .bodycopylist li.list-image, .bodycopysamples li,
+.bodycopysampleslist li.bodysubimg, .bodycopystatic li, #hibodycopystatic li {
+  list-style: none url(data:0);
+}
+
 /* Tab Buttons */
 
 .tabButtons div {
@@ -61,12 +67,10 @@ p, h1, h2, h3, div, a {
 
 .tabButtons {
   height: 40px;
-  width: 935px;
   background-color: #eaedee;
-  position: fixed;
   z-index: 9999;
-  margin-top: 0px;
-  padding-top: 0px; 
+  margin-top: 0;
+  padding-top: 0;
   transition: .3s;
   border-bottom: 2px solid #0098C4;
 }
@@ -108,7 +112,7 @@ p, h1, h2, h3, div, a {
 }
 
 .downloadstutdoc img {
-	margin-left: 20px; 
+	margin-left: 20px;
 	display: inline;
 	overflow: hidden;
 	float: left;
@@ -146,11 +150,11 @@ p, h1, h2, h3, div, a {
 .cfooter {
 	border-top: 1px dotted #CCC;
 	padding-top: 20px;
-	
+
 	height: 60px;
 	background-image: url('../images/shadow.png');
 	background-repeat: no-repeat;
-	background-position: 0px 60px;	
+	background-position: 0px 60px;
 
 }
 
@@ -339,7 +343,7 @@ p, h1, h2, h3, div, a {
 	color:#4c4c4b;
 }
 h30 {
-	padding-left: 
+	padding-left:
 	font-family:'Gudea',sans-serif;
 	font-size:20px;
 	text-decoration:none;
@@ -348,7 +352,7 @@ h30 {
 	width:400px;
 	line-height:100%;
 	color:#000;
-	
+
 }
 
 b {
@@ -372,17 +376,17 @@ h29 {
 }
 .content {
 	width:930px;
-	padding:0px;
+	padding:0;
 	display:block;
 	overflow:hidden;
 }
+
 /* DIV CONTENTOR DAS LISTAS */
 .bodycopydiv {
 	width:950px;
 	min-height:100px;
 	display:block;
 	overflow:hidden;
-	margin-top:50px;
 }
 
 .headerbodycopydivdoc {
@@ -391,11 +395,13 @@ h29 {
 }
 
 
+ul li.title-item, .bodycopytitle {
+	width:880px;
+}
+
 .bodycopytitle {
 	font-weight:bold;
 	font-size:14px;
-	width:880px;
-	height:20px;
 	border-bottom:1px #ccc dotted;
 	padding-bottom:5px;
 	display:block;
@@ -429,7 +435,7 @@ h29 {
 /* LISTA DENTRO DA LISTA */
 .bodycopylist {
 	width:280px;
-	padding:0px;
+	padding:0;
 	display:block;
 	overflow:visible;
 	font-family:'Gudea',sans-serif;
@@ -459,14 +465,13 @@ h29 {
 
 
 .bodycopylist li {
-	padding: 0px;
-	margin-left:0px;
+	padding: 0;
+	margin-left:0;
 	list-style:url(../images/list.png) outside;
 	margin-top:7px;
 	width:280px;
 	min-height:20px;
 }
-
 
 .bodycopysamples {
 	width:935px;
@@ -508,7 +513,7 @@ h29 {
 .bodysubtitle {
 	font-weight:bold;
 	padding-top:10px;
-	list-style: none !important;
+	list-style: none url(data:0) !important;
 }
 
 .bodycopysampleslist li.bodysubimg {
