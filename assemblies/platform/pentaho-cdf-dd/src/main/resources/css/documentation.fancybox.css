@@ -27,6 +27,12 @@ p, h1, h2, h3, div, a {
 	font-family: 'Gudea', sans-serif;
 }
 
+/* url(data:0) ==> hack for IE 11 to hide list item bullets  */
+.cfooterlist li, .bodycopy li, .bodycopylist li.list-image, .bodycopysamples li,
+.bodycopysampleslist li.bodysubimg, .bodycopystatic li, #hibodycopystatic li {
+  list-style: none url(data:0);
+}
+
 /* Tab Buttons */
 
 .tabButtons div {
@@ -61,9 +67,7 @@ p, h1, h2, h3, div, a {
 
 .tabButtons {
   height: 40px;
-  width: 935px;
   background-color: #eaedee;
-  position: fixed;
   z-index: 9999;
   margin-top: 0;
   padding-top: 0;
@@ -372,17 +376,17 @@ h29 {
 }
 .content {
 	width:930px;
-	padding:0px;
+	padding:0;
 	display:block;
 	overflow:hidden;
 }
+
 /* DIV CONTENTOR DAS LISTAS */
 .bodycopydiv {
 	width:950px;
 	min-height:100px;
 	display:block;
 	overflow:hidden;
-	margin-top:50px;
 }
 
 .headerbodycopydivdoc {
@@ -391,11 +395,13 @@ h29 {
 }
 
 
+ul li.title-item, .bodycopytitle {
+	width:880px;
+}
+
 .bodycopytitle {
 	font-weight:bold;
 	font-size:14px;
-	width:880px;
-	height:20px;
 	border-bottom:1px #ccc dotted;
 	padding-bottom:5px;
 	display:block;
@@ -429,7 +435,7 @@ h29 {
 /* LISTA DENTRO DA LISTA */
 .bodycopylist {
 	width:280px;
-	padding:0px;
+	padding:0;
 	display:block;
 	overflow:visible;
 	font-family:'Gudea',sans-serif;
@@ -459,14 +465,13 @@ h29 {
 
 
 .bodycopylist li {
-	padding: 0px;
-	margin-left:0px;
+	padding: 0;
+	margin-left:0;
 	list-style:url(../images/list.png) outside;
 	margin-top:7px;
 	width:280px;
 	min-height:20px;
 }
-
 
 .bodycopysamples {
 	width:935px;
@@ -508,7 +513,7 @@ h29 {
 .bodysubtitle {
 	font-weight:bold;
 	padding-top:10px;
-	list-style: none !important;
+	list-style: none url(data:0) !important;
 }
 
 .bodycopysampleslist li.bodysubimg {

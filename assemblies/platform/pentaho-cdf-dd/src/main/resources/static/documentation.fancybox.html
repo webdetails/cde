@@ -6,28 +6,25 @@
 
   <body>
     <div>
-      <div class="wrapper">
-
-        <!--  TABS NAVIGATION  -->
-        <div class="tabButtons">
-          <div class="tabButton documentationTabButton active" onclick="$('.tabWrapper').removeClass('active'); $('.documentationWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.documentationTabButton').addClass('active'); $('#fancybox-content > div').scrollTop(0);">
-            <div class="tabButtonWrapper">Documentation</div>
-          </div>
-
-          <div class="tabButton buyTutorialCDETabButton" onclick="$('.tabWrapper').removeClass('active'); $('.buyTutorialCDEWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.buyTutorialCDETabButton').addClass('active'); $('#fancybox-content > div').scrollTop(0);">
-            <div class="tabButtonWrapper">CDE Tutorial</div>
-          </div>
-
-          <div class="tabButton buySamplesTabButton" onclick="$('.tabWrapper').removeClass('active'); $('.buySamplesWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.buySamplesTabButton').addClass('active'); $('#fancybox-content > div').scrollTop(0);">
-            <div class="tabButtonWrapper">CDE Open Demos</div>
-          </div>
-
-          <div class="tabButton buyTutorialCDFTabButton" onclick="$('.tabWrapper').removeClass('active'); $('.buyTutorialCDFWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.buyTutorialCDFTabButton').addClass('active'); $('#fancybox-content > div').scrollTop(0);">
-            <div class="tabButtonWrapper">CDF Tutorial</div>
-          </div>
+      <div class="tabButtons">
+        <div class="tabButton documentationTabButton active" onclick="$('.tabWrapper').removeClass('active'); $('.documentationWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.documentationTabButton').addClass('active'); $('#fancybox-content > div').scrollTop(0);">
+          <div class="tabButtonWrapper">Documentation</div>
         </div>
-        <!--  CLOSE TABS NAVIGATION  -->
 
+        <div class="tabButton buyTutorialCDETabButton" onclick="$('.tabWrapper').removeClass('active'); $('.buyTutorialCDEWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.buyTutorialCDETabButton').addClass('active'); $('#fancybox-content > div').scrollTop(0);">
+          <div class="tabButtonWrapper">CDE Tutorial</div>
+        </div>
+
+        <div class="tabButton buySamplesTabButton" onclick="$('.tabWrapper').removeClass('active'); $('.buySamplesWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.buySamplesTabButton').addClass('active'); $('#fancybox-content > div').scrollTop(0);">
+          <div class="tabButtonWrapper">CDE Open Demos</div>
+        </div>
+
+        <div class="tabButton buyTutorialCDFTabButton" onclick="$('.tabWrapper').removeClass('active'); $('.buyTutorialCDFWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.buyTutorialCDFTabButton').addClass('active'); $('#fancybox-content > div').scrollTop(0);">
+          <div class="tabButtonWrapper">CDF Tutorial</div>
+        </div>
+      </div>
+
+      <div class="wrapper">
         <!--  DOCUMENTATION -->
         <div class="tabWrapper documentationWrapper active">
           <div class="content">
@@ -35,7 +32,7 @@
               <ul class="bodycopy">
                 <li>
                   <ul class="bodycopylist">
-                    <img id="cdeimg">
+                    <li class="list-image"><img id="cdeimg"></li>
                   </ul>
                 </li>
 
@@ -48,9 +45,11 @@
 
               <!-- Row 1 -->
               <ul class="bodycopy" style="margin-top:10px;">
-                <div class="bodycopytitle">
-                  <h29>OVERVIEW </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29>OVERVIEW </h29>
+                  </div>
+                </li>
 
                 <!-- Column 1.1 -->
                 <li>
@@ -94,9 +93,11 @@
 
               <!-- Row 2 -->
               <ul class="bodycopy">
-                <div class="bodycopytitle">
-                  <h29> SOME REFERENCES </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29> SOME REFERENCES </h29>
+                  </div>
+                </li>
 
                 <!-- Column 2.1 -->
                 <li>
@@ -147,9 +148,11 @@
 
               <!-- Row 3 -->
               <ul class="bodycopy">
-                <div class="bodycopytitle">
-                  <h29> EXTERNAL REFERENCES </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29> EXTERNAL REFERENCES </h29>
+                  </div>
+                </li>
 
                 <!-- Column 3.1 -->
                 <li>
@@ -234,7 +237,7 @@
               <ul class="bodycopy">
                 <li>
                   <ul class="bodycopylist">
-                    <img id="cdetutimg">
+                    <li class="list-image"><img id="cdetutimg"></li>
                   </ul>
                 </li>
                 <li></li>
@@ -246,9 +249,11 @@
               </ul>
 
               <ul class="bodycopy" style="margin-top:10px;">
-                <div class="bodycopytitle">
-                  <h29>OVERVIEW </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29>OVERVIEW </h29>
+                  </div>
+                </li>
 
                 <!-- COLUNA 1 -->
                 <li>
@@ -279,9 +284,11 @@
               </ul>
 
               <ul class="bodycopy">
-                <div class="bodycopytitle">
-                  <h29>TUTORIAL CONTENT </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29>TUTORIAL CONTENT </h29>
+                  </div>
+                </li>
 
                 <!-- COLUNA Abaixo 1 -->
                 <li>
@@ -325,9 +332,11 @@
 
               <!-- COLUNA 4 -->
               <ul class="bodycopy">
-                <div class="bodycopytitle">
-                  <h29>PURCHASE TERMS </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29>PURCHASE TERMS </h29>
+                  </div>
+                </li>
 
                 <li>
                   <ul class="bodycopylist">
@@ -350,9 +359,11 @@
 
               <!-- COLUNA 5 -->
               <ul class="bodycopy">
-                <div class="bodycopytitle">
-                  <h29>SCREENSHOTS </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29>SCREENSHOTS </h29>
+                  </div>
+                </li>
 
                 <li style="padding-top:10px;">
                   <img id="cdesample1">
@@ -384,7 +395,7 @@
               <ul class="bodycopy">
                 <li>
                   <ul class="bodycopylist">
-                    <img id="CdfTutorialImg">
+                    <li class="list-image"><img id="CdfTutorialImg"></li>
                   </ul>
                 </li>
 
@@ -397,9 +408,11 @@
               </ul>
 
               <ul class="bodycopy" style="margin-top:-10px;">
-                <div class="bodycopytitle">
-                  <h29>OVERVIEW </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29>OVERVIEW </h29>
+                  </div>
+                </li>
 
                 <!-- COLUNA 1 -->
                 <li>
@@ -430,9 +443,11 @@
 
               <!-- COLUNA Abaixo 1 -->
               <ul class="bodycopy">
-                <div class="bodycopytitle">
-                  <h29>TUTORIAL CONTENT </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29>TUTORIAL CONTENT </h29>
+                  </div>
+                </li>
 
                 <li>
                   <ul class="bodycopylist">
@@ -477,9 +492,11 @@
 
               <!-- COLUNA 4 -->
               <ul class="bodycopy">
-                <div class="bodycopytitle">
-                  <h29>PURCHASE TERMS </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29>PURCHASE TERMS </h29>
+                  </div>
+                </li>
 
                 <li>
                   <ul class="bodycopylist">
@@ -502,9 +519,11 @@
 
               <!-- COLUNA 5 -->
               <ul class="bodycopy">
-                <div class="bodycopytitle">
-                  <h29>SCREENSHOTS </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29>SCREENSHOTS </h29>
+                  </div>
+                </li>
 
                 <li style="padding-top:10px;">
                   <img id="cdfsample1">
@@ -535,7 +554,9 @@
             <div class="bodycopydiv">
               <ul class="bodycopy">
                 <li>
-                  <ul class="bodycopylist"> <img id="cdesampleimg">  </ul>
+                  <ul class="bodycopylist">
+                    <li class="list-image"><img id="cdesampleimg"></li>
+                  </ul>
                 </li>
 
                 <li></li>
@@ -547,9 +568,11 @@
               </ul>
 
               <ul class="bodycopy" style="margin-top:-10px;">
-                <div class="bodycopytitle">
-                  <h29>OVERVIEW </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29>OVERVIEW </h29>
+                  </div>
+                </li>
 
                 <!-- COLUNA 1 -->
                 <li>
@@ -580,9 +603,11 @@
               </ul>
 
               <ul class="bodycopysamples">
-                <div class="bodycopytitle">
-                  <h29> WORK SAMPLES & FEATURES </h29>
-                </div>
+                <li class="title-item">
+                  <div class="bodycopytitle">
+                    <h29> WORK SAMPLES & FEATURES </h29>
+                  </div>
+                </li>
 
                 <li>
                   <ul class="bodycopysampleslist">
@@ -631,9 +656,11 @@
 
               <!-- COLUNA 4 -->
               <ul class="bodycopy">
-                <div class="bodycopytitle">
-                  <h29>PURCHASE TERMS </h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29>PURCHASE TERMS </h29>
+                  </div>
+                </li>
 
                 <li>
                   <ul class="bodycopylist">
@@ -655,18 +682,28 @@
               </ul>
 
               <ul class="bodycopy">
-                <div class="bodycopytitle">
-                  <h29>SCREENSHOTS</h29>
-                </div>
+                <li>
+                  <div class="bodycopytitle">
+                    <h29>SCREENSHOTS</h29>
+                  </div>
+                </li>
 
                 <li>
-                  <ul class="bodycopylist"> <img id="cdedemo01">  </ul>
+                  <ul class="bodycopylist">
+                    <li class="list-image"><img id="cdedemo01"></li>
+                  </ul>
                 </li>
+
                 <li>
-                  <ul class="bodycopylist"> <img id="cdedemo02">  </ul>
+                  <ul class="bodycopylist">
+                    <li class="list-image"><img id="cdedemo02"></li>
+                  </ul>
                 </li>
+
                 <li>
-                  <ul class="bodycopylist"> <img id="cdedemo03">  </ul>
+                  <ul class="bodycopylist">
+                    <li class="list-image"><img id="cdedemo03"></li>
+                  </ul>
                 </li>
               </ul>
             </div>
