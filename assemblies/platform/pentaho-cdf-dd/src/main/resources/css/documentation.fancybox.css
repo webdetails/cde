@@ -65,8 +65,8 @@ p, h1, h2, h3, div, a {
   background-color: #eaedee;
   position: fixed;
   z-index: 9999;
-  margin-top: 0px;
-  padding-top: 0px; 
+  margin-top: 0;
+  padding-top: 0;
   transition: .3s;
   border-bottom: 2px solid #0098C4;
 }
@@ -108,7 +108,7 @@ p, h1, h2, h3, div, a {
 }
 
 .downloadstutdoc img {
-	margin-left: 20px; 
+	margin-left: 20px;
 	display: inline;
 	overflow: hidden;
 	float: left;
@@ -146,11 +146,11 @@ p, h1, h2, h3, div, a {
 .cfooter {
 	border-top: 1px dotted #CCC;
 	padding-top: 20px;
-	
+
 	height: 60px;
 	background-image: url('../images/shadow.png');
 	background-repeat: no-repeat;
-	background-position: 0px 60px;	
+	background-position: 0px 60px;
 
 }
 
@@ -339,7 +339,7 @@ p, h1, h2, h3, div, a {
 	color:#4c4c4b;
 }
 h30 {
-	padding-left: 
+	padding-left:
 	font-family:'Gudea',sans-serif;
 	font-size:20px;
 	text-decoration:none;
@@ -348,7 +348,7 @@ h30 {
 	width:400px;
 	line-height:100%;
 	color:#000;
-	
+
 }
 
 b {
