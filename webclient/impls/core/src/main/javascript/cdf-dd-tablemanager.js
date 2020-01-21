@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2020 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -565,9 +565,12 @@ var TableManager = Base.extend({
 
     var rowId = this.getTableModel().getEvaluatedId(row),
         $row = $('#' + rowId),
-        $scroll = $('#' + this.getId() + ' .scrollContainer'),
+        $scroll = $('#' + this.getId() + ':visible .scrollContainer'),
         needScrollDown = true,
         needScrollUp = true;
+
+    if($scroll.length === 0)
+      return;
 
     while(needScrollDown || needScrollUp) {
       var scrollTo = $scroll.scrollTop(),
