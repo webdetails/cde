@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-plugin-assemblies-platform</artifactId>
-    <version>9.0.0.0-SNAPSHOT</version>
+    <version>9.0.0.3-557</version>
   </parent>
 
   <artifactId>pentaho-cdf-dd-disabled</artifactId>
