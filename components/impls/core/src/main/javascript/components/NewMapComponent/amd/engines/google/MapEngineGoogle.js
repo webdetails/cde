@@ -747,20 +747,21 @@ define([
       this._popups.push(popup);
     },
 
-    showPopup: function (data, feature, popupHeight, popupWidth, contents, popupContentDiv, borderColor) {
+    showPopup: function (data, feature, popupHeight, popupWidth, popupContent, popupContentId, borderColor) {
       // Remove old popups div
-      var oldPopup = document.getElementById(popupContentDiv);
-      if (oldPopup) {
-        oldPopup.remove();
+      var oldContents = document.getElementById(popupContentId);
+      if (oldContents) {
+        oldContents.remove();
       }
 
-      if (!contents) {
+      if (!popupContent) {
         // Create a new div for new popup info window
-        contents = document.createElement("div");
-        contents.setAttribute("id", popupContentDiv);
+        popupContent = document.createElement("div");
+        popupContent.setAttribute("id", popupContentId);
       }
+
       var popup = new google.maps.InfoWindow({
-        content: contents,
+        content: popupContent,
         position: feature.getGeometry().get(),
         maxWidth: popupWidth
       });
