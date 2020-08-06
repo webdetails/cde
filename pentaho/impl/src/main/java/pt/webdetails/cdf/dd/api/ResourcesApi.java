@@ -288,8 +288,10 @@ public class ResourcesApi {
                             @HeaderParam( "if-none-match" ) String ifNoneMatch )
     throws IOException {
 
-    return getResource( resource,
-      Utils.getFileViaAppropriateReadAccess( resource ).getExtension().equals( "css" ) ? ifNoneMatch : null );
+    IBasicFile resourceFile = Utils.getFileViaAppropriateReadAccess( resource );
+    ifNoneMatch = resourceFile != null && "css".equals( resourceFile.getExtension() ) ? ifNoneMatch : null;
+
+    return getResource( resource, ifNoneMatch );
   }
 
   /**

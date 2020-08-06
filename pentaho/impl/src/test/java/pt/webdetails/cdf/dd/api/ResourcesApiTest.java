@@ -13,7 +13,6 @@
 package pt.webdetails.cdf.dd.api;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -41,53 +40,87 @@ import javax.ws.rs.core.Response;
 public class ResourcesApiTest {
 
   private ResourcesApi resourcesApi;
-  private String allowedExtensions = "css";
+  private final static String ALLOWED_EXTENSIONS = "css";
+  private final static String RESOURCE_PATH = "public/filePath/file.css";
+  private final static String IF_NONE_MATCH = "123456789";
+  private final static long LAST_MODIFIED_TIME = 123456789;
+  private IBasicFile file;
 
   @Before
   public void setup() {
     mockStatic( PentahoSystem.class );
     mockStatic( Utils.class );
+    file = mock( IBasicFile.class );
     IPluginResourceLoader pluginResourceLoader = mock( IPluginResourceLoader.class );
-    when( PentahoSystem.get( IPluginResourceLoader.class, null ) ).thenReturn( pluginResourceLoader  );
-    doReturn( allowedExtensions ).when( pluginResourceLoader ).getPluginSetting( ResourcesApi.class, CdeConstants.PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS );
+
+    when( PentahoSystem.get( IPluginResourceLoader.class, null ) ).thenReturn( pluginResourceLoader );
+    when( file.getExtension() ).thenReturn( ALLOWED_EXTENSIONS );
+
+    doReturn( ALLOWED_EXTENSIONS ).when( pluginResourceLoader )
+      .getPluginSetting( ResourcesApi.class, CdeConstants.PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS );
   }
 
   @Test
   public void getCssResourceIfNoneMatchNullTest() throws Exception {
-    String path = "public/filePath/file.css";
-    long lastModifiedTime = 123456789;
-    IBasicFile file = mock( IBasicFile.class );
 
     resourcesApi = spy( new ResourcesApi() );
-    doReturn( path ).when( resourcesApi ).decodeAndEscape( anyString() );
-    doReturn( lastModifiedTime ).when( resourcesApi ).getLastModifiedTime( anyString() );
-    when( Utils.getFileViaAppropriateReadAccess( anyString() ) ).thenReturn( file );
-    when( file.getExtension() ).thenReturn( "css" );
 
-    Response response = resourcesApi.getCssResource( path, path, null );
+    doReturn( RESOURCE_PATH ).when( resourcesApi ).decodeAndEscape( anyString() );
+    doReturn( LAST_MODIFIED_TIME ).when( resourcesApi ).getLastModifiedTime( anyString() );
+
+    when( Utils.getFileViaAppropriateReadAccess( anyString() ) ).thenReturn( file );
+
+    Response response = resourcesApi.getCssResource( RESOURCE_PATH, RESOURCE_PATH, null );
 
     assertEquals( 200, response.getStatus() );
     assertEquals( "max-age=0", response.getHeaderString( "Cache-Control" ) );
-    assertEquals( Long.toString( lastModifiedTime ), response.getHeaderString( "Etag" ) );
+    assertEquals( Long.toString( LAST_MODIFIED_TIME ), response.getHeaderString( "Etag" ) );
   }
 
   @Test
   public void getCssResourceIfNoneMatchNotNullTest() throws Exception {
-    String path = "public/filePath/file.css";
-    String ifNoneMatch = "123456789";
-    long lastModifiedTime = 123456789;
-    IBasicFile file = mock( IBasicFile.class );
 
     resourcesApi = spy( new ResourcesApi() );
-    doReturn( path ).when( resourcesApi ).decodeAndEscape( anyString() );
-    doReturn( lastModifiedTime ).when( resourcesApi ).getLastModifiedTime( anyString() );
-    when( Utils.getFileViaAppropriateReadAccess( anyString() ) ).thenReturn( file );
-    when( file.getExtension() ).thenReturn( "css" );
 
-    Response response = resourcesApi.getCssResource( path, path, ifNoneMatch );
+    doReturn( RESOURCE_PATH ).when( resourcesApi ).decodeAndEscape( anyString() );
+    doReturn( LAST_MODIFIED_TIME ).when( resourcesApi ).getLastModifiedTime( anyString() );
+
+    when( Utils.getFileViaAppropriateReadAccess( anyString() ) ).thenReturn( file );
+
+    Response response = resourcesApi.getCssResource( RESOURCE_PATH, RESOURCE_PATH, IF_NONE_MATCH );
 
     assertEquals( 304, response.getStatus() );
     assertNull( response.getHeaderString( "Cache-Control" ) );
-    assertEquals( Long.toString( lastModifiedTime ), response.getHeaderString( "Etag" ) );
+    assertEquals( Long.toString( LAST_MODIFIED_TIME ), response.getHeaderString( "Etag" ) );
   }
+
+  @Test
+  public void checkResourceIsNotFoundAndReturnsHttp500() throws Exception {
+
+    resourcesApi = spy( new ResourcesApi() );
+
+    doReturn( RESOURCE_PATH ).when( resourcesApi ).decodeAndEscape( anyString() );
+
+    when( Utils.getFileViaAppropriateReadAccess( anyString() ) ).thenReturn( null );
+
+    Response response = resourcesApi.resource( RESOURCE_PATH, IF_NONE_MATCH );
+
+    assertEquals( 500, response.getStatus() );
+  }
+
+  @Test
+  public void checkResourceIsFoundAndReturnsHttp304() throws Exception {
+
+    resourcesApi = spy( new ResourcesApi() );
+
+    doReturn( RESOURCE_PATH ).when( resourcesApi ).decodeAndEscape( anyString() );
+    doReturn( LAST_MODIFIED_TIME ).when( resourcesApi ).getLastModifiedTime( anyString() );
+
+    when( Utils.getFileViaAppropriateReadAccess( anyString() ) ).thenReturn( file );
+
+    Response response = resourcesApi.resource( RESOURCE_PATH, IF_NONE_MATCH );
+
+    assertEquals( 304, response.getStatus() );
+  }
+
 }
