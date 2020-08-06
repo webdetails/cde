@@ -61,7 +61,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../../../../public/plugin-samples/pentaho-cdf-dd/cdeReference.css}",
+      "value": "${res:../cdeReference.css}",
       "type": "ResourceFile"
      },
      {
