@@ -810,7 +810,7 @@
      },
      {
       "name": "javaScript",
-      "value": "[\n    {\"name\": \"Pentaho\", \"link\": \"http://www.pentaho.com/\"},\n    {\"name\": \"Pentaho Community\", \"link\": \"http://community.pentaho.com/\"},\n    {\n        \"name\": \"Webdetails\",\n        \"link\": \"http://www.webdetails.pt/\",\n        \"sublinks\": [\n            {\"name\": \"CTools\", \"link\": \"https://community.hitachivantara.com/community/products-and-solutions/pentaho/ctools\"},\n            {\"name\": \"Showcase\", \"link\": \"http://www.webdetails.pt/showcase/\"}\n        ]    \n    }\n] ",
+      "value": "[\n    {\"name\": \"Pentaho\", \"link\": \"http://www.pentaho.com/\"},\n    {\"name\": \"Pentaho Community\", \"link\": \"http://community.pentaho.com/\"},\n    {\n        \"name\": \"Webdetails\",\n        \"link\": \"http://www.webdetails.pt/\",\n        \"sublinks\": [\n            {\"name\": \"CTools\", \"link\": \"https://community.hitachivantara.com/s/topic/0TO1J0000017kVNWAY/ctools\"},\n            {\"name\": \"Showcase\", \"link\": \"http://www.webdetails.pt/showcase/\"}\n        ]    \n    }\n] ",
       "type": "JavaScript"
      },
      {
