@@ -30,7 +30,7 @@ define([
               {"name": "Pentaho Community", "link": "http://community.pentaho.com/"},
               {"name": "Webdetails",
                 "link": "http://www.webdetails.pt/",
-                "sublinks": [{"name": "CTools", "link": "https://community.hitachivantara.com/community/products-and-solutions/pentaho/ctools/"},
+                "sublinks": [{"name": "CTools", "link": "https://community.hitachivantara.com/s/topic/0TO1J0000017kVNWAY/ctools"},
                              {"name": "Showcase", "link": "http://www.webdetails.pt/showcase/"}]}];
     }());
 
