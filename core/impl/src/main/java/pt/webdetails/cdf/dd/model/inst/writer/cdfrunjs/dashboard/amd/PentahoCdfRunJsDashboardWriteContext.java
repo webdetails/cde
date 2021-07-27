@@ -54,9 +54,13 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
       content = replaceToken( content, simpleMatch, getSimpleTokenReplacement( simpleMatch ) );
     }
 
-    final Matcher resourceMatch = Pattern.compile( RESOURCE_TOKEN ).matcher( content );
+    Pattern pattern = Pattern.compile( RESOURCE_TOKEN );
+    Matcher resourceMatch = pattern.matcher( content );
+
+
     while ( resourceMatch.find() ) {
       content = replaceToken( content, resourceMatch, getResourceTokenReplacement( resourceMatch ) );
+      resourceMatch = pattern.matcher( content );
     }
 
     return content;

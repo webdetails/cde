@@ -132,6 +132,22 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
   }
 
   @Test
+  public void testReplaceTokensRelativeDirectoryLink_absoluteWriteOptionsWithManyTokens() {
+    this.context = createDashboardContext( );
+
+    Long timestamp = this.context.getWriteDate().getTime();
+    String base = joinPaths(ROOT, TEST_FOLDER, IMG_RESOURCE);
+
+    String expected = "$ {img:" + base + "} = ";
+    String url = joinPaths(
+      CDE_PLUGIN_URL, RESOURCE_API_GET, ROOT, TEST_FOLDER, IMG_RESOURCE + "?v=" + timestamp
+    );
+    expected+= url + "<br><img src=\"" + url + "\"><br>";
+
+    assertReplaceTokens( expected,"$ {img:"  + base + "} = ${img:"  + base + "}<br><img src=\"${img:" + base + "}\"><br>" );
+  }
+
+  @Test
   public void testReplaceTokensRelativeImageLink_absoluteWriteOptions() {
     this.context = createDashboardContext( true, false );
 
@@ -242,6 +258,11 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     assertReplaceTokens( expected, getContent( SOLUTION_TAG, relativeResourcePath ) );
     assertReplaceTokens( expected, getContent( RES_TAG, relativeResourcePath ) );
   }
+
+
+
+  //$ {img:/public/token_test/porkins.jpg} = ${img:/public/token_test/porkins.jpg}<br><img src="${img:/public/token_test/porkins.jpg}"><br>
+  //  <img src="${img:/public/token_test/porkins.jpg}"><br>
 
   @Test
   public void testReplaceTokensAbsoluteDirectoryLink() {
