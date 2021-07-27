@@ -259,11 +259,6 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     assertReplaceTokens( expected, getContent( RES_TAG, relativeResourcePath ) );
   }
 
-
-
-  //$ {img:/public/token_test/porkins.jpg} = ${img:/public/token_test/porkins.jpg}<br><img src="${img:/public/token_test/porkins.jpg}"><br>
-  //  <img src="${img:/public/token_test/porkins.jpg}"><br>
-
   @Test
   public void testReplaceTokensAbsoluteDirectoryLink() {
     this.context = createDashboardContext();
