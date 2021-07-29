@@ -70,6 +70,16 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String expected = joinPaths( ROOT, TEST_SPACED_FOLDER.replace( " ", "%20") , SLASH );
     assertReplaceTokens( expected, "${" + DASH_PATH_TAG + "}" );
   }
+
+  @Test
+  public void testReplaceTokensDashboardPath_withWhiteSpacesWithTwoDashes() {
+    String dashboardPath = joinPaths( ROOT, TEST_SPACED_FOLDER, DASHBOARD ).substring( 1 );
+    this.context = createDashboardContext( dashboardPath );
+
+    String expected = joinPaths( ROOT, TEST_SPACED_FOLDER.replace( " ", "%20") , SLASH );
+    expected = expected + " - " + expected;
+    assertReplaceTokens( expected, "${" + DASH_PATH_TAG + "} - ${" + DASH_PATH_TAG + "}" );
+  }
   // endregion
 
   // region Replace Resource Token
