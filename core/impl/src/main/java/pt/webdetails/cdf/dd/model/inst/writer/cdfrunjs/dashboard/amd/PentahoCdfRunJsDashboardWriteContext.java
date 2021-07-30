@@ -54,21 +54,23 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
     Matcher simpleMatch = SimplePattern.matcher( content );
     StringBuffer sb = new StringBuffer();
     while ( simpleMatch.find() ) {
-      sb = replaceToken(simpleMatch, getSimpleTokenReplacement( simpleMatch ),sb );
+      sb = replaceToken( simpleMatch, getSimpleTokenReplacement( simpleMatch ), sb );
     }
-    simpleMatch.appendTail(sb);
-    if(sb.length() > 0)
+    simpleMatch.appendTail( sb );
+    if ( sb.length() > 0 ) {
       content = sb.toString();
+    }
 
     Matcher resourceMatch = pattern.matcher( content );
     sb = new StringBuffer();
 
     while ( resourceMatch.find() ) {
-      sb = replaceToken(resourceMatch, getResourceTokenReplacement( resourceMatch ), sb );
+      sb = replaceToken( resourceMatch, getResourceTokenReplacement( resourceMatch ), sb );
     }
-    resourceMatch.appendTail(sb);
-    if(sb.length() > 0)
+    resourceMatch.appendTail( sb );
+    if ( sb.length() > 0 ) {
       content = sb.toString();
+    }
 
     return content;
   }
