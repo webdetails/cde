@@ -51,13 +51,13 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
 
   @Override
   public String replaceTokens( String content ) {
-    content = replaceSimplePatternToken( content );
-
-    content = replaceResourcePatternToken( content );
-
-    return content;
+    return replaceResourcePatternToken( replaceSimplePatternToken( content ) );
   }
 
+  /**
+   * @param content
+   * @return
+   */
   private String replaceResourcePatternToken( String content ) {
     Matcher resourceMatch = resourcePattern.matcher( content );
     StringBuffer sb = new StringBuffer();
@@ -72,6 +72,10 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
     return content;
   }
 
+  /**
+   * @param content
+   * @return
+   */
   private String replaceSimplePatternToken( String content ) {
     Matcher simpleMatch = simplePattern.matcher( content );
     StringBuffer sb = new StringBuffer();
@@ -107,6 +111,12 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   // endregion
 
   // region Resource Token
+
+  /**
+   *
+   * @param resource
+   * @return
+   */
   private String getResourceTokenReplacement( Matcher resource ) {
     // build system resource links
     if ( isSystemTag( resource ) ) {
@@ -126,6 +136,12 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
     return null;
   }
 
+  /**
+   *
+   * @param tagMatcher
+   * @param absoluteRoot
+   * @return
+   */
   private String getResourceReplacement( Matcher tagMatcher, String absoluteRoot ) {
     StringBuilder replacedContent = new StringBuilder( absoluteRoot );
 
@@ -167,7 +183,12 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   }
   // endregion
 
-  private void replaceToken(Matcher match, String replacement, StringBuffer sb ) {
+  /**
+   * @param match
+   * @param replacement
+   * @param sb          - Should not be null
+   */
+  private void replaceToken( Matcher match, String replacement, StringBuffer sb ) {
     if ( replacement != null ) {
       match.appendReplacement( sb, replacement );
     }
