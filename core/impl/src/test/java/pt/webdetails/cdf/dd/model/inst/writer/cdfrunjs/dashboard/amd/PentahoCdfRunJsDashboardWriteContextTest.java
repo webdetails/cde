@@ -70,6 +70,16 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String expected = joinPaths( ROOT, TEST_SPACED_FOLDER.replace( " ", "%20") , SLASH );
     assertReplaceTokens( expected, "${" + DASH_PATH_TAG + "}" );
   }
+
+  @Test
+  public void testReplaceTokensDashboardPath_withWhiteSpacesWithTwoDashes() {
+    String dashboardPath = joinPaths( ROOT, TEST_SPACED_FOLDER, DASHBOARD ).substring( 1 );
+    this.context = createDashboardContext( dashboardPath );
+
+    String expected = joinPaths( ROOT, TEST_SPACED_FOLDER.replace( " ", "%20") , SLASH );
+    expected = expected + " - " + expected;
+    assertReplaceTokens( expected, "${" + DASH_PATH_TAG + "} - ${" + DASH_PATH_TAG + "}" );
+  }
   // endregion
 
   // region Replace Resource Token
@@ -129,6 +139,22 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     );
 
     assertReplaceTokens( expected, getContent( IMAGE_TAG, IMG_RESOURCE ) );
+  }
+
+  @Test
+  public void testReplaceTokensRelativeDirectoryLink_absoluteWriteOptionsWithManyTokens() {
+    this.context = createDashboardContext( );
+
+    Long timestamp = this.context.getWriteDate().getTime();
+    String base = joinPaths(ROOT, TEST_FOLDER, IMG_RESOURCE);
+
+    String expected = "$ {img:" + base + "} = ";
+    String url = joinPaths(
+      CDE_PLUGIN_URL, RESOURCE_API_GET, ROOT, TEST_FOLDER, IMG_RESOURCE + "?v=" + timestamp
+    );
+    expected+= url + "<br><img src=\"" + url + "\"><br>";
+
+    assertReplaceTokens( expected,"$ {img:"  + base + "} = ${img:"  + base + "}<br><img src=\"${img:" + base + "}\"><br>" );
   }
 
   @Test
