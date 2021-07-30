@@ -26,6 +26,8 @@ import static pt.webdetails.cdf.dd.CdeConstants.Writer.SLASH;
 public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWriteContext {
   private static final String SIMPLE_TOKEN = "\\$\\{(\\w+)\\}";
   private static final String RESOURCE_TOKEN = "\\$\\{(\\w+):((/?)(.+?)(/?))\\}";
+  final Pattern SimplePattern = Pattern.compile( SIMPLE_TOKEN );
+  final Pattern pattern = Pattern.compile( RESOURCE_TOKEN );
 
   // ------------
 
@@ -49,7 +51,6 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
 
   @Override
   public String replaceTokens( String content ) {
-    final Pattern SimplePattern = Pattern.compile( SIMPLE_TOKEN );
     Matcher simpleMatch = SimplePattern.matcher( content );
     StringBuffer sb = new StringBuffer();
     while ( simpleMatch.find() ) {
@@ -59,16 +60,13 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
     if(sb.length() > 0)
       content = sb.toString();
 
-    Pattern pattern = Pattern.compile( RESOURCE_TOKEN );
     Matcher resourceMatch = pattern.matcher( content );
     sb = new StringBuffer();
-
-
+    
     while ( resourceMatch.find() ) {
       sb = replaceToken( content, resourceMatch, getResourceTokenReplacement( resourceMatch ), sb );
     }
     resourceMatch.appendTail(sb);
-    System.out.println(sb);
     if(sb.length() > 0)
       content = sb.toString();
 
