@@ -189,7 +189,7 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
    * @param sb          - Should not be null
    */
   private void replaceToken( Matcher match, String replacement, StringBuffer sb ) {
-    if ( replacement != null && sb != null) {
+    if ( replacement != null && sb != null ) {
       match.appendReplacement( sb, replacement );
     }
   }
