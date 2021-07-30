@@ -54,7 +54,7 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
     Matcher simpleMatch = SimplePattern.matcher( content );
     StringBuffer sb = new StringBuffer();
     while ( simpleMatch.find() ) {
-      sb = replaceToken( content, simpleMatch, getSimpleTokenReplacement( simpleMatch ),sb );
+      sb = replaceToken(simpleMatch, getSimpleTokenReplacement( simpleMatch ),sb );
     }
     simpleMatch.appendTail(sb);
     if(sb.length() > 0)
@@ -62,9 +62,9 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
 
     Matcher resourceMatch = pattern.matcher( content );
     sb = new StringBuffer();
-    
+
     while ( resourceMatch.find() ) {
-      sb = replaceToken( content, resourceMatch, getResourceTokenReplacement( resourceMatch ), sb );
+      sb = replaceToken(resourceMatch, getResourceTokenReplacement( resourceMatch ), sb );
     }
     resourceMatch.appendTail(sb);
     if(sb.length() > 0)
@@ -155,9 +155,8 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   }
   // endregion
 
-  private StringBuffer replaceToken( String content, Matcher match, String replacement, StringBuffer sb ) {
+  private StringBuffer replaceToken(Matcher match, String replacement, StringBuffer sb ) {
     if ( replacement != null ) {
-      //content = content.substring( 0, match.start() ) + replacement + content.substring( match.end() );
       match.appendReplacement( sb, replacement );
     }
 
