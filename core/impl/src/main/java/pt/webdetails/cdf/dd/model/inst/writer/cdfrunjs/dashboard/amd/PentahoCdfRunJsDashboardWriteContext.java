@@ -26,8 +26,8 @@ import static pt.webdetails.cdf.dd.CdeConstants.Writer.SLASH;
 public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWriteContext {
   private static final String SIMPLE_TOKEN = "\\$\\{(\\w+)\\}";
   private static final String RESOURCE_TOKEN = "\\$\\{(\\w+):((/?)(.+?)(/?))\\}";
-  final Pattern SimplePattern = Pattern.compile( SIMPLE_TOKEN );
-  final Pattern pattern = Pattern.compile( RESOURCE_TOKEN );
+  final Pattern simplePattern = Pattern.compile( SIMPLE_TOKEN );
+  final Pattern resourcePattern = Pattern.compile( RESOURCE_TOKEN );
 
   // ------------
 
@@ -51,27 +51,37 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
 
   @Override
   public String replaceTokens( String content ) {
-    Matcher simpleMatch = SimplePattern.matcher( content );
-    StringBuffer sb = new StringBuffer();
-    while ( simpleMatch.find() ) {
-      sb = replaceToken( simpleMatch, getSimpleTokenReplacement( simpleMatch ), sb );
-    }
-    simpleMatch.appendTail( sb );
-    if ( sb.length() > 0 ) {
-      content = sb.toString();
-    }
+    content = replaceSimplePatternToken( content );
 
-    Matcher resourceMatch = pattern.matcher( content );
-    sb = new StringBuffer();
+    content = replaceResourcePatternToken( content );
+
+    return content;
+  }
+
+  private String replaceResourcePatternToken( String content ) {
+    Matcher resourceMatch = resourcePattern.matcher( content );
+    StringBuffer sb = new StringBuffer();
 
     while ( resourceMatch.find() ) {
-      sb = replaceToken( resourceMatch, getResourceTokenReplacement( resourceMatch ), sb );
+      replaceToken( resourceMatch, getResourceTokenReplacement( resourceMatch ), sb );
     }
     resourceMatch.appendTail( sb );
     if ( sb.length() > 0 ) {
       content = sb.toString();
     }
+    return content;
+  }
 
+  private String replaceSimplePatternToken( String content ) {
+    Matcher simpleMatch = simplePattern.matcher( content );
+    StringBuffer sb = new StringBuffer();
+    while ( simpleMatch.find() ) {
+      replaceToken( simpleMatch, getSimpleTokenReplacement( simpleMatch ), sb );
+    }
+    simpleMatch.appendTail( sb );
+    if ( sb.length() > 0 ) {
+      content = sb.toString();
+    }
     return content;
   }
 
@@ -157,12 +167,10 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   }
   // endregion
 
-  private StringBuffer replaceToken(Matcher match, String replacement, StringBuffer sb ) {
+  private void replaceToken(Matcher match, String replacement, StringBuffer sb ) {
     if ( replacement != null ) {
       match.appendReplacement( sb, replacement );
     }
-
-    return sb;
   }
 
   private String getSystemRoot() {
