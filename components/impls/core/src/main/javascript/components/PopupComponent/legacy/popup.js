@@ -467,7 +467,7 @@ var ExportPopupComponent = PopupComponent.extend({
   },
 
   getExportChartUrl: function(options) {
-    return wd.helpers.cggHelper.getCggDrawUrl() + '?' + $.param(options);
+    return wd.helpers.cggHelper.getCggDrawUrl() + '?' + $.param(options, /* traditional */true);
   },
 
   exportChart: function() {
