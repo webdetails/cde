@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -103,6 +103,7 @@ public class RenderApi {
     path = decodeAndEscape( path );
     file = decodeAndEscape( file );
     scheme = decodeAndEscape( scheme );
+    root = decodeAndEscape( root );
 
     String schemeToUse = "";
     if ( !inferScheme ) {
@@ -136,6 +137,7 @@ public class RenderApi {
     path = decodeAndEscape( path );
     file = decodeAndEscape( file );
     scheme = decodeAndEscape( scheme );
+    root = decodeAndEscape( root );
 
     String schemeToUse = "";
     if ( !inferScheme ) {
@@ -172,6 +174,7 @@ public class RenderApi {
     scheme = decodeAndEscape( scheme );
     view = decodeAndEscape( view );
     style = decodeAndEscape( style );
+    root = decodeAndEscape( root );
 
     String schemeToUse = "";
     if ( !inferScheme ) {
@@ -263,6 +266,7 @@ public class RenderApi {
     scheme = decodeAndEscape( scheme );
     style = decodeAndEscape( style );
     alias = decodeAndEscape( alias );
+    root = decodeAndEscape( root );
 
     final String schemeToUse;
     if ( !inferScheme ) {
