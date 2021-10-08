@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -23,6 +23,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONException;
+
+import org.owasp.encoder.Encode;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
 
@@ -236,6 +238,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
       }
 
       public String filter( String input, String baseUrl ) {
+        baseUrl = Encode.forHtmlAttribute( baseUrl );
         return MessageFormat.format( STYLE, joinUrls( baseUrl, input ) );
       }
     };
@@ -246,6 +249,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
       }
 
       public String filter( String input, String baseUrl ) {
+        baseUrl = Encode.forHtmlAttribute( baseUrl );
         return MessageFormat.format( SCRIPT, joinUrls( baseUrl, input ) );
       }
     };
