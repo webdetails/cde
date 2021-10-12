@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -26,6 +26,8 @@ import static pt.webdetails.cdf.dd.CdeConstants.Writer.SLASH;
 public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWriteContext {
   private static final String SIMPLE_TOKEN = "\\$\\{(\\w+)\\}";
   private static final String RESOURCE_TOKEN = "\\$\\{(\\w+):((/?)(.+?)(/?))\\}";
+  final Pattern simplePattern = Pattern.compile( SIMPLE_TOKEN );
+  final Pattern resourcePattern = Pattern.compile( RESOURCE_TOKEN );
 
   // ------------
 
@@ -49,16 +51,41 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
 
   @Override
   public String replaceTokens( String content ) {
-    final Matcher simpleMatch = Pattern.compile( SIMPLE_TOKEN ).matcher( content );
-    while ( simpleMatch.find() ) {
-      content = replaceToken( content, simpleMatch, getSimpleTokenReplacement( simpleMatch ) );
-    }
+    return replaceResourcePatternToken( replaceSimplePatternToken( content ) );
+  }
 
-    final Matcher resourceMatch = Pattern.compile( RESOURCE_TOKEN ).matcher( content );
+  /**
+   * @param content
+   * @return
+   */
+  private String replaceResourcePatternToken( String content ) {
+    Matcher resourceMatch = resourcePattern.matcher( content );
+    StringBuffer sb = new StringBuffer();
+
     while ( resourceMatch.find() ) {
-      content = replaceToken( content, resourceMatch, getResourceTokenReplacement( resourceMatch ) );
+      replaceToken( resourceMatch, getResourceTokenReplacement( resourceMatch ), sb );
     }
+    resourceMatch.appendTail( sb );
+    if ( sb.length() > 0 ) {
+      content = sb.toString();
+    }
+    return content;
+  }
 
+  /**
+   * @param content
+   * @return
+   */
+  private String replaceSimplePatternToken( String content ) {
+    Matcher simpleMatch = simplePattern.matcher( content );
+    StringBuffer sb = new StringBuffer();
+    while ( simpleMatch.find() ) {
+      replaceToken( simpleMatch, getSimpleTokenReplacement( simpleMatch ), sb );
+    }
+    simpleMatch.appendTail( sb );
+    if ( sb.length() > 0 ) {
+      content = sb.toString();
+    }
     return content;
   }
 
@@ -84,6 +111,12 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   // endregion
 
   // region Resource Token
+
+  /**
+   *
+   * @param resource
+   * @return
+   */
   private String getResourceTokenReplacement( Matcher resource ) {
     // build system resource links
     if ( isSystemTag( resource ) ) {
@@ -103,6 +136,12 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
     return null;
   }
 
+  /**
+   *
+   * @param tagMatcher
+   * @param absoluteRoot
+   * @return
+   */
   private String getResourceReplacement( Matcher tagMatcher, String absoluteRoot ) {
     StringBuilder replacedContent = new StringBuilder( absoluteRoot );
 
@@ -144,12 +183,15 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   }
   // endregion
 
-  private String replaceToken( String content, Matcher match, String replacement ) {
-    if ( replacement != null ) {
-      content = content.substring( 0, match.start() ) + replacement + content.substring( match.end() );
+  /**
+   * @param match
+   * @param replacement
+   * @param sb          - Should not be null
+   */
+  private void replaceToken( Matcher match, String replacement, StringBuffer sb ) {
+    if ( replacement != null && sb != null ) {
+      match.appendReplacement( sb, replacement );
     }
-
-    return content;
   }
 
   private String getSystemRoot() {
