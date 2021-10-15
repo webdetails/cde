@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -16,6 +16,7 @@ package pt.webdetails.cdf.dd.render.layout;
 import java.text.MessageFormat;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
+import org.owasp.encoder.Encode;
 import pt.webdetails.cdf.dd.CdeConstants;
 
 public class ResourceRender extends Render {
@@ -37,9 +38,9 @@ public class ResourceRender extends Render {
     if ( !StringUtils.isEmpty( value = getPropertyString( CdeConstants.RESOURCE_FILE ) ) ) {
       // render RESOURCE_FILE
       if ( resourceType.equals( CdeConstants.CSS ) ) {
-        return MessageFormat.format( CdeConstants.LINK, value );
+        return MessageFormat.format( CdeConstants.LINK, Encode.forHtmlAttribute( value ) );
       } else if ( resourceType.equals( CdeConstants.JAVASCRIPT ) ) {
-        return MessageFormat.format( CdeConstants.SCRIPT_FILE, value );
+        return MessageFormat.format( CdeConstants.SCRIPT_FILE, Encode.forHtmlAttribute( value ) );
       }
     }
     if ( !StringUtils.isEmpty( value = getPropertyString( CdeConstants.RESOURCE_CODE ) ) ) {
