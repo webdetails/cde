@@ -27,6 +27,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import pt.webdetails.cdf.dd.CdeConstants;
@@ -35,6 +36,7 @@ import pt.webdetails.cpf.repository.api.IBasicFile;
 
 import javax.ws.rs.core.Response;
 
+@PowerMockIgnore( "jdk.internal.reflect.*" )
 @RunWith( PowerMockRunner.class )
 @PrepareForTest( { PentahoSystem.class, Utils.class } )
 public class ResourcesApiTest {
