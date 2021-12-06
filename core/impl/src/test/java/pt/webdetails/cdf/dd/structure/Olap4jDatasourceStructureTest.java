@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -12,8 +12,6 @@
  */
 
 package pt.webdetails.cdf.dd.structure;
-
-import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -35,6 +33,12 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 public class Olap4jDatasourceStructureTest {
 
   private static final Log logger = LogFactory.getLog( Olap4jDatasourceStructureTest.class );
@@ -45,7 +49,7 @@ public class Olap4jDatasourceStructureTest {
   /**
    * map that holds some values we can validate against the generated cda datasource
    */
-  private Map validationPropertyMap = new HashMap();
+  private final Map<String, String> validationPropertyMap = new HashMap<>();
 
   private String cdfdeContent = StringUtils.EMPTY;
   private String cdaDatasourceDefinitions = StringUtils.EMPTY;
@@ -65,19 +69,19 @@ public class Olap4jDatasourceStructureTest {
     // we mock this by loading the content from a previously saved .cdfde file
     cdfdeContent = FileUtils.readFileToString( new File( CDFDE_FILE ) );
 
-    Assert.assertTrue( !StringUtils.isEmpty( cdfdeContent ) );
+    assertFalse( StringUtils.isEmpty( cdfdeContent ) );
 
     // we mock the cda interplugin call to fetch datasource definitions
     // by loading the content from a previously saved .js file
     cdaDatasourceDefinitions = FileUtils.readFileToString( new File( CDA_DATASOURCE_DEFINITIONS ) );
 
-    Assert.assertTrue( !StringUtils.isEmpty( cdaDatasourceDefinitions ) );
+    assertFalse( StringUtils.isEmpty( cdaDatasourceDefinitions ) );
 
-    validationPropertyMap.put( "JdbcUser" , "pentaho_user" );
-    validationPropertyMap.put( "JdbcPassword" , "password" );
-    validationPropertyMap.put( "Jdbc" , "jdbc:hsqldb:hsql://localhost:9001/Sampledata" );
-    validationPropertyMap.put( "JdbcDriver" , "org.hsqldb.jdbcDriver" );
-    validationPropertyMap.put( "Catalog" , "mondrian:/SteelWheels" );
+    validationPropertyMap.put( "JdbcUser", "pentaho_user" );
+    validationPropertyMap.put( "JdbcPassword", "password" );
+    validationPropertyMap.put( "Jdbc", "jdbc:hsqldb:hsql://localhost:9001/Sampledata" );
+    validationPropertyMap.put( "JdbcDriver", "org.hsqldb.jdbcDriver" );
+    validationPropertyMap.put( "Catalog", "mondrian:/SteelWheels" );
   }
 
   @Test
@@ -106,15 +110,15 @@ public class Olap4jDatasourceStructureTest {
 
       logger.debug( "cdaContentAsString ->\n" + cdaContentAsString );
 
-      Assert.assertTrue( !StringUtils.isEmpty( cdaContentAsString ) );
+      assertFalse( StringUtils.isEmpty( cdaContentAsString ) );
 
       // this is the .cda file content ( that would have been saved / stored )
       Document dom = stringToDom( cdaContentAsString );
 
       NodeList nodes = dom.getElementsByTagName( "Property" );
 
-      Assert.assertNotNull( nodes );
-      Assert.assertTrue( nodes.getLength() > 0 );
+      assertNotNull( nodes );
+      assertTrue( nodes.getLength() > 0 );
 
       logger.info( "Document DataSources/Connection/Property nodes length: " + nodes.getLength() );
 
@@ -127,11 +131,11 @@ public class Olap4jDatasourceStructureTest {
 
         logger.info( "name=" + propName + " , value=" + propValue );
 
-        Assert.assertTrue( validationPropertyMap.get( propName ).equals( propValue ) );
+        assertEquals( propValue, validationPropertyMap.get( propName ) );
       }
     } catch ( Exception e ) {
       logger.error( e );
-      Assert.fail( e.getMessage() );
+      fail( e.getMessage() );
     }
   }
 

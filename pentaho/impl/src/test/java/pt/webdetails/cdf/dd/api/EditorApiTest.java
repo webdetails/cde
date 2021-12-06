@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,19 +13,22 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class EditorApiTest {
 
@@ -44,11 +47,7 @@ public class EditorApiTest {
   public void beforeEach() throws Exception {
     editorApi = new EditorApiForTesting();
     mockHelper = mock( XSSHelper.class );
-    when( mockHelper.escape( any() ) ).thenAnswer( new Answer<Object>() {
-      @Override public Object answer( InvocationOnMock invocation ) throws Throwable {
-        return invocation.getArguments()[ 0 ];
-      }
-    } );
+    when( mockHelper.escape( any() ) ).thenAnswer( invocation -> invocation.getArguments()[ 0 ] );
     XSSHelper.setInstance( mockHelper );
   }
 
@@ -87,10 +86,10 @@ public class EditorApiTest {
     editorApi.setSavedFile( false );
     String noAccessSaveFalse = editorApi.createFile( FAKE_PATH + FAKE_FILE, "", null );
 
-    Assert.assertEquals( MESSAGE_OK, hasAccessSaveTrue );
-    Assert.assertEquals( MESSAGE_ERROR, hasAccessSaveFalse );
-    Assert.assertEquals( MESSAGE_NO_PERMISSIONS, noAccessSaveTrue );
-    Assert.assertEquals( MESSAGE_NO_PERMISSIONS, noAccessSaveFalse );
+    assertEquals( MESSAGE_OK, hasAccessSaveTrue );
+    assertEquals( MESSAGE_ERROR, hasAccessSaveFalse );
+    assertEquals( MESSAGE_NO_PERMISSIONS, noAccessSaveTrue );
+    assertEquals( MESSAGE_NO_PERMISSIONS, noAccessSaveFalse );
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 

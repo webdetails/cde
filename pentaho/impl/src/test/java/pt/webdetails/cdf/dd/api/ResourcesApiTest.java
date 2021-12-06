@@ -1,5 +1,5 @@
 /*!
- * Copyright 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2019-2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -27,6 +27,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import pt.webdetails.cdf.dd.CdeConstants;
@@ -37,6 +38,7 @@ import javax.ws.rs.core.Response;
 
 @RunWith( PowerMockRunner.class )
 @PrepareForTest( { PentahoSystem.class, Utils.class } )
+@PowerMockIgnore({"jdk.internal.reflect.*"})
 public class ResourcesApiTest {
 
   private ResourcesApi resourcesApi;

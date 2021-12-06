@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,10 +13,12 @@
 
 package pt.webdetails.cdf.dd.util;
 
-import org.junit.Assert;
 import org.junit.Test;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IBasicFileFilter;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class GenericFileAndDirectoryFilterTest extends GenericBasicFileFilterTest {
 
@@ -53,7 +55,7 @@ public class GenericFileAndDirectoryFilterTest extends GenericBasicFileFilterTes
 
     // this directory should now be accepted because it is contained in the DIRECTORIES and we are doing a
     // FILTER_IN logic ( white-list )
-    Assert.assertTrue( filter.accept( testFolder ) );
+    assertTrue( filter.accept( testFolder ) );
   }
 
   @Test
@@ -80,7 +82,7 @@ public class GenericFileAndDirectoryFilterTest extends GenericBasicFileFilterTes
 
     // this directory should *not* be accepted, because it is contained in the DIRECTORIES and we are doing a
     // FILTER_OUT logic ( black-list )
-    Assert.assertTrue( !filter.accept( testFolder ) );
+    assertFalse( filter.accept( testFolder ) );
   }
 
   @Test
@@ -106,7 +108,7 @@ public class GenericFileAndDirectoryFilterTest extends GenericBasicFileFilterTes
 
     // this directory should be accepted, because it is *not* contained in the DIRECTORIES and we are doing a
     // FILTER_OUT logic ( black-list )
-    Assert.assertTrue( filter.accept( testFolder ) );
+    assertTrue( filter.accept( testFolder ) );
   }
 
   @Test
@@ -133,8 +135,6 @@ public class GenericFileAndDirectoryFilterTest extends GenericBasicFileFilterTes
 
     // this directory should *not* be accepted, because it is not contained in the DIRECTORIES and we are doing a
     // FILTER_IN logic ( white-list )
-    Assert.assertTrue( !filter.accept( testFolder ) );
+    assertFalse( filter.accept( testFolder ) );
   }
-
-
 }

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -14,12 +14,14 @@
 package pt.webdetails.cdf.dd.settings;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import pt.webdetails.cdf.dd.CdeSettings;
 import pt.webdetails.cpf.repository.api.IRWAccess;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class CdfDDSettingsTest {
 
@@ -39,11 +41,11 @@ public class CdfDDSettingsTest {
     String[] paths = cdfDDSettings.getFilePickerHiddenFoldersByType( CdeSettings.FolderType.STATIC );
 
     // we should have found 1 item
-    Assert.assertTrue( paths != null );
-    Assert.assertTrue( paths.length == 1 );
+    assertNotNull( paths );
+    assertEquals( 1, paths.length );
 
     // should have the value at SYSTEM_PATH_IN_SETTINGS_XML
-    Assert.assertTrue( paths[ 0 ].equals( SYSTEM_PATH_IN_SETTINGS_XML ) );
+    assertEquals( SYSTEM_PATH_IN_SETTINGS_XML, paths[ 0 ] );
   }
 
   @Test
@@ -52,11 +54,11 @@ public class CdfDDSettingsTest {
     String[] paths = cdfDDSettings.getFilePickerHiddenFoldersByType( CdeSettings.FolderType.REPO );
 
     // we should have found 1 item
-    Assert.assertTrue( paths != null );
-    Assert.assertTrue( paths.length == 1 );
+    assertNotNull( paths );
+    assertEquals( 1, paths.length );
 
     // should have the value at REPO_PATH_IN_SETTINGS_XML
-    Assert.assertTrue( paths[ 0 ].equals( REPO_PATH_IN_SETTINGS_XML ) );
+    assertEquals( REPO_PATH_IN_SETTINGS_XML, paths[ 0 ] );
   }
 
   @After

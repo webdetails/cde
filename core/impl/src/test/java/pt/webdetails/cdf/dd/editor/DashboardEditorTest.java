@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,21 +13,12 @@
 
 package pt.webdetails.cdf.dd.editor;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-import org.junit.After;
-import org.junit.Before;
+
 import org.junit.Test;
 
-public class DashboardEditorTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-  @Before
-  public void setUp() throws Exception {
-  }
-
-  @After
-  public void tearDown() throws Exception {
-  }
+public class DashboardEditorTest {
 
   @Test
   public void testProcessDashboardSupportTag() {
@@ -35,14 +26,12 @@ public class DashboardEditorTest extends TestCase {
     final String editorPage = "<script type=\"text/javascript\" "
       + "src=\"@CDE_RENDERER_API@/getComponentDefinitions?supports=@SUPPORT_TYPE@\"></script>";
 
-    Assert.assertEquals(
+    assertEquals(
       "<script type=\"text/javascript\" src=\"@CDE_RENDERER_API@/getComponentDefinitions?supports=legacy\"></script>",
       DashboardEditor.processDashboardSupportTag( editorPage, false ) );
 
-    Assert.assertEquals(
+    assertEquals(
       "<script type=\"text/javascript\" src=\"@CDE_RENDERER_API@/getComponentDefinitions?supports=amd\"></script>",
       DashboardEditor.processDashboardSupportTag( editorPage, true ) );
-
   }
-
 }

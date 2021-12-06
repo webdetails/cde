@@ -1,5 +1,5 @@
 /*!
- * Copyright 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2018-2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,12 +13,8 @@
 
 package org.pentaho.ctools.cde.cache.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,7 +23,13 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cpf.exceptions.InitializationException;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -43,7 +45,7 @@ public class CacheTest {
   public static void beforeAll() throws Exception {
     mockedReadAccess = mock( IReadAccess.class );
     when( mockedReadAccess.getFileInputStream( anyString() ) )
-      .thenReturn( new FileInputStream( new File( EHCACHE_FILE_PATH.replace( "/", File.separator ) ) ) );
+      .thenReturn( new FileInputStream( EHCACHE_FILE_PATH.replace( "/", File.separator ) ) );
     cache = new Cache( mockedReadAccess );
   }
 
@@ -55,7 +57,7 @@ public class CacheTest {
 
   @Before
   public void setUp() {
-    this.cache.removeAll();
+    cache.removeAll();
     key = new DashboardCacheKey("mock", "", false, false, "", "" );
     value = new CdfRunJsDashboardWriteResult.Builder().build();
   }
@@ -66,32 +68,20 @@ public class CacheTest {
     key = null;
   }
 
-  @Test
-  public void testInitializationFailLoadConfiguration() {
-    try{
-      when( mockedReadAccess.getFileInputStream( anyString() ) )
-        .thenThrow( new IOException( "mocked IOException" ) );
-      new Cache( mockedReadAccess );
-      Assert.fail( "InitializationException not thrown" );
-    } catch ( InitializationException e ) {
-      Assert.assertEquals( "Failed to load the cache configuration file: ehcache.xml", e.getMessage() );
-    } catch ( Exception e ) {
-      Assert.fail( "InitializationException not thrown" );
-    }
+  @Test( expected = InitializationException.class )
+  public void testInitializationFailLoadConfiguration() throws Exception {
+    when( mockedReadAccess.getFileInputStream( anyString() ) )
+      .thenThrow( new IOException( "mocked IOException" ) );
+    new Cache( mockedReadAccess );
+    fail( "InitializationException not thrown" );
   }
 
-  @Test
-  public void testInitializationFailLoadCacheManager() {
-    try {
-      when( mockedReadAccess.getFileInputStream( anyString() ) )
-        .thenReturn( null );
-      new Cache( mockedReadAccess );
-      Assert.fail( "InitializationException not thrown" );
-    } catch ( InitializationException e ) {
-      Assert.assertEquals( "Failed to create the cache manager.", e.getMessage() );
-    } catch ( Exception e ) {
-      Assert.fail( "InitializationException not thrown" );
-    }
+  @Test( expected = InitializationException.class )
+  public void testInitializationFailLoadCacheManager() throws Exception {
+    when( mockedReadAccess.getFileInputStream( anyString() ) )
+      .thenReturn( null );
+    new Cache( mockedReadAccess );
+    fail( "InitializationException not thrown" );
   }
 
   @Test
@@ -117,7 +107,7 @@ public class CacheTest {
     cache.put( key, value );
     assertEquals( value, cache.get( key ) );
     cache.remove( key );
-    assertEquals( null, cache.get( key ) );
+    assertNull( cache.get( key ) );
   }
 
   @Test

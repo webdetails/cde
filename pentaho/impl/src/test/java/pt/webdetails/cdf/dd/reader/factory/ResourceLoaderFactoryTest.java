@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -16,15 +16,16 @@ package pt.webdetails.cdf.dd.reader.factory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import junit.framework.Assert;
+
+import static org.junit.Assert.assertEquals;
 
 public class ResourceLoaderFactoryTest {
 
   private static ResourceLoaderFactoryForTesting rlfft;
-  private final String SYS_PATH = "/system/pentaho-cdf-dd/etc/";
-  private final String SOL_PATH = "/public/cde/etc/";
-  private final String STATIC_PATH = "/path/etc/";
-  private final String EMPTY_PATH = "";
+  private static final String SYS_PATH = "/system/pentaho-cdf-dd/etc/";
+  private static final String SOL_PATH = "/public/cde/etc/";
+  private static final String STATIC_PATH = "/path/etc/";
+  private static final String EMPTY_PATH = "";
 
   @Before
   public void setUp() throws Exception {
@@ -39,33 +40,33 @@ public class ResourceLoaderFactoryTest {
   @Test
   public void testResourceFactorySystem() {
     IResourceLoader sys = rlfft.getResourceLoader( SYS_PATH );
-    Assert.assertEquals( sys.getClass(), SystemResourceLoader.class );
+    assertEquals( sys.getClass(), SystemResourceLoader.class );
   }
 
   @Test
   public void testResourceFactoryRepos() {
     IResourceLoader sol = rlfft.getResourceLoader( SOL_PATH );
-    Assert.assertEquals( sol.getClass(), SolutionResourceLoader.class );
+    assertEquals( sol.getClass(), SolutionResourceLoader.class );
   }
 
   @Test
   public void testResourceFactoryStaticSystem() {
     rlfft.setSystemStatic( true );
     IResourceLoader sys = rlfft.getResourceLoader( STATIC_PATH );
-    Assert.assertEquals( sys.getClass(), SystemResourceLoader.class );
+    assertEquals( sys.getClass(), SystemResourceLoader.class );
   }
 
   @Test
   public void testResourceFactoryStaticRepos() {
     rlfft.setRepositoryStatic( true );
     IResourceLoader sol = rlfft.getResourceLoader( STATIC_PATH );
-    Assert.assertEquals( sol.getClass(), SolutionResourceLoader.class );
+    assertEquals( sol.getClass(), SolutionResourceLoader.class );
   }
 
   @Test
   public void testResourceFactoryEmptyPath() {
     IResourceLoader sol = rlfft.getResourceLoader( EMPTY_PATH );
-    Assert.assertEquals( sol.getClass(), SolutionResourceLoader.class );
+    assertEquals( sol.getClass(), SolutionResourceLoader.class );
   }
 
 }

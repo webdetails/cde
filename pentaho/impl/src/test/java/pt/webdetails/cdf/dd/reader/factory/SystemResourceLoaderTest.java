@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,13 +13,15 @@
 
 package pt.webdetails.cdf.dd.reader.factory;
 
-import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IACAccess;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class SystemResourceLoaderTest {
 
@@ -49,11 +51,10 @@ public class SystemResourceLoaderTest {
     };
 
     Mockito.when( mockLoader.getAccessControl() ).thenReturn( mockAccess );
-    Assert.assertEquals( mockLoader.getAccessControl().hasAccess( "", FileAccess.READ ), true );
-    Assert.assertEquals( mockLoader.getAccessControl().hasAccess( "", FileAccess.WRITE ), true );
-    Assert.assertEquals( mockLoader.getAccessControl().hasAccess( "", FileAccess.EXECUTE ), true );
-    Assert.assertEquals( mockLoader.getAccessControl().hasAccess( "", FileAccess.DELETE ), true );
-
+    assertTrue( mockLoader.getAccessControl().hasAccess( "", FileAccess.READ ) );
+    assertTrue( mockLoader.getAccessControl().hasAccess( "", FileAccess.WRITE ) );
+    assertTrue( mockLoader.getAccessControl().hasAccess( "", FileAccess.EXECUTE ) );
+    assertTrue( mockLoader.getAccessControl().hasAccess( "", FileAccess.DELETE ) );
   }
 
   @Test
@@ -68,33 +69,10 @@ public class SystemResourceLoaderTest {
     };
 
     Mockito.when( mockLoader.getAccessControl() ).thenReturn( mockAccess );
-    Assert.assertEquals( mockLoader.getAccessControl().hasAccess( "", FileAccess.READ ), false );
-    Assert.assertEquals( mockLoader.getAccessControl().hasAccess( "", FileAccess.WRITE ), false );
-    Assert.assertEquals( mockLoader.getAccessControl().hasAccess( "", FileAccess.EXECUTE ), false );
-    Assert.assertEquals( mockLoader.getAccessControl().hasAccess( "", FileAccess.DELETE ), false );
+    assertFalse( mockLoader.getAccessControl().hasAccess( "", FileAccess.READ ) );
+    assertFalse( mockLoader.getAccessControl().hasAccess( "", FileAccess.WRITE ) );
+    assertFalse( mockLoader.getAccessControl().hasAccess( "", FileAccess.EXECUTE ) );
+    assertFalse( mockLoader.getAccessControl().hasAccess( "", FileAccess.DELETE ) );
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

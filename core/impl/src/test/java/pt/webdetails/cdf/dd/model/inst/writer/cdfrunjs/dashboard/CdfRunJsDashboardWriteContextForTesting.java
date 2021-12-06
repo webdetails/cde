@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -24,7 +24,6 @@ import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -58,7 +57,7 @@ public class CdfRunJsDashboardWriteContextForTesting extends CdfRunJsDashboardWr
   public static Dashboard getDashboard( String path, boolean isSystem ) {
     Document wcdfDoc = null;
     try {
-      wcdfDoc = Utils.getDocument( new FileInputStream( new File( path ) ) );
+      wcdfDoc = Utils.getDocument( new FileInputStream( path ) );
     } catch ( DocumentException | FileNotFoundException e ) {
       e.printStackTrace();
     }

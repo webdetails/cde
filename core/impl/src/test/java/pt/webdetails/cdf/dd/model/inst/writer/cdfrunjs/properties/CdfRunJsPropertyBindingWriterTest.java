@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,8 +13,6 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -26,7 +24,10 @@ import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.model.meta.PropertyType;
 import pt.webdetails.cdf.dd.model.meta.PropertyTypeUsage;
 
-public class CdfRunJsPropertyBindingWriterTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+public class CdfRunJsPropertyBindingWriterTest {
   private CdfRunJsPropertyBindingWriterForTests propertyBindingWriter;
 
   @Before
@@ -93,9 +94,9 @@ public class CdfRunJsPropertyBindingWriterTest extends TestCase {
     try {
       propertyBindingWriter.write( out, null, getPropertyBinding( test ) );
     } catch ( ValidationException e ) {
-      Assert.fail( "ValidationException occurred" );
+      fail( "ValidationException occurred" );
     }
-    Assert.assertEquals( expected, out.toString() );
+    assertEquals( expected, out.toString() );
   }
 
   private PropertyBinding getPropertyBinding( String value ) throws ValidationException {

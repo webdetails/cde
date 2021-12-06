@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,8 +13,6 @@
 
 package pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,10 +42,16 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-
-public class XmlFsPluginModelReaderTest extends TestCase {
+public class XmlFsPluginModelReaderTest {
 
   private static XmlFsPluginModelReader modelReader;
   private static XmlFsPluginThingReaderFactory factory;
@@ -56,14 +60,14 @@ public class XmlFsPluginModelReaderTest extends TestCase {
   private static final String TEST_DIR = Utils.joinPath( System.getProperty( "user.dir" ), "src/test" );
   private static final String RESOURCE_DIR = Utils.joinPath( TEST_DIR, "resources" );
   private static final String DUMMY_XML =
-      "<?xml version=\"1.0\" encoding=\"UTF-8\"?><DesignerComponent></DesignerComponent>";
+    "<?xml version=\"1.0\" encoding=\"UTF-8\"?><DesignerComponent></DesignerComponent>";
   private static final String PROPERTIES_MATCHER = "properties";
 
   @Before
   public void setUp() throws Exception {
     mockedReadAccess = mock( IReadAccess.class );
     when( mockedReadAccess.listFiles( anyString(), any( IBasicFileFilter.class ), anyInt() ) ).thenAnswer(
-        new Answer<Object>() {
+      new Answer<Object>() {
         @Override
         public Object answer( InvocationOnMock invocation ) throws Throwable {
           return buildFileList();
@@ -80,7 +84,7 @@ public class XmlFsPluginModelReaderTest extends TestCase {
           return buildReadAccessMock( Utils.joinPath( RESOURCE_DIR, XmlFsPluginModelReader.COMPONENTS_DIR ) );
         } else if ( path.equals( XmlFsPluginModelReader.PROPERTIES_DIR ) ) {
           return buildReadAccessMock( Utils.joinPath( RESOURCE_DIR, XmlFsPluginModelReader.PROPERTIES_DIR ) );
-       } else {
+        } else {
           return mockedReadAccess;
         }
       }
@@ -88,7 +92,7 @@ public class XmlFsPluginModelReaderTest extends TestCase {
     when( mockedContentAccessFactory.getPluginRepositoryReader( anyString() ) ).thenReturn( mockedReadAccess );
 
     IPluginResourceLocationManager mockedPluginResourceLocationManager = mock( IPluginResourceLocationManager.class );
-    List<PathOrigin> pathOrigins = new ArrayList<PathOrigin>();
+    List<PathOrigin> pathOrigins = new ArrayList<>();
     pathOrigins.add( new StaticSystemOrigin( Utils.joinPath( RESOURCE_DIR, XmlFsPluginModelReader.COMPONENTS_DIR ) ) );
     when( mockedPluginResourceLocationManager.getCustomComponentsLocations() ).thenReturn( pathOrigins );
 
@@ -109,18 +113,17 @@ public class XmlFsPluginModelReaderTest extends TestCase {
       List<List<ComponentType>> splitComponentTypes = buildComponentTypes( model.getComponentTypes() );
 
       if ( model.getComponentTypeCount() == 0 ) {
-        Assert.fail( "Couldn't read ComponentTypes" );
+        fail( "Couldn't read ComponentTypes" );
       }
       if ( model.getPropertyTypeCount() == 0 ) {
-        Assert.fail( "Couldn't read PropertyTypes" );
+        fail( "Couldn't read PropertyTypes" );
       }
 
       for ( List<ComponentType> compTypes : splitComponentTypes ) {
         String oldSourcePath = "";
-        String currentPath = "";
         for ( ComponentType comp : compTypes ) {
-          currentPath = comp.getSourcePath().toLowerCase();
-          Assert.assertTrue( currentPath.compareTo( oldSourcePath ) >= 0 );
+          String currentPath = comp.getSourcePath().toLowerCase();
+          assertTrue( currentPath.compareTo( oldSourcePath ) >= 0 );
           oldSourcePath = currentPath;
         }
       }
@@ -128,10 +131,9 @@ public class XmlFsPluginModelReaderTest extends TestCase {
 
       for ( List<PropertyType> propTypes : splitPropertyTypes ) {
         String oldSourcePath = "";
-        String currentPath = "";
         for ( PropertyType prop : propTypes ) {
-          currentPath = prop.getSourcePath().toLowerCase();
-          Assert.assertTrue( currentPath.compareTo( oldSourcePath ) >= 0 );
+          String currentPath = prop.getSourcePath().toLowerCase();
+          assertTrue( currentPath.compareTo( oldSourcePath ) >= 0 );
           oldSourcePath = currentPath;
         }
       }
@@ -157,8 +159,8 @@ public class XmlFsPluginModelReaderTest extends TestCase {
   }
 
   private List<List<ComponentType>> buildComponentTypes( Iterable<ComponentType> componentTypes ) {
-    List<List<ComponentType>> splitComponentTypes = new ArrayList<List<ComponentType>>();
-    List<String> pathOrigins = new ArrayList<String>();
+    List<List<ComponentType>> splitComponentTypes = new ArrayList<>();
+    List<String> pathOrigins = new ArrayList<>();
 
     for ( ComponentType comp : componentTypes ) {
       if ( !pathOrigins.contains( comp.getOrigin().toString() ) ) {
@@ -166,7 +168,7 @@ public class XmlFsPluginModelReaderTest extends TestCase {
       }
     }
     for ( String origin : pathOrigins ) {
-      List<ComponentType> compTypes = new ArrayList<ComponentType>();
+      List<ComponentType> compTypes = new ArrayList<>();
       for ( ComponentType comp : componentTypes ) {
         if ( origin.equals( comp.getOrigin().toString() ) ) {
           compTypes.add( comp );
@@ -185,7 +187,7 @@ public class XmlFsPluginModelReaderTest extends TestCase {
     IBasicFile foo = mock( IBasicFile.class );
     when( foo.getContents() ).thenReturn( buildFileInputStream() );
     when( foo.getFullPath() ).thenReturn( "path/to/foo" );
-    List<IBasicFile> fileList = new ArrayList<IBasicFile>();
+    List<IBasicFile> fileList = new ArrayList<>();
     fileList.add( foo );
     return fileList;
   }
@@ -251,5 +253,4 @@ public class XmlFsPluginModelReaderTest extends TestCase {
       }
     };
   }
-
 }

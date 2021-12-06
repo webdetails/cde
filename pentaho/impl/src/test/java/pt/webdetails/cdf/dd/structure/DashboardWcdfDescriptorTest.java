@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,24 +13,23 @@
 
 package pt.webdetails.cdf.dd.structure;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.util.HashMap;
 
-public class DashboardWcdfDescriptorTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class DashboardWcdfDescriptorTest {
 
   private DashboardWcdfDescriptorForTest wcdf;
 
+  private static class DashboardWcdfDescriptorForTest extends DashboardWcdfDescriptor {
 
-  private class DashboardWcdfDescriptorForTest extends DashboardWcdfDescriptor {
-
-    private HashMap<String, Object> parameters;
+    private final HashMap<String, Object> parameters;
 
     public DashboardWcdfDescriptorForTest() {
       super();
-      this.parameters = new HashMap<String, Object>();
+      this.parameters = new HashMap<>();
     }
 
     public DashboardWcdfDescriptorForTest( String[] params ) {
@@ -45,7 +44,6 @@ public class DashboardWcdfDescriptorTest extends TestCase {
     private HashMap<String, Object> getParameters() {
       return this.parameters;
     }
-
   }
 
   @Test
@@ -53,7 +51,7 @@ public class DashboardWcdfDescriptorTest extends TestCase {
     wcdf = new DashboardWcdfDescriptorForTest();
     wcdf.update( wcdf.getParameters() );
 
-    Assert.assertTrue( "Should continue empty", wcdf.getWidgetParameters().length == 0 );
+    assertEquals( "Should continue empty", 0, wcdf.getWidgetParameters().length );
   }
 
   @Test
@@ -62,7 +60,7 @@ public class DashboardWcdfDescriptorTest extends TestCase {
     wcdf.addParameter( "widgetParameters", new String[] { "param1" } );
     wcdf.update( wcdf.getParameters() );
 
-    Assert.assertTrue( "Should have widget parameter 'param1'", wcdf.getWidgetParameters()[ 0 ].equals( "param1" ) );
+    assertEquals( "Should have widget parameter 'param1'", "param1", wcdf.getWidgetParameters()[ 0 ] );
   }
 
   @Test
@@ -70,6 +68,6 @@ public class DashboardWcdfDescriptorTest extends TestCase {
     wcdf = new DashboardWcdfDescriptorForTest( new String[] { "param1" } );
 
     wcdf.update( wcdf.getParameters() );
-    Assert.assertTrue( "'param1' should have been removed", wcdf.getWidgetParameters().length == 0 );
+    assertEquals( "'param1' should have been removed", 0, wcdf.getWidgetParameters().length );
   }
 }

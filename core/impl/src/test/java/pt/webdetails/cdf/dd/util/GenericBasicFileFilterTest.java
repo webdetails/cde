@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -15,15 +15,15 @@ package pt.webdetails.cdf.dd.util;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IBasicFileFilter;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class GenericBasicFileFilterTest {
 
@@ -35,12 +35,6 @@ public class GenericBasicFileFilterTest {
 
   protected static final String NOT_ACCEPTED_FILENAME = "some_other_name";
   protected static final String NOT_ACCEPTED_EXTENSION = ".gif";
-
-
-  @Before
-  public void setUp() {
-    /* do nothing */
-  }
 
   /**
    * This tests that the file is properly accepted because of having both and accepted filename and an accepted file
@@ -55,7 +49,7 @@ public class GenericBasicFileFilterTest {
 
     IBasicFileFilter filter = new GenericBasicFileFilter( ACCEPTED_FILENAME, ACCEPTED_EXTENSIONS );
 
-    Assert.assertTrue( filter.accept( testFile ) );
+    assertTrue( filter.accept( testFile ) );
   }
 
   /**
@@ -71,7 +65,7 @@ public class GenericBasicFileFilterTest {
 
     IBasicFileFilter filter = new GenericBasicFileFilter( ACCEPTED_FILENAME, new String[] { } );
 
-    Assert.assertTrue( filter.accept( testFile ) );
+    assertTrue( filter.accept( testFile ) );
   }
 
   /**
@@ -87,7 +81,7 @@ public class GenericBasicFileFilterTest {
 
     IBasicFileFilter filter = new GenericBasicFileFilter( ACCEPTED_FILENAME, new String[] { } );
 
-    Assert.assertTrue( filter.accept( testFile ) );
+    assertTrue( filter.accept( testFile ) );
   }
 
   /**
@@ -103,7 +97,7 @@ public class GenericBasicFileFilterTest {
 
     IBasicFileFilter filter = new GenericBasicFileFilter( null, ACCEPTED_EXTENSIONS );
 
-    Assert.assertTrue( filter.accept( testFile ) );
+    assertTrue( filter.accept( testFile ) );
   }
 
   /**
@@ -119,8 +113,7 @@ public class GenericBasicFileFilterTest {
 
     IBasicFileFilter filter = new GenericBasicFileFilter( ACCEPTED_FILENAME, ACCEPTED_EXTENSIONS );
 
-    Assert.assertTrue( !filter.accept( testFile ) );
-
+    assertFalse( filter.accept( testFile ) );
   }
 
   /**
@@ -136,8 +129,7 @@ public class GenericBasicFileFilterTest {
 
     IBasicFileFilter filter = new GenericBasicFileFilter( ACCEPTED_FILENAME, ACCEPTED_EXTENSIONS );
 
-    Assert.assertTrue( !filter.accept( testFile ) );
-
+    assertFalse( filter.accept( testFile ) );
   }
 
   /**
@@ -152,7 +144,7 @@ public class GenericBasicFileFilterTest {
 
     IBasicFileFilter filter = new GenericBasicFileFilter( ACCEPTED_FILENAME, ACCEPTED_EXTENSIONS, acceptDirectories );
 
-    Assert.assertTrue( filter.accept( testFolder ) );
+    assertTrue( filter.accept( testFolder ) );
   }
 
   @Test
@@ -164,20 +156,13 @@ public class GenericBasicFileFilterTest {
 
     IBasicFileFilter filter = new GenericBasicFileFilter( ACCEPTED_FILENAME, ACCEPTED_EXTENSIONS, acceptDirectories );
 
-    Assert.assertTrue( !filter.accept( testFolder ) );
-
+    assertFalse( filter.accept( testFolder ) );
   }
 
-  @After
-  public void tearDown() {
-    /* do nothing */
-  }
+  protected static class DummyBasicFile implements IBasicFile {
 
-
-  protected class DummyBasicFile implements IBasicFile {
-
-    private String path;
-    private boolean directory;
+    private final String path;
+    private final boolean directory;
 
     public DummyBasicFile( String fullPath ) throws IllegalArgumentException {
       this.path = fullPath;
@@ -208,5 +193,4 @@ public class GenericBasicFileFilterTest {
       return directory;
     }
   }
-
 }

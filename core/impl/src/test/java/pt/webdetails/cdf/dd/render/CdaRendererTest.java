@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,7 +13,6 @@
 
 package pt.webdetails.cdf.dd.render;
 
-import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.junit.After;
@@ -30,6 +29,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class CdaRendererTest {
   CdaRenderer cdaRenderer;
@@ -58,46 +60,45 @@ public class CdaRendererTest {
     Document dom = stringToDom( cdaRenderer.render() );
 
     NodeList cDADescriptor = dom.getElementsByTagName( "CDADescriptor" );
-    Assert.assertNotNull( cDADescriptor );
-    Assert.assertTrue( cDADescriptor.getLength() == 1 );
+    assertNotNull( cDADescriptor );
+    assertEquals( 1, cDADescriptor.getLength() );
 
     NodeList dataSources = dom.getElementsByTagName( "DataSources" );
-    Assert.assertNotNull( dataSources );
-    Assert.assertTrue( dataSources.getLength() == 1 );
+    assertNotNull( dataSources );
+    assertEquals( 1, dataSources.getLength() );
 
     NodeList connections = dom.getElementsByTagName( "Connection" );
-    Assert.assertNotNull( connections );
-    Assert.assertTrue( connections.getLength() == 1 );
+    assertNotNull( connections );
+    assertEquals( 1, connections.getLength() );
 
     Node connection = connections.item( 0 );
-    Assert.assertEquals( connection.getAttributes().getNamedItem( "id" ).getNodeValue(), "testQueryFTW" );
+    assertEquals( "testQueryFTW", connection.getAttributes().getNamedItem( "id" ).getNodeValue() );
 
     NodeList dataAccesses = dom.getElementsByTagName( "DataAccess" );
-    Assert.assertNotNull( dataSources );
-    Assert.assertTrue( dataSources.getLength() == 1 );
+    assertNotNull( dataSources );
+    assertEquals( 1, dataSources.getLength() );
 
     Node dataAccess = dataAccesses.item( 0 );
-    Assert.assertEquals( dataAccess.getAttributes().getNamedItem( "access" ).getNodeValue(), "public" );
-    Assert.assertEquals( dataAccess.getAttributes().getNamedItem( "connection" ).getNodeValue(), "testQueryFTW" );
-    Assert.assertEquals( dataAccess.getAttributes().getNamedItem( "id" ).getNodeValue(), "testQueryFTW" );
-    Assert.assertEquals( dataAccess.getAttributes().getNamedItem( "type" ).getNodeValue(), "scriptable" );
+    assertEquals( "public", dataAccess.getAttributes().getNamedItem( "access" ).getNodeValue() );
+    assertEquals( "testQueryFTW", dataAccess.getAttributes().getNamedItem( "connection" ).getNodeValue() );
+    assertEquals( "testQueryFTW", dataAccess.getAttributes().getNamedItem( "id" ).getNodeValue() );
+    assertEquals( "scriptable", dataAccess.getAttributes().getNamedItem( "type" ).getNodeValue() );
     NodeList nodes = dataAccess.getChildNodes();
-    Node el;
     for ( int i = 0; i < nodes.getLength(); i++ ) {
-      el = nodes.item( i );
+      Node el = nodes.item( i );
       switch ( el.getNodeName() ) {
         case "Name":
-          Assert.assertEquals( el.getFirstChild().getNodeValue(), "testQueryFTW" );
+          assertEquals( "testQueryFTW", el.getFirstChild().getNodeValue() );
           break;
         case "Cache":
-          Assert.assertEquals( el.getAttributes().getNamedItem( "duration" ).getNodeValue(), "3600" );
-          Assert.assertEquals( el.getAttributes().getNamedItem( "enabled" ).getNodeValue(), "true" );
+          assertEquals( "3600", el.getAttributes().getNamedItem( "duration" ).getNodeValue() );
+          assertEquals( "true", el.getAttributes().getNamedItem( "enabled" ).getNodeValue() );
           break;
         case "Query":
-          Assert.assertEquals( el.getFirstChild().getNodeType(), CDATASection.CDATA_SECTION_NODE );
-          Assert.assertEquals(
-              el.getFirstChild().getNodeValue(),
-              "import org.pentaho.reporting.engine.classic.core.util"
+          assertEquals( CDATASection.CDATA_SECTION_NODE, el.getFirstChild().getNodeType() );
+          assertEquals(
+            el.getFirstChild().getNodeValue(),
+            "import org.pentaho.reporting.engine.classic.core.util"
               + ".TypedTableModel;\n\n"
               + "String[] columnNames = new String[]{\n"
               + "\"value\",\"name2\"\n"

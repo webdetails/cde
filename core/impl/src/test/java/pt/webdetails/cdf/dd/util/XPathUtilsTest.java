@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,20 +13,21 @@
 
 package pt.webdetails.cdf.dd.util;
 
-import junit.framework.Assert;
 import org.apache.commons.jxpath.JXPathContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 
+import static org.junit.Assert.assertEquals;
+
 public class XPathUtilsTest {
 
-  private final String WCDF_AUTHOR = "dummyAuthor";
-  private final String WCDF_DESCRIPTION = "dummyDescription";
-  private final String WCDF_RENDERER_TYPE = "dummyRendererType";
-  private final String WCDF_STYLE = "dummyStyle";
-  private final String WCDF_TITLE = "dummyTitle";
+  private static final String WCDF_AUTHOR = "dummyAuthor";
+  private static final String WCDF_DESCRIPTION = "dummyDescription";
+  private static final String WCDF_RENDERER_TYPE = "dummyRendererType";
+  private static final String WCDF_STYLE = "dummyStyle";
+  private static final String WCDF_TITLE = "dummyTitle";
 
   @Test
   public void testGetStringValue() throws JSONException {
@@ -35,12 +36,12 @@ public class XPathUtilsTest {
     json.put( "settings", getDummyDashboardWcdfDescriptor().toJSON() );
     JXPathContext node = JsonUtils.toJXPathContext( json );
 
-    Assert.assertEquals( XPathUtils.getStringValue( node, "//author" ), WCDF_AUTHOR );
-    Assert.assertEquals( XPathUtils.getStringValue( node, "//description" ), WCDF_DESCRIPTION );
-    Assert.assertEquals( XPathUtils.getStringValue( node, "//rendererType" ), WCDF_RENDERER_TYPE );
-    Assert.assertEquals( XPathUtils.getStringValue( node, "//style" ), WCDF_STYLE );
-    Assert.assertEquals( XPathUtils.getStringValue( node, "//title" ), WCDF_TITLE );
-    Assert.assertEquals( XPathUtils.getStringValue( node, "//widget" ), "false" );
+    assertEquals( WCDF_AUTHOR, XPathUtils.getStringValue( node, "//author" ) );
+    assertEquals( WCDF_DESCRIPTION, XPathUtils.getStringValue( node, "//description" ) );
+    assertEquals( WCDF_RENDERER_TYPE, XPathUtils.getStringValue( node, "//rendererType" ) );
+    assertEquals( WCDF_STYLE, XPathUtils.getStringValue( node, "//style" ) );
+    assertEquals( WCDF_TITLE, XPathUtils.getStringValue( node, "//title" ) );
+    assertEquals( "false", XPathUtils.getStringValue( node, "//widget" ) );
   }
 
   private DashboardWcdfDescriptor getDummyDashboardWcdfDescriptor() {

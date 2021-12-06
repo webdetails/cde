@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,9 +13,8 @@
 
 package pt.webdetails.cdf.dd.model.meta.reader.cdexml;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-import org.dom4j.*;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,9 +22,12 @@ import pt.webdetails.cdf.dd.model.meta.ComponentType;
 import pt.webdetails.cdf.dd.model.meta.CustomComponentType;
 import pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs.XmlFsPluginThingReaderFactory;
 
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
-public class XmlComponentTypeReaderTest extends TestCase {
+
+public class XmlComponentTypeReaderTest {
 
   private static XmlComponentTypeReader xmlComponentTypeReader;
 
@@ -34,7 +36,6 @@ public class XmlComponentTypeReaderTest extends TestCase {
     xmlComponentTypeReader = new XmlAdhocComponentTypeReader(
       CustomComponentType.Builder.class,
       mock( XmlFsPluginThingReaderFactory.class ) );
-
   }
 
   @After
@@ -56,8 +57,8 @@ public class XmlComponentTypeReaderTest extends TestCase {
       .addAttribute( "supportsAMD", "true" )
       .addAttribute( "supportsLegacy", "false" );
     xmlComponentTypeReader.readComponentSupportType( builder, elem );
-    Assert.assertEquals( builder.isSupportsLegacy(), false );
-    Assert.assertEquals( builder.isSupportsAMD(), true );
+    assertFalse( builder.isSupportsLegacy() );
+    assertTrue( builder.isSupportsAMD() );
 
     builder = new CustomComponentType.Builder();
     elem = DocumentHelper.createDocument().addElement( "DesignerComponent" );
@@ -65,8 +66,8 @@ public class XmlComponentTypeReaderTest extends TestCase {
       .addElement( "Implementation" )
       .addAttribute( "supportsAMD", "true" );
     xmlComponentTypeReader.readComponentSupportType( builder, elem );
-    Assert.assertEquals( builder.isSupportsLegacy(), false );
-    Assert.assertEquals( builder.isSupportsAMD(), true );
+    assertFalse( builder.isSupportsLegacy() );
+    assertTrue( builder.isSupportsAMD() );
 
     // supports Legacy
     builder = new CustomComponentType.Builder();
@@ -76,8 +77,8 @@ public class XmlComponentTypeReaderTest extends TestCase {
       .addAttribute( "supportsAMD", "false" )
       .addAttribute( "supportsLegacy", "true" );
     xmlComponentTypeReader.readComponentSupportType( builder, elem );
-    Assert.assertEquals( builder.isSupportsLegacy(), true );
-    Assert.assertEquals( builder.isSupportsAMD(), false );
+    assertTrue( builder.isSupportsLegacy() );
+    assertFalse( builder.isSupportsAMD() );
 
     builder = new CustomComponentType.Builder();
     elem = DocumentHelper.createDocument().addElement( "DesignerComponent" );
@@ -85,8 +86,8 @@ public class XmlComponentTypeReaderTest extends TestCase {
       .addElement( "Implementation" )
       .addAttribute( "supportsLegacy", "true" );
     xmlComponentTypeReader.readComponentSupportType( builder, elem );
-    Assert.assertEquals( builder.isSupportsLegacy(), true );
-    Assert.assertEquals( builder.isSupportsAMD(), false );
+    assertTrue( builder.isSupportsLegacy() );
+    assertFalse( builder.isSupportsAMD() );
 
     // supports both AMD and Legacy
     builder = new CustomComponentType.Builder();
@@ -96,8 +97,8 @@ public class XmlComponentTypeReaderTest extends TestCase {
       .addAttribute( "supportsAMD", "true" )
       .addAttribute( "supportsLegacy", "true" );
     xmlComponentTypeReader.readComponentSupportType( builder, elem );
-    Assert.assertEquals( builder.isSupportsLegacy(), true );
-    Assert.assertEquals( builder.isSupportsAMD(), true );
+    assertTrue( builder.isSupportsLegacy() );
+    assertTrue( builder.isSupportsAMD() );
 
     // empty support type should use default values
     builder = new CustomComponentType.Builder();
@@ -105,7 +106,7 @@ public class XmlComponentTypeReaderTest extends TestCase {
     elem.addElement( "Contents" )
       .addElement( "Implementation" );
     xmlComponentTypeReader.readComponentSupportType( builder, elem );
-    Assert.assertEquals( builder.isSupportsLegacy(), true );
-    Assert.assertEquals( builder.isSupportsAMD(), false );
+    assertTrue( builder.isSupportsLegacy() );
+    assertFalse( builder.isSupportsAMD() );
   }
 }
