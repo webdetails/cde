@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -120,7 +120,14 @@ public class CdaRenderer {
     transformer.setOutputProperty( "{http://xml.apache.org/xslt}indent-amount", "2" );
     transformer.setOutputProperty( OutputKeys.CDATA_SECTION_ELEMENTS, "Query" );
     transformer.transform( source, res );
-    return result.toString();
+    String resultString = result.toString();
+
+    // BACKLOG-35396 : This is a temporary solution to solve the know issue related with whitespace is added to CDATA tag
+    // For more information check: https://bugs.openjdk.java.net/browse/JDK-8223291
+    // This regex finds the CDATA tag and removes the previous new line and removes the new line on the close
+    resultString = resultString.replaceAll( "<Query>\\n\\s*\\<!\\[CDATA\\[", "<Query>\\<!\\[CDATA\\[" );
+    resultString = resultString.replaceAll( "\\n\\s*</Query>", "</Query>" );
+    return resultString;
   }
 
   private Element exportConnection( Document doc, JXPathContext context, String id ) throws Exception {
