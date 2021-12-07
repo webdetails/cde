@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,8 +13,8 @@
 
 package pt.webdetails.cdf.dd.cdf;
 
-import junit.framework.Assert;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,22 +38,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class CdfTemplatesTest {
   private static final String RESOURCE_ENDPOINT = "resource_endpoint/";
+  private static final String[] TEMPLATES = { "Template1", "Template2", "Template3" };
+  private static final List<String> TEMPLATES_LIST = Arrays.asList( TEMPLATES );
 
-  private static String[] templates = { "Template1", "Template2", "Template3" };
-  private static List<String> templatesList = Arrays.asList( templates );
-
-  private static String savedTemplate = "";
+  private static String savedTemplate = StringUtils.EMPTY;
 
 
   @Before
   public void setUp() {
     CdeEnvironmentForTests cdeEnvironmentForTests = new CdeEnvironmentForTests();
 
-    List<IBasicFile> mockedFilesList = mockIBasicFiles( templatesList );
+    List<IBasicFile> mockedFilesList = mockIBasicFiles( TEMPLATES_LIST );
 
     // mocking IReadAccess
     IReadAccess mockedReadAccess = mock( IReadAccess.class );
@@ -90,7 +96,7 @@ public class CdfTemplatesTest {
     if ( obj instanceof JSONArray ) {
       verifyResult( (JSONArray) obj );
     } else {
-      Assert.fail( "Template loading should have built a JSONArray" );
+      fail( "Template loading should have built a JSONArray" );
     }
   }
 
@@ -101,33 +107,33 @@ public class CdfTemplatesTest {
 
     String fileStructure = "{components: [], rows: [], layout:{}, title:\"title\"}";
     cdfTemplates.save( fileName, fileStructure );
-    Assert.assertEquals( fileStructure, savedTemplate );
+    assertEquals( fileStructure, savedTemplate );
 
     fileStructure = "foo bar";
     cdfTemplates.save( fileName, fileStructure );
-    Assert.assertEquals( fileStructure, savedTemplate );
+    assertEquals( fileStructure, savedTemplate );
   }
 
   private void verifyResult( JSONArray arr ) throws JSONException {
-    Assert.assertTrue( "There should twice as much templates as were mocked (read from system and repository)",
-        arr.length() == ( templatesList.size() * 2 ) );
+    assertEquals( "There should twice as much templates as were mocked (read from system and repository)",
+      2 * TEMPLATES_LIST.size(), arr.length() );
     for ( int i = 0; i < arr.length(); i++ ) {
       Object obj = arr.get( i );
       if ( obj instanceof JSONObject ) {
         JSONObject structure = ( (JSONObject) obj ).getJSONObject( "structure" );
         String img =  ( (JSONObject) obj ).getString( "img" );
-        Assert.assertTrue( "img property should start with the resource endpoint",
+        assertTrue( "img property should start with the resource endpoint",
             img.startsWith( RESOURCE_ENDPOINT ) );
-        Assert.assertTrue( "Expecting fileName to be present in the templatesList (the array is ordered)",
-            structure.getString( "fileName" ).equals( templatesList.get( i % templatesList.size() ) ) );
+        assertEquals( "Expecting fileName to be present in the templatesList (the array is ordered)",
+          TEMPLATES_LIST.get( i % TEMPLATES_LIST.size() ), structure.getString( "fileName" ) );
       } else {
-        Assert.fail( "Only expecting JSONObject in the result array" );
+        fail( "Only expecting JSONObject in the result array" );
       }
     }
   }
 
   private static List<IBasicFile> mockIBasicFiles( List<String> files ) {
-    List<IBasicFile> iBasicFiles = new ArrayList<IBasicFile>();
+    List<IBasicFile> iBasicFiles = new ArrayList<>();
     for ( String file : files ) {
       IBasicFile iBasicFile = mock( IBasicFile.class );
       when( iBasicFile.getName() ).thenReturn( file );

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,15 +13,14 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.PROPER_EXPRESSION_CONTEXT;
 
-public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
+public class CdfRunJsExpressionParameterComponentWriterTest {
 
   private CdfRunJsExpressionParameterComponentWriter expressionParameterComponentWriter;
   protected static final String NEWLINE = System.getProperty( "line.separator" );
@@ -40,7 +39,7 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
   public void testBindProperContext() {
     String functionToBind = "function() {}";
     String returnValue = "_.bind(" + functionToBind + ", " + PROPER_EXPRESSION_CONTEXT + ")";
-    Assert.assertEquals(
+    assertEquals(
         "Function is correctly bound to a proper context",
         returnValue,
         bind( functionToBind )
@@ -52,7 +51,7 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
     String customParamValue = "value;       ";
     String returnValue = expressionParameterComponentWriter.sanitizeExpression( customParamValue );
     String expectedReturnValue = bind( "function() { return value" + NEWLINE + "}" ) + "()";
-    Assert.assertEquals( returnValue, expectedReturnValue );
+    assertEquals( returnValue, expectedReturnValue );
   }
 
   @Test
@@ -60,7 +59,7 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
     String customParamValue = "value;" + NEWLINE + "//comment";
     String returnValue = expressionParameterComponentWriter.sanitizeExpression( customParamValue );
     String expectedReturnValue = bind( "function() { return value;" + NEWLINE + "//comment" + NEWLINE + "}" ) + "()";
-    Assert.assertEquals( returnValue, expectedReturnValue );
+    assertEquals( returnValue, expectedReturnValue );
   }
 
   @Test
@@ -68,7 +67,7 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
     String customParamValue = "function() { return 'value'; }";
     String returnValue = expressionParameterComponentWriter.sanitizeExpression( customParamValue );
     String expectedReturnValue = bind( "function() { return 'value'; }" );
-    Assert.assertEquals( returnValue, expectedReturnValue );
+    assertEquals( returnValue, expectedReturnValue );
   }
 
   @Test
@@ -76,7 +75,7 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
     String customParamValue = "function() {" + NEWLINE + "return 'value';" + NEWLINE + "}";
     String returnValue = expressionParameterComponentWriter.sanitizeExpression( customParamValue );
     String expectedReturnValue = bind( "function() {" + NEWLINE + "return 'value';" + NEWLINE + "}" );
-    Assert.assertEquals( returnValue, expectedReturnValue );
+    assertEquals( returnValue, expectedReturnValue );
   }
 
   private String bind( String toBind ) {

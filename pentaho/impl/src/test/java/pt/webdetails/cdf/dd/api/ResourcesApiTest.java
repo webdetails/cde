@@ -1,5 +1,5 @@
 /*!
- * Copyright 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2019-2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -39,6 +39,7 @@ import javax.ws.rs.core.Response;
 @PowerMockIgnore( "jdk.internal.reflect.*" )
 @RunWith( PowerMockRunner.class )
 @PrepareForTest( { PentahoSystem.class, Utils.class } )
+@PowerMockIgnore({"jdk.internal.reflect.*"})
 public class ResourcesApiTest {
 
   private ResourcesApi resourcesApi;

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,18 +13,18 @@
 
 package pt.webdetails.cdf.dd.render.layout;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-public class FreeFormRenderTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class FreeFormRenderTest {
 
   private FreeFormRenderForTest renderForTest;
-  private class FreeFormRenderForTest extends FreeFormRender {
+  private static class FreeFormRenderForTest extends FreeFormRender {
 
     private String properties;
     public FreeFormRenderForTest( JXPathContext context ) {
@@ -44,7 +44,6 @@ public class FreeFormRenderTest extends TestCase {
     private void setPropertyBag( String css ) {
       getPropertyBag().addClass( css );
     }
-
   }
 
   @Before
@@ -59,7 +58,7 @@ public class FreeFormRenderTest extends TestCase {
   public void testRenderStartWithTagOnly() throws JSONException {
     String select = renderForTest.renderStart();
 
-    Assert.assertEquals( "<select >", select );
+    assertEquals( "<select >", select );
   }
 
   @Test
@@ -67,7 +66,7 @@ public class FreeFormRenderTest extends TestCase {
     renderForTest.setProperties( "[[\"arg1\",\"value1\"],[\"arg2\",\"value2\"]]" );
     String select = renderForTest.renderStart();
 
-    Assert.assertEquals( "<select  arg1='value1' arg2='value2'>", select );
+    assertEquals( "<select  arg1='value1' arg2='value2'>", select );
   }
 
   @Test
@@ -76,7 +75,7 @@ public class FreeFormRenderTest extends TestCase {
         + "['arg2', \"{{[ 'value21', 'value22']}}\"]]" );
     String select = renderForTest.renderStart();
 
-    Assert.assertEquals( "<select  arg1='{{[ \"value11\", \"value12\"]}}' arg2=\"{{[ 'value21', 'value22']}}\">",
+    assertEquals( "<select  arg1='{{[ \"value11\", \"value12\"]}}' arg2=\"{{[ 'value21', 'value22']}}\">",
         select );
   }
 
@@ -85,8 +84,7 @@ public class FreeFormRenderTest extends TestCase {
     renderForTest.setPropertyBag( "clear" );
     String select = renderForTest.renderStart();
 
-
-    Assert.assertEquals( "<select  class='clear ' >", select );
+    assertEquals( "<select  class='clear ' >", select );
   }
 
   @Test
@@ -95,13 +93,13 @@ public class FreeFormRenderTest extends TestCase {
     renderForTest.setProperties( "[[\"arg1\",\"value1\"],[\"arg2\",\"value2\"]]" );
     String select = renderForTest.renderStart();
 
-    Assert.assertEquals( "<select  class='clear '  arg1='value1' arg2='value2'>", select );
+    assertEquals( "<select  class='clear '  arg1='value1' arg2='value2'>", select );
   }
 
   @Test
   public void testRenderClose() {
     String select = renderForTest.renderClose();
 
-    Assert.assertEquals( "</select>", select );
+    assertEquals( "</select>", select );
   }
 }

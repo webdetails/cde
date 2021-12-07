@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,8 +13,6 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,9 +22,10 @@ import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class CdfRunJsParameterComponentWriterTest extends TestCase {
+public class CdfRunJsParameterComponentWriterTest {
 
   private static final String NEWLINE = System.getProperty( "line.separator" );
   private static final String INDENT = "\t";
@@ -80,8 +79,6 @@ public class CdfRunJsParameterComponentWriterTest extends TestCase {
         .append( "dashboard.setBookmarkable(\"param1\");" ).append( NEWLINE )
         .append( "dashboard.setParameterViewMode(\"param1\", \"unused\");" ).append( NEWLINE );
 
-    Assert.assertEquals( out.toString(), dashboardResult.toString() );
-
+    assertEquals( out.toString(), dashboardResult.toString() );
   }
-
 }

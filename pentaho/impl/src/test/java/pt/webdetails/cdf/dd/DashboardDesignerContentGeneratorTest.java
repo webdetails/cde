@@ -1,5 +1,5 @@
 /*!
- * Copyright 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2019-2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -48,6 +48,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PowerMockIgnore( "jdk.internal.reflect.*" )
 @RunWith( PowerMockRunner.class )
 @PrepareForTest( { PentahoSystem.class, Utils.class, XSSHelper.class, CdeEnvironment.class } )
+@PowerMockIgnore({"jdk.internal.reflect.*"})
 public class DashboardDesignerContentGeneratorTest {
 
   private static final String PLUGIN_NAME = "pentaho-cdf-dd";

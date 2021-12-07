@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,8 +13,6 @@
 
 package pt.webdetails.cdf.dd.render.layout;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,15 +20,16 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
-public class BootstrapColumnRenderTest extends TestCase {
+public class BootstrapColumnRenderTest {
 
   private BootstrapColumnRenderForTest renderForTest;
 
-  private class BootstrapColumnRenderForTest extends BootstrapColumnRender {
+  private static class BootstrapColumnRenderForTest extends BootstrapColumnRender {
 
-    private Map<String, String> properties = new HashMap<String, String>();
+    private final Map<String, String> properties = new HashMap<>();
 
     public BootstrapColumnRenderForTest( JXPathContext context) {
       super( context );
@@ -67,8 +66,7 @@ public class BootstrapColumnRenderTest extends TestCase {
     renderForTest.processProperties();
     String div = renderForTest.renderStart();
 
-    Assert.assertEquals( "<div class='col-xs-12'><div >", div );
-
+    assertEquals( "<div class='col-xs-12'><div >", div );
   }
 
   @Test
@@ -79,7 +77,7 @@ public class BootstrapColumnRenderTest extends TestCase {
 
     String div = renderForTest.renderStart();
 
-    Assert.assertEquals( "<div class='col-xs-5'><div >", div );
+    assertEquals( "<div class='col-xs-5'><div >", div );
   }
 
   @Test
@@ -90,7 +88,7 @@ public class BootstrapColumnRenderTest extends TestCase {
 
     String div = renderForTest.renderStart();
 
-    Assert.assertEquals( "<div class='col-xs-12'><div  class='span-6 ' >", div );
+    assertEquals( "<div class='col-xs-12'><div  class='span-6 ' >", div );
   }
 
   @Test
@@ -102,13 +100,12 @@ public class BootstrapColumnRenderTest extends TestCase {
 
     String div = renderForTest.renderStart();
 
-    Assert.assertEquals( "<div class='col-xs-5'><div  class='span-6 ' >", div );
+    assertEquals( "<div class='col-xs-5'><div  class='span-6 ' >", div );
   }
 
   @Test
   public void testRenderClose() {
     String div = renderForTest.renderClose();
-    Assert.assertEquals( "</div></div>", div );
+    assertEquals( "</div></div>", div );
   }
-
 }

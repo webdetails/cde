@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,18 +13,18 @@
 
 package pt.webdetails.cdf.dd.render.layout;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-public class ColumnRenderTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class ColumnRenderTest {
 
   private ColumnRenderForTest renderForTest;
 
-  private class ColumnRenderForTest extends ColumnRender {
+  private static class ColumnRenderForTest extends ColumnRender {
 
     String testRenderType;
 
@@ -60,8 +60,7 @@ public class ColumnRenderTest extends TestCase {
      renderForTest.addColSpan( "5" );
      String div = renderForTest.renderStart();
 
-     Assert.assertEquals( "<div  class='col-md-5 ' >", div );
-
+     assertEquals( "<div  class='col-md-5 ' >", div );
    }
 
   @Test
@@ -70,7 +69,6 @@ public class ColumnRenderTest extends TestCase {
     renderForTest.addColSpan( "5" );
     String div = renderForTest.renderStart();
 
-    Assert.assertEquals( "<div  class='span-5 ' >", div );
-
+    assertEquals( "<div  class='span-5 ' >", div );
   }
 }

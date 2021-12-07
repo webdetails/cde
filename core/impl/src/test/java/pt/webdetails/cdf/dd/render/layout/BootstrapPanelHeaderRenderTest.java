@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,14 +13,14 @@
 
 package pt.webdetails.cdf.dd.render.layout;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-public class BootstrapPanelHeaderRenderTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class BootstrapPanelHeaderRenderTest {
 
   private BootstrapPanelHeaderRender renderForTest;
 
@@ -35,14 +35,13 @@ public class BootstrapPanelHeaderRenderTest extends TestCase {
   public void testRenderStart() {
     String div = renderForTest.renderStart();
 
-    Assert.assertEquals( "<div  class='panel-heading ' >", div );
+    assertEquals( "<div  class='panel-heading ' >", div );
   }
 
   @Test
   public void testRenderClose() {
     String div = renderForTest.renderClose();
 
-    Assert.assertEquals( "</div>", div );
+    assertEquals( "</div>", div );
   }
-
 }

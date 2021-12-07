@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,7 +13,6 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import junit.framework.Assert;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
@@ -21,7 +20,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngineForTests;
@@ -54,10 +52,20 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class RenderApiTest {
 
@@ -84,40 +92,30 @@ public class RenderApiTest {
   @BeforeClass
   public static void setUp() throws Exception {
     final File propertyName = new File( PROPERTY_NAME );
-    List<IBasicFile> properties = new ArrayList<IBasicFile>();
+    List<IBasicFile> properties = new ArrayList<>();
     properties.add( getBasicFileFromFile( propertyName ) );
 
     //mock IUserContentAccess
     mockedUserContentAccess = mock( IUserContentAccess.class );
     when( mockedUserContentAccess.fileExists( anyString() ) ).thenReturn( true );
     when( mockedUserContentAccess.fetchFile( anyString() ) )
-      .thenAnswer( new Answer<IBasicFile>() {
-        @Override
-        public IBasicFile answer( InvocationOnMock invocationOnMock ) throws Throwable {
-          File file = new File( (String) invocationOnMock.getArguments()[ 0 ] );
-          return getBasicFileFromFile( file );
-        }
-      } );
+      .thenAnswer(
+        (Answer<IBasicFile>) invocationOnMock -> getBasicFileFromFile(
+          new File( (String) invocationOnMock.getArguments()[ 0 ] ) ) );
     when( mockedUserContentAccess.hasAccess( anyString(), any( FileAccess.class ) ) )
       .thenReturn( true );
     when( mockedUserContentAccess.getFileInputStream( anyString() ) )
-      .thenAnswer( new Answer<InputStream>() {
-        @Override
-        public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {
-          return getInputStreamFromFileName( (String) invocationOnMock.getArguments()[ 0 ] );
-        }
-      } );
+      .thenAnswer(
+        (Answer<InputStream>) invocationOnMock -> getInputStreamFromFileName(
+          (String) invocationOnMock.getArguments()[ 0 ] ) );
 
     //mock IReadAccess
     IReadAccess mockedReadAccess = mock( IReadAccess.class );
     when( mockedReadAccess.listFiles( anyString(), any( IBasicFileFilter.class ), anyInt() ) )
       .thenReturn( properties );
-    when( mockedReadAccess.getFileInputStream( anyString() ) ).thenAnswer( new Answer<InputStream>() {
-      @Override
-      public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {
-        return getInputStreamFromFileName( (String) invocationOnMock.getArguments()[ 0 ] );
-      }
-    } );
+    when( mockedReadAccess.getFileInputStream( anyString() ) ).thenAnswer(
+      (Answer<InputStream>) invocationOnMock -> getInputStreamFromFileName(
+        (String) invocationOnMock.getArguments()[ 0 ] ) );
 
     //mock IRWAccess
     IRWAccess mockedRWAccess = mock( IRWAccess.class );
@@ -154,7 +152,7 @@ public class RenderApiTest {
     //mock IDataSourceProvider
     IDataSourceProvider ds = mock( IDataSourceProvider.class );
     when( ds.getId() ).thenReturn( "cda" );
-    List<IDataSourceProvider> dataSourceProviders = new ArrayList<IDataSourceProvider>();
+    List<IDataSourceProvider> dataSourceProviders = new ArrayList<>();
     dataSourceProviders.add( ds );
 
     //mock IDataSourceManager
@@ -188,7 +186,7 @@ public class RenderApiTest {
     new CdeEngineForTests( cdeEnvironmentForTests );
 
     mockedHttpServletRequest = mock( HttpServletRequest.class );
-    when( mockedHttpServletRequest.getParameterMap() ).thenReturn( new HashMap() );
+    when( mockedHttpServletRequest.getParameterMap() ).thenReturn( new HashMap<>() );
     originalHelper = XSSHelper.getInstance();
   }
 
@@ -200,11 +198,7 @@ public class RenderApiTest {
   @Before
   public void beforeEach() {
     mockHelper = mock( XSSHelper.class );
-    when( mockHelper.escape( any() ) ).thenAnswer( new Answer<Object>() {
-      @Override public Object answer( InvocationOnMock invocation ) throws Throwable {
-        return invocation.getArguments()[ 0 ];
-      }
-    } );
+    when( mockHelper.escape( any() ) ).thenAnswer( invocation -> invocation.getArguments()[ 0 ] );
     XSSHelper.setInstance( mockHelper );
   }
 
@@ -216,32 +210,27 @@ public class RenderApiTest {
   @Test
   public void testGetHeaders() throws IOException, ThingWriteException {
     //case1 -> absolute=true&root=(empty)
-    String case1 =
-      doGetHeadersCase( "", true, "http" );
+    String case1 = doGetHeadersCase( "", true, "http" );
 
     //case2 -> absolute=false&root=localhost:8080
-    String case2 =
-      doGetHeadersCase( "testRoot", false, "http" );
+    String case2 = doGetHeadersCase( "testRoot", false, "http" );
 
     //case3 -> absolute=true&root=localhost:8080
-    String case3 =
-      doGetHeadersCase( "testRoot", true, "http" );
+    String case3 = doGetHeadersCase( "testRoot", true, "http" );
 
     //case4 -> absolute=false&root=(empty)
-    String case4 =
-      doGetHeadersCase( "", false, "http" );
+    String case4 = doGetHeadersCase( "", false, "http" );
 
     //case5 -> absolute=true&root=localhost:8080&scheme=https
-    String case5 =
-      doGetHeadersCase( "testRoot", true, "https" );
+    String case5 = doGetHeadersCase( "testRoot", true, "https" );
 
-    Assert.assertTrue( case1.contains( "http://localhost:8080/js/CDF.js" )
+    assertTrue( case1.contains( "http://localhost:8080/js/CDF.js" )
       && case1.contains( "http://localhost:8080/css/CDF-CSS.css" ) );
-    Assert.assertTrue( case2.contains( "/js/CDF.js" ) && case2.contains( "/css/CDF-CSS.css" ) );
-    Assert.assertTrue( case3.contains( "http://testRoot/js/CDF.js" )
+    assertTrue( case2.contains( "/js/CDF.js" ) && case2.contains( "/css/CDF-CSS.css" ) );
+    assertTrue( case3.contains( "http://testRoot/js/CDF.js" )
       && case3.contains( "http://testRoot/css/CDF-CSS.css" ) );
-    Assert.assertTrue( case4.contains( "/js/CDF.js" ) && case4.contains( "/css/CDF-CSS.css" ) );
-    Assert.assertTrue( case5.contains( "https://testRoot/js/CDF.js" )
+    assertTrue( case4.contains( "/js/CDF.js" ) && case4.contains( "/css/CDF-CSS.css" ) );
+    assertTrue( case5.contains( "https://testRoot/js/CDF.js" )
       && case5.contains( "https://testRoot/css/CDF-CSS.css" ) );
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
@@ -252,22 +241,22 @@ public class RenderApiTest {
     // with requirejs dashboards
 
     String reqCase1 = doRenderCase( DUMMY_REQUIRE_WCDF );
-    Assert.assertTrue( reqCase1.contains( "new Dashboard({})" ) );
+    assertTrue( reqCase1.contains( "new Dashboard({})" ) );
 
     String requireContextConfiguration = "{\"context\": \"test\"}";
     RenderApiForTesting.cdfRequireContextConfiguration = requireContextConfiguration;
     String reqCase2 = doRenderCase( DUMMY_REQUIRE_WCDF );
-    Assert.assertTrue( reqCase2.contains( "new Dashboard(" + requireContextConfiguration + ")" ) );
+    assertTrue( reqCase2.contains( "new Dashboard(" + requireContextConfiguration + ")" ) );
 
     // with legacy dashboards
 
     String legacyCase1 = doRenderCase( DUMMY_WCDF );
-    Assert.assertTrue( legacyCase1.contains( "Dashboards.init();" ) );
+    assertTrue( legacyCase1.contains( "Dashboards.init();" ) );
 
     String cdfContextConfiguration = "{\"context\": \"test\"}";
     RenderApiForTesting.cdfContext = cdfContextConfiguration;
     String legacyCase2 = doRenderCase( DUMMY_WCDF );
-    Assert.assertTrue( legacyCase2.contains( cdfContextConfiguration ) );
+    assertTrue( legacyCase2.contains( cdfContextConfiguration ) );
 
     resetContextConfigurations();
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
@@ -278,28 +267,28 @@ public class RenderApiTest {
     String alias = "test_alias";
     String case1 = doGetDashboardCase( "" );
     String case2 = doGetDashboardCase( alias );
-    Assert.assertTrue( case1.contains( "$.extend(extendedOpts, {}, opts);" ) );
-    Assert.assertTrue( case2.contains( "$.extend(extendedOpts, {}, opts);" ) );
+    assertTrue( case1.contains( "$.extend(extendedOpts, {}, opts);" ) );
+    assertTrue( case2.contains( "$.extend(extendedOpts, {}, opts);" ) );
     // empty alias, so layout will contain the alias tag to be replaced
-    Assert.assertTrue( case1.contains( CdeConstants.DASHBOARD_ALIAS_TAG ) );
+    assertTrue( case1.contains( CdeConstants.DASHBOARD_ALIAS_TAG ) );
     // alias provided, layout will not contain the alias tag, it will instead contain the alias provided
-    Assert.assertFalse( case2.contains( CdeConstants.DASHBOARD_ALIAS_TAG ) );
-    Assert.assertTrue( case2.contains( alias ) );
+    assertFalse( case2.contains( CdeConstants.DASHBOARD_ALIAS_TAG ) );
+    assertTrue( case2.contains( alias ) );
 
     String requireContextConfiguration = "{\"context\": \"test\"}";
     RenderApiForTesting.cdfRequireContextConfiguration = requireContextConfiguration;
     String case3 = doGetDashboardCase( "" );
     String case4 = doGetDashboardCase( alias );
-    Assert.assertTrue( case3.contains( "$.extend(extendedOpts, " + requireContextConfiguration + ", opts);" ) );
-    Assert.assertTrue( case4.contains( "$.extend(extendedOpts, " + requireContextConfiguration + ", opts);" ) );
+    assertTrue( case3.contains( "$.extend(extendedOpts, " + requireContextConfiguration + ", opts);" ) );
+    assertTrue( case4.contains( "$.extend(extendedOpts, " + requireContextConfiguration + ", opts);" ) );
 
     String cdfRequireContext = "cdf-require-context-for-tests";
     RenderApiForTesting.cdfRequireContext = cdfRequireContext;
     String case5 = doGetDashboardCase( "" );
     String case6 = doGetDashboardCase( alias );
     // cdfRequireContext will not be injected in getDashboard
-    Assert.assertEquals( case3, case5 );
-    Assert.assertEquals( case4, case6 );
+    assertEquals( case3, case5 );
+    assertEquals( case4, case6 );
 
     resetContextConfigurations();
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
@@ -308,42 +297,42 @@ public class RenderApiTest {
   @Test
   public void testGetDashboardParameters() throws IOException {
     MockHttpServletRequest servletRequest =
-      new MockHttpServletRequest( "pentaho-cdf-dd/api/renderer", (Map) new HashMap<String, String[]>() );
+      new MockHttpServletRequest( "pentaho-cdf-dd/api/renderer", new HashMap<>() );
     MockHttpServletResponse servletResponse =
       new MockHttpServletResponse( new ObjectOutputStream( new ByteArrayOutputStream() ) );
     servletResponse.setContentType( null );
     servletResponse.setCharacterEncoding( null );
-    Assert.assertEquals( servletResponse.getContentType(), null );
-    Assert.assertEquals( servletResponse.getCharacterEncoding(), null );
+    assertNull( servletResponse.getContentType() );
+    assertNull( servletResponse.getCharacterEncoding());
 
     String parameters = renderApi.getDashboardParameters( DUMMY_WCDF, false, false, servletRequest, servletResponse );
     String expected = "{\"parameters\":[\"dummyComponent\"]}";
-    Assert.assertEquals( "Dummy Dashboard has a SimpleParameter - dummyComponent",
+    assertEquals( "Dummy Dashboard has a SimpleParameter - dummyComponent",
       expected, parameters.replace( " ", "" ).replace( "\n", "" ) );
 
-    Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
-    Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
+    assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
   @Test
   public void testGetDashboardDataSources() throws IOException, JSONException {
     MockHttpServletRequest servletRequest =
-      new MockHttpServletRequest( "pentaho-cdf-dd/api/renderer", (Map) new HashMap<String, String[]>() );
+      new MockHttpServletRequest( "pentaho-cdf-dd/api/renderer", new HashMap<>() );
     MockHttpServletResponse servletResponse =
       new MockHttpServletResponse( new ObjectOutputStream( new ByteArrayOutputStream() ) );
     servletResponse.setContentType( null );
     servletResponse.setCharacterEncoding( null );
-    Assert.assertEquals( servletResponse.getContentType(), null );
-    Assert.assertEquals( servletResponse.getCharacterEncoding(), null );
+    assertNull( servletResponse.getContentType() );
+    assertNull( servletResponse.getCharacterEncoding() );
 
     String parameters = renderApi.getDashboardDatasources( DUMMY_WCDF, false, servletRequest, servletResponse );
     String expected = "{\"dataSources\":[\"dummyDatasource\"]}";
-    Assert.assertEquals( "Dummy Dashboard has a data source - dummyDatasource",
+    assertEquals( "Dummy Dashboard has a data source - dummyDatasource",
       expected, parameters.replace( " ", "" ).replace( "\n", "" ) );
 
-    Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
-    Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+    assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
+    assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 
@@ -351,7 +340,7 @@ public class RenderApiTest {
   public void testEditDashboardFailPermissions() throws Exception {
     cdeEnvironmentForTests.setCanCreateContent( false );
     String expected = "This functionality is limited to users with permission 'Create Content'";
-    Assert.assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
+    assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
 
     IUserContentAccess testPermContentAccess = mock( IUserContentAccess.class );
     when( testPermContentAccess.fileExists( anyString() ) ).thenReturn( true );
@@ -359,7 +348,7 @@ public class RenderApiTest {
     cdeEnvironmentForTests.setMockedContentAccess( testPermContentAccess );
     cdeEnvironmentForTests.setCanCreateContent( true );
     expected = "Access Denied or file not found - /path/to/dashboard.wcdf";
-    Assert.assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
+    assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
 
     cdeEnvironmentForTests.setMockedContentAccess( mockedUserContentAccess );
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
@@ -369,7 +358,7 @@ public class RenderApiTest {
   public void testNewDashboardFailPermissions() throws Exception {
     cdeEnvironmentForTests.setCanCreateContent( false );
     String expected = "This functionality is limited to users with permission 'Create Content'";
-    Assert.assertEquals( expected, renderApi.newDashboard( "", false, false, null, null ) );
+    assertEquals( expected, renderApi.newDashboard( "", false, false, null, null ) );
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
 

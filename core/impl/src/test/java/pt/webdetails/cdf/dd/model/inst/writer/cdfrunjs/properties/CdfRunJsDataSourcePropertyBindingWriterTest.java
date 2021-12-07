@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,7 +13,6 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties;
 
-import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +23,8 @@ import pt.webdetails.cdf.dd.model.meta.DashboardType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -31,7 +32,7 @@ import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.AttributeName.
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyName.MDX_QUERY;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource.PropertyName.STREAMING_TYPE;
 
-public class CdfRunJsDataSourcePropertyBindingWriterTest extends TestCase {
+public class CdfRunJsDataSourcePropertyBindingWriterTest {
 
   private CdfRunJsDataSourcePropertyBindingWriter dataSourcePropertyBindingWriter;
   private StringBuilder out;

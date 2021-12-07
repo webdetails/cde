@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,8 +13,6 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -32,10 +30,23 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.*;
-import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_GET_MESSAGES_PATH;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_NORMALIZE_ALIAS;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_PROCESS_COMPONENTS;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_RENDERER;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_SETUP_DOM;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_START_EMPTY_ALIAS;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DASHBOARD_MODULE_STOP;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DEFINE_START;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.DEFINE_STOP;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.NEWLINE;
 
-public class CdfRunJsDashboardModuleWriterTest extends TestCase {
+public class CdfRunJsDashboardModuleWriterTest {
 
   private static final String MESSAGES_PATH = "/test/repos/:path:to:dash.wcdf/";
 
@@ -75,7 +86,7 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
     doReturn( "jsFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "jsFileRsrcPath1" );
     doReturn( "cssFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "cssFileRsrcPath1" );
 
-    Map<String, String> testComponentModules = new LinkedHashMap<String, String>();
+    Map<String, String> testComponentModules = new LinkedHashMap<>();
     testComponentModules.put( "TestComponent1", "cdf/components/TestComponent1" );
     testComponentModules.put( "TestComponent2", "cdf/components/TestComponent2" );
 
@@ -83,8 +94,8 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
     doReturn( testComponentModules ).when( dashboardWriterSpy )
       .writeFileResourcesRequireJSPathConfig( out, testResources, context );
 
-    ArrayList<String> moduleIds = new ArrayList<String>();
-    ArrayList<String> moduleClassNames = new ArrayList<String>();
+    ArrayList<String> moduleIds = new ArrayList<>();
+    ArrayList<String> moduleClassNames = new ArrayList<>();
 
     dashboardWriterSpy.addDefaultDashboardModules( moduleIds, moduleClassNames );
     moduleIds.add( "cdf/components/TestComponent1" );
@@ -107,7 +118,6 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
       .append( MessageFormat.format( DEFINE_START,
         StringUtils.join( moduleIds, "', '" ),
         StringUtils.join( moduleClassNames, ", " ) ) )
-      .append( "" )
       .append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, layout ) )
       .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, "\" + this._alias + \"" ) )
       .append( MessageFormat.format( DASHBOARD_MODULE_GET_MESSAGES_PATH, MESSAGES_PATH ) )
@@ -118,7 +128,7 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
       .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
       .append( DEFINE_STOP );
 
-    Assert.assertEquals(
+    assertEquals(
       dashboardResult.toString(),
       dashboardWriterSpy
         .wrapRequireModuleDefinitions( layout, testResources, testComponentModules, content, context ) );
@@ -138,7 +148,7 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
 
     dashboardWriterSpy.writeRequireJsExecutionFunction( out, moduleIds, moduleClassNames );
 
-    Assert.assertEquals(
+    assertEquals(
       MessageFormat.format( DEFINE_START,
         "cdf/components/TestComponent1', 'cde/resources/jsFileRsrc1', 'css!cde/resources/cssFileRsrc1",
         "TestComponent1, jsFileRsrc1" ),
@@ -151,12 +161,12 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
       ":path.cdfde:to.wcdf:file", ":path.cdfde/to.wcdf:file" };
     for ( int i = 0; i < paths.length; i++ ) {
       // everything that ends in .cdfde will now end in .wcdf
-      Assert.assertEquals(
+      assertEquals(
         dashboardWriterSpy.replaceCdfdeExtension( paths[ i ] + ".cdfde" ), paths[ i ] + ".wcdf" );
     }
     for ( int i = 0; i < paths.length; i++ ) {
       // if it doesn't end in .cdfde, it will just be returned the same
-      Assert.assertEquals(
+      assertEquals(
         dashboardWriterSpy.replaceCdfdeExtension( paths[ i ] ), paths[ i ] );
     }
   }

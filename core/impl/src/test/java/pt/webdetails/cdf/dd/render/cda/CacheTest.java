@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,24 +13,21 @@
 
 package pt.webdetails.cdf.dd.render.cda;
 
-
-import junit.framework.TestCase;
-
 import org.apache.commons.jxpath.JXPathContext;
 import org.json.JSONException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.HashMap;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-public class CacheTest extends TestCase {
+public class CacheTest {
 
   private JXPathContext context;
   private Cache cacheRenderer;
@@ -48,7 +45,7 @@ public class CacheTest extends TestCase {
     cache = mock( Element.class );
     key = mock( Element.class );
     doc = mock( Document.class );
-    HashMap<String, Object> map = new HashMap<String, Object>();
+    HashMap<String, Object> map = new HashMap<>();
     map.put( "value", "true" );
     cacheRenderer.setDefinition( map );
 

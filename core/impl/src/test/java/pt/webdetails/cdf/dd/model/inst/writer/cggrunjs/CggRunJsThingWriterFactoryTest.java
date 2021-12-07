@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -14,7 +14,6 @@
 package pt.webdetails.cdf.dd.model.inst.writer.cggrunjs;
 
 
-import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,10 +24,13 @@ import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.meta.GenericComponentType;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
-public class CggRunJsThingWriterFactoryTest extends TestCase {
+public class CggRunJsThingWriterFactoryTest {
 
   private CggRunJsThingWriterFactoryForTest cggRunJsThingWriterFactory;
   private GenericComponentType meta;
@@ -44,17 +46,12 @@ public class CggRunJsThingWriterFactoryTest extends TestCase {
     meta = null;
   }
 
-  @Test
-  public void testNullValueThing() {
+  @Test( expected = IllegalArgumentException.class )
+  public void testNullValueThing() throws Exception {
     cggRunJsThingWriterFactory = new CggRunJsThingWriterFactoryForTest( "" );
-    try {
-      cggRunJsThingWriterFactory.getWriter( null );
-      fail( "IllegalArgumentException should have been thrown" );
-    } catch ( IllegalArgumentException e ) {
-      assertTrue( true );
-    } catch ( UnsupportedThingException e ) {
-      fail( "IllegalArgumentException should have been thrown" );
-    }
+
+    // An IllegalArgumentException should be thrown here
+    cggRunJsThingWriterFactory.getWriter( null );
   }
 
   @Test
@@ -69,8 +66,7 @@ public class CggRunJsThingWriterFactoryTest extends TestCase {
 
       IThingWriter iWriter = cggRunJsThingWriterFactory.getWriter( thing );
       assertTrue( iWriter instanceof CggRunJsGenericComponentWriter );
-      CggRunJsGenericComponentWriter writer = (CggRunJsGenericComponentWriter) iWriter;
-      assertFalse( writer.canWrite() );
+      assertFalse( ((CggRunJsGenericComponentWriter) iWriter).canWrite() );
 
     } catch ( IllegalArgumentException e ) {
       fail( "IllegalArgumentException should not have been thrown" );
@@ -89,11 +85,9 @@ public class CggRunJsThingWriterFactoryTest extends TestCase {
     doReturn( "true" ).when( meta ).tryGetAttributeValue( "cdwSupport", "false" );
 
     try {
-
       IThingWriter iWriter = cggRunJsThingWriterFactory.getWriter( thing );
       assertTrue( iWriter instanceof CggRunJsGenericComponentWriter );
-      CggRunJsGenericComponentWriter writer = (CggRunJsGenericComponentWriter) iWriter;
-      assertTrue( writer.canWrite() );
+      assertTrue( ((CggRunJsGenericComponentWriter) iWriter).canWrite() );
 
     } catch ( IllegalArgumentException e ) {
       fail( "IllegalArgumentException should not have been thrown" );
@@ -110,7 +104,6 @@ public class CggRunJsThingWriterFactoryTest extends TestCase {
     doReturn( KnownThingKind.Component ).when( thing ).getKind();
 
     try {
-
       IThingWriter iWriter = cggRunJsThingWriterFactory.getWriter( thing );
       assertTrue( iWriter instanceof CggRunJsDataSourceComponentWriter );
 
@@ -129,7 +122,6 @@ public class CggRunJsThingWriterFactoryTest extends TestCase {
     doReturn( KnownThingKind.Dashboard ).when( thing ).getKind();
 
     try {
-
       IThingWriter iWriter = cggRunJsThingWriterFactory.getWriter( thing );
       assertTrue( iWriter instanceof CggRunJsDashboardWriter );
 
@@ -140,9 +132,9 @@ public class CggRunJsThingWriterFactoryTest extends TestCase {
     }
   }
 
-  private class CggRunJsThingWriterFactoryForTest extends CggRunJsThingWriterFactory {
+  private static class CggRunJsThingWriterFactoryForTest extends CggRunJsThingWriterFactory {
 
-    private String compId;
+    private final String compId;
 
     public CggRunJsThingWriterFactoryForTest( String id ) {
       this.compId = id;

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,8 +13,6 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,13 +21,14 @@ import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
-import pt.webdetails.cdf.dd.model.meta.*;
+import pt.webdetails.cdf.dd.model.meta.GenericComponentType;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.INDENT1;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.NEWLINE;
 
-public class CdfRunJsGenericComponentWriterTest extends TestCase {
+public class CdfRunJsGenericComponentWriterTest {
 
   private static CdfRunJsGenericComponentWriter genericComponentWriter;
   private static CdfRunJsDashboardWriteContext context;
@@ -80,8 +79,6 @@ public class CdfRunJsGenericComponentWriterTest extends TestCase {
         .append( INDENT1 ).append( "name: \"test\"" ).append( NEWLINE )
         .append( "});" ).append( NEWLINE );
 
-    Assert.assertEquals( expectedReturnValue.toString(), out.toString() );
-
+    assertEquals( expectedReturnValue.toString(), out.toString() );
   }
-
 }

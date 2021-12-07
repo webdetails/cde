@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -21,7 +21,6 @@ import pt.webdetails.cdf.dd.CdeSettings;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
@@ -49,7 +48,7 @@ public class CdfDDSettingsForTesting extends CdeSettings.CdfDDSettings {
     InputStream input = null;
 
     try {
-      input = new FileInputStream( new File( SETTINGS_XML ) );
+      input = new FileInputStream( SETTINGS_XML );
       SAXReader reader = new SAXReader();
       settings = reader.read( input );
       return true;
