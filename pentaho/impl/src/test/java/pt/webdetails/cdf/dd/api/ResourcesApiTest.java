@@ -36,10 +36,9 @@ import pt.webdetails.cpf.repository.api.IBasicFile;
 
 import javax.ws.rs.core.Response;
 
-@PowerMockIgnore( "jdk.internal.reflect.*" )
 @RunWith( PowerMockRunner.class )
 @PrepareForTest( { PentahoSystem.class, Utils.class } )
-@PowerMockIgnore({"jdk.internal.reflect.*"})
+@PowerMockIgnore( "jdk.internal.reflect.*" )
 public class ResourcesApiTest {
 
   private ResourcesApi resourcesApi;

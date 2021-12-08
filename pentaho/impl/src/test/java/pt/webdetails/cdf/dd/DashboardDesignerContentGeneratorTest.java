@@ -45,10 +45,9 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-@PowerMockIgnore( "jdk.internal.reflect.*" )
 @RunWith( PowerMockRunner.class )
 @PrepareForTest( { PentahoSystem.class, Utils.class, XSSHelper.class, CdeEnvironment.class } )
-@PowerMockIgnore({"jdk.internal.reflect.*"})
+@PowerMockIgnore( "jdk.internal.reflect.*" )
 public class DashboardDesignerContentGeneratorTest {
 
   private static final String PLUGIN_NAME = "pentaho-cdf-dd";
