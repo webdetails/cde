@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-plugin-assemblies</artifactId>
-    <version>9.3.0.0-SNAPSHOT</version>
+    <version>9.3.0.0-10</version>
   </parent>
 
   <artifactId>cde-renderer-assembly</artifactId>
@@ -25,8 +25,8 @@
   <properties>
     <assembly.tarLongFileMode>posix</assembly.tarLongFileMode>
 
-    <pentaho-osgi-bundles.version>9.3.0.0-SNAPSHOT</pentaho-osgi-bundles.version>
-    <common-ui.version>9.3.0.0-SNAPSHOT</common-ui.version>
+    <pentaho-osgi-bundles.version>9.3.0.0-10</pentaho-osgi-bundles.version>
+    <common-ui.version>9.3.0.0-10</common-ui.version>
   </properties>
 
 </project>

@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.pentaho</groupId>
     <artifactId>pentaho-ce-bundle-parent-pom</artifactId>
-    <version>9.3.0.0-SNAPSHOT</version>
+    <version>9.3.0.0-10</version>
   </parent>
 
   <groupId>org.pentaho.ctools</groupId>
@@ -45,11 +45,11 @@
     <global.require.file>cde-require-js-cfg.js</global.require.file>
     <requirejs.config.files.pattern>**/*-require-js-cfg.js</requirejs.config.files.pattern>
 
-    <pentaho-cdf-plugin.version>9.3.0.0-SNAPSHOT</pentaho-cdf-plugin.version>
-    <pentaho-cpf-plugin.version>9.3.0.0-SNAPSHOT</pentaho-cpf-plugin.version>
-    <pentaho-json.version>9.3.0.0-SNAPSHOT</pentaho-json.version>
-    <mondrian.version>9.3.0.0-SNAPSHOT</mondrian.version>
-    <platform.version>9.3.0.0-SNAPSHOT</platform.version>
+    <pentaho-cdf-plugin.version>9.3.0.0-10</pentaho-cdf-plugin.version>
+    <pentaho-cpf-plugin.version>9.3.0.0-10</pentaho-cpf-plugin.version>
+    <pentaho-json.version>9.3.0.0-10</pentaho-json.version>
+    <mondrian.version>9.3.0.0-10</mondrian.version>
+    <platform.version>9.3.0.0-10</platform.version>
 
     <commons-io.version>1.4</commons-io.version>
     <commons-lang.version>2.6</commons-lang.version>
