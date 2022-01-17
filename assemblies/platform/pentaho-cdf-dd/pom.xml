@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-plugin-assemblies-platform</artifactId>
-    <version>9.3.0.0-SNAPSHOT</version>
+    <version>9.3.0.0-25</version>
   </parent>
   <artifactId>pentaho-cdf-dd</artifactId>
   <packaging>pom</packaging>
@@ -45,7 +44,8 @@
           <groupId>*</groupId>
         </exclusion>
       </exclusions>
-    </dependency><dependency>
+    </dependency>
+<dependency>
     <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-webclient-impls-pentaho</artifactId>
     <version>${project.version}</version>
@@ -133,22 +133,20 @@
             </goals>
             <configuration>
               <target>
-                <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="maven.compile.classpath"/>
+                <taskdef classpathref="maven.compile.classpath" resource="net/sf/antcontrib/antlib.xml"/>
                 <property file="${project.build.directory}/classes/editor.includes.properties"/>
                 <!-- JavaScript -->
-                <touch file='${project.build.directory}/classes/resources/scripts.html'/>
-                <for list='${scripts}' param='filename'>
+                <touch file="${project.build.directory}/classes/resources/scripts.html"/>
+                <for list="${scripts}" param="filename">
                   <sequential>
-                    <echo file='${project.build.directory}/classes/resources/scripts.html'
-                          append='true'>&lt;script language="javascript" type="text/javascript" src="#{WEBAPP_PATH}@{filename}"/&gt;&lt;/script&gt;${line.separator}</echo>
+                    <echo append="true" file="${project.build.directory}/classes/resources/scripts.html">&lt;script language="javascript" type="text/javascript" src="#{WEBAPP_PATH}@{filename}"/&gt;&lt;/script&gt;${line.separator}</echo>
                   </sequential>
                 </for>
                 <!-- CSS -->
-                <touch file='${project.build.directory}/classes/resources/styles.html'/>
-                <for list='${styles}' param='filename'>
+                <touch file="${project.build.directory}/classes/resources/styles.html"/>
+                <for list="${styles}" param="filename">
                   <sequential>
-                    <echo file='${project.build.directory}/classes/resources/styles.html'
-                          append='true'>&lt;link href="#{WEBAPP_PATH}@{filename}" rel="stylesheet" type="text/css"/&gt;${line.separator}</echo>
+                    <echo append="true" file="${project.build.directory}/classes/resources/styles.html">&lt;link href="#{WEBAPP_PATH}@{filename}" rel="stylesheet" type="text/css"/&gt;${line.separator}</echo>
                   </sequential>
                 </for>
               </target>
