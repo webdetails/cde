@@ -68,7 +68,7 @@ define([
           });
       } else {
         myself.synchronous(function() {
-          ph.html('<img src="' + url + '?' + $.param(data) + '" width="' + myself.width + '" height="' + myself.height + '"/>');
+          ph.html('<img src="' + url + '?' + $.param(data, /* traditional */true) + '" width="' + myself.width + '" height="' + myself.height + '"/>');
         });
       }
     },
