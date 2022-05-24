@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -12,26 +12,12 @@
  */
 package pt.webdetails.cdf.dd.api;
 
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static javax.ws.rs.core.MediaType.TEXT_HTML;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
-
-import java.util.Map;
-import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
+import org.owasp.encoder.Encode;
 import org.pentaho.platform.api.engine.ILogger;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
@@ -39,8 +25,8 @@ import org.pentaho.platform.engine.core.solution.SimpleParameterProvider;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.util.logging.SimpleLogger;
 import pt.webdetails.cdf.dd.CdeConstants;
-import pt.webdetails.cdf.dd.CdeConstants.MethodParams;
 import pt.webdetails.cdf.dd.CdeConstants.DashboardSupportedTypes;
+import pt.webdetails.cdf.dd.CdeConstants.MethodParams;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
@@ -53,14 +39,30 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cdf.dd.util.CorsUtil;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cdf.dd.util.CorsUtil;
 import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.localization.MessageBundlesHelper;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import java.util.Map;
+import java.util.UUID;
+
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.TEXT_HTML;
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
+import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
 
 @Path( "pentaho-cdf-dd/api/renderer" )
 public class RenderApi {
@@ -103,6 +105,7 @@ public class RenderApi {
     path = decodeAndEscape( path );
     file = decodeAndEscape( file );
     scheme = decodeAndEscape( scheme );
+    root = processRoot( root );
 
     String schemeToUse = "";
     if ( !inferScheme ) {
@@ -136,6 +139,7 @@ public class RenderApi {
     path = decodeAndEscape( path );
     file = decodeAndEscape( file );
     scheme = decodeAndEscape( scheme );
+    root = processRoot( root );
 
     String schemeToUse = "";
     if ( !inferScheme ) {
@@ -172,6 +176,7 @@ public class RenderApi {
     scheme = decodeAndEscape( scheme );
     view = decodeAndEscape( view );
     style = decodeAndEscape( style );
+    root = processRoot( root );
 
     String schemeToUse = "";
     if ( !inferScheme ) {
@@ -263,6 +268,7 @@ public class RenderApi {
     scheme = decodeAndEscape( scheme );
     style = decodeAndEscape( style );
     alias = decodeAndEscape( alias );
+    root = processRoot( root );
 
     final String schemeToUse;
     if ( !inferScheme ) {
@@ -592,9 +598,16 @@ public class RenderApi {
     return InterPluginBroker.getCdfContext( filePath, action, view, requestParams );
   }
 
-  private String decodeAndEscape( String path ) {
+  private static String decodeAndEscape( String path ) {
     final XSSHelper helper = XSSHelper.getInstance();
 
     return helper.escape( Utils.getURLDecoded( path ) );
+  }
+
+  private static String processRoot( String root ) {
+    // Despite their "there's no valid use" justification for the deprecation,
+    // in our case it seems safe to use. A protocol such as "http" is always prepended,
+    // mitigating any attempts to execute code via a `javascript:` protocol.
+    return StringUtils.isNotEmpty( root ) ? Encode.forUri( root ) : "";
   }
 }
