@@ -40,6 +40,9 @@ public class CdeConstants {
   public static final String PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS = "settings/resources/downloadable-formats";
   public static final String PARAMETER_XSS_ESCAPING = "settings/parameter-xss-escaping";
 
+  // PPP-4798 - Stored Cross-Site Scripting in CDE Dashboards
+  public static final String PLUGIN_SETTINGS_ALLOW_SAVE_REPORT = "settings/allow-save-report";
+
   /**
    * Inner paths relative to plugin repository dir
    */
@@ -313,10 +316,10 @@ public class CdeConstants {
         public static final String FILE = "file";
       }
 
-      /**
-       * This class contains the constant values for data source properties.
-       */
       public static class PropertyValue {
+        /**
+         * This class contains the constant values for data source properties.
+         */
         public static final String CPK_QUERY_TYPE = "cpk";
         public static final String MDX_QUERY_TYPE = "mdx";
         public static final String SQL_QUERY_TYPE = "sql";
