@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2022 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -293,8 +293,8 @@ public class SyncronizerApi { //TODO: synchronizer?
     response.setContentType( APPLICATION_JSON );
     response.setCharacterEncoding( CharsetHelper.getEncoding() );
 
-    if( !isAllowSaveReport() ) {
-      String msg = "You have disabled this feature on settings.xml. Please set allow-save-report property to true.";
+    if( !isAllowSaveDashboard() ) {
+      String msg = "You have disabled this feature on settings.xml. Please set allow-save-dashboard property to true.";
       logger.warn( msg );
       return JsonUtils.getJsonResult( false, msg );
     }
@@ -361,9 +361,9 @@ public class SyncronizerApi { //TODO: synchronizer?
   }
 
   // PPP-4798
-  protected boolean isAllowSaveReport() {
+  protected boolean isAllowSaveDashboard() {
     return Boolean.parseBoolean(PentahoSystem.get( IPluginResourceLoader.class, null )
-            .getPluginSetting( SyncronizerApi.class, CdeConstants.PLUGIN_SETTINGS_ALLOW_SAVE_REPORT, "true" ));
+            .getPluginSetting( SyncronizerApi.class, CdeConstants.PLUGIN_SETTINGS_ALLOW_SAVE_DASHBOARD, "true" ));
   }
 
   //useful to mock message bundle when unit testing SyncronizerApi

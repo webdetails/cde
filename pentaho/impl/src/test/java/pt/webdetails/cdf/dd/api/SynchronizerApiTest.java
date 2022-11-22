@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2022 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -88,7 +88,7 @@ public class SynchronizerApiTest {
   @Before
   public void beforeEach() throws Exception {
     synchronizerApi = spy( new SynchronizerApiForTesting() );
-    doReturn(true).when(synchronizerApi).isAllowSaveReport();
+    doReturn(true).when(synchronizerApi).isAllowSaveDashboard();
 
     servletRequest = new MockHttpServletRequest( "/pentaho-cdf/api/views", new HashMap<>() );
 
@@ -199,7 +199,7 @@ public class SynchronizerApiTest {
   @Test
   public void testSaveDashboardWhenAllowSaveDashboardIsFalse() throws Exception {
 
-    doReturn(false).when(synchronizerApi).isAllowSaveReport();
+    doReturn(false).when(synchronizerApi).isAllowSaveDashboard();
     operation = SyncronizerApi.OPERATION_SAVE;
 
     assertNull( servletResponse.getContentType() );
