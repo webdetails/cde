@@ -50,4 +50,6 @@
   <cross-domain-resources-whitelist><!--intentionally left blank --></cross-domain-resources-whitelist>
   <!-- A flag to disable reflected XSS prevention for the unpredicted cases -->
   <parameter-xss-escaping>true</parameter-xss-escaping>
+  <!-- A flag to disable save dashboard, this disables API and user interface. Check PPP-4798 for more info  -->
+  <allow-save-dashboard>true</allow-save-dashboard>
 </settings>

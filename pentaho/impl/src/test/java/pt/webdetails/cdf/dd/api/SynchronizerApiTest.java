@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2022 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -42,11 +42,13 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 
 public class SynchronizerApiTest {
 
@@ -86,6 +88,7 @@ public class SynchronizerApiTest {
   @Before
   public void beforeEach() throws Exception {
     synchronizerApi = spy( new SynchronizerApiForTesting() );
+    doReturn(true).when(synchronizerApi).isAllowSaveDashboard();
 
     servletRequest = new MockHttpServletRequest( "/pentaho-cdf/api/views", new HashMap<>() );
 
@@ -192,4 +195,20 @@ public class SynchronizerApiTest {
 
     verify( mockHelper, atLeastOnce() ).escape( anyString() );
   }
+
+  @Test
+  public void testSaveDashboardWhenAllowSaveDashboardIsFalse() throws Exception {
+
+    doReturn(false).when(synchronizerApi).isAllowSaveDashboard();
+    operation = SyncronizerApi.OPERATION_SAVE;
+
+    assertNull( servletResponse.getContentType() );
+    assertNull( servletResponse.getCharacterEncoding() );
+
+    synchronizerApi.saveDashboard( file, title, description, cdfStructure, operation, servletResponse );
+    assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
+    assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
+    verify( mockHelper, times(0) ).escape( anyString() );
+  }
+
 }

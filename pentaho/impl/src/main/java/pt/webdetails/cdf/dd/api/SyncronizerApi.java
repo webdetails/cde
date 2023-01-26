@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2022 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -42,6 +42,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
+import org.pentaho.platform.api.engine.IPluginResourceLoader;
+import org.pentaho.platform.engine.core.system.PentahoSystem;
+import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.DashboardDesignerException;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.cdf.CdfStyles;
@@ -58,13 +61,13 @@ public class SyncronizerApi { //TODO: synchronizer?
 
   private static final Log logger = LogFactory.getLog( SyncronizerApi.class );
 
-  private static final String OPERATION_LOAD = "load";
-  private static final String OPERATION_DELETE = "delete";
-  private static final String OPERATION_DELETE_PREVIEW = "deletepreview";
-  private static final String OPERATION_SAVE = "save";
-  private static final String OPERATION_SAVE_AS = "saveas";
-  private static final String OPERATION_NEW_FILE = "newfile";
-  private static final String OPERATION_SAVE_SETTINGS = "savesettings";
+  protected static final String OPERATION_LOAD = "load";
+  protected static final String OPERATION_DELETE = "delete";
+  protected static final String OPERATION_DELETE_PREVIEW = "deletepreview";
+  protected static final String OPERATION_SAVE = "save";
+  protected static final String OPERATION_SAVE_AS = "saveas";
+  protected static final String OPERATION_NEW_FILE = "newfile";
+  protected static final String OPERATION_SAVE_SETTINGS = "savesettings";
 
   private static final String GET_RESOURCE = "api/resources/get?resource=";
   /**
@@ -287,6 +290,15 @@ public class SyncronizerApi { //TODO: synchronizer?
                                @FormDataParam( MethodParams.OPERATION ) String operation,
                                @Context HttpServletResponse response ) throws Exception {
 
+    response.setContentType( APPLICATION_JSON );
+    response.setCharacterEncoding( CharsetHelper.getEncoding() );
+
+    if( !isAllowSaveDashboard() ) {
+      String msg = "You have disabled this feature on settings.xml. Please set allow-save-dashboard property to true.";
+      logger.warn( msg );
+      return JsonUtils.getJsonResult( false, msg );
+    }
+
     final XSSHelper xssHelper = XSSHelper.getInstance();
 
     file = xssHelper.escape( file );
@@ -294,9 +306,6 @@ public class SyncronizerApi { //TODO: synchronizer?
     description = xssHelper.escape( description );
     cdfStructure = xssHelper.escape( cdfStructure );
     operation = xssHelper.escape( operation );
-
-    response.setContentType( APPLICATION_JSON );
-    response.setCharacterEncoding( CharsetHelper.getEncoding() );
 
     boolean isPreview = false;
 
@@ -349,6 +358,12 @@ public class SyncronizerApi { //TODO: synchronizer?
 
       throw e;
     }
+  }
+
+  // PPP-4798
+  protected boolean isAllowSaveDashboard() {
+    return Boolean.parseBoolean(PentahoSystem.get( IPluginResourceLoader.class, null )
+            .getPluginSetting( SyncronizerApi.class, CdeConstants.PLUGIN_SETTINGS_ALLOW_SAVE_DASHBOARD, "true" ));
   }
 
   //useful to mock message bundle when unit testing SyncronizerApi

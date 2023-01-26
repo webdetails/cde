@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2022 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -39,6 +39,9 @@ public class CdeConstants {
   public static final String PLUGIN_SETTINGS_CROSS_DOMAIN_RESOURCES_WHITELIST = "settings/cross-domain-resources-whitelist";
   public static final String PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS = "settings/resources/downloadable-formats";
   public static final String PARAMETER_XSS_ESCAPING = "settings/parameter-xss-escaping";
+
+  // PPP-4798 - Stored Cross-Site Scripting in CDE Dashboards
+  public static final String PLUGIN_SETTINGS_ALLOW_SAVE_DASHBOARD = "settings/allow-save-dashboard";
 
   /**
    * Inner paths relative to plugin repository dir
