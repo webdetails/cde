@@ -54,7 +54,7 @@
     <commons-io.version>1.4</commons-io.version>
     <commons-lang.version>2.6</commons-lang.version>
     <commons-jxpath.version>1.3</commons-jxpath.version>
-    <commons-beanutils.version>1.9.3</commons-beanutils.version>
+    <!--<commons-beanutils.version>1.9.3</commons-beanutils.version>-->
     <commons-collections.version>3.2.2</commons-collections.version>
 
     <jdom.version>1.0</jdom.version>
