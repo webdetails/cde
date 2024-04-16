@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,6 +13,7 @@
 
 package pt.webdetails.cdf.dd.testUtils;
 
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import pt.webdetails.cdf.dd.api.RenderApiTest;
@@ -29,9 +30,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 
@@ -76,10 +76,10 @@ public class ContentAccessFactoryForTests implements IContentAccessFactory {
       return mockedReadAccess;
     }
     IReadAccess readAccess = mock( IReadAccess.class );
-    when( readAccess.listFiles( anyString(), any( IBasicFileFilter.class ), anyInt() ) )
+    when( readAccess.listFiles( any(), Mockito.<IBasicFileFilter>any(), anyInt() ) )
       .thenReturn( listBasicFiles( TEST_RESOURCES + File.separator + s ) );
     try {
-      when( readAccess.getFileInputStream( anyString() ) ).thenAnswer( new Answer<InputStream>() {
+      when( readAccess.getFileInputStream( any() ) ).thenAnswer( new Answer<InputStream>() {
         @Override
         public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {
           return RenderApiTest.getInputStreamFromFileName( (String) invocationOnMock.getArguments()[ 0 ] );

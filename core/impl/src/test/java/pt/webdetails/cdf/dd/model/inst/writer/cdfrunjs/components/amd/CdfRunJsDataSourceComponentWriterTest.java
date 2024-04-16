@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -16,7 +16,6 @@ package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.Component;
@@ -38,8 +37,8 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.DataSource;
@@ -202,8 +201,8 @@ public class CdfRunJsDataSourceComponentWriterTest {
   private PropertyBinding getPropertyBinding( String value ) throws ValidationException {
     PropertyBinding.Builder builder = getBuilder();
     builder.setValue( value );
-    Component component = Mockito.mock( Component.class );
-    MetaModel metaModel = Mockito.mock( MetaModel.class );
+    Component component = mock( Component.class );
+    MetaModel metaModel = mock( MetaModel.class );
     return new PropertyBinding( builder, component, metaModel ) {
       @Override
       public PropertyTypeUsage getPropertyUsage() {

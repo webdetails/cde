@@ -1,5 +1,5 @@
 /*!
- * Copyright 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2018 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.mock;
@@ -46,7 +46,7 @@ public class ResourcesApiTest {
     final String mimeType = "text/plain";
 
     setMaxAge( "1337" );
-    doReturn( createFileMock( filename, extension ) ).when( this.resourcesApi ).getFile( anyString() );
+    doReturn( createFileMock( filename, extension ) ).when( this.resourcesApi ).getFile( any() );
 
     Response actual = this.resourcesApi.resource( filename );
     assertSuccessResponse( actual, filename, mimeType );
@@ -59,7 +59,7 @@ public class ResourcesApiTest {
     final String mimeType = "text/css";
 
     setMaxAge( null );
-    doReturn( createFileMock( filename, extension ) ).when( this.resourcesApi ).getFile( anyString() );
+    doReturn( createFileMock( filename, extension ) ).when( this.resourcesApi ).getFile( any() );
 
     Response actual = this.resourcesApi.resource( filename );
     assertSuccessResponse( actual, filename, mimeType );
@@ -67,7 +67,7 @@ public class ResourcesApiTest {
 
   @Test
   public void testResource_errorResponse() throws Exception {
-    doReturn( null ).when( this.resourcesApi ).getFile( anyString() );
+    doReturn( null ).when( this.resourcesApi ).getFile( any() );
 
     Response actual = this.resourcesApi.resource( "" );
 

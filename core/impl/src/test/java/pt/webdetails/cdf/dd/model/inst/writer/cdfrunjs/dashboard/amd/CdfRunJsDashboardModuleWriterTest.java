@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -31,7 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -58,7 +58,7 @@ public class CdfRunJsDashboardModuleWriterTest {
   public void setUp() throws Exception {
     dashboardWriterSpy =
       spy( new CdfRunJsDashboardModuleWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT ) );
-    doReturn( MESSAGES_PATH ).when( dashboardWriterSpy ).getWcdfReposPath( anyString() );
+    doReturn( MESSAGES_PATH ).when( dashboardWriterSpy ).getWcdfReposPath( any() );
 
     context = mock( CdfRunJsDashboardWriteContext.class );
     doReturn( mock( Dashboard.class ) ).when( context ).getDashboard();

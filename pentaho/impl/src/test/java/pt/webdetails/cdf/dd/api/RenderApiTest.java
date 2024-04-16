@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -19,16 +19,23 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngineForTests;
 import pt.webdetails.cdf.dd.CdeEnvironmentForTests;
+import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.IPluginResourceLocationManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceProvider;
 import pt.webdetails.cdf.dd.extapi.ICdeApiPathProvider;
+import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
+import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
+import pt.webdetails.cdf.dd.model.inst.Component;
+import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.messaging.MockHttpServletRequest;
 import pt.webdetails.cpf.messaging.MockHttpServletResponse;
@@ -58,14 +65,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 
 public class RenderApiTest {
 
@@ -97,23 +104,23 @@ public class RenderApiTest {
 
     //mock IUserContentAccess
     mockedUserContentAccess = mock( IUserContentAccess.class );
-    when( mockedUserContentAccess.fileExists( anyString() ) ).thenReturn( true );
-    when( mockedUserContentAccess.fetchFile( anyString() ) )
+    when( mockedUserContentAccess.fileExists( any() ) ).thenReturn( true );
+    when( mockedUserContentAccess.fetchFile( any() ) )
       .thenAnswer(
         (Answer<IBasicFile>) invocationOnMock -> getBasicFileFromFile(
           new File( (String) invocationOnMock.getArguments()[ 0 ] ) ) );
-    when( mockedUserContentAccess.hasAccess( anyString(), any( FileAccess.class ) ) )
+    when( mockedUserContentAccess.hasAccess( any(), Mockito.<FileAccess>any() ) )
       .thenReturn( true );
-    when( mockedUserContentAccess.getFileInputStream( anyString() ) )
+    when( mockedUserContentAccess.getFileInputStream( any() ) )
       .thenAnswer(
         (Answer<InputStream>) invocationOnMock -> getInputStreamFromFileName(
           (String) invocationOnMock.getArguments()[ 0 ] ) );
 
     //mock IReadAccess
     IReadAccess mockedReadAccess = mock( IReadAccess.class );
-    when( mockedReadAccess.listFiles( anyString(), any( IBasicFileFilter.class ), anyInt() ) )
+    when( mockedReadAccess.listFiles( any(), Mockito.<IBasicFileFilter>any(), anyInt() ) )
       .thenReturn( properties );
-    when( mockedReadAccess.getFileInputStream( anyString() ) ).thenAnswer(
+    when( mockedReadAccess.getFileInputStream( any() ) ).thenAnswer(
       (Answer<InputStream>) invocationOnMock -> getInputStreamFromFileName(
         (String) invocationOnMock.getArguments()[ 0 ] ) );
 
@@ -123,7 +130,7 @@ public class RenderApiTest {
     //mock IPluginResourceLocationManager
     IPluginResourceLocationManager mockedPluginResourceLocationManager =
       mock( IPluginResourceLocationManager.class );
-    when( mockedPluginResourceLocationManager.getStyleResourceLocation( anyString() ) )
+    when( mockedPluginResourceLocationManager.getStyleResourceLocation( any() ) )
       .thenReturn( STYLE_CLEAN );
 
     JSONObject dataSourceDefinition = new JSONObject( "{ \"scriptable_scripting\": {"
@@ -158,7 +165,7 @@ public class RenderApiTest {
     //mock IDataSourceManager
     IDataSourceManager mockedDataSourceManager = mock( IDataSourceManager.class );
     when( mockedDataSourceManager.getProviders() ).thenReturn( dataSourceProviders );
-    when( mockedDataSourceManager.getProviderJsDefinition( anyString() ) ).thenReturn( dataSourceDefinition );
+    when( mockedDataSourceManager.getProviderJsDefinition( any() ) ).thenReturn( dataSourceDefinition );
 
     //mock IUrlProvider
     IUrlProvider mockedUrlProvider = mock( IUrlProvider.class );
@@ -232,7 +239,7 @@ public class RenderApiTest {
     assertTrue( case4.contains( "/js/CDF.js" ) && case4.contains( "/css/CDF-CSS.css" ) );
     assertTrue( case5.contains( "https://testRoot/js/CDF.js" )
       && case5.contains( "https://testRoot/css/CDF-CSS.css" ) );
-    verify( mockHelper, atLeastOnce() ).escape( anyString() );
+    verify( mockHelper, atLeastOnce() ).escape( any() );
   }
 
   @Test
@@ -259,7 +266,7 @@ public class RenderApiTest {
     assertTrue( legacyCase2.contains( cdfContextConfiguration ) );
 
     resetContextConfigurations();
-    verify( mockHelper, atLeastOnce() ).escape( anyString() );
+    verify( mockHelper, atLeastOnce() ).escape( any() );
   }
 
   @Test
@@ -291,9 +298,13 @@ public class RenderApiTest {
     assertEquals( case4, case6 );
 
     resetContextConfigurations();
-    verify( mockHelper, atLeastOnce() ).escape( anyString() );
+    verify( mockHelper, atLeastOnce() ).escape( any() );
   }
 
+  /*
+    Test Failed on JKD-11 and JDK-17 under Windows, might be a Platform Specific issue.
+    Line 322 Dummy Dashboard has a SimpleParameter - dummyComponent expected:<{["parameters":["dummyComponent"]]}> but was:<{[]}>
+   */
   @Test
   public void testGetDashboardParameters() throws IOException {
     MockHttpServletRequest servletRequest =
@@ -312,7 +323,7 @@ public class RenderApiTest {
 
     assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
     assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
-    verify( mockHelper, atLeastOnce() ).escape( anyString() );
+    verify( mockHelper, atLeastOnce() ).escape( any() );
   }
 
   @Test
@@ -333,7 +344,7 @@ public class RenderApiTest {
 
     assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
     assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
-    verify( mockHelper, atLeastOnce() ).escape( anyString() );
+    verify( mockHelper, atLeastOnce() ).escape( any() );
   }
 
   @Test
@@ -343,15 +354,15 @@ public class RenderApiTest {
     assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
 
     IUserContentAccess testPermContentAccess = mock( IUserContentAccess.class );
-    when( testPermContentAccess.fileExists( anyString() ) ).thenReturn( true );
-    when( testPermContentAccess.hasAccess( anyString(), any( FileAccess.class ) ) ).thenReturn( false );
+    when( testPermContentAccess.fileExists( any() ) ).thenReturn( true );
+    when( testPermContentAccess.hasAccess( any(), Mockito.<FileAccess>any() ) ).thenReturn( false );
     cdeEnvironmentForTests.setMockedContentAccess( testPermContentAccess );
     cdeEnvironmentForTests.setCanCreateContent( true );
     expected = "Access Denied or file not found - /path/to/dashboard.wcdf";
     assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
 
     cdeEnvironmentForTests.setMockedContentAccess( mockedUserContentAccess );
-    verify( mockHelper, atLeastOnce() ).escape( anyString() );
+    verify( mockHelper, atLeastOnce() ).escape( any() );
   }
 
   @Test
@@ -359,7 +370,7 @@ public class RenderApiTest {
     cdeEnvironmentForTests.setCanCreateContent( false );
     String expected = "This functionality is limited to users with permission 'Create Content'";
     assertEquals( expected, renderApi.newDashboard( "", false, false, null, null ) );
-    verify( mockHelper, atLeastOnce() ).escape( anyString() );
+    verify( mockHelper, atLeastOnce() ).escape( any() );
   }
 
   private String doGetHeadersCase( String root,
