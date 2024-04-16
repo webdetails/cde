@@ -4,6 +4,7 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
@@ -15,7 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 public class RenderResourcesTest {
   JXPathContext doc;
@@ -77,40 +86,40 @@ public class RenderResourcesTest {
   @Test
   public void testProcessResource() throws Exception {
     ResourceCodeRender resourceCodeRender = mock( ResourceCodeRender.class );
-    doReturn( resourceCodeRender ).when( renderResourcesSpy ).getRender( any( JXPathContext.class ) );
+    doReturn( resourceCodeRender ).when( renderResourcesSpy ).getRender( Mockito.<JXPathContext>any() );
     
-    doReturn( CdeConstants.JAVASCRIPT ).when( renderResourcesSpy ).getResourceType( any( JXPathContext.class ) );
-    doReturn( "" ).when( renderResourcesSpy ).getResourceCodeContent( any( JXPathContext.class ) );
-    renderResourcesSpy.processResource( any( JXPathContext.class ), anyString(), anyInt() );
-    verify( renderResourcesSpy, times( 1 ) ).getResourceType( any( JXPathContext.class ) );
-    verify( renderResourcesSpy, times( 1 ) ).getResourceCodeContent( any( JXPathContext.class ) );
+    doReturn( CdeConstants.JAVASCRIPT ).when( renderResourcesSpy ).getResourceType( Mockito.<JXPathContext>any() );
+    doReturn( "" ).when( renderResourcesSpy ).getResourceCodeContent( Mockito.<JXPathContext>any() );
+    renderResourcesSpy.processResource( Mockito.<JXPathContext>any(), any(), anyInt() );
+    verify( renderResourcesSpy, times( 1 ) ).getResourceType( Mockito.<JXPathContext>any() );
+    verify( renderResourcesSpy, times( 1 ) ).getResourceCodeContent( Mockito.<JXPathContext>any() );
 
-    doReturn( CdeConstants.CSS ).when( renderResourcesSpy ).getResourceType( any( JXPathContext.class ) );
-    renderResourcesSpy.processResource( any( JXPathContext.class ), anyString(), anyInt() );
-    verify( renderResourcesSpy, times( 2 ) ).getResourceType( any( JXPathContext.class ) );
-    verify( renderResourcesSpy, times( 1 ) ).getResourceCodeContent( any( JXPathContext.class ) );
+    doReturn( CdeConstants.CSS ).when( renderResourcesSpy ).getResourceType( Mockito.<JXPathContext>any() );
+    renderResourcesSpy.processResource( Mockito.<JXPathContext>any(), any(), anyInt() );
+    verify( renderResourcesSpy, times( 2 ) ).getResourceType( Mockito.<JXPathContext>any() );
+    verify( renderResourcesSpy, times( 1 ) ).getResourceCodeContent( Mockito.<JXPathContext>any() );
 
     doReturn( false ).when( dashboardWcdfDescriptor ).isRequire();
-    renderResourcesSpy.processResource( any( JXPathContext.class ), anyString(), anyInt() );
-    verify( renderResourcesSpy, times( 2 ) ).getResourceType( any( JXPathContext.class ) );
+    renderResourcesSpy.processResource( Mockito.<JXPathContext>any(), any(), anyInt() );
+    verify( renderResourcesSpy, times( 2 ) ).getResourceType( Mockito.<JXPathContext>any() );
 
     ResourceFileRender resourceFileRender = mock( ResourceFileRender.class );
-    doReturn( resourceFileRender ).when( renderResourcesSpy ).getRender( any( JXPathContext.class ) );
+    doReturn( resourceFileRender ).when( renderResourcesSpy ).getRender( Mockito.<JXPathContext>any() );
     doReturn( true ).when( dashboardWcdfDescriptor ).isRequire();
 
-    doReturn( CdeConstants.JAVASCRIPT ).when( renderResourcesSpy ).getResourceType( any( JXPathContext.class ) );
-    doReturn( "" ).when( renderResourcesSpy ).getResourceCodeContent( any( JXPathContext.class ) );
-    renderResourcesSpy.processResource( any( JXPathContext.class ), anyString(), anyInt() );
-    verify( renderResourcesSpy, times( 3 ) ).getResourceType( any( JXPathContext.class ) );
-    verify( renderResourcesSpy, times( 1 ) ).getResourceCodeContent( any( JXPathContext.class ) );
+    doReturn( CdeConstants.JAVASCRIPT ).when( renderResourcesSpy ).getResourceType( Mockito.<JXPathContext>any() );
+    doReturn( "" ).when( renderResourcesSpy ).getResourceCodeContent( Mockito.<JXPathContext>any() );
+    renderResourcesSpy.processResource( Mockito.<JXPathContext>any(), any(), anyInt() );
+    verify( renderResourcesSpy, times( 3 ) ).getResourceType( Mockito.<JXPathContext>any() );
+    verify( renderResourcesSpy, times( 1 ) ).getResourceCodeContent( Mockito.<JXPathContext>any() );
 
-    doReturn( CdeConstants.CSS ).when( renderResourcesSpy ).getResourceType( any( JXPathContext.class ) );
-    renderResourcesSpy.processResource( any( JXPathContext.class ), anyString(), anyInt() );
-    verify( renderResourcesSpy, times( 4 ) ).getResourceType( any( JXPathContext.class ) );
-    verify( renderResourcesSpy, times( 1 ) ).getResourceCodeContent( any( JXPathContext.class ) );
+    doReturn( CdeConstants.CSS ).when( renderResourcesSpy ).getResourceType( Mockito.<JXPathContext>any() );
+    renderResourcesSpy.processResource( Mockito.<JXPathContext>any(), any(), anyInt() );
+    verify( renderResourcesSpy, times( 4 ) ).getResourceType( Mockito.<JXPathContext>any() );
+    verify( renderResourcesSpy, times( 1 ) ).getResourceCodeContent( Mockito.<JXPathContext>any() );
 
     doReturn( false ).when( dashboardWcdfDescriptor ).isRequire();
-    renderResourcesSpy.processResource( any( JXPathContext.class ), anyString(), anyInt() );
-    verify( renderResourcesSpy, times( 4 ) ).getResourceType( any( JXPathContext.class ) );
+    renderResourcesSpy.processResource( Mockito.<JXPathContext>any(), any(), anyInt() );
+    verify( renderResourcesSpy, times( 4 ) ).getResourceType( Mockito.<JXPathContext>any() );
   }
 }

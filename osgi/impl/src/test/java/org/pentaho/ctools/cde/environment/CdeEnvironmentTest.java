@@ -1,5 +1,5 @@
 /*!
- * Copyright 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2018 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -37,8 +37,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class CdeEnvironmentTest {
@@ -204,21 +203,21 @@ public class CdeEnvironmentTest {
   public void testGetCdeXml() {
     final IBasicFile file = Mockito.mock( IBasicFile.class );
     final IUserContentAccess userContentAccess = Mockito.mock( IUserContentAccess.class );
-    when( userContentAccess.fileExists( anyString() ) ).thenReturn( true );
-    when( userContentAccess.fetchFile( anyString() ) ).thenReturn( file );
+    when( userContentAccess.fileExists( any() ) ).thenReturn( true );
+    when( userContentAccess.fetchFile( any() ) ).thenReturn( file );
     final IContentAccessFactory contentAccessFactory = Mockito.mock( IContentAccessFactory.class );
-    when( contentAccessFactory.getUserContentAccess( anyString()) ).thenReturn( userContentAccess );
+    when( contentAccessFactory.getUserContentAccess( any()) ).thenReturn( userContentAccess );
     cdeEnvironment.setContentAccessFactory( contentAccessFactory );
     assertEquals( file, cdeEnvironment.getCdeXml() );
 
-    when( userContentAccess.fileExists( anyString() ) ).thenReturn( false );
+    when( userContentAccess.fileExists( any() ) ).thenReturn( false );
     final IReadAccess readAccess = Mockito.mock( IReadAccess.class );
-    when( readAccess.fileExists( anyString() ) ).thenReturn( true );
-    when( readAccess.fetchFile( anyString() ) ).thenReturn( file );
-    when( contentAccessFactory.getPluginSystemReader( anyObject() ) ).thenReturn( readAccess );
+    when( readAccess.fileExists( any() ) ).thenReturn( true );
+    when( readAccess.fetchFile( any() ) ).thenReturn( file );
+    when( contentAccessFactory.getPluginSystemReader( any() ) ).thenReturn( readAccess );
     assertEquals( file, cdeEnvironment.getCdeXml() );
 
-    when( readAccess.fileExists( anyString() ) ).thenReturn( false );
+    when( readAccess.fileExists( any() ) ).thenReturn( false );
     assertNull( cdeEnvironment.getCdeXml() );
   }
 
@@ -226,10 +225,10 @@ public class CdeEnvironmentTest {
   public void testGetCdeXmlViaUserContentAccess() {
     final IBasicFile file = Mockito.mock( IBasicFile.class );
     final IUserContentAccess userContentAccess = Mockito.mock( IUserContentAccess.class );
-    when( userContentAccess.fileExists( anyString() ) ).thenReturn( true );
-    when( userContentAccess.fetchFile( anyString() ) ).thenReturn( file );
+    when( userContentAccess.fileExists( any() ) ).thenReturn( true );
+    when( userContentAccess.fetchFile( any() ) ).thenReturn( file );
     final IContentAccessFactory contentAccessFactory = Mockito.mock( IContentAccessFactory.class );
-    when( contentAccessFactory.getUserContentAccess( anyString()) ).thenReturn( userContentAccess );
+    when( contentAccessFactory.getUserContentAccess( any()) ).thenReturn( userContentAccess );
     cdeEnvironment.setContentAccessFactory( contentAccessFactory );
 
     assertEquals( file, cdeEnvironment.getCdeXml() );
@@ -239,13 +238,13 @@ public class CdeEnvironmentTest {
   public void testGetCdeXmlViaReadAccess() {
     final IBasicFile file = Mockito.mock( IBasicFile.class );
     final IUserContentAccess userContentAccess = Mockito.mock( IUserContentAccess.class );
-    when( userContentAccess.fileExists( anyString() ) ).thenReturn( false );
+    when( userContentAccess.fileExists( any() ) ).thenReturn( false );
     final IReadAccess readAccess = Mockito.mock( IReadAccess.class );
-    when( readAccess.fileExists( anyString() ) ).thenReturn( true );
-    when( readAccess.fetchFile( anyString() ) ).thenReturn( file );
+    when( readAccess.fileExists( any() ) ).thenReturn( true );
+    when( readAccess.fetchFile( any() ) ).thenReturn( file );
     final IContentAccessFactory contentAccessFactory = Mockito.mock( IContentAccessFactory.class );
-    when( contentAccessFactory.getUserContentAccess( anyString()) ).thenReturn( userContentAccess );
-    when( contentAccessFactory.getPluginSystemReader( anyObject() ) ).thenReturn( readAccess );
+    when( contentAccessFactory.getUserContentAccess( any()) ).thenReturn( userContentAccess );
+    when( contentAccessFactory.getPluginSystemReader( any() ) ).thenReturn( readAccess );
     cdeEnvironment.setContentAccessFactory( contentAccessFactory );
 
     assertEquals( file, cdeEnvironment.getCdeXml() );
@@ -254,12 +253,12 @@ public class CdeEnvironmentTest {
   @Test
   public void testGetCdeXmlNoFileFound() {
     final IUserContentAccess userContentAccess = Mockito.mock( IUserContentAccess.class );
-    when( userContentAccess.fileExists( anyString() ) ).thenReturn( false );
+    when( userContentAccess.fileExists( any() ) ).thenReturn( false );
     final IReadAccess readAccess = Mockito.mock( IReadAccess.class );
-    when( readAccess.fileExists( anyString() ) ).thenReturn( false );
+    when( readAccess.fileExists( any() ) ).thenReturn( false );
     final IContentAccessFactory contentAccessFactory = Mockito.mock( IContentAccessFactory.class );
-    when( contentAccessFactory.getUserContentAccess( anyString()) ).thenReturn( userContentAccess );
-    when( contentAccessFactory.getPluginSystemReader( anyObject() ) ).thenReturn( readAccess );
+    when( contentAccessFactory.getUserContentAccess( any()) ).thenReturn( userContentAccess );
+    when( contentAccessFactory.getPluginSystemReader( any() ) ).thenReturn( readAccess );
     cdeEnvironment.setContentAccessFactory( contentAccessFactory );
 
     assertNull( cdeEnvironment.getCdeXml() );

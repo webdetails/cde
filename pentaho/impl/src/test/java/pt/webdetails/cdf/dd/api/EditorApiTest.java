@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -22,8 +22,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -90,7 +89,7 @@ public class EditorApiTest {
     assertEquals( MESSAGE_ERROR, hasAccessSaveFalse );
     assertEquals( MESSAGE_NO_PERMISSIONS, noAccessSaveTrue );
     assertEquals( MESSAGE_NO_PERMISSIONS, noAccessSaveFalse );
-    verify( mockHelper, atLeastOnce() ).escape( anyString() );
+    verify( mockHelper, atLeastOnce() ).escape( any() );
   }
 
 }

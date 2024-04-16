@@ -1,5 +1,5 @@
 /*!
- * Copyright 2018-2021 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2018-2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -31,8 +31,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -50,7 +49,7 @@ public class CacheTest {
     when( mockedReadAccess.getFileInputStream( any() ) )
       .thenReturn( new FileInputStream( EHCACHE_FILE_PATH.replace( "/", File.separator ) ) );
     contentAccessFactory = mock( IContentAccessFactory.class );
-    when( contentAccessFactory.getPluginSystemReader( anyString() ) ).thenReturn( mockedReadAccess );
+    when( contentAccessFactory.getPluginSystemReader( any() ) ).thenReturn( mockedReadAccess );
     cache = new Cache( contentAccessFactory );
   }
 
@@ -84,7 +83,7 @@ public class CacheTest {
 
   @Test( expected = InitializationException.class )
   public void testInitializationFailLoadCacheManager() throws Exception {
-    when( mockedReadAccess.getFileInputStream( anyString() ) )
+    when( mockedReadAccess.getFileInputStream( any() ) )
       .thenReturn( null );
     new Cache( contentAccessFactory );
     fail( "InitializationException not thrown" );

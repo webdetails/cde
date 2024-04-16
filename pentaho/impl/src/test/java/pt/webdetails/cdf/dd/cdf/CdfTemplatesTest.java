@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import pt.webdetails.cdf.dd.CdeEngineForTests;
@@ -43,7 +44,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -63,14 +63,14 @@ public class CdfTemplatesTest {
 
     // mocking IReadAccess
     IReadAccess mockedReadAccess = mock( IReadAccess.class );
-    when( mockedReadAccess.listFiles( anyString(), any( IBasicFileFilter.class ), anyInt() ) )
+    when( mockedReadAccess.listFiles( any(), Mockito.<IBasicFileFilter>any(), anyInt() ) )
       .thenReturn( mockedFilesList );
     cdeEnvironmentForTests.setMockedReadAccess( mockedReadAccess );
 
     // mocking IRWAccess
     IRWAccess mockedRWAccess = mock( IRWAccess.class );
-    when( mockedRWAccess.fileExists( anyString() ) ).thenReturn( true );
-    when( mockedRWAccess.saveFile( anyString(), any( InputStream.class ) ) ).thenAnswer( new Answer<Boolean>() {
+    when( mockedRWAccess.fileExists( any() ) ).thenReturn( true );
+    when( mockedRWAccess.saveFile( any(), Mockito.<InputStream>any() ) ).thenAnswer( new Answer<Boolean>() {
       @Override
       public Boolean answer( InvocationOnMock invocation ) throws Throwable {
         InputStream is = (InputStream) invocation.getArguments()[1];

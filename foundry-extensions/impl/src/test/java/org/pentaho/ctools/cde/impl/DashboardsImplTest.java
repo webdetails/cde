@@ -1,5 +1,5 @@
 /*!
- * Copyright 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2018 -2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -42,10 +42,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -93,7 +92,7 @@ public class DashboardsImplTest {
     fileListTwoDashboards.add( file2 );
 
     readAccessMockitoForTwoDashboards = Mockito.mock( RemoteReadAccess.class );
-    when( readAccessMockitoForTwoDashboards.listFiles( anyString(), any( GenericBasicFileFilter.class ),
+    when( readAccessMockitoForTwoDashboards.listFiles( any(), Mockito.<GenericBasicFileFilter>any( ),
       anyInt(), anyBoolean(), anyBoolean() ) )
       .thenReturn( fileListTwoDashboards );
     when( readAccessMockitoForTwoDashboards.fetchFile( "/home/sample CDE/sampleSolo.wcdf" ) ).thenReturn( fileSolo );

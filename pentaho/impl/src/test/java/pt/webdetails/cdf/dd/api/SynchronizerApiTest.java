@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2022 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -39,8 +39,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.mock;
@@ -137,7 +136,7 @@ public class SynchronizerApiTest {
     assertEquals( "false", jsonObj.getString( "status" ) );
     assertEquals( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST", jsonObj.getString( "result" ) );
 
-    verify( mockHelper, atLeastOnce() ).escape( anyString() );
+    verify( mockHelper, atLeastOnce() ).escape( any() );
   }
 
   @Test
@@ -151,7 +150,7 @@ public class SynchronizerApiTest {
     assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
     assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
 
-    verify( mockHelper, atLeastOnce() ).escape( anyString() );
+    verify( mockHelper, atLeastOnce() ).escape( any() );
   }
 
   @Test
@@ -166,7 +165,7 @@ public class SynchronizerApiTest {
     assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
     assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
 
-    verify( mockHelper, atLeastOnce() ).escape( anyString() );
+    verify( mockHelper, atLeastOnce() ).escape( any() );
   }
 
   @Test
@@ -193,7 +192,7 @@ public class SynchronizerApiTest {
     assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
     assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
 
-    verify( mockHelper, atLeastOnce() ).escape( anyString() );
+    verify( mockHelper, atLeastOnce() ).escape( any() );
   }
 
   @Test
@@ -208,7 +207,7 @@ public class SynchronizerApiTest {
     synchronizerApi.saveDashboard( file, title, description, cdfStructure, operation, servletResponse );
     assertEquals( APPLICATION_JSON, servletResponse.getContentType() );
     assertEquals( CharsetHelper.getEncoding(), servletResponse.getCharacterEncoding() );
-    verify( mockHelper, times(0) ).escape( anyString() );
+    verify( mockHelper, times(0) ).escape( any() );
   }
 
 }
