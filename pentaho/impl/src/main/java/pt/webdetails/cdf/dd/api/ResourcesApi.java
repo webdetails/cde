@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2019 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -65,14 +65,23 @@ import pt.webdetails.cpf.repository.util.RepositoryHelper;
 public class ResourcesApi {
   private static final Log logger = LogFactory.getLog( ResourcesApi.class );
 
-  private static final List<String> allowedExtensions;
+  private static List<String> allowedExtensions = new ArrayList<>();
 
   static {
-    String formats = PentahoSystem.get( IPluginResourceLoader.class, null )
-      .getPluginSetting( ResourcesApi.class, CdeConstants.PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS );
+    IPluginResourceLoader resourceLoader = PentahoSystem.get( IPluginResourceLoader.class, null );
+    //Added to check resourceLoader for null values
+    if ( resourceLoader != null ) {
+      String formats = resourceLoader
+        .getPluginSetting( ResourcesApi.class, CdeConstants.PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS );
+      allowedExtensions =  Arrays.asList( StringUtils.split( formats, ',' ) );
+    }
 
-    allowedExtensions =  Arrays.asList( StringUtils.split( formats, ',' ) );
   }
+  //Added to be able to set allowed extensions for testing
+  public static void setAllowedExtensions( List<String> stringList ){
+    allowedExtensions = stringList;
+  }
+
 
   @GET
   @Path( "/get" )
@@ -351,11 +360,13 @@ public class ResourcesApi {
       responseBuilder.header( "Cache-Control", "max-age=0" );
       responseBuilder.header( "Etag", lastModifiedTime );
     } else {
+      //Added to check PentahoSystem object for null values
       IPluginResourceLoader resLoader = PentahoSystem.get( IPluginResourceLoader.class, null );
-
-      String maxAge = resLoader.getPluginSetting( this.getClass(), "max-age" );
-      if ( maxAge != null ) {
-        responseBuilder.header( "Cache-Control", "max-age=" + maxAge );
+      if (resLoader != null) {
+        String maxAge = resLoader.getPluginSetting( this.getClass(), "max-age" );
+        if ( maxAge != null ) {
+          responseBuilder.header( "Cache-Control", "max-age=" + maxAge );
+        }
       }
     }
 
