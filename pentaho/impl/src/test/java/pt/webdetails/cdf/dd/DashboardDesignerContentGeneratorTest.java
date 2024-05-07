@@ -14,13 +14,11 @@ package pt.webdetails.cdf.dd;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockedStatic;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.engine.core.solution.SimpleParameterProvider;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.web.http.request.HttpRequestParameterProvider;
 import org.springframework.mock.web.MockHttpServletResponse;
 import pt.webdetails.cdf.dd.api.ResourcesApi;
@@ -33,7 +31,9 @@ import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -53,7 +53,6 @@ public class DashboardDesignerContentGeneratorTest {
   private IPluginResourceLoader iPluginResourceLoader;
   private XSSHelper xssHelper;
 
-  private MockedStatic<PentahoSystem> pentahoSystemMockedStatic;
   private MockedStatic<XSSHelper> xssHelperMockedStatic;
   private MockedStatic<Utils> utilsMockedStatic;
   private MockedStatic<Long> longMockedStatic;
@@ -61,7 +60,6 @@ public class DashboardDesignerContentGeneratorTest {
 
   @Before
   public void setUp() {
-    pentahoSystemMockedStatic = mockStatic( PentahoSystem.class );
     xssHelperMockedStatic = mockStatic( XSSHelper.class );
     utilsMockedStatic = mockStatic( Utils.class );
     longMockedStatic = mockStatic( Long.class );
@@ -77,17 +75,12 @@ public class DashboardDesignerContentGeneratorTest {
 
   @After
   public void afterEach() {
-    pentahoSystemMockedStatic.close();
     xssHelperMockedStatic.close();
     utilsMockedStatic.close();
     longMockedStatic.close();
     cdeEnvironmentMockedStatic.close();
   }
 
-  /*
-    Test Failed while Building, it does succeed when ran individually.
-    Line 104 expected:<[jsonBufferedValues]> but was:<[]>
-   */
   @Test
   public void createJsonResourceContent() throws Exception {
     contentGenerator.setParameterProviders( configureParameterProviders() );
@@ -132,7 +125,10 @@ public class DashboardDesignerContentGeneratorTest {
     doReturn( ".json" ).when( file ).getExtension();
     doReturn( COMMAND ).when( xssHelper ).escape( COMMAND );
 
-    when( PentahoSystem.get( IPluginResourceLoader.class, null ) ).thenReturn( iPluginResourceLoader );
+    //Added to set json as an allowed extension for test after removing PentahoSystem mock
+    List<String> allowedExtensions = new ArrayList<>();
+    allowedExtensions.add( "json" );
+    ResourcesApi.setAllowedExtensions( allowedExtensions );
     doReturn( "json" ).when( iPluginResourceLoader ).getPluginSetting( ResourcesApi.class,
       "settings/resources/downloadable-formats" );
     doReturn( null ).when( iPluginResourceLoader ).getPluginSetting( ResourcesApi.class,
