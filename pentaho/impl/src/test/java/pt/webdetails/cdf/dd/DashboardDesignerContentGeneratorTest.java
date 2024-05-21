@@ -1,5 +1,5 @@
 /*!
- * Copyright 2019-2021 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2019-2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -12,17 +12,14 @@
  */
 package pt.webdetails.cdf.dd;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.MockedStatic;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.engine.core.solution.SimpleParameterProvider;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.web.http.request.HttpRequestParameterProvider;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.mock.web.MockHttpServletResponse;
 import pt.webdetails.cdf.dd.api.ResourcesApi;
 import pt.webdetails.cdf.dd.api.XSSHelper;
@@ -34,20 +31,19 @@ import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyLong;
-import static org.powermock.api.mockito.PowerMockito.doReturn;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.spy;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
-@RunWith( PowerMockRunner.class )
-@PrepareForTest( { PentahoSystem.class, Utils.class, XSSHelper.class, CdeEnvironment.class } )
-@PowerMockIgnore( "jdk.internal.reflect.*" )
+
 public class DashboardDesignerContentGeneratorTest {
 
   private static final String PLUGIN_NAME = "pentaho-cdf-dd";
@@ -57,13 +53,17 @@ public class DashboardDesignerContentGeneratorTest {
   private IPluginResourceLoader iPluginResourceLoader;
   private XSSHelper xssHelper;
 
+  private MockedStatic<XSSHelper> xssHelperMockedStatic;
+  private MockedStatic<Utils> utilsMockedStatic;
+  private MockedStatic<Long> longMockedStatic;
+  private MockedStatic<CdeEnvironment> cdeEnvironmentMockedStatic;
+
   @Before
   public void setUp() {
-    mockStatic( PentahoSystem.class );
-    mockStatic( XSSHelper.class );
-    mockStatic( Utils.class );
-    mockStatic( Long.class );
-    mockStatic( CdeEnvironment.class );
+    xssHelperMockedStatic = mockStatic( XSSHelper.class );
+    utilsMockedStatic = mockStatic( Utils.class );
+    longMockedStatic = mockStatic( Long.class );
+    cdeEnvironmentMockedStatic = mockStatic( CdeEnvironment.class );
 
     xssHelper = mock( XSSHelper.class );
     iPluginResourceLoader = mock( IPluginResourceLoader.class );
@@ -71,6 +71,14 @@ public class DashboardDesignerContentGeneratorTest {
 
     servletResponse = new MockHttpServletResponse();
 
+  }
+
+  @After
+  public void afterEach() {
+    xssHelperMockedStatic.close();
+    utilsMockedStatic.close();
+    longMockedStatic.close();
+    cdeEnvironmentMockedStatic.close();
   }
 
   @Test
@@ -113,12 +121,14 @@ public class DashboardDesignerContentGeneratorTest {
     when( Utils.getFileViaAppropriateReadAccess( COMMAND ) ).thenReturn( file );
     when( Utils.getURLDecoded( COMMAND ) ).thenReturn( COMMAND );
 
-    doReturn( 0L ).when( userContentAccess ).getLastModified( COMMAND );
-    when( Long.toString( anyLong() ) ).thenReturn( "0" );
+    when( userContentAccess.getLastModified( COMMAND )).thenReturn( Long.valueOf( "0" ) );
     doReturn( ".json" ).when( file ).getExtension();
     doReturn( COMMAND ).when( xssHelper ).escape( COMMAND );
 
-    when( PentahoSystem.get( IPluginResourceLoader.class, null ) ).thenReturn( iPluginResourceLoader );
+    //Added to set json as an allowed extension for test after removing PentahoSystem mock
+    List<String> allowedExtensions = new ArrayList<>();
+    allowedExtensions.add( "json" );
+    ResourcesApi.setAllowedExtensions( allowedExtensions );
     doReturn( "json" ).when( iPluginResourceLoader ).getPluginSetting( ResourcesApi.class,
       "settings/resources/downloadable-formats" );
     doReturn( null ).when( iPluginResourceLoader ).getPluginSetting( ResourcesApi.class,

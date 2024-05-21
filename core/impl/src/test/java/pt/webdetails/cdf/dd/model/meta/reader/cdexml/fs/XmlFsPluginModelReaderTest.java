@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2021 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -16,6 +16,7 @@ package pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import pt.webdetails.cdf.dd.CdeEngineForTests;
@@ -47,7 +48,6 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -66,7 +66,7 @@ public class XmlFsPluginModelReaderTest {
   @Before
   public void setUp() throws Exception {
     mockedReadAccess = mock( IReadAccess.class );
-    when( mockedReadAccess.listFiles( anyString(), any( IBasicFileFilter.class ), anyInt() ) ).thenAnswer(
+    when( mockedReadAccess.listFiles( any(), Mockito.<IBasicFileFilter>any(), anyInt() ) ).thenAnswer(
       new Answer<Object>() {
         @Override
         public Object answer( InvocationOnMock invocation ) throws Throwable {
@@ -75,7 +75,7 @@ public class XmlFsPluginModelReaderTest {
       } );
 
     IContentAccessFactory mockedContentAccessFactory = mock( IContentAccessFactory.class );
-    when( mockedContentAccessFactory.getPluginSystemReader( anyString() ) ).thenAnswer( new Answer<Object>() {
+    when( mockedContentAccessFactory.getPluginSystemReader( any() ) ).thenAnswer( new Answer<Object>() {
       @Override
       public Object answer( InvocationOnMock invocation ) throws Throwable {
         String path = (String) invocation.getArguments()[ 0 ];
@@ -89,7 +89,7 @@ public class XmlFsPluginModelReaderTest {
         }
       }
     } );
-    when( mockedContentAccessFactory.getPluginRepositoryReader( anyString() ) ).thenReturn( mockedReadAccess );
+    when( mockedContentAccessFactory.getPluginRepositoryReader( any() ) ).thenReturn( mockedReadAccess );
 
     IPluginResourceLocationManager mockedPluginResourceLocationManager = mock( IPluginResourceLocationManager.class );
     List<PathOrigin> pathOrigins = new ArrayList<>();
@@ -195,8 +195,8 @@ public class XmlFsPluginModelReaderTest {
   private IReadAccess buildReadAccessMock( String path ) {
     IReadAccess mocked = mock( IReadAccess.class );
     List<IBasicFile> fileList = listFromFileSystem( path );
-    when( mocked.listFiles( anyString(), any( IBasicFileFilter.class ), anyInt() ) ).thenReturn( fileList );
-    when( mocked.listFiles( anyString(), any( IBasicFileFilter.class ), anyInt(), anyBoolean(), anyBoolean() ) )
+    when( mocked.listFiles( any(), Mockito.<IBasicFileFilter>any(), anyInt() ) ).thenReturn( fileList );
+    when( mocked.listFiles( any(), Mockito.<IBasicFileFilter>any(), anyInt(), anyBoolean(), anyBoolean() ) )
       .thenReturn( fileList );
     return mocked;
   }

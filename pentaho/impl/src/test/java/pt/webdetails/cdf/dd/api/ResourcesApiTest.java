@@ -1,5 +1,5 @@
 /*!
- * Copyright 2019-2021 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2019-2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -12,33 +12,28 @@
  */
 package pt.webdetails.cdf.dd.api;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-
+import org.mockito.MockedStatic;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 
 import javax.ws.rs.core.Response;
+import java.util.Collections;
 
-@RunWith( PowerMockRunner.class )
-@PrepareForTest( { PentahoSystem.class, Utils.class } )
-@PowerMockIgnore( "jdk.internal.reflect.*" )
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+
 public class ResourcesApiTest {
 
   private ResourcesApi resourcesApi;
@@ -48,10 +43,13 @@ public class ResourcesApiTest {
   private final static long LAST_MODIFIED_TIME = 123456789;
   private IBasicFile file;
 
+  private MockedStatic<PentahoSystem> pentahoSystemMockedStatic;
+  private MockedStatic<Utils> utilsMockedStatic;
+
   @Before
   public void setup() {
-    mockStatic( PentahoSystem.class );
-    mockStatic( Utils.class );
+    pentahoSystemMockedStatic = mockStatic( PentahoSystem.class );
+    utilsMockedStatic = mockStatic( Utils.class );
     file = mock( IBasicFile.class );
     IPluginResourceLoader pluginResourceLoader = mock( IPluginResourceLoader.class );
 
@@ -62,16 +60,23 @@ public class ResourcesApiTest {
       .getPluginSetting( ResourcesApi.class, CdeConstants.PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS );
   }
 
+  @After
+  public void afterEach() {
+    pentahoSystemMockedStatic.close();
+    utilsMockedStatic.close();
+  }
+
   @Test
   public void getCssResourceIfNoneMatchNullTest() throws Exception {
 
     resourcesApi = spy( new ResourcesApi() );
 
-    doReturn( RESOURCE_PATH ).when( resourcesApi ).decodeAndEscape( anyString() );
-    doReturn( LAST_MODIFIED_TIME ).when( resourcesApi ).getLastModifiedTime( anyString() );
+    doReturn( RESOURCE_PATH ).when( resourcesApi ).decodeAndEscape( any() );
+    doReturn( LAST_MODIFIED_TIME ).when( resourcesApi ).getLastModifiedTime( any() );
 
-    when( Utils.getFileViaAppropriateReadAccess( anyString() ) ).thenReturn( file );
-
+    when( Utils.getFileViaAppropriateReadAccess( any() ) ).thenReturn( file );
+    //Added to set allowed extensions
+    ResourcesApi.setAllowedExtensions( Collections.singletonList( file.getExtension() ) );
     Response response = resourcesApi.getCssResource( RESOURCE_PATH, RESOURCE_PATH, null );
 
     assertEquals( 200, response.getStatus() );
@@ -84,11 +89,12 @@ public class ResourcesApiTest {
 
     resourcesApi = spy( new ResourcesApi() );
 
-    doReturn( RESOURCE_PATH ).when( resourcesApi ).decodeAndEscape( anyString() );
-    doReturn( LAST_MODIFIED_TIME ).when( resourcesApi ).getLastModifiedTime( anyString() );
+    doReturn( RESOURCE_PATH ).when( resourcesApi ).decodeAndEscape( any() );
+    doReturn( LAST_MODIFIED_TIME ).when( resourcesApi ).getLastModifiedTime( any() );
 
-    when( Utils.getFileViaAppropriateReadAccess( anyString() ) ).thenReturn( file );
-
+    when( Utils.getFileViaAppropriateReadAccess( any() ) ).thenReturn( file );
+    //Added to set allowed extensions
+    ResourcesApi.setAllowedExtensions( Collections.singletonList( file.getExtension() ) );
     Response response = resourcesApi.getCssResource( RESOURCE_PATH, RESOURCE_PATH, IF_NONE_MATCH );
 
     assertEquals( 304, response.getStatus() );
@@ -101,10 +107,11 @@ public class ResourcesApiTest {
 
     resourcesApi = spy( new ResourcesApi() );
 
-    doReturn( RESOURCE_PATH ).when( resourcesApi ).decodeAndEscape( anyString() );
+    doReturn( RESOURCE_PATH ).when( resourcesApi ).decodeAndEscape( any() );
 
-    when( Utils.getFileViaAppropriateReadAccess( anyString() ) ).thenReturn( null );
-
+    when( Utils.getFileViaAppropriateReadAccess( any() ) ).thenReturn( null );
+    //Added to set allowed extensions
+    ResourcesApi.setAllowedExtensions( Collections.singletonList( file.getExtension() ) );
     Response response = resourcesApi.resource( RESOURCE_PATH, IF_NONE_MATCH );
 
     assertEquals( 500, response.getStatus() );
@@ -115,11 +122,12 @@ public class ResourcesApiTest {
 
     resourcesApi = spy( new ResourcesApi() );
 
-    doReturn( RESOURCE_PATH ).when( resourcesApi ).decodeAndEscape( anyString() );
-    doReturn( LAST_MODIFIED_TIME ).when( resourcesApi ).getLastModifiedTime( anyString() );
+    doReturn( RESOURCE_PATH ).when( resourcesApi ).decodeAndEscape( any() );
+    doReturn( LAST_MODIFIED_TIME ).when( resourcesApi ).getLastModifiedTime( any() );
 
-    when( Utils.getFileViaAppropriateReadAccess( anyString() ) ).thenReturn( file );
-
+    when( Utils.getFileViaAppropriateReadAccess( any() ) ).thenReturn( file );
+    //Added to set allowed extensions
+    ResourcesApi.setAllowedExtensions( Collections.singletonList( file.getExtension() ) );
     Response response = resourcesApi.resource( RESOURCE_PATH, IF_NONE_MATCH );
 
     assertEquals( 304, response.getStatus() );

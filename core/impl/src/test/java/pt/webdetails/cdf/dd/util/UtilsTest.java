@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2017 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2002 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -69,17 +69,17 @@ public class UtilsTest {
     doReturn( PLUGIN_ID ).when( environment ).getPluginId();
 
     //mocking factory and readAccess calls
-    doReturn( userContentAccess ).when( factory ).getUserContentAccess( any( String.class ) );
-    doReturn( basicFile ).when( userContentAccess ).fetchFile( any( String.class ) );
+    doReturn( userContentAccess ).when( factory ).getUserContentAccess( any() );
+    doReturn( basicFile ).when( userContentAccess ).fetchFile( any() );
 
-    doReturn( systemReadAccess ).when( factory ).getPluginSystemReader( any( String.class ) );
+    doReturn( systemReadAccess ).when( factory ).getPluginSystemReader( any() );
     doReturn( systemReadAccess ).when( factory )
-      .getOtherPluginSystemReader( any( String.class ), any( String.class ) );
-    doReturn( basicFile ).when( systemReadAccess ).fetchFile( any( String.class ) );
+      .getOtherPluginSystemReader( any(), any() );
+    doReturn( basicFile ).when( systemReadAccess ).fetchFile( any() );
 
-    doReturn( systemWriteAccess ).when( factory ).getPluginSystemWriter( any( String.class ) );
+    doReturn( systemWriteAccess ).when( factory ).getPluginSystemWriter( any() );
     doReturn( systemWriteAccess ).when( factory )
-      .getOtherPluginSystemWriter( any( String.class ), any( String.class ) );
+      .getOtherPluginSystemWriter( any(), any() );
 
   }
 

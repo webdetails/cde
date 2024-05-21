@@ -1,5 +1,5 @@
 /*!
- * Copyright 2018 Webdetails, a Hitachi Vantara company. All rights reserved.
+ * Copyright 2018 - 2024 Webdetails, a Hitachi Vantara company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import pt.webdetails.cdf.dd.DashboardManager;
+import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
@@ -27,9 +28,8 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 
 public class RenderApiTest {
@@ -89,7 +89,7 @@ public class RenderApiTest {
 
   @Test
   public void testGetDashboard() throws ThingWriteException {
-    when( dashboardManager.getDashboardCdfRunJs( anyString(), anyObject(), anyBoolean(), anyString() ) ).thenReturn(
+    when( dashboardManager.getDashboardCdfRunJs( any(), any(), anyBoolean(), any() ) ).thenReturn(
       cdfRunJsDashboardWriteResult );
 
     assertEquals( StringUtils.EMPTY, renderApi.getDashboard(
@@ -98,7 +98,7 @@ public class RenderApiTest {
 
   @Test
   public void testGetDashboardEmptyPath() throws ThingWriteException {
-    when( dashboardManager.getDashboardCdfRunJs( anyString(), anyObject(), anyBoolean(), anyString() ) ).thenReturn(
+    when( dashboardManager.getDashboardCdfRunJs( any(), any(), anyBoolean(), any() ) ).thenReturn(
       cdfRunJsDashboardWriteResult );
 
     assertEquals( "No path provided.", renderApi.getDashboard(
@@ -107,7 +107,7 @@ public class RenderApiTest {
 
   @Test
   public void testGetDashboardCustomAlias() throws ThingWriteException {
-    when( dashboardManager.getDashboardCdfRunJs( anyString(), anyObject(), anyBoolean(), anyString() ) ).thenReturn(
+    when( dashboardManager.getDashboardCdfRunJs( any(), any(), anyBoolean(), any() ) ).thenReturn(
       cdfRunJsDashboardWriteResult );
 
     alias = "alias";
@@ -117,8 +117,8 @@ public class RenderApiTest {
 
   @Test
   public void testGetDashboardErrorMessage() throws ThingWriteException {
-    when( dashboardManager.getDashboardCdfRunJs( anyString(), anyObject(), anyBoolean(), anyString() ) ).thenThrow(
-      Exception.class );
+    when( dashboardManager.getDashboardCdfRunJs( any(), any(), anyBoolean(), any() ) ).thenThrow(
+      ThingWriteException.class );
 
     try {
       assertTrue( renderApi.getDashboard(
@@ -131,7 +131,7 @@ public class RenderApiTest {
 
   @Test
   public void testGetDashboardParameters() throws Exception {
-    when( dashboardManager.getDashboardParameters( anyString(), anyBoolean(), anyBoolean() ) ).thenReturn(
+    when( dashboardManager.getDashboardParameters( any(), anyBoolean(), anyBoolean() ) ).thenReturn(
       StringUtils.EMPTY );
 
     assertEquals( StringUtils.EMPTY, renderApi.getDashboardParameters( DASHBOARD_WCDF_PATH, bypassCache, all ) );
@@ -139,7 +139,7 @@ public class RenderApiTest {
 
   @Test
   public void testGetDashboardParametersEmptyPath() throws Exception {
-    when( dashboardManager.getDashboardParameters( anyString(), anyBoolean(), anyBoolean() ) ).thenReturn(
+    when( dashboardManager.getDashboardParameters( any(), anyBoolean(), anyBoolean() ) ).thenReturn(
       StringUtils.EMPTY );
 
     assertEquals( "No path provided.", renderApi.getDashboardParameters( path, bypassCache, all ) );
@@ -148,7 +148,7 @@ public class RenderApiTest {
   @Test
   public void testGetDashboardParametersErrorMessage() throws Exception {
     //test error message
-    when( dashboardManager.getDashboardParameters( anyString(), anyBoolean(), anyBoolean() ) ).thenThrow( Exception.class );
+    when( dashboardManager.getDashboardParameters( any(), anyBoolean(), anyBoolean() ) ).thenThrow( ThingReadException.class );
 
     try {
       assertTrue( renderApi.getDashboardParameters( DASHBOARD_WCDF_PATH, bypassCache, all )
