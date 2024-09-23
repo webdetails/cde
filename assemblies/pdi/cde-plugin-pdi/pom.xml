@@ -2,11 +2,17 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-plugin-assemblies-pdi</artifactId>
     <version>10.3.0.0-SNAPSHOT</version>
   </parent>
+
+  <properties>
+    <karaf-maven-plugin.markTransitiveAsDependency>false</karaf-maven-plugin.markTransitiveAsDependency>
+  </properties>
+
   <artifactId>pentaho-cde-plugin-pdi</artifactId>
   <packaging>feature</packaging>
   <description>Pentaho Community Dashboard Editor plugin for PDI</description>
