@@ -16,8 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
