@@ -22,9 +22,9 @@ import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 import pt.webdetails.cpf.utils.PluginIOUtils;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.StreamingOutput;
 import java.io.IOException;
 import java.util.UUID;
 

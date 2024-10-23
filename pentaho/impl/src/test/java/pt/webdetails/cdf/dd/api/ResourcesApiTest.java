@@ -22,7 +22,7 @@ import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
