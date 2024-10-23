@@ -13,8 +13,8 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.mockito.Mockito;
 import org.pentaho.platform.api.engine.IParameterProvider;

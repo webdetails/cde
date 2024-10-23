@@ -58,7 +58,6 @@
 
     <ehcache.version>2.5.1</ehcache.version>
     <ezmorph.version>1.0.6</ezmorph.version>
-    <servlet-api.version>3.0.1</servlet-api.version>
     <backport-util-concurrent.version>3.1</backport-util-concurrent.version>
 
     <junit.version>4.13.2</junit.version>
@@ -184,9 +183,9 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>${servlet-api.version}</version>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>${jakarta.servlet.version}</version>
         <scope>provided</scope>
         <exclusions>
           <exclusion>
@@ -207,9 +206,9 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>javax.ws.rs</groupId>
-        <artifactId>javax.ws.rs-api</artifactId>
-        <version>${javax.ws.rs-api.version}</version>
+        <groupId>jakarta.ws.rs</groupId>
+        <artifactId>jakarta.ws.rs-api</artifactId>
+        <version>${jakarta.ws.rs-api.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>

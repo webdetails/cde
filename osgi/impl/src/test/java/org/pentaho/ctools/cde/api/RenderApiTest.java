@@ -13,7 +13,7 @@
 
 package org.pentaho.ctools.cde.api;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
