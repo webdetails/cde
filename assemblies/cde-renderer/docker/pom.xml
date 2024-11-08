@@ -32,7 +32,7 @@
       <groupId>org.pentaho.ctools</groupId>
       <artifactId>cde-renderer-karaf-assembly</artifactId>
       <version>${project.version}</version>
-      <type>tar.gz</type>
+      <type>zip</type>
     </dependency>
   </dependencies>
 
