@@ -66,7 +66,25 @@
         <groupId>org.hitachivantara.karaf.tooling</groupId>
         <artifactId>karaf-maven-plugin</artifactId>
         <extensions>true</extensions>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <phase>package</phase>
+            <goals>
+              <goal>archive</goal>
+            </goals>
+            <!--
+            per doc: https://github.com/pentaho/karaf/blob/38be22f1666c38370e833fb6818ba897d48fc6be/manual/src/main/asciidoc/developer-guide/karaf-maven-plugin.adoc#L150
+            and general maven knowledge need to hav a goal/phase
+            -->
+            <configuration>
+              <archiveZip>false</archiveZip>
+              <archiveTarGz>true</archiveTarGz>
+            </configuration>
+          </execution>
+        </executions>
 
+        <!-- THIS IS DOING ABSOLUTELY NOTHING </archiveZip> and </archiveTarGz>, wrong place in xml -->
         <configuration>
           <archiveZip>false</archiveZip>
           <archiveTarGz>true</archiveTarGz>
