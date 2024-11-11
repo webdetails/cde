@@ -1,3 +1,14 @@
+/*! ******************************************************************************
+ *
+ * Pentaho
+ *
+ * Copyright (C) 2024 by Hitachi Vantara, LLC : http://www.pentaho.com
+ *
+ * Use of this software is governed by the Business Source License included
+ * in the LICENSE.TXT file.
+ *
+ * Change Date: 2029-07-20
+ ******************************************************************************/
 ace.define('ace/mode/livescript', ['require', 'exports', 'module' , 'ace/tokenizer', 'ace/mode/matching_brace_outdent', 'ace/range', 'ace/mode/text'], function(require, exports, module) {
   var identifier, LiveScriptMode, keywordend, stringfill;
   identifier = '(?![\\d\\s])[$\\w\\xAA-\\uFFDC](?:(?!\\s)[$\\w\\xAA-\\uFFDC]|-[A-Za-z])*';
