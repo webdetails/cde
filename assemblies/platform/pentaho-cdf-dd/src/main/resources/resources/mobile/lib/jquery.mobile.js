@@ -2382,7 +2382,7 @@ if ( !$.support.boxShadow ) {
 			//    [16]: ?msg=1234&type=unread
 			//    [17]: #msg-content
 			//
-			urlParseRE: /^\s*(((([^:\/#\?]+:)?(?:(\/\/)((?:(([^:@\/#\?]+)(?:\:([^:@\/#\?]+))?)@)?(([^:\/#\?\]\[]+|\[[^\/\]@#?]+\])(?:\:([0-9]+))?))?)?)?((\/?(?:[^\/\?#]+\/+)*)([^\?#]*)))?(\?[^#]+)?)(#.*)?/,
+			urlParseRE: /^\s*(((([^:\/\\#\?]+:)?(?:([\/\\]{2})((?:(([^:@\/\\#\?]*)(?:\:([^@\/\\#\?]*))?)@)?(([^:\/\\#\?\]\[]+|\[[^\/\\\]@#?]+\])(?:\:([0-9]+))?))?)?)?(([\/\\]?(?:[^\/\\\?#]+[\/\\]+)*)([^\?#]*)))?(\?[^#]+)?)(#.*)?/,
 
 			// Abstraction to address xss (Issue #4787) by removing the authority in
 			// browsers that auto-decode it. All references to location.href should be
@@ -5035,6 +5035,15 @@ $.widget( "mobile.page", {
 			var fileUrl = this._createFileUrl( absUrl );
 
 			return $.proxy(function( html, textStatus, xhr ) {
+				// Check that Content-Type is "text/html" (https://github.com/jquery/jquery-mobile/issues/8640)
+				if ( !/^text\/html\b/.test( xhr.getResponseHeader("Content-Type") ) ) {
+					// Display error message for unsupported content type
+					if ( settings.showLoadMsg ) {
+						this._showError();
+					}
+					return;
+				}
+
 				//pre-parse html to check for a data-url,
 				//use it as the new fileUrl, base path, etc
 				var content,
