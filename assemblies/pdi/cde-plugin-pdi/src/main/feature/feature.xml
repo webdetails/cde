@@ -2,9 +2,11 @@
 <features name="${project.artifactId}-repo" xmlns="http://karaf.apache.org/xmlns/features/v1.2.1">
 
   <feature name="${project.artifactId}" version="${project.version}">
-
     <details>${project.description}</details>
 
+    <!-- This dependency was removed due to multiple CVEs, and it isn't needed by CDE,
+         but is required by commons-jxpath bundle for this feature to install correctly -->
+    <bundle>wrap:mvn:jdom/jdom/1.0</bundle>
   </feature>
 
 </features>
