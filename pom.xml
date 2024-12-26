@@ -56,7 +56,6 @@
     <commons-jxpath.version>1.3</commons-jxpath.version>
     <commons-collections.version>3.2.2</commons-collections.version>
 
-    <ehcache.version>2.5.1</ehcache.version>
     <ezmorph.version>1.0.6</ezmorph.version>
     <backport-util-concurrent.version>3.1</backport-util-concurrent.version>
 
@@ -161,15 +160,20 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>net.sf.ehcache</groupId>
-        <artifactId>ehcache-core</artifactId>
-        <version>${ehcache.version}</version>
+        <groupId>org.ehcache</groupId>
+        <artifactId>ehcache</artifactId>
+        <version>${ehcache-core.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
             <groupId>*</groupId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>javax.cache</groupId>
+        <artifactId>cache-api</artifactId>
+        <version>${cache-api.version}</version>
       </dependency>
       <dependency>
         <groupId>org.pentaho</groupId>
