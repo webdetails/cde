@@ -5,11 +5,11 @@
   <parent>
     <artifactId>cde-plugin</artifactId>
     <groupId>org.pentaho.ctools</groupId>
-    <version>10.3.0.0-SNAPSHOT</version>
+    <version>10.3.0.0-242</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>cde-foundry-extensions</artifactId>
-  <version>10.3.0.0-SNAPSHOT</version>
+  <version>10.3.0.0-242</version>
   <packaging>pom</packaging>
   <description>Pentaho Community Dashboard Editor specifics intended to be available on a Foundry environment</description>
   <modules>
