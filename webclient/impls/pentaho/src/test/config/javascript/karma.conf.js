@@ -25,6 +25,7 @@ module.exports = function(config) {
       'src/test/javascript/lib/jquery.js',
       'target/dependency/cde/webclient/jquery.jeditable.js',
       'target/dependency/cde/webclient/jquery.notifyBar.js',
+      'src/test/javascript/lib/underscore.js',
       'target/dependency/cde/webclient/Base.js',
       'src/test/javascript/mocks/mockDashboards.js',
       'target/dependency/cde/webclient/cdf-dd-config.js',
@@ -69,7 +70,7 @@ module.exports = function(config) {
     // the default configuration
     htmlReporter: {
       outputDir:    'target/test-reports/karma_html',
-      templatePath: 'node_modules/karma-html-reporter/jasmine_template.html'
+      templatePath: '../../../node_modules/karma-html-reporter/jasmine_template.html'
     },
 
     //hostname

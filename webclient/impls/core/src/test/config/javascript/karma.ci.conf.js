@@ -22,6 +22,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'src/test/config/javascript/context.js',
       'src/test/javascript/lib/jquery.js',
       'src/main/javascript/jquery.jqModal.js',
       'src/main/javascript/jquery.corner.js',
@@ -53,7 +54,6 @@ module.exports = function(config) {
       'src/main/javascript/cdf-dd-prompt-properties.js',
       'src/main/javascript/cdf-dd-prompt-wizard.js',
       'src/main/javascript/cdf-dd-datasources.js',
-      'src/test/config/javascript/context.js',
       'src/test/config/javascript/karma.main.js',
       {pattern: 'src/test/javascript/**/*-spec.js', included: false}
     ],
@@ -116,7 +116,7 @@ module.exports = function(config) {
 
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,
-    
+
     // to avoid DISCONNECTED messages
     // see https://github.com/karma-runner/karma/issues/598
     browserDisconnectTimeout : 10000, // default 2000
