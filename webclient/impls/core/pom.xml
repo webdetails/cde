@@ -12,7 +12,7 @@
   <description>Pentaho Community Dashboard Editor Webclient Core Implementation</description>
 
   <properties>
-    <js.project.list>jquery</js.project.list>
+    <js.project.list>jquery,underscore</js.project.list>
     <!--karma.file.config>karma.conf.js</karma.file.config-->
   </properties>
 
@@ -20,6 +20,10 @@
     <dependency>
       <groupId>org.webjars.npm</groupId>
       <artifactId>jquery</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars.npm</groupId>
+      <artifactId>underscore</artifactId>
     </dependency>
   </dependencies>
 
@@ -48,6 +52,29 @@
                   <destinationFile>${project.basedir}/src/test/javascript/lib/jquery.js</destinationFile>
                 </set>
               </fileSets>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-underscore</id>
+            <phase>${javascript_unpack-dependencies-phase}</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.basedir}/src/test/javascript/lib</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${webjars.target.directory}/underscore/${underscore.version}</directory>
+                  <includes>
+                    <include>underscore.js</include>
+                  </includes>
+                </resource>
+              </resources>
             </configuration>
           </execution>
         </executions>
