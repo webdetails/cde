@@ -29,28 +29,6 @@
     <plugins>
       <!-- copy jquery for tests -->
       <plugin>
-        <groupId>com.coderplus.maven.plugins</groupId>
-        <artifactId>copy-rename-maven-plugin</artifactId>
-        <version>1.0</version>
-        <executions>
-          <execution>
-            <id>copy-jquery</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <fileSets>
-                <set>
-                  <sourceFile>${webjars.target.directory}/jquery/${jquery.version}/dist/jquery.js</sourceFile>
-                  <destinationFile>${project.basedir}/src/test/javascript/lib/jquery.js</destinationFile>
-                </set>
-              </fileSets>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
@@ -65,6 +43,24 @@
               <resources>
                 <resource>
                   <directory>${project.build.directory}/dependency/cde</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-jquery</id>
+            <phase>${javascript_unpack-dependencies-phase}</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.basedir}/src/test/javascript/lib</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${webjars.target.directory}/jquery/${jquery.version}/dist</directory>
+                  <includes>
+                    <include>jquery.js</include>
+                  </includes>
                 </resource>
               </resources>
             </configuration>

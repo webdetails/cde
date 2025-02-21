@@ -31,34 +31,44 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>com.coderplus.maven.plugins</groupId>
-        <artifactId>copy-rename-maven-plugin</artifactId>
-        <version>1.0</version>
+        <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
             <id>copy-jquery</id>
-            <phase>process-resources</phase>
+            <phase>${javascript_unpack-dependencies-phase}</phase>
             <goals>
-              <goal>copy</goal>
+              <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <fileSets>
-                <set>
-                  <sourceFile>${webjars.target.directory}/jquery/${jquery.version}/dist/jquery.min.js</sourceFile>
-                  <destinationFile>${project.basedir}/src/test/javascript/lib/ace/jquery.min.js</destinationFile>
-                </set>
-                <set>
-                  <sourceFile>${webjars.target.directory}/jquery/${jquery.version}/dist/jquery.js</sourceFile>
-                  <destinationFile>${project.basedir}/src/test/javascript/lib/jquery.js</destinationFile>
-                </set>
-              </fileSets>
+              <outputDirectory>${project.basedir}/src/test/javascript/lib</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${webjars.target.directory}/jquery/${jquery.version}/dist</directory>
+                  <includes>
+                    <include>jquery.js</include>
+                  </includes>
+                </resource>
+              </resources>
             </configuration>
           </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
+          <execution>
+            <id>copy-jquery-min</id>
+            <phase>${javascript_unpack-dependencies-phase}</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.basedir}/src/test/javascript/lib/ace</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${webjars.target.directory}/jquery/${jquery.version}/dist</directory>
+                  <includes>
+                    <include>jquery.min.js</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
           <execution>
             <id>copy-underscore</id>
             <phase>${javascript_unpack-dependencies-phase}</phase>
