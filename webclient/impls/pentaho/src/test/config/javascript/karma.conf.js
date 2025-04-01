@@ -25,6 +25,7 @@ module.exports = function(config) {
       'src/test/javascript/lib/jquery.js',
       'target/dependency/cde/webclient/jquery.jeditable.js',
       'target/dependency/cde/webclient/jquery.notifyBar.js',
+      'src/test/javascript/lib/underscore.js',
       'target/dependency/cde/webclient/Base.js',
       'src/test/javascript/mocks/mockDashboards.js',
       'target/dependency/cde/webclient/cdf-dd-config.js',

@@ -26,3 +26,10 @@ var requireCfg = {
 };
 
 var KARMA_RUN = true;
+
+// Backup. `requirejs` is already defined.
+var definejs = define;
+
+// Force libs to not load as requirejs modules
+define  = undefined;
+require = undefined;
