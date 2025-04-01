@@ -82,7 +82,7 @@ module.exports = function(config) {
     // the default configuration
     htmlReporter: {
       outputDir:    'target/test-reports-webclient/karma_html',
-      templatePath: '../../../node_modules/karma-html-reporter/jasmine_template.html'
+      templatePath: 'node_modules/karma-html-reporter/jasmine_template.html'
     },
 
     //hostname
