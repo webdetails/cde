@@ -14,6 +14,7 @@
 package pt.webdetails.cdf.dd.cache.impl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -49,10 +50,15 @@ public final class Cache implements ICache {
       CachingProvider cachingProvider = Caching.getCachingProvider();
       URI configUri = getClass().getClassLoader().getResource( CACHE_CFG_FILE ).toURI();
       cacheManager = cachingProvider.getCacheManager( configUri, getClass().getClassLoader() );
-    } catch ( CacheException e ) {
-      throw new InitializationException( "Failed to create the cache manager.", e );
+      InputStream inputStream = contentAccessFactory.getPluginSystemReader( null )
+        .getFileInputStream( CACHE_CFG_FILE );
+      if ( inputStream == null ) {
+        throw new InitializationException( "Failed to create the cache manager." + CACHE_CFG_FILE, null );
+      }
     } catch ( URISyntaxException e ) {
-        throw new RuntimeException( "Failed to load the cache configuration file: " + CACHE_CFG_FILE, e );
+        throw new RuntimeException( e );
+    } catch ( IOException e ) {
+      throw new InitializationException( "Failed to load the cache configuration file: " + CACHE_CFG_FILE, e );
     }
 
     // enableCacheProperShutdown
