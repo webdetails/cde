@@ -163,6 +163,7 @@
         <groupId>org.ehcache</groupId>
         <artifactId>ehcache</artifactId>
         <version>${ehcache-core.version}</version>
+        <classifier>jakarta</classifier>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
