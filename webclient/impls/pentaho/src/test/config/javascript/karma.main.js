@@ -13,6 +13,10 @@
 
 // Find and inject tests using require
 (function() {
+  // Restore RequireJS, previously removed in context.js
+  define  = definejs;
+  require = requirejs;
+
   var karma = window.__karma__;
 
   var tests = [];
