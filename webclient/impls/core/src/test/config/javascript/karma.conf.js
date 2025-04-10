@@ -22,6 +22,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'src/test/config/javascript/context.js',
       'src/test/javascript/lib/jquery.js',
       'src/main/javascript/jquery.jqModal.js',
       'src/main/javascript/jquery.corner.js',
@@ -53,7 +54,6 @@ module.exports = function(config) {
       'src/main/javascript/cdf-dd-prompt-properties.js',
       'src/main/javascript/cdf-dd-prompt-wizard.js',
       'src/main/javascript/cdf-dd-datasources.js',
-      'src/test/config/javascript/context.js',
       'src/test/config/javascript/karma.main.js',
       {pattern: 'src/test/javascript/**/*-spec.js', included: false}
     ],
