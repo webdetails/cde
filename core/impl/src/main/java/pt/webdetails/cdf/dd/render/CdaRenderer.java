@@ -17,7 +17,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Iterator;
 import java.util.Map;
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -112,9 +111,6 @@ public class CdaRenderer {
     }
 
     TransformerFactory tFactory = TransformerFactory.newInstance();
-    tFactory.setFeature( XMLConstants.FEATURE_SECURE_PROCESSING, true );
-    tFactory.setAttribute( XMLConstants.ACCESS_EXTERNAL_DTD, "" );
-    tFactory.setAttribute( XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "" );
     Transformer transformer = tFactory.newTransformer();
 
     DOMSource source = new DOMSource( cdaFile );
