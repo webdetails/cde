@@ -13,10 +13,8 @@
 
 package org.pentaho.ctools.cde.cache.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import pt.webdetails.cdf.dd.DashboardCacheKey;
@@ -25,13 +23,9 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cpf.exceptions.InitializationException;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
-import javax.cache.CacheException;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
 import javax.cache.configuration.MutableConfiguration;
-import javax.cache.expiry.CreatedExpiryPolicy;
-import javax.cache.expiry.Duration;
-import javax.cache.spi.CachingProvider;
 /**
  * Allows caching {@code CdfRunJsDashboardWriteResult} objects referenced by {@code DashboardCacheKey}.
  * Both these types are serializable.
@@ -48,17 +42,10 @@ public final class Cache implements ICache {
   public Cache( IReadAccess readAccess ) throws InitializationException {
     CacheManager cacheManager;
     try {
-      CachingProvider cachingProvider = Caching.getCachingProvider();
-      URI configUri = getClass().getClassLoader().getResource( CACHE_CFG_FILE ).toURI();
-      cacheManager = cachingProvider.getCacheManager( configUri, getClass().getClassLoader() );
-      InputStream inputStream = readAccess.getFileInputStream( CACHE_CFG_FILE );
-      if (inputStream == null) {
-        throw new InitializationException( "Failed to create the cache manager." + CACHE_CFG_FILE, null );
-      }
-    } catch ( URISyntaxException e ) {
-        throw new RuntimeException( e );
-    } catch ( IOException e ) {
-      throw new InitializationException( "Failed to load configuration", e );
+      URI configUri = Path.of( readAccess.fetchFile( CACHE_CFG_FILE ).getFullPath() ).toUri();
+      cacheManager = Caching.getCachingProvider().getCacheManager( configUri, getClass().getClassLoader() );
+    } catch ( Exception e ) {
+      throw new InitializationException( "Failed to create the cache manager.", e );
     }
 
     // enableCacheProperShutdown

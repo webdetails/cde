@@ -306,7 +306,6 @@ public class RenderApiTest {
     Test Failed on JKD-11 and JDK-17 under Windows, might be a Platform Specific issue.
     Line 322 Dummy Dashboard has a SimpleParameter - dummyComponent expected:<{["parameters":["dummyComponent"]]}> but was:<{[]}>
    */
-  @Ignore
   @Test
   public void testGetDashboardParameters() throws IOException {
     MockHttpServletRequest servletRequest =
