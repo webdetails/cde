@@ -13,18 +13,19 @@
 
 package org.pentaho.ctools.cde.cache.impl;
 
-import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
-import net.sf.ehcache.CacheException;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Element;
 import pt.webdetails.cdf.dd.DashboardCacheKey;
 import pt.webdetails.cdf.dd.cache.api.ICache;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cpf.exceptions.InitializationException;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+import javax.cache.configuration.MutableConfiguration;
 /**
  * Allows caching {@code CdfRunJsDashboardWriteResult} objects referenced by {@code DashboardCacheKey}.
  * Both these types are serializable.
@@ -35,39 +36,44 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 public final class Cache implements ICache {
   private static final String CACHE_CFG_FILE = "ehcache.xml";
   private static final String CACHE_NAME = "pentaho-cde";
-  private final Ehcache ehcache;
+  private static final String ENABLE_SHUTDOWN_HOOK_PROPERTY = "javax.cache.CacheManager.enableShutdownHook";
+  private final javax.cache.Cache ehcache;
 
   public Cache( IReadAccess readAccess ) throws InitializationException {
     CacheManager cacheManager;
     try {
-      cacheManager = CacheManager.create( readAccess.getFileInputStream( CACHE_CFG_FILE ) );
-    } catch ( IOException e ) {
-      throw new InitializationException( "Failed to load the cache configuration file: " + CACHE_CFG_FILE, e );
-    } catch ( CacheException e ) {
+      URI configUri = Path.of( readAccess.fetchFile( CACHE_CFG_FILE ).getFullPath() ).toUri();
+      cacheManager = Caching.getCachingProvider().getCacheManager( configUri, getClass().getClassLoader() );
+    } catch ( Exception e ) {
       throw new InitializationException( "Failed to create the cache manager.", e );
     }
 
     // enableCacheProperShutdown
-    System.setProperty( CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY, "true" );
+    System.setProperty( ENABLE_SHUTDOWN_HOOK_PROPERTY , "true" );
 
-    if ( !cacheManager.cacheExists( CACHE_NAME ) ) {
-      cacheManager.addCache( CACHE_NAME );
+    if ( cacheManager.getCache( CACHE_NAME ) == null ) {
+      MutableConfiguration<Object, Object> configuration =
+              new MutableConfiguration<>()
+                      .setStoreByValue( false );
+      cacheManager.createCache( CACHE_NAME ,configuration );
     }
 
     this.ehcache = cacheManager.getCache( CACHE_NAME );
   }
 
   public CdfRunJsDashboardWriteResult get( DashboardCacheKey key ) {
-    Element element = this.ehcache.get( key );
+    Object element = this.ehcache.get( key );
 
     if ( element != null ) {
-      return (CdfRunJsDashboardWriteResult) element.getValue();
+      return (CdfRunJsDashboardWriteResult) element;
     }
     return null;
   }
 
   public List<DashboardCacheKey> getKeys() {
-    return (List<DashboardCacheKey>) this.ehcache.getKeys();
+    List<DashboardCacheKey> keys = new ArrayList<>();
+    ehcache.iterator().forEachRemaining( entry -> keys.add( ( DashboardCacheKey ) ( ( javax.cache.Cache.Entry<Object,Object> ) entry ).getKey() ) );
+    return keys;
   }
 
   public void remove( DashboardCacheKey key ) {
@@ -79,7 +85,6 @@ public final class Cache implements ICache {
   }
 
   public void put( DashboardCacheKey key, CdfRunJsDashboardWriteResult value ) {
-    Element element = new Element( key, value );
-    this.ehcache.put( element );
+    this.ehcache.put( key, value );
   }
 }

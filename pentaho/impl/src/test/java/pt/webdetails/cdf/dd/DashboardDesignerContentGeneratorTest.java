@@ -20,8 +20,8 @@ import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.engine.core.solution.SimpleParameterProvider;
 import org.pentaho.platform.web.http.request.HttpRequestParameterProvider;
-import org.springframework.mock.web.MockHttpServletResponse;
 import pt.webdetails.cdf.dd.api.ResourcesApi;
+import org.springframework.mock.web.MockHttpServletResponse;
 import pt.webdetails.cdf.dd.api.XSSHelper;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
@@ -29,7 +29,7 @@ import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;

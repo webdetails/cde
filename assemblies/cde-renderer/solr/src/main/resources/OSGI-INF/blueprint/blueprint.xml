@@ -4,7 +4,7 @@
     <!-- Load system property -->
     <ext:property-placeholder />
 
-    <service interface="javax.servlet.Servlet">
+    <service interface="jakarta.servlet.Servlet">
         <service-properties>
             <entry key="alias" value="/solr"></entry>
             <entry key="init.Prefix" value="/"></entry>

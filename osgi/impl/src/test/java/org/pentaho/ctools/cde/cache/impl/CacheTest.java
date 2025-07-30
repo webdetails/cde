@@ -18,21 +18,25 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.MockedStatic;
 import pt.webdetails.cdf.dd.DashboardCacheKey;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cpf.exceptions.InitializationException;
+import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
+import javax.cache.CacheException;
+import javax.cache.Caching;
+import javax.cache.spi.CachingProvider;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 
 public class CacheTest {
   private static final String EHCACHE_FILE_PATH = "src/main/resources/ehcache.xml";
@@ -44,8 +48,9 @@ public class CacheTest {
   @BeforeClass
   public static void beforeAll() throws Exception {
     mockedReadAccess = mock( IReadAccess.class );
-    when( mockedReadAccess.getFileInputStream( any() ) )
-      .thenReturn( new FileInputStream( EHCACHE_FILE_PATH.replace( "/", File.separator ) ) );
+    IBasicFile basicFile = mock( IBasicFile.class );
+    when( basicFile.getFullPath() ).thenReturn( new File( EHCACHE_FILE_PATH.replace( "/", File.separator ) ).getPath() );
+    when( mockedReadAccess.fetchFile( any() ) ).thenReturn( basicFile );
     cache = new Cache( mockedReadAccess );
   }
 
@@ -70,17 +75,21 @@ public class CacheTest {
 
   @Test( expected = InitializationException.class )
   public void testInitializationFailLoadConfiguration() throws Exception {
-    when( mockedReadAccess.getFileInputStream( any() ) )
-      .thenThrow( new IOException( "mocked IOException" ) );
+    when( mockedReadAccess.fetchFile( any() ) )
+            .thenThrow( new RuntimeException( "mocked Exception" ) );
     new Cache( mockedReadAccess );
     fail( "InitializationException not thrown" );
   }
 
   @Test( expected = InitializationException.class )
   public void testInitializationFailLoadCacheManager() throws Exception {
-    when( mockedReadAccess.getFileInputStream( any() ) )
-      .thenReturn( null );
-    new Cache( mockedReadAccess );
+    try ( MockedStatic<Caching> cachingStatic = mockStatic(Caching.class) ) {
+      CachingProvider cachingProvider = mock(CachingProvider.class);
+      when(cachingProvider.getCacheManager(any(), any())).thenThrow(new CacheException("mocked Exception"));
+      cachingStatic.when(() -> Caching.getCachingProvider().getCacheManager()).thenReturn(cachingProvider);
+
+      new Cache(mockedReadAccess);
+    }
     fail( "InitializationException not thrown" );
   }
 
