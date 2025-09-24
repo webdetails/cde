@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-renderer-assembly</artifactId>
-    <version>11.0.0.0-SNAPSHOT</version>
+    <version>11.0.0.0-112</version>
   </parent>
 
   <artifactId>cde-renderer-docker</artifactId>
