@@ -2,13 +2,14 @@
  *
  * Pentaho
  *
- * Copyright (C) 2024 by Hitachi Vantara, LLC : http://www.pentaho.com
+ * Copyright (C) 2024 - 2026 by Pentaho Canada Inc. : http://www.pentaho.com
  *
  * Use of this software is governed by the Business Source License included
  * in the LICENSE.TXT file.
  *
- * Change Date: 2029-07-20
+ * Change Date: 2030-06-15
  ******************************************************************************/
+
 
 
 // Base class and general utils
@@ -1918,7 +1919,7 @@ $(function() {
   /* End Jeditable attribution */
 
   /*!
-   * Copyright 2002 - 2020 Webdetails, a Hitachi Vantara company. All rights reserved.
+   * Copyright 2002 - 2026 Webdetails, a Pentaho company. All rights reserved.
    *
    * This software was developed by Webdetails and is provided under the terms
    * of the Mozilla Public License, Version 2.0, or any later version. You may not use
