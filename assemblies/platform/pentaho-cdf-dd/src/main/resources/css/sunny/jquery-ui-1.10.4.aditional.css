@@ -1,3 +1,14 @@
+/*! ******************************************************************************
+ *
+ * Pentaho
+ *
+ * Copyright (C) 2026 by Pentaho Canada Inc. : http://www.pentaho.com
+ *
+ * Use of this software is governed by the Business Source License included
+ * in the LICENSE.TXT file.
+ *
+ * Change Date: 2030-06-15
+ ******************************************************************************/
 /* CDF-271, maintaing some aditional styling (not included in theme roller generated custom theme)
  in a seperate file to simplify future lib updates */
 .ui-widget-content tr.ui-state-active { background: #0098c4; color: #fff; }
