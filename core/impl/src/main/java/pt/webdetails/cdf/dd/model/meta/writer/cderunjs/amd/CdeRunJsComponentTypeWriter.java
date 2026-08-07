@@ -14,7 +14,7 @@
 
 package pt.webdetails.cdf.dd.model.meta.writer.cderunjs.amd;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import pt.webdetails.cdf.dd.model.core.Attribute;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;

@@ -14,7 +14,7 @@
 
 package pt.webdetails.cdf.dd.reader.factory;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;

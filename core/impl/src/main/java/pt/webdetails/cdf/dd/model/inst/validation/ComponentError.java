@@ -14,7 +14,7 @@
 
 package pt.webdetails.cdf.dd.model.inst.validation;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationError;
 
 public abstract class ComponentError extends ValidationError {

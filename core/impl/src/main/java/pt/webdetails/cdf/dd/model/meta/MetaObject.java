@@ -14,7 +14,7 @@
 
 package pt.webdetails.cdf.dd.model.meta;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import pt.webdetails.cdf.dd.model.core.Entity;
 import pt.webdetails.cdf.dd.model.core.validation.RequiredAttributeError;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;

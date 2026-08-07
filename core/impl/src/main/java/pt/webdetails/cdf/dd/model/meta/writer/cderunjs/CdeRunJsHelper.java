@@ -14,7 +14,7 @@
 
 package pt.webdetails.cdf.dd.model.meta.writer.cderunjs;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import pt.webdetails.cdf.dd.model.core.Attribute;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
 

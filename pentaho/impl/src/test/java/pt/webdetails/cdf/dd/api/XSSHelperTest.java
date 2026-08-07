@@ -13,7 +13,7 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.junit.Before;
 import org.junit.Test;
 import pt.webdetails.cdf.dd.CdeConstants;

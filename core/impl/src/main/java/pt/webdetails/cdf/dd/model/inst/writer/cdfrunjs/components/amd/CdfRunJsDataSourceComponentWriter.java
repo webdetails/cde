@@ -15,7 +15,7 @@
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.core.Thing;

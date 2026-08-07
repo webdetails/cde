@@ -16,8 +16,6 @@ package pt.webdetails.cdf.dd.plugin.resource;
 
 import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import pt.webdetails.cdf.dd.FsPluginResourceLocations;
 import pt.webdetails.cdf.dd.IPluginResourceLocationManager;
 import pt.webdetails.cdf.dd.cdf.CdfStyles;
@@ -29,7 +27,7 @@ public class PluginResourceLocationManager implements IPluginResourceLocationMan
   private FsPluginResourceLocations componentLocator;
 
   public IReadAccess[] getAllCustomComponentsResourceLocations() {
-    throw new NotImplementedException( "shouldn't be using this anymore" );
+    throw new UnsupportedOperationException( "shouldn't be using this anymore" );
   }
 
   @Override
