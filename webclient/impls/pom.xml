@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.pentaho.ctools</groupId>
     <artifactId>cde-webclient</artifactId>
-    <version>11.1.0.0-SNAPSHOT</version>
+    <version>11.1.0.0-368</version>
   </parent>
   <artifactId>cde-webclient-impls</artifactId>
   <packaging>pom</packaging>
