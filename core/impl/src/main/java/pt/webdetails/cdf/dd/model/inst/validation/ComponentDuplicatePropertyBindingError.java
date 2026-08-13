@@ -14,7 +14,7 @@
 
 package pt.webdetails.cdf.dd.model.inst.validation;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public final class ComponentDuplicatePropertyBindingError extends ComponentError {
   private final String _propertyAlias;

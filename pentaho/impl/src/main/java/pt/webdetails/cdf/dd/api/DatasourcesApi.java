@@ -22,7 +22,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.DefaultValue;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import pt.webdetails.cdf.dd.datasources.CdaDataSourceReader;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;

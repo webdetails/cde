@@ -16,7 +16,7 @@ package pt.webdetails.cdf.dd.render.layout;
 
 import java.text.MessageFormat;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.owasp.encoder.Encode;
 import pt.webdetails.cdf.dd.CdeConstants;
 

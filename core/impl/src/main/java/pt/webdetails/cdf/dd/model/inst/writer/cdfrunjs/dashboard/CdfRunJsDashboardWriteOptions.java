@@ -17,7 +17,7 @@ package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
 import java.io.Serializable;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import pt.webdetails.cdf.dd.CdeConstants;
 
 public class CdfRunJsDashboardWriteOptions implements Serializable {

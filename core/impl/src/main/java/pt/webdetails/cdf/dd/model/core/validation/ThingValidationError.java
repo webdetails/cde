@@ -14,7 +14,7 @@
 
 package pt.webdetails.cdf.dd.model.core.validation;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public abstract class ThingValidationError extends ValidationError {
   protected final String _thingKind;

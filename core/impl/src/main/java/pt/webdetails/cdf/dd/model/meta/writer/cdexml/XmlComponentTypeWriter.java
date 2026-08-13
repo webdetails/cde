@@ -14,7 +14,7 @@
 
 package pt.webdetails.cdf.dd.model.meta.writer.cdexml;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Branch;
 import org.dom4j.Element;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;

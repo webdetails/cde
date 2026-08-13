@@ -14,7 +14,7 @@
 
 package pt.webdetails.cdf.dd.model.core.writer.js;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.NEWLINE;
 
 public abstract class JsWriterAbstract {

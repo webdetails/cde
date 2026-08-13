@@ -23,7 +23,7 @@ import java.util.List;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONException;
 import pt.webdetails.cdf.dd.DashboardManager;

@@ -14,7 +14,7 @@
 
 package pt.webdetails.cdf.dd;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.pentaho.platform.api.engine.IParameterProvider;
 import pt.webdetails.cpf.PluginEnvironment;

@@ -15,7 +15,7 @@
 package pt.webdetails.cdf.dd.render.layout;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import pt.webdetails.cdf.dd.util.XPathUtils;
 

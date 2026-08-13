@@ -14,7 +14,7 @@
 
 package pt.webdetails.cdf.dd.model.inst;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import pt.webdetails.cdf.dd.model.core.Atom;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;

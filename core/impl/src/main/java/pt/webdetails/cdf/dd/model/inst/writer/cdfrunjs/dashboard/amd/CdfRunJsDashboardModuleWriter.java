@@ -15,8 +15,8 @@
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.CdeConstants;
@@ -174,7 +174,7 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     writeRequireJsExecutionFunction( output, moduleIds, moduleClassNames );
 
     final String dashSourcePath = context.getDashboard().getSourcePath();
-    final String noNewlinesLayout = StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) );
+    final String noNewlinesLayout = StringEscapeUtils.escapeEcmaScript( layout.replace( NEWLINE, "" ) );
 
     String aliasPrefix = context.getOptions().getAliasPrefix();
     if ( aliasPrefix.contains( CdeConstants.DASHBOARD_ALIAS_TAG ) ) {
