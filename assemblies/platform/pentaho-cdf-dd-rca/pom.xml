@@ -33,6 +33,21 @@
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
+        <!--
+        Not consumed on the classpath. Declared solely so that the reactor
+        creates a dependency edge on pentaho-cdf-dd and orders it before this
+        module. The maven-dependency-plugin <artifactItems> below are resolved
+        straight from the repositories at execution time and are invisible to
+        the reactor, which makes parallel builds (-T) race against the
+        pentaho-cdf-dd assembly. See the unpack-plugins execution.
+        -->
+        <dependency>
+            <groupId>org.pentaho.ctools</groupId>
+            <artifactId>pentaho-cdf-dd</artifactId>
+            <version>${project.version}</version>
+            <type>zip</type>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -42,7 +57,7 @@
                 <executions>
                     <execution>
                         <id>unpack-plugins</id>
-                        <phase>process-sources</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
