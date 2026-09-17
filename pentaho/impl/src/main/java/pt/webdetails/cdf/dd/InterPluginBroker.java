@@ -29,6 +29,10 @@ import java.util.Iterator;
  */
 public class InterPluginBroker {
 
+  private InterPluginBroker() {
+    /* This utility class should not be instantiated */
+  }
+
   public static final String DATA_SOURCE_DEFINITION_METHOD_NAME = "listDataAccessTypes";
 
   /**
@@ -112,7 +116,7 @@ public class InterPluginBroker {
             continue;
           }
 
-          params.put( paramName, StringUtils.join( (String[]) paramValue, null, 0, 1 ) );
+          params.put( paramName, StringUtils.join( (String[]) paramValue, StringUtils.EMPTY, 0, 1 ) );
         }
       }
     }
@@ -146,7 +150,7 @@ public class InterPluginBroker {
             continue;
           }
 
-          params.put( paramName, StringUtils.join( (String[]) paramValue, null, 0, 1 ) );
+          params.put( paramName, StringUtils.join( (String[]) paramValue, StringUtils.EMPTY, 0, 1 ) );
         }
       }
     }
@@ -180,7 +184,7 @@ public class InterPluginBroker {
             continue;
           }
 
-          params.put( paramName, StringUtils.join( (String[]) paramValue, null, 0, 1 ) );
+          params.put( paramName, StringUtils.join( (String[]) paramValue, StringUtils.EMPTY, 0, 1 ) );
         }
       }
     }
@@ -218,7 +222,7 @@ public class InterPluginBroker {
             continue;
           }
 
-          params.put( paramName, StringUtils.join( (String[]) paramValue, null, 0, 1 ) );
+          params.put( paramName, StringUtils.join( (String[]) paramValue, StringUtils.EMPTY, 0, 1 ) );
         }
       }
     }
