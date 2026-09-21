@@ -108,10 +108,12 @@ define(['cdf/lib/jquery'], function($) {
         };
 
         //Can't use the jXHR promise because 'script' doesn't support 'callback=?'
+        //Force https so the script (and any API key sent with it) is never loaded over
+        //an unencrypted, MITM-able connection.
         $.ajax({
           dataType: 'script',
           data: params,
-          url: '//maps.googleapis.com/maps/api/js'
+          url: 'https://maps.googleapis.com/maps/api/js'
         });
         
       }
