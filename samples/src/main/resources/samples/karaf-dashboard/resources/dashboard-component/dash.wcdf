@@ -2,7 +2,7 @@
 <cdf>
 	<title>Sprint Demo Dashboard</title>
 	<description>demo-dash</description>
-	<author>Hitachi Vantara</author>
+	<author>Pentaho</author>
 
 	<style>WDDocsRequire</style>
 	<rendererType>blueprint</rendererType>
