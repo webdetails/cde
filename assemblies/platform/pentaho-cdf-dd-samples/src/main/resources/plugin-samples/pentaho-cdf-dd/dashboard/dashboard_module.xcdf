@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cdf>
   <title>DashboardModule</title>
-  <author>Hitachi Vantara</author>
+  <author>Pentaho</author>
   <description>Dashboard AMD Module sample</description>
   <icon></icon>
   <template>template.html</template>

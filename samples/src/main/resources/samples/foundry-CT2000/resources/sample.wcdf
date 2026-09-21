@@ -2,7 +2,7 @@
 <cdf>
 	<title>CT2000 Foundry Sample</title>
 	<description>CT2000 Sample for Foundry</description>
-	<author>Hitachi Vantara</author>
+	<author>Pentaho</author>
 	<style>CleanRequire</style>
 	<rendererType>bootstrap</rendererType>
 	<require>true</require>

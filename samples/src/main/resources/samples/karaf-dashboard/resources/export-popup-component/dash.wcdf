@@ -2,7 +2,7 @@
 <cdf>
 	<title>Export Popup Component</title>
 	<description>A sample of ExportPopup Component</description>
-	<author>Hitachi Vantara</author>
+	<author>Pentaho</author>
 	<style>CleanRequire</style>
 	<rendererType>blueprint</rendererType>
 	<require>true</require>

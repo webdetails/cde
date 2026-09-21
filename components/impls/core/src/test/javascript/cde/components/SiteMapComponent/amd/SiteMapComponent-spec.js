@@ -31,7 +31,7 @@ define([
               {"name": "Pentaho Community", "link": "http://community.pentaho.com/"},
               {"name": "Webdetails",
                 "link": "http://www.webdetails.pt/",
-                "sublinks": [{"name": "CTools", "link": "https://community.hitachivantara.com/s/topic/0TO1J0000017kVNWAY/ctools"},
+                "sublinks": [{"name": "CTools", "link": "https://docs.pentaho.com/pba-ctools"},
                              {"name": "Showcase", "link": "http://www.webdetails.pt/showcase/"}]}];
     }());
 
