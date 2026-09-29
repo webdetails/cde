@@ -86,10 +86,12 @@ define([
           };
 
           //Can't use the jXHR promise because 'script' doesn't support 'callback=?'
+          //Force https so the script (and the API key sent in "params") is never
+          //loaded over an unencrypted, MITM-able connection.
           $.ajax({
             dataType: "script",
             data: params,
-            url: "//maps.googleapis.com/maps/api/js"
+            url: "https://maps.googleapis.com/maps/api/js"
           });
 
         }
